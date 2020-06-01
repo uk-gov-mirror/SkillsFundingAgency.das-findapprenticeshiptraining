@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.FAT.Web", "SFA.DAS.FAT.Web\SFA.DAS.FAT.Web.csproj", "{160E1330-0FF6-41D6-9275-238D952FEF3C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CF3B6AF8-9414-4F4F-A378-2688E5B7283A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.FAT.Web.UnitTests", "SFA.DAS.FAT.Web.UnitTests\SFA.DAS.FAT.Web.UnitTests.csproj", "{FC2F7779-7188-4BA2-817E-C30457EDBACB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{160E1330-0FF6-41D6-9275-238D952FEF3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{160E1330-0FF6-41D6-9275-238D952FEF3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{160E1330-0FF6-41D6-9275-238D952FEF3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{160E1330-0FF6-41D6-9275-238D952FEF3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC2F7779-7188-4BA2-817E-C30457EDBACB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC2F7779-7188-4BA2-817E-C30457EDBACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC2F7779-7188-4BA2-817E-C30457EDBACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC2F7779-7188-4BA2-817E-C30457EDBACB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FC2F7779-7188-4BA2-817E-C30457EDBACB} = {CF3B6AF8-9414-4F4F-A378-2688E5B7283A}
+	EndGlobalSection
+EndGlobal

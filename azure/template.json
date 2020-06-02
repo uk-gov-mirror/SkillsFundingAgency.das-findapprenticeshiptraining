@@ -135,6 +135,14 @@
                             {
                                 "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
                                 "value": "[reference('ui-application-insights').outputs.InstrumentationKey.value]"
+                            },
+                            {
+                                "name": "WEBSITE_SWAP_WARMUP_PING_PATH",
+                                "value": "/ping"
+                            },
+                            {
+                                "name": "WEBSITE_SWAP_WARMUP_PING_STATUSES",
+                                "value": "200"
                             }
                         ]
                     },

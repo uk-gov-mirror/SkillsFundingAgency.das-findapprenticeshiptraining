@@ -8,3 +8,4 @@ Scenario: Navigate to start page
 Given I have an http client
 When I navigate to the following url: /
 Then an http status code of 200 is returned
+And the page content includes the following: Find apprenticeship training for your apprentice

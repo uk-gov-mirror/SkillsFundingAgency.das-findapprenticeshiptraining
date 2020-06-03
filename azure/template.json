@@ -25,6 +25,15 @@
         "uiCustomHostname": {
             "type": "string"
         },
+        "apimBaseUrl": {
+            "type": "string"
+        },
+        "apimSubscriptionKey": {
+            "type": "securestring"
+        },
+        "cdnUrl": {
+            "type": "string"
+        },
         "keyvaultCertificateName": {
             "type": "string"
         },
@@ -127,6 +136,18 @@
                             {
                                 "name": "EnvironmentName",
                                 "value": "[parameters('environmentName')]"
+                            },
+                            {
+                                "name": "ApimBaseUrl",
+                                "value": "[parameters('apimBaseUrl')]"
+                            },
+                            {
+                                "name": "ApimSubscriptionKey",
+                                "value": "[parameters('apimSubscriptionKey')]"
+                            },
+                            {
+                                "name": "Cdn:Url",
+                                "value": "[parameters('cdnUrl')]"
                             },
                             {
                                 "name": "ConfigurationStorageConnectionString",

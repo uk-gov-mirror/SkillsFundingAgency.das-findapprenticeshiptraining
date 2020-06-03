@@ -146,7 +146,7 @@
                                 "value": "[parameters('apimSubscriptionKey')]"
                             },
                             {
-                                "name": "CdnUrl",
+                                "name": "Cdn:Url",
                                 "value": "[parameters('cdnUrl')]"
                             },
                             {

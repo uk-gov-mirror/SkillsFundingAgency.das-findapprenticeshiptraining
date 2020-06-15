@@ -22,4 +22,8 @@
     <ProjectReference Include="..\SFA.DAS.FAT.Web\SFA.DAS.FAT.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Features\Home.feature" />
+  </ItemGroup>
+
 </Project>

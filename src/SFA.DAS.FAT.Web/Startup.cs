@@ -45,6 +45,7 @@ namespace SFA.DAS.FAT.Web
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddServiceRegistration();
             services.AddMediatR(typeof(GetCourseRequestHandler).Assembly);
             services.AddMediatRValidation();
             

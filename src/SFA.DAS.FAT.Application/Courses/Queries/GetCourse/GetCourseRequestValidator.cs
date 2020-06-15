@@ -7,7 +7,14 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourse
     {
         public Task<ValidationResult> ValidateAsync(GetCourseRequest item)
         {
-            throw new System.NotImplementedException();
+            var validationResult = new ValidationResult();
+
+            if (item.CourseId < 1)
+            {
+                validationResult.AddError(nameof(item.CourseId));
+            }
+
+            return Task.FromResult(validationResult);
         }
     }
 }

@@ -38,4 +38,9 @@
     <None Remove="Pages\**" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.FAT.Application\SFA.DAS.FAT.Application.csproj" />
+  </ItemGroup>
+
 </Project>

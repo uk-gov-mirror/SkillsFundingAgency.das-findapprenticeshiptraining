@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using NUnit.Framework;
 using SFA.DAS.FAT.Domain.Validation;
@@ -40,6 +41,21 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Validation
             
             //Assert
             Assert.AreEqual("test has not been supplied", actual.ValidationDictionary.First().Value); 
+        }
+
+        [Test]
+        public void Then_The_Errors_Can_Be_Converted_To_Data_Annotations()
+        {
+            //Arrange
+            var expectedErrorMessage = $"The following parameters have failed validation{Environment.NewLine}Test|Test has not been supplied{Environment.NewLine}Test2|Test2 has not been supplied";
+            var actual = new ValidationResult();
+            
+            //Act
+            actual.AddError("Test");
+            actual.AddError("Test2");
+            
+            //Assert
+            Assert.AreEqual(expectedErrorMessage, actual.DataAnnotationResult.ErrorMessage);
         }
     }
 }

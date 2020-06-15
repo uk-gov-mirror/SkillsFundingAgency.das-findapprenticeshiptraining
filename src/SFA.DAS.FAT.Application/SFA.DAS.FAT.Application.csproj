@@ -3,11 +3,14 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp2.2</TargetFramework>
     </PropertyGroup>
-
     <ItemGroup>
-      <Reference Include="MediatR">
-        <HintPath>..\..\..\..\Users\Pete\.nuget\packages\mediatr\6.0.0\lib\netstandard2.0\MediatR.dll</HintPath>
-      </Reference>
+        <PackageReference Include="MediatR" Version="6.0.0" />
+    </ItemGroup>
+    <ItemGroup>
+     <Folder Include="Courses\Queries\GetCourses" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\SFA.DAS.FAT.Domain\SFA.DAS.FAT.Domain.csproj" />
     </ItemGroup>
 
 </Project>

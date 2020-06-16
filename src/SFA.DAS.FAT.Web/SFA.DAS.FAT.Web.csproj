@@ -37,7 +37,17 @@
     <None Remove="Exceptions\**" />
     <None Remove="Pages\**" />
   </ItemGroup>
-
+    <ItemGroup>
+        <Content Update="appsettings.json">
+            <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+        </Content>
+        <Content Update="appsettings.Development.json">
+            <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+        </Content>
+        <Content Update="nlog.config">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.FAT.Application\SFA.DAS.FAT.Application.csproj" />

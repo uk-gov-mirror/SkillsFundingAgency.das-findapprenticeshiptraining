@@ -38,10 +38,5 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             Assert.IsNotNull(actualModel);
         }
 
-        [Test, MoqAutoData]
-        public async Task Then_If_No_Data_Is_Returned_A_Not_Found_Result_Is_Returned()
-        {
-            
-        }
     }
 }

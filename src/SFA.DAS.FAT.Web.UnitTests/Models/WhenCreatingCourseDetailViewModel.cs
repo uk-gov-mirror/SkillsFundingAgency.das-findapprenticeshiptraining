@@ -16,7 +16,9 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             
             //Assert
             Assert.AreEqual(course.Id, actual.Id);
-            Assert.AreEqual($"{course.Title} ({course.Level})", actual.Title);
+            Assert.AreEqual(course.Title, actual.Title);
+            Assert.AreEqual(course.MaximumFunding.ToString(), actual.MaximumFunding);
+            Assert.AreEqual($"{course.Title} ({course.Level})", actual.TitleAndLevel);
             Assert.AreEqual(course.Level, actual.Level);
             Assert.AreEqual(course.Route, actual.Sector);
             Assert.AreEqual(course.IntegratedDegree, actual.IntegratedDegree);

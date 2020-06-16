@@ -12,5 +12,6 @@ namespace SFA.DAS.FAT.Domain.Courses
         public string TypicalJobTitles { get ; set ; }
         public string ExternalCourseUrl { get ; set ; }
         public int TypicalDuration { get ; set ; }
+        public decimal MaximumFunding { get ; set ; }
     }
 }

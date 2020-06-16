@@ -41,6 +41,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SFA.DAS.FAT.Application\SFA.DAS.FAT.Application.csproj" />
+    <ProjectReference Include="..\SFA.DAS.FAT.Infrastructure\SFA.DAS.FAT.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

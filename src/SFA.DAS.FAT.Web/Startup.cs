@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
+using SFA.DAS.FAT.Application.Courses.Queries.GetCourses;
 using SFA.DAS.FAT.Web.AppStart;
 
 namespace SFA.DAS.FAT.Web
@@ -47,6 +48,7 @@ namespace SFA.DAS.FAT.Web
 
             services.AddServiceRegistration();
             services.AddMediatR(typeof(GetCourseRequestHandler).Assembly);
+            services.AddMediatR(typeof(GetCoursesRequestHandler).Assembly);
             services.AddMediatRValidation();
             
             services.AddApplicationInsightsTelemetry(_configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);

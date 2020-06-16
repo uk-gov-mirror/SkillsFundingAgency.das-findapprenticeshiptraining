@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using SFA.DAS.FAT.Domain.Configuration;
@@ -22,6 +23,15 @@ namespace SFA.DAS.FAT.Application.Courses.Services
             var request = new GetCourseApiRequest(_config.ApiBaseUrl, courseId);
 
             var response = await _apiClient.Get<Course>(request);
+
+            return response;
+        }
+
+        public async Task<IEnumerable<Course>> GetCourses()
+        {
+            var request = new GetCoursesApiRequest(_config.ApiBaseUrl);
+
+            var response = await _apiClient.Get<IEnumerable<Course>>(request);
 
             return response;
         }

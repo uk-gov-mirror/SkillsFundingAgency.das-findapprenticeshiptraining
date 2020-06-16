@@ -15,7 +15,7 @@ namespace SFA.DAS.FAT.Web.Controllers
 
         public IActionResult Courses()
         {
-            var courses = _mediator.Send(new GetCoursesQuery());
+            var courses = _mediator.Send(new GetCoursesRequest());
             return View();
         }
     }

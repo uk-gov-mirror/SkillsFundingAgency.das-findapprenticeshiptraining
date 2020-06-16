@@ -18,13 +18,13 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
         public async Task Then_The_Api_Client_Is_Called_With_The_Request(
             int courseId,
             string baseUrl,
-            [Frozen] Mock<IOptions<FindApprenticeshipTrainingConfiguration>> config,
+            [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
             [Frozen] Mock<IApiClient> apiClient,
             CourseService courseService)
         {
             //Arrange
             
-            var courseApiRequest = new GetCourseApiRequest(config.Object.Value.ApiBaseUrl, courseId);
+            var courseApiRequest = new GetCourseApiRequest(config.Object.Value.BaseUrl, courseId);
             
             //Act
             await courseService.GetCourse(courseId);

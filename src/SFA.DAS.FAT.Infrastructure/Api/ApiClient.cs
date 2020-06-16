@@ -11,9 +11,9 @@ namespace SFA.DAS.FAT.Infrastructure.Api
     public class ApiClient : IApiClient
     {
         private readonly HttpClient _httpClient;
-        private readonly FindApprenticeshipTrainingConfiguration _config;
+        private readonly FindApprenticeshipTrainingApi _config;
 
-        public ApiClient (HttpClient httpClient, IOptions<FindApprenticeshipTrainingConfiguration> config)
+        public ApiClient (HttpClient httpClient, IOptions<FindApprenticeshipTrainingApi> config)
         {
             _httpClient = httpClient;
             _config = config.Value;
@@ -22,7 +22,7 @@ namespace SFA.DAS.FAT.Infrastructure.Api
         public async Task<TResponse> Get<TResponse>(IGetApiRequest request) 
         {
             
-            _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key",_config.ApiKey);
+            _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key",_config.Key);
 
             var response = await _httpClient.GetAsync(request.GetUrl).ConfigureAwait(false);
 

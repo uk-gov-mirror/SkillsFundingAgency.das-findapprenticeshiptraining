@@ -10,16 +10,16 @@ namespace SFA.DAS.FAT.Application.Courses.Services
     public class CourseService : ICourseService
     {
         private readonly IApiClient _apiClient;
-        private readonly FindApprenticeshipTrainingConfiguration _config;
+        private readonly FindApprenticeshipTrainingApi _config;
 
-        public CourseService (IApiClient apiClient, IOptions<FindApprenticeshipTrainingConfiguration> config)
+        public CourseService (IApiClient apiClient, IOptions<FindApprenticeshipTrainingApi> config)
         {
             _apiClient = apiClient;
             _config = config.Value;
         }
         public async Task<Course> GetCourse(int courseId)
         {
-            var request = new GetCourseApiRequest(_config.ApiBaseUrl, courseId);
+            var request = new GetCourseApiRequest(_config.BaseUrl, courseId);
 
             var response = await _apiClient.Get<Course>(request);
 

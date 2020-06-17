@@ -31,5 +31,16 @@ namespace SFA.DAS.FAT.Infrastructure.Api
             return JsonConvert.DeserializeObject<TResponse>(json);
         
         }
+
+        public async Task<TResponse> GetAll<TResponse>(IGetAllApiRequest request)
+        {
+            _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _config.ApiKey);
+
+            var response = await _httpClient.GetAsync(request.GetAllUrl).ConfigureAwait(false);
+
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<TResponse>(json);
+        }
     }
 }

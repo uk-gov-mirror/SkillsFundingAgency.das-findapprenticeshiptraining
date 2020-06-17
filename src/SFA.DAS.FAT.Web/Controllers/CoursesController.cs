@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourses;
+using SFA.DAS.FAT.Web.Models;
 
 namespace SFA.DAS.FAT.Web.Controllers
 {
@@ -16,7 +17,9 @@ namespace SFA.DAS.FAT.Web.Controllers
         public IActionResult Courses()
         {
             var courses = _mediator.Send(new GetCoursesRequest());
-            return View();
+
+            var viewModel = new CourseViewModel {};
+            return View(viewModel);
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAT.Application.Courses.Queries.GetCourses;
+using SFA.DAS.FAT.Web.Models;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Web.Infrastructure;
-using SFA.DAS.FAT.Web.Models;
+﻿using System.Threading.Tasks;
 
 namespace SFA.DAS.FAT.Web.Controllers
 {
@@ -19,7 +20,10 @@ namespace SFA.DAS.FAT.Web.Controllers
         [Route("", Name = RouteNames.Training)]
         public IActionResult Courses()
         {
-            return View();
+            var courses = _mediator.Send(new GetCoursesRequest());
+
+            var viewModel = new CourseViewModel {};
+            return View(viewModel);
         }
 
         [Route("{id}", Name = RouteNames.TrainingDetail)]

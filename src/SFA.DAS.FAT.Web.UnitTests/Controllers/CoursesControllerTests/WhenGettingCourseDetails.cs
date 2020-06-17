@@ -34,7 +34,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             Assert.IsNotNull(actual);
             var actualResult = actual as ViewResult;
             Assert.IsNotNull(actualResult);
-            var actualModel = actualResult.Model as CourseDetailViewModel;
+            var actualModel = actualResult.Model as CourseViewModel;
             Assert.IsNotNull(actualModel);
         }
 

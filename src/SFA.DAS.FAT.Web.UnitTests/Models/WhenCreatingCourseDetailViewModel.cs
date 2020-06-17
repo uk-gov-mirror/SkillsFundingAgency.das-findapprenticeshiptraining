@@ -14,7 +14,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         public void Then_The_Model_Is_Mapped_Correctly(Course course)
         {
             //Act
-            var actual = (CourseDetailViewModel) course;
+            var actual = (CourseViewModel) course;
             
             //Assert
             Assert.AreEqual(course.Id, actual.Id);
@@ -38,7 +38,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             course.CoreSkills = null;
             
             //Act
-            var actual = (CourseDetailViewModel) course;
+            var actual = (CourseViewModel) course;
             
             //Assert
             Assert.IsAssignableFrom<List<string>>(actual.CoreSkills);
@@ -52,7 +52,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             course.TypicalJobTitles = null;
             
             //Act
-            var actual = (CourseDetailViewModel) course;
+            var actual = (CourseViewModel) course;
             
             //Assert
             Assert.IsAssignableFrom<List<string>>(actual.TypicalJobTitles);

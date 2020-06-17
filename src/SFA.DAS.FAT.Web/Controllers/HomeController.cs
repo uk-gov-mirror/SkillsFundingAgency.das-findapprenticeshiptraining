@@ -3,10 +3,10 @@ using SFA.DAS.FAT.Web.Infrastructure;
 
 namespace SFA.DAS.FAT.Web.Controllers
 {
-    [Route("Home")]
+    //[Route("Home")]
     public class HomeController : Controller
     {
-        [Route("Index",Name = RouteNames.ServiceStart)]
+        [Route("",Name = RouteNames.ServiceStart)]
         public IActionResult Index()
         {
             return View();

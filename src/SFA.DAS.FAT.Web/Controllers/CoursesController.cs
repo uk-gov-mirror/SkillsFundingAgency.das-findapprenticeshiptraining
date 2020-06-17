@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourses;
 using SFA.DAS.FAT.Web.Models;
@@ -20,9 +22,13 @@ namespace SFA.DAS.FAT.Web.Controllers
         [Route("", Name = RouteNames.Training)]
         public async Task<IActionResult> Courses()
         {
-            var courses = await _mediator.Send(new GetCoursesQuery());
+            var result = await _mediator.Send(new GetCoursesQuery());
 
-            var viewModel = new CourseViewModel {};
+            var viewModel = new CoursesViewModel
+            {
+                Courses = result.Courses.Select(c=>(CourseViewModel)c).ToList()
+            };
+            
             return View(viewModel);
         }
 
@@ -31,7 +37,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         {
             var result = await _mediator.Send(new GetCourseQuery {CourseId = id});
             
-            var viewModel = (CourseDetailViewModel)result.Course;
+            var viewModel = (CourseViewModel)result.Course;
             
             return View(viewModel);
         }

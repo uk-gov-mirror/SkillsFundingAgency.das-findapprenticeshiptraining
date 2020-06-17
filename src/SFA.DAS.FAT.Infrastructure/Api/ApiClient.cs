@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -32,15 +33,15 @@ namespace SFA.DAS.FAT.Infrastructure.Api
         
         }
 
-        public async Task<TResponse> GetAll<TResponse>(IGetAllApiRequest request)
+        public async Task<IEnumerable<TResponse>> GetAll<TResponse>(IGetAllApiRequest request)
         {
-            _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _config.ApiKey);
+            _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _config.Key);
 
             var response = await _httpClient.GetAsync(request.GetAllUrl).ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<TResponse>(json);
+            return JsonConvert.DeserializeObject<IEnumerable<TResponse>>(json);
         }
     }
 }

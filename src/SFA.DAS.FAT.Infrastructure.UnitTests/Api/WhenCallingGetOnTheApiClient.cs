@@ -14,10 +14,11 @@ using NUnit.Framework;
 using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.FAT.Infrastructure.Api;
+using SFA.DAS.FAT.Infrastructure.UnitTests.HttpMessageHandlerMock;
 
 namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
 {
-    public class WhenCallingTheApi
+    public class WhenCallingGetOnTheApiClient
     {
         [Test, AutoData]
         public async Task Then_The_Endpoint_Is_Called_With_Authentication_Header_And_Data_Returned(
@@ -34,7 +35,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
                 Content = new StringContent(JsonConvert.SerializeObject(testObject)),
                 StatusCode = HttpStatusCode.Accepted
             };
-            var httpMessageHandler = SetupMessageHandlerMock(response, getTestRequest.GetUrl, config.Key);
+            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, getTestRequest.GetUrl, config.Key);
             var client = new HttpClient(httpMessageHandler.Object);
             var apiClient = new ApiClient(client, configMock.Object);
 
@@ -59,7 +60,8 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
                 Content = new StringContent(""),
                 StatusCode = HttpStatusCode.BadRequest
             };
-            var httpMessageHandler = SetupMessageHandlerMock(response, getTestRequest.GetUrl, config.Key);
+            
+            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, getTestRequest.GetUrl, config.Key);
             var client = new HttpClient(httpMessageHandler.Object);
             var apiClient = new ApiClient(client, configMock.Object);
             
@@ -78,21 +80,6 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
             public string GetUrl => $"{BaseUrl}/test-url/get";
         }
         
-        private Mock<HttpMessageHandler> SetupMessageHandlerMock(HttpResponseMessage response, string url, string key)
-        {
-            var httpMessageHandler = new Mock<HttpMessageHandler>();
-            httpMessageHandler.Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.Is<HttpRequestMessage>(c =>
-                        c.Method.Equals(HttpMethod.Get)
-                        && c.Headers.Contains("Ocp-Apim-Subscription-Key")
-                        && c.Headers.GetValues("Ocp-Apim-Subscription-Key").First().Equals(key)
-                        && c.RequestUri.AbsoluteUri.Equals(url)),
-                    ItExpr.IsAny<CancellationToken>()
-                )
-                .ReturnsAsync((HttpRequestMessage request, CancellationToken token) => response);
-            return httpMessageHandler;
-        }
+        
     }
 }

@@ -10,8 +10,8 @@ namespace SFA.DAS.FAT.Domain.Courses
         public string IntegratedDegree { get; set; }
         public string CoreSkills { get ; set ; }
         public string TypicalJobTitles { get ; set ; }
-        public string ExternalCourseUrl { get ; set ; }
+        public string StandardPageUrl { get ; set ; }
         public int TypicalDuration { get ; set ; }
-        public decimal MaximumFunding { get ; set ; }
+        public long MaxFunding { get ; set ; }
     }
 }

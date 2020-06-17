@@ -3,9 +3,9 @@ using SFA.DAS.FAT.Domain.Validation;
 
 namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourse
 {
-    public class GetCourseRequestValidator : IValidator<GetCourseRequest>
+    public class GetCourseQueryValidator : IValidator<GetCourseQuery>
     {
-        public Task<ValidationResult> ValidateAsync(GetCourseRequest item)
+        public Task<ValidationResult> ValidateAsync(GetCourseQuery item)
         {
             var validationResult = new ValidationResult();
 

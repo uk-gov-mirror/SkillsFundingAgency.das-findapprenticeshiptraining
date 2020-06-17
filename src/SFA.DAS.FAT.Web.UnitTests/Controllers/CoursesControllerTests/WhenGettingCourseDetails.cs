@@ -23,7 +23,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         {
             //Arrange
             mediator.Setup(x => 
-                    x.Send(It.Is<GetCourseRequest>(c => 
+                    x.Send(It.Is<GetCourseQuery>(c => 
                         c.CourseId.Equals(standardCode)),It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
             

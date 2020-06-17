@@ -7,26 +7,26 @@ using SFA.DAS.FAT.Domain.Validation;
 
 namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourse
 {
-    public class GetCourseRequestHandler : IRequestHandler<GetCourseRequest, GetCourseResult>
+    public class GetCourseQueryHandler : IRequestHandler<GetCourseQuery, GetCourseResult>
     {
         private readonly ICourseService _courseService;
-        private readonly IValidator<GetCourseRequest> _validator;
+        private readonly IValidator<GetCourseQuery> _validator;
 
-        public GetCourseRequestHandler(ICourseService courseService, IValidator<GetCourseRequest> validator)
+        public GetCourseQueryHandler(ICourseService courseService, IValidator<GetCourseQuery> validator)
         {
             _courseService = courseService;
             _validator = validator;
         }
-        public async Task<GetCourseResult> Handle(GetCourseRequest request, CancellationToken cancellationToken)
+        public async Task<GetCourseResult> Handle(GetCourseQuery query, CancellationToken cancellationToken)
         {
-            var validationResult = await _validator.ValidateAsync(request);
+            var validationResult = await _validator.ValidateAsync(query);
 
             if (!validationResult.IsValid())
             {
                 throw new ValidationException(validationResult.DataAnnotationResult,null, null);
             }
 
-            var response = await _courseService.GetCourse(request.CourseId);
+            var response = await _courseService.GetCourse(query.CourseId);
             
             return new GetCourseResult{Course = response};
         }

@@ -6,20 +6,23 @@ using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourses
 {
-    public class GetCoursesRequestHandler : IRequestHandler<GetCoursesRequest, GetCoursesResult>
+    public class GetCoursesQueryHandler : IRequestHandler<GetCoursesQuery, GetCoursesResult>
     {
         private readonly ICourseService _courseService;
 
-        public GetCoursesRequestHandler(ICourseService courseService)
+        public GetCoursesQueryHandler(ICourseService courseService)
         {
             _courseService = courseService;
         }
 
-        public async Task<GetCoursesResult> Handle(GetCoursesRequest request, CancellationToken cancellationToken)
+        public async Task<GetCoursesResult> Handle(GetCoursesQuery query, CancellationToken cancellationToken)
         {
             var response = await _courseService.GetCourses();
 
-            return new GetCoursesResult{Courses = response.ToList()};
+            return new GetCoursesResult
+            {
+                Courses = response.ToList()
+            };
         }
     }
 }

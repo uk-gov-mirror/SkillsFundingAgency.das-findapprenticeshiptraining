@@ -19,17 +19,17 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourse
     {
         [Test, MoqAutoData]
         public void And_Fails_Validation_Then_Throws_ValidationException(
-            GetCourseRequest request,
+            GetCourseQuery request,
             string propertyName,
-            [Frozen] Mock<IValidator<GetCourseRequest>> mockValidator,
+            [Frozen] Mock<IValidator<GetCourseQuery>> mockValidator,
             [Frozen] ValidationResult validationResult,
             [Frozen] Mock<ICourseService> mockService,
-            GetCourseRequestHandler handler)
+            GetCourseQueryHandler handler)
         {
             //Arrange
             validationResult.AddError(propertyName);
             mockValidator
-                .Setup(validator => validator.ValidateAsync(It.IsAny<GetCourseRequest>()))
+                .Setup(validator => validator.ValidateAsync(It.IsAny<GetCourseQuery>()))
                 .ReturnsAsync(validationResult);
 
             //Act
@@ -42,12 +42,12 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourse
 
         [Test, MoqAutoData]
         public async Task Then_If_The_Query_Is_Valid_The_Service_Is_Called_And_The_Data_Returned(
-            GetCourseRequest request,
+            GetCourseQuery request,
             Course courseResponse,
-            [Frozen] Mock<IValidator<GetCourseRequest>> mockValidator,
+            [Frozen] Mock<IValidator<GetCourseQuery>> mockValidator,
             [Frozen] ValidationResult validationResult,
             [Frozen] Mock<ICourseService> mockService,
-            GetCourseRequestHandler handler)
+            GetCourseQueryHandler handler)
         {
             //Arrange
             validationResult.ValidationDictionary.Clear();
@@ -65,12 +65,12 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourse
         
         [Test, MoqAutoData]
         public async Task And_No_Course_Then_Returns_Null(
-            GetCourseRequest request,
+            GetCourseQuery request,
             Course courseResponse,
-            [Frozen] Mock<IValidator<GetCourseRequest>> mockValidator,
+            [Frozen] Mock<IValidator<GetCourseQuery>> mockValidator,
             [Frozen] ValidationResult validationResult,
             [Frozen] Mock<ICourseService> mockService,
-            GetCourseRequestHandler handler)
+            GetCourseQueryHandler handler)
         {
             //Arrange
             validationResult.ValidationDictionary.Clear();

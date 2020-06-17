@@ -18,9 +18,9 @@ namespace SFA.DAS.FAT.Web.Controllers
             _mediator = mediator;
         }
         [Route("", Name = RouteNames.Training)]
-        public IActionResult Courses()
+        public async Task<IActionResult> Courses()
         {
-            var courses = _mediator.Send(new GetCoursesRequest());
+            var courses = await _mediator.Send(new GetCoursesQuery());
 
             var viewModel = new CourseViewModel {};
             return View(viewModel);

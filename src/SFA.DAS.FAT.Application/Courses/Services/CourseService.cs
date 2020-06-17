@@ -31,7 +31,7 @@ namespace SFA.DAS.FAT.Application.Courses.Services
         {
             var request = new GetCoursesApiRequest(_config.BaseUrl);
 
-            var response = await _apiClient.GetAll<IEnumerable<Course>>(request);
+            var response = await _apiClient.GetAll<Course>(request);
 
             return response;
         }

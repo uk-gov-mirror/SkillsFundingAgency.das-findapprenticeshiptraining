@@ -8,7 +8,7 @@ namespace SFA.DAS.FAT.Web.AppStart
     {
         public static void AddMediatRValidation(this IServiceCollection services)
         {
-            services.AddScoped(typeof(IValidator<GetCourseRequest>), typeof(GetCourseRequestValidator));
+            services.AddScoped(typeof(IValidator<GetCourseQuery>), typeof(GetCourseQueryValidator));
         }
     }
 }

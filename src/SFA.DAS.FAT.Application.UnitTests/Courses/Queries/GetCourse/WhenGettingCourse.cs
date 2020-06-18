@@ -43,7 +43,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourse
         [Test, MoqAutoData]
         public async Task Then_If_The_Query_Is_Valid_The_Service_Is_Called_And_The_Data_Returned(
             GetCourseQuery request,
-            Course courseResponse,
+            TrainingCourse courseResponse,
             [Frozen] Mock<IValidator<GetCourseQuery>> mockValidator,
             [Frozen] ValidationResult validationResult,
             [Frozen] Mock<ICourseService> mockService,
@@ -60,7 +60,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourse
             //Assert
             mockService.Verify(x=>x.GetCourse(request.CourseId), Times.Once);
             Assert.IsNotNull(actual);
-            actual.Course.Should().BeEquivalentTo(courseResponse);
+            actual.Course.Should().BeEquivalentTo(courseResponse.Course);
         }
         
         [Test, MoqAutoData]
@@ -75,7 +75,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourse
             //Arrange
             validationResult.ValidationDictionary.Clear();
             mockValidator.Setup(x => x.ValidateAsync(request)).ReturnsAsync(validationResult);
-            mockService.Setup(x => x.GetCourse(request.CourseId)).ReturnsAsync((Course)null);
+            mockService.Setup(x => x.GetCourse(request.CourseId)).ReturnsAsync((TrainingCourse)null);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);

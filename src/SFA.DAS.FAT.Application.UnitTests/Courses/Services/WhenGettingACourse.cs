@@ -30,7 +30,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             await courseService.GetCourse(courseId);
             
             //Assert
-            apiClient.Verify(x=>x.Get<Course>(
+            apiClient.Verify(x=>x.Get<TrainingCourse>(
                 It.Is<GetCourseApiRequest>(request => request.GetUrl.Equals(courseApiRequest.GetUrl))));
         }
     }

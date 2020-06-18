@@ -18,11 +18,11 @@ namespace SFA.DAS.FAT.Application.Courses.Services
             _apiClient = apiClient;
             _config = config.Value;
         }
-        public async Task<Course> GetCourse(int courseId)
+        public async Task<TrainingCourse> GetCourse(int courseId)
         {
             var request = new GetCourseApiRequest(_config.BaseUrl, courseId);
 
-            var response = await _apiClient.Get<Course>(request);
+            var response = await _apiClient.Get<TrainingCourse>(request);
 
             return response;
         }

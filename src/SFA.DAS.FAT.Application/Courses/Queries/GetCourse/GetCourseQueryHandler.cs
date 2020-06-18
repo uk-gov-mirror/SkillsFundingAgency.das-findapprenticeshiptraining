@@ -28,7 +28,7 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourse
 
             var response = await _courseService.GetCourse(query.CourseId);
             
-            return new GetCourseResult{Course = response};
+            return new GetCourseResult{Course = response?.Course};
         }
     }
 }

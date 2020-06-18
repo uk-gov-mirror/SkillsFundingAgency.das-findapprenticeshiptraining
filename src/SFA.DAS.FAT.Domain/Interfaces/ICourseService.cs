@@ -6,7 +6,7 @@ namespace SFA.DAS.FAT.Domain.Interfaces
 {
     public interface ICourseService
     {
-        Task<Course> GetCourse(int courseId);
+        Task<TrainingCourse> GetCourse(int courseId);
         Task<IEnumerable<Course>> GetCourses();
     }
 }

@@ -26,7 +26,7 @@ namespace SFA.DAS.FAT.Web.Models
             {
                 Id = course.Id,
                 Sector = course.Route,
-                CoreSkills = string.IsNullOrEmpty(course.CoreSkills) ? new List<string>() : course.CoreSkills.Split("|").ToList(),
+                CoreSkills = string.IsNullOrEmpty(course.CoreSkillsCount) ? new List<string>() : course.CoreSkillsCount.Split("|").ToList(),
                 Title = course.Title,
                 TitleAndLevel = $"{course.Title} (level {course.Level})",
                 Level = course.Level,

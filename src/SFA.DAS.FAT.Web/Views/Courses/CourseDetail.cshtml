@@ -3,15 +3,13 @@
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-             <span class="govuk-caption-xl">Apprenticeship training course</span>
-                    <h1 class="govuk-heading-xl" >
-                        @Model.TitleAndLevel
-                    </h1>
-            
-                    <!-- overviewOfRole -->
+            <span class="govuk-caption-xl">Apprenticeship training course</span>
+                <h1 class="govuk-heading-xl">
+                    @Model.Title <span class="das-no-wrap">(level @Model.Level)</span>
+                </h1>
+                    
                     <p class="govuk-body-l">@Model.OverviewOfRole</p>
                     
-                    <!-- Summary -->
                     <dl class="govuk-summary-list">
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Level</dt>
@@ -74,12 +72,12 @@
                     </dl>
             
                     <p class="govuk-body-s govuk-!-margin-bottom-6">
-                        Full information on <a class="govuk-link govuk-link--no-visited-state" href="@Model.ExternalCourseUrl" target="_blank" rel="external" >@Model.Title</a> is available from the Institute for Apprenticeships and Technical Education.
+                        Full information on <a class="govuk-link govuk-link--no-visited-state" href="@Model.ExternalCourseUrl" target="_blank" rel="external" >@Model.TitleAndLevel</a> is available from the Institute for Apprenticeships and Technical Education.
                     </p>
             
             
                 <div class="govuk-grid-column-one-third">
-                    &nbsp;
+                    
                 </div>
         </div>
     </div>

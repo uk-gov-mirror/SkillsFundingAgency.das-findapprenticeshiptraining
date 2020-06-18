@@ -25,7 +25,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             Assert.AreEqual(course.Route, actual.Sector);
             Assert.AreEqual(course.IntegratedDegree, actual.IntegratedDegree);
             Assert.AreEqual(course.OverviewOfRole, actual.OverviewOfRole);
-            Assert.AreEqual(course.CoreSkills.Split("|").ToList(), actual.CoreSkills);
+            Assert.AreEqual(course.CoreSkillsCount.Split("|").ToList(), actual.CoreSkills);
             Assert.AreEqual(course.TypicalJobTitles.Split("|").ToList(), actual.TypicalJobTitles);
             Assert.AreEqual(course.StandardPageUrl, actual.ExternalCourseUrl);
             Assert.AreEqual(course.TypicalDuration, actual.TypicalDuration);
@@ -35,7 +35,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         public void Then_If_CoreSkills_Is_Null_An_Empty_List_Is_Returned(Course course)
         {
             //Arrange
-            course.CoreSkills = null;
+            course.CoreSkillsCount = null;
             
             //Act
             var actual = (CourseViewModel) course;

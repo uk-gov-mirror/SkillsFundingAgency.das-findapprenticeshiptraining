@@ -28,13 +28,15 @@
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Maximum funding</dt>
                             <dd class="govuk-summary-list__value">
-                                @Model.MaximumFunding <br><span class="govuk-!-font-size-16 govuk-secondary-colour">Maximum amount government will fund <br>for apprenticeship training.</span>
+                                @Model.MaximumFunding <br/>
+                                <span class="govuk-!-font-size-16 das-text--muted">Maximum amount government will fund <br/>
+                                    for apprenticeship training.</span>
                             </dd>
                         </div>
                         @if (Model.TypicalJobTitles.Any())
                         {
                             <div class="govuk-summary-list__row">
-                                <dt class="govuk-summary-list__key">Typical job title @(Model.TypicalJobTitles.Count > 1 ? "s" :"")</dt>
+                                <dt class="govuk-summary-list__key">Typical job title@(Model.TypicalJobTitles.Count > 1 ? "s" :"")</dt>
                                 <dd class="govuk-summary-list__value">
                                     <ul class="govuk-list @(Model.TypicalJobTitles.Count > 1? "govuk-list--bullet" :"")">
                                         @foreach (var jobTitle in Model.TypicalJobTitles)
@@ -72,7 +74,7 @@
                     </dl>
             
                     <p class="govuk-body-s govuk-!-margin-bottom-6">
-                        Full information on <a class="govuk-link govuk-link--no-visited-state" href="@Model.ExternalCourseUrl" target="_blank" >@Model.Title</a> is available from the Institute for Apprenticeships and Technical Education.
+                        Full information on <a class="govuk-link govuk-link--no-visited-state" href="@Model.ExternalCourseUrl" target="_blank" rel="external" >@Model.Title</a> is available from the Institute for Apprenticeships and Technical Education.
                     </p>
             
             

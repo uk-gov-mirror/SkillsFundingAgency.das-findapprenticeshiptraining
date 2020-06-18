@@ -1,1 +1,41 @@
-﻿
+﻿@model SFA.DAS.FAT.Web.Models.CoursesViewModel
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <h1 class="govuk-heading-xl">
+            Apprenticeship training courses
+        </h1>
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h2 class="govuk-heading-m">@Model.Courses.Count results</h2>
+
+        <p class="govuk-body govuk-!-margin-bottom-6">
+            Sorted by:
+            <span class="govuk-!-font-weight-bold">Name</span>
+        </p>
+
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 ">
+
+
+        <div data-list>
+            @foreach (var course in Model.Courses)
+            {
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+                        <a class="govuk-link govuk-link--no-visited-state">@course.TitleAndLevel)</a>
+                    </h2>
+                    <p class="govuk-body">@course.OverviewOfRole</p>
+                    <ul class="govuk-list">
+                        <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Sector:</span> @course.Sector</li>
+                    </ul>
+                    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-2">
+            }
+        </div>
+    </div>
+
+</div>

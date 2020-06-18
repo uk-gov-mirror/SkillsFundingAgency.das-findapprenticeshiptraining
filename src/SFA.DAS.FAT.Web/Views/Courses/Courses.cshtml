@@ -30,7 +30,9 @@
                     @foreach (var course in Model.Courses)
                     {
                         <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-                            <a class="govuk-link govuk-link--no-visited-state" asp-route-id="@course.Id" asp-route="@RouteNames.TrainingDetail">@course.TitleAndLevel</a>
+                            <a class="govuk-link govuk-link--no-visited-state" asp-route-id="@course.Id" asp-route="@RouteNames.TrainingDetail">
+                                @course.Title <span class="das-no-wrap">(level @course.Level)</span>
+                            </a>
                         </h2>
                         <p class="govuk-body">@course.OverviewOfRole</p>
                         <ul class="govuk-list">

@@ -21,7 +21,7 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourses
 
             return new GetCoursesResult
             {
-                Courses = response.ToList()
+                Courses = response.Courses.ToList()
             };
         }
     }

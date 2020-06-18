@@ -27,11 +27,11 @@ namespace SFA.DAS.FAT.Application.Courses.Services
             return response;
         }
 
-        public async Task<IEnumerable<Course>> GetCourses()
+        public async Task<TrainingCourses> GetCourses()
         {
             var request = new GetCoursesApiRequest(_config.BaseUrl);
 
-            var response = await _apiClient.GetAll<Course>(request);
+            var response = await _apiClient.Get<TrainingCourses>(request);
 
             return response;
         }

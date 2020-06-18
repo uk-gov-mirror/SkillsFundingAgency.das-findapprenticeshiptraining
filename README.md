@@ -14,5 +14,5 @@ This is the replacement for the current Find Apprenticeship Training Service. Th
 ## Local running
 
 You are able to run the website by doing the following:
-Run the console app ```SFA.DAS.FAT.MockServer``` - this will create a mock server on http://localhost:5003
-Start the web solution ```SFA.DAS.FAT.Web```
+* Run the console app ```SFA.DAS.FAT.MockServer``` - this will create a mock server on http://localhost:5003
+* Start the web solution ```SFA.DAS.FAT.Web```

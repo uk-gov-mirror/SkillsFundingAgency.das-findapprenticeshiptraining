@@ -138,11 +138,11 @@
                                 "value": "[parameters('environmentName')]"
                             },
                             {
-                                "name": "ApimBaseUrl",
+                                "name": "FindApprenticeshipTrainingApi:BaseUrl",
                                 "value": "[parameters('apimBaseUrl')]"
                             },
                             {
-                                "name": "ApimSubscriptionKey",
+                                "name": "FindApprenticeshipTrainingApi:Key",
                                 "value": "[parameters('apimSubscriptionKey')]"
                             },
                             {

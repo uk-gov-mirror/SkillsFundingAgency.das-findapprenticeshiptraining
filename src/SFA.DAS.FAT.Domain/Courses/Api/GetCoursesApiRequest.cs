@@ -9,6 +9,6 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
             BaseUrl = baseUrl;
         }
         public string BaseUrl { get; }
-        public string GetUrl => $"{BaseUrl}findapprenticeshiptraining/trainingcourses";
+        public string GetUrl => $"{BaseUrl}/trainingcourses";
     }
 }

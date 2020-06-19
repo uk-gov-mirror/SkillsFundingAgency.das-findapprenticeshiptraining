@@ -5,16 +5,16 @@ using SFA.DAS.FAT.Domain.Courses.Api;
 
 namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
 {
-    public class WhenCreatingTheGetCourseApiRequest
+    public class WhenCreatingTheGetCoursesApiRequest
     {
         [Test, AutoData]
-        public void Then_The_Get_Url_Is_Constructed_Correctly(string baseUrl, int id)
+        public void Then_The_Get_Url_Is_Constructed_Correctly(string baseUrl)
         {
             //Arrange Act
-            var actual = new GetCourseApiRequest(baseUrl, id);
+            var actual = new GetCoursesApiRequest(baseUrl);
             
             //Assert
-            actual.GetUrl.Should().Be($"{baseUrl}/trainingcourses/{id}");
+            actual.GetUrl.Should().Be($"{baseUrl}/trainingcourses");
         }
     }
 }

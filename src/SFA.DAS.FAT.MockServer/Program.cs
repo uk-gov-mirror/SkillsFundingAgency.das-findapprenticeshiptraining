@@ -21,7 +21,7 @@ namespace SFA.DAS.FAT.MockServer
             
             var server = StandAloneApp.Start(settings);
             
-            server.Given(Request.Create().WithPath("/findapprenticeshiptraining/trainingcourses")
+            server.Given(Request.Create().WithPath("/trainingcourses")
                     .UsingGet()
             ).RespondWith(
                     Response.Create()
@@ -29,7 +29,7 @@ namespace SFA.DAS.FAT.MockServer
                         .WithHeader("Content-Type", "application/json")
                         .WithBodyFromFile("courses.json"));
 
-            server.Given(Request.Create().WithPath("/findapprenticeshiptraining/trainingcourses/*")
+            server.Given(Request.Create().WithPath("/trainingcourses/*")
                 .UsingGet()
             ).RespondWith(
                 Response.Create()

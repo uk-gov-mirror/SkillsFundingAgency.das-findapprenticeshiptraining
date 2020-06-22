@@ -1,4 +1,6 @@
-﻿
+﻿@using Microsoft.AspNetCore.Routing
+@using SFA.DAS.FAT.Web.Infrastructure
+
 <!DOCTYPE html>
 <html lang="en" class="govuk-template">
     <head>
@@ -60,11 +62,21 @@
                     This is a new service – your <a class="govuk-link" href="https://www.smartsurvey.co.uk/s/apprenticeshipservicefeedback/">feedback</a> will help us to improve it.
                 </span>
             </p>
+            
         </div>
-    
-        <div class="govuk-width-container">
-            @RenderBody()
-        </div>
+    <div class="govuk-width-container">
+        @if (!Context.GetRouteData().Values["Controller"].Equals("Home") && !Context.GetRouteData().Values["Action"].Equals("Index"))
+        {
+            <br/>
+            <ol class="govuk-breadcrumbs__list">
+                <li class="govuk-breadcrumbs__list-item">
+                    <a class="govuk-breadcrumbs__link" asp-route="@RouteNames.ServiceStart">Home: Find apprenticeship training</a>
+                </li>
+            </ol>
+        }
+        
+        @RenderBody()
+    </div>
 
         <footer class="govuk-footer " role="contentinfo">
           <div class="govuk-width-container ">

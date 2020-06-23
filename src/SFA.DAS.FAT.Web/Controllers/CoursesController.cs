@@ -7,6 +7,7 @@ using SFA.DAS.FAT.Web.Models;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Web.Infrastructure;
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace SFA.DAS.FAT.Web.Controllers
 {
@@ -20,9 +21,9 @@ namespace SFA.DAS.FAT.Web.Controllers
             _mediator = mediator;
         }
         [Route("", Name = RouteNames.Training)]
-        public async Task<IActionResult> Courses()
+        public async Task<IActionResult> Courses(CoursesRouteModel routeModel)
         {
-            var result = await _mediator.Send(new GetCoursesQuery());
+            var result = await _mediator.Send(new GetCoursesQuery{Keyword = routeModel.Keyword});
 
             var viewModel = new CoursesViewModel
             {

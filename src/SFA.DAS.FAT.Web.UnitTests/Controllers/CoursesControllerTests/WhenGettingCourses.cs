@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -16,6 +17,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
     {
         [Test, MoqAutoData]
         public async Task Then_The_Query_Is_Sent_And_Data_Retrieved_And_View_Shown(
+            CoursesRouteModel routeModel,
             GetCoursesResult response,
             [Frozen] Mock<IMediator> mediator,
             CoursesController controller)
@@ -26,7 +28,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
             
             //Act
-            var actual = await controller.Courses();
+            var actual = await controller.Courses(routeModel);
             
             //Assert
             Assert.IsNotNull(actual);
@@ -34,6 +36,26 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             Assert.IsNotNull(actualResult);
             var actualModel = actualResult.Model as CoursesViewModel;
             Assert.IsNotNull(actualModel);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_The_Keyword_Is_Added_To_The_Query(
+            CoursesRouteModel routeModel,
+            GetCoursesResult response,
+            [Frozen] Mock<IMediator> mediator)
+        {
+            //Arrange
+            var controller = new CoursesController(mediator.Object);
+            mediator.Setup(x => x.Send(It.IsAny<GetCoursesQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(response);
+
+            //Act
+            var actual = await controller.Courses(routeModel);
+
+            //Assert
+            Assert.IsNotNull(actual);
+            mediator.Verify(
+                x => x.Send(It.Is<GetCoursesQuery>(query => query.Keyword == routeModel.Keyword), It.IsAny<CancellationToken>()),
+                Times.Once);
         }
     }
 }

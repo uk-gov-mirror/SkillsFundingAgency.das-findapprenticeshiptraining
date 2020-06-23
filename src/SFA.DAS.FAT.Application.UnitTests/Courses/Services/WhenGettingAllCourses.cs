@@ -1,3 +1,4 @@
+using System.Configuration.Internal;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
 using Microsoft.Extensions.Options;
@@ -16,22 +17,39 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
     {
         [Test, MoqAutoData]
         public async Task Then_The_Api_Client_Is_Called_With_The_Request(
-            int courseId,
-            string baseUrl,
             [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
             [Frozen] Mock<IApiClient> apiClient,
             CourseService courseService)
         {
             //Arrange
             
-            var courseApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl);
+            var courseApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, null);
             
             //Act
-            await courseService.GetCourses();
+            await courseService.GetCourses(null);
             
             //Assert
             apiClient.Verify(x=>x.Get<TrainingCourses>(
                 It.Is<GetCoursesApiRequest>(request => request.GetUrl.Equals(courseApiRequest.GetUrl))));
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_The_Keyword_Is_Added_To_The_Request(
+            string keyword,
+            [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
+            [Frozen] Mock<IApiClient> apiClient,
+            CourseService courseService)
+        {
+            //Arrange
+            var coursesApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, keyword);
+
+            //Act
+            await courseService.GetCourses(keyword);
+
+            //Assert
+            apiClient.Verify(x =>
+                x.Get<TrainingCourses>(It.Is<GetCoursesApiRequest>(request =>
+                    request.Keyword.Equals(coursesApiRequest.Keyword))));
         }
     }
 }

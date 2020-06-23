@@ -19,6 +19,8 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.HttpMessageHandlerMock
                         c.Method.Equals(HttpMethod.Get)
                         && c.Headers.Contains("Ocp-Apim-Subscription-Key")
                         && c.Headers.GetValues("Ocp-Apim-Subscription-Key").First().Equals(key)
+                        && c.Headers.Contains("X-Version")
+                        && c.Headers.GetValues("X-Version").First().Equals("1")
                         && c.RequestUri.AbsoluteUri.Equals(url)),
                     ItExpr.IsAny<CancellationToken>()
                 )

@@ -22,6 +22,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
             GetCoursesQueryHandler handler)
         {
             //Arrange
+            request.Keyword = null;
             mockService.Setup(x => x.GetCourses(null)).ReturnsAsync(courseResponse);
 
             //Act

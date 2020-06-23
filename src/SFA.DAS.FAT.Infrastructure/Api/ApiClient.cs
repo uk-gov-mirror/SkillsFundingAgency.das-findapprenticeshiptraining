@@ -23,7 +23,7 @@ namespace SFA.DAS.FAT.Infrastructure.Api
         public async Task<TResponse> Get<TResponse>(IGetApiRequest request) 
         {
             
-            _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key",_config.Key);
+            AddHeaders();
 
             var response = await _httpClient.GetAsync(request.GetUrl).ConfigureAwait(false);
 
@@ -35,13 +35,19 @@ namespace SFA.DAS.FAT.Infrastructure.Api
 
         public async Task<IEnumerable<TResponse>> GetAll<TResponse>(IGetAllApiRequest request)
         {
-            _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _config.Key);
+            AddHeaders();
 
             var response = await _httpClient.GetAsync(request.GetAllUrl).ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             return JsonConvert.DeserializeObject<IEnumerable<TResponse>>(json);
+        }
+
+        private void AddHeaders()
+        {
+            _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _config.Key);
+            _httpClient.DefaultRequestHeaders.Add("X-Version", "1");
         }
     }
 }

@@ -10,7 +10,7 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
             Keyword = keyword;
         }
         public string BaseUrl { get; }
-        public string GetUrl => $"{BaseUrl}findapprenticeshiptraining/trainingcourses";
+        public string GetUrl => $"{BaseUrl}/trainingcourses";
         public string Keyword { get; set; }
     }
 }

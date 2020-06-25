@@ -14,7 +14,7 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
             var actual = new GetCoursesApiRequest(baseUrl, keyword);
             
             //Assert
-            actual.GetUrl.Should().Be($"{baseUrl}/trainingcourses");
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}");
         }
     }
 }

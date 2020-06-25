@@ -7,6 +7,7 @@ namespace SFA.DAS.FAT.Web.Models
     public class CoursesViewModel
     {
         public List<CourseViewModel> Courses { get; set; }
+        public string Keyword { get; set; }
     }
     
 }

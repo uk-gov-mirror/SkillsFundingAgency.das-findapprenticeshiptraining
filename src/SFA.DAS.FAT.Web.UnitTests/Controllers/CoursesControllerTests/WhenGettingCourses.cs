@@ -25,18 +25,16 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         {
             //Arrange
             mediator.Setup(x => 
-                    x.Send(It.IsAny<GetCoursesQuery>(),It.IsAny<CancellationToken>()))
+                    x.Send(It.Is<GetCoursesQuery>(c => c.Keyword.Equals(routeModel.Keyword)),It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
             
             //Act
             var actual = await controller.Courses(routeModel);
             var actualResult = actual as ViewResult;
-            var actualModel = actualResult.Model as CoursesViewModel;
 
             //Assert
             Assert.IsNotNull(actual);
             Assert.IsNotNull(actualResult);
-            Assert.IsNotNull(actualModel);
         }
 
         [Test, MoqAutoData]

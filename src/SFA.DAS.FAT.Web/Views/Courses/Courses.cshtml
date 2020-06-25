@@ -83,10 +83,25 @@
                 <h2 class="govuk-heading-m">@Model.Courses.Count results</h2>
                 @if (Model.Courses.Count > 0)
                 {
-                    <p class="govuk-body govuk-!-margin-bottom-6">
-                        Sorted by:
-                        <span class="govuk-!-font-weight-bold">Name</span>
-                    </p>
+                    
+                    if (!string.IsNullOrEmpty(Model.Keyword))
+                    {
+                        <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
+        
+                            <span class="govuk-!-font-weight-bold">Relevance</span>, 
+                            <a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.Training">Name</a>
+        
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="govuk-body govuk-!-margin-bottom-6">
+                         Sorted by:
+                        <span class="govuk-!-font-weight-bold">Name</span> 
+                        </p>
+                    }
+                        
+                    
 
                     <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 ">
 

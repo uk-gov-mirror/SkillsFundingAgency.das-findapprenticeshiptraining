@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
+using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +40,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         }
 
         [Test, MoqAutoData]
-        public async Task Then_The_Keyword_Is_Added_To_The_Query(
+        public async Task Then_The_Keyword_Is_Added_To_The_Query_And_Returned_To_The_View(
             CoursesRouteModel routeModel,
             GetCoursesResult response,
             [Frozen] Mock<IMediator> mediator)
@@ -53,6 +54,11 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
 
             //Assert
             Assert.IsNotNull(actual);
+            var actualResult = actual as ViewResult;
+            Assert.IsNotNull(actualResult);
+            var actualModel = actualResult.Model as CoursesViewModel;
+            Assert.IsNotNull(actualModel);
+            actualModel.Keyword.Should().Be(routeModel.Keyword);
             mediator.Verify(
                 x => x.Send(It.Is<GetCoursesQuery>(query => query.Keyword == routeModel.Keyword), It.IsAny<CancellationToken>()),
                 Times.Once);

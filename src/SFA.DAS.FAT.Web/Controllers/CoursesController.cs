@@ -27,7 +27,8 @@ namespace SFA.DAS.FAT.Web.Controllers
 
             var viewModel = new CoursesViewModel
             {
-                Courses = result.Courses.Select(c=>(CourseViewModel)c).ToList()
+                Courses = result.Courses.Select(c=>(CourseViewModel)c).ToList(),
+                Keyword = routeModel.Keyword
             };
             
             return View(viewModel);

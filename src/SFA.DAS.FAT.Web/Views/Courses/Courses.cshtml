@@ -12,24 +12,70 @@
 
             </div>
         </div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
 
-        <div class="fat-filter__options">
+        <div class="fat-filter">
 
-            <!-- Search box -->
-            <form action="courses" method="GET">
-
-                <button type="submit" class="govuk-button fat-filter__submit" id="filters-submit">Apply filters</button>
-
-                <div class="govuk-form-group" data-list-search-filter>
-                    <label for="search-training" class="govuk-label">
-                        <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Keywords</span>
-                    </label>
-                    <input type="search" id="search-training" name="keyword" title="Search" class="govuk-input search-input" type="text" value="@Model.Keyword">
+            <div class="fat-filter__header">
+                <div class="fat-filter__header-title">
+                    <h2 class="govuk-heading-m">Filter</h2>
                 </div>
-                <p class="govuk-body"><a class="govuk-link" asp-route="@RouteNames.Training">Clear search and filters</a></p>
-            </form>
+                <div class="fat-filter__header-action">
+                </div>
+            </div>
+
+            <div class="fat-filter__content">
+
+                @if (!string.IsNullOrEmpty(Model.Keyword))
+                {
+                    <div class="fat-filter__selected">
+                        <div class="fat-filter__selected-heading">
+                            <div class="fat-filter__heading-title">
+                                <h2 class="govuk-heading-m">Selected filters</h2>
+                            </div>
+                            <div class="fat-filter__heading-action">
+                                <p><a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.Training">Clear</a></p>
+                            </div>
+                        </div>
+          
+                        <h3 class="govuk-heading-s govuk-!-margin-bottom-0">@Model.Keyword</h3> 
+                        <ul class="fat-filter-tags"> 
+                             <li><a class="fat-filter__tag" asp-route="@RouteNames.Training"><span class="govuk-visually-hidden">Clear this filter</span> @Model.Keyword</a></li> 
+                        </ul> 
+                    </div>
+                
+                }
+                
+                </div>
+                <div class="fat-filter__options">
+
+                    <!-- Search box -->
+                    <form asp-route="@RouteNames.Training" method="GET" >
+
+                        <button type="submit" class="govuk-button fat-filter__submit" id="filters-submit">Apply filters</button>
+
+                        
+                        <div class="govuk-form-group" data-list-search-filter >
+                            <label for="search-training" class="govuk-label" >
+                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Keywords</span>
+                            </label>
+                            <input asp-for="Keyword" type="search" title="Search" class="govuk-input search-input" >
+                        </div>
+                        
+                        
+
+                    </form>
+
+                </div>
+
+            </div>
 
         </div>
+        
+
+    </div>
+        
 
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">

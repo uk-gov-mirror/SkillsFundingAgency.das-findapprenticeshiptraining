@@ -149,5 +149,69 @@
       "coreSkillsCount": "Work safely in a laboratory, maintaining excellent housekeeping whilst following appropriate safety, environment and risk management systems.|Follow quality procedures to meet the requirements of quality standards relevant to the workplace.|Prepare for laboratory tasks using the appropriate scientific techniques, procedures and methods|Perform laboratory tasks following specified methodologies, such as Standard Operating Procedures.|Use of specified instrumentation and laboratory equipment, including calibration where required.|Produce reliable, accurate data and keep accurate records of laboratory work undertaken and results.|Analyse, interpret and evaluate data and identify results requiring further investigation seeking advice of senior colleagues as appropriate.|Communicate scientific information appropriately, including the use of Laboratory Information Management systems, either digital or paper based.|Apply scientific techniques for data presentation. e.g. statistics|Recognise problems and apply appropriate scientific methods to identify causes and achieve solutions.|Participate in continuous business performance improvement.",
       "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/laboratory-technician/",
       "integratedDegree": ""
-    }]
+    }],
+  "total": 14,
+  "totalFiltered": 10,
+  "sectors": [
+    {
+      "route": "Engineering and manufacturing",
+      "id": "da1cafdb-a7eb-40cb-b4d5-00f6c7211616"
+    },
+    {
+      "route": "Agriculture, environmental and animal care",
+      "id": "8349a703-1bc4-4d10-a562-153165f9d8d8"
+    },
+    {
+      "route": "Health and science",
+      "id": "a582c8c6-9d45-468c-b6e2-174dcf0a2373"
+    },
+    {
+      "route": "Legal, finance and accounting",
+      "id": "de1c9627-0749-4592-a4b7-2e3aa24deb1c"
+    },
+    {
+      "route": "Creative and design",
+      "id": "5854a164-8899-4050-8eed-6ab917adc53f"
+    },
+    {
+      "route": "Business and administration",
+      "id": "7328d397-954e-4d86-9221-7f64b05a2542"
+    },
+    {
+      "route": "Transport and logistics",
+      "id": "f40f1740-754b-4ea2-8a0a-84d817db0943"
+    },
+    {
+      "route": "Digital",
+      "id": "dc1a5a86-0734-4f53-a249-ab5d0c2b7d4e"
+    },
+    {
+      "route": "Construction",
+      "id": "e861a589-e04d-45aa-9eed-afd1c91f0337"
+    },
+    {
+      "route": "Catering and hospitality",
+      "id": "0f036d42-7e36-4e37-a583-ba2d74176cbf"
+    },
+    {
+      "route": "Sales, marketing and procurement",
+      "id": "a9814089-9c6d-49b9-a657-c61da488229c"
+    },
+    {
+      "route": "Hair and beauty",
+      "id": "7a79ec66-f365-4bb1-ab70-d7eee6fb6edf"
+    },
+    {
+      "route": "Education and childcare",
+      "id": "534e846e-c15f-4352-99c9-e0bcaea5087e"
+    },
+    {
+      "route": "Protective services",
+      "id": "d41342e8-f4e5-4363-bb10-ec3857952c55"
+    },
+    {
+      "route": "Care services",
+      "id": "a04f54c3-800b-4c66-9b04-ef8559909f23"
+    }
+  ]
 }

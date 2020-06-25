@@ -30,12 +30,12 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             
             //Act
             var actual = await controller.Courses(routeModel);
-            
+            var actualResult = actual as ViewResult;
+            var actualModel = actualResult.Model as CoursesViewModel;
+
             //Assert
             Assert.IsNotNull(actual);
-            var actualResult = actual as ViewResult;
             Assert.IsNotNull(actualResult);
-            var actualModel = actualResult.Model as CoursesViewModel;
             Assert.IsNotNull(actualModel);
         }
 

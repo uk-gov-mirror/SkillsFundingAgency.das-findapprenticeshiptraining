@@ -28,6 +28,9 @@ namespace SFA.DAS.FAT.Web.Controllers
             var viewModel = new CoursesViewModel
             {
                 Courses = result.Courses.Select(c=>(CourseViewModel)c).ToList(),
+                Sectors = result.Sectors.Select(s => (SectorViewModel)s).ToList(),
+                Total = result.Total,
+                TotalFiltered = result.TotalFiltered,
                 Keyword = routeModel.Keyword
             };
             

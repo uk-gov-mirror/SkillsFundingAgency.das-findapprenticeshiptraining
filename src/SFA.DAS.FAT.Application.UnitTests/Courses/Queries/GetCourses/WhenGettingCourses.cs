@@ -32,6 +32,9 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
             mockService.Verify(x=>x.GetCourses(null), Times.Once);
             Assert.IsNotNull(actual);
             actual.Courses.Should().BeEquivalentTo(courseResponse.Courses);
+            actual.Sectors.Should().BeEquivalentTo(courseResponse.Sectors);
+            actual.TotalFiltered.Should().Be(courseResponse.TotalFiltered);
+            actual.Total.Should().Be(courseResponse.Total);
         }
 
         [Test, MoqAutoData]

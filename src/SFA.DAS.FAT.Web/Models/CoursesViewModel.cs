@@ -11,6 +11,14 @@ namespace SFA.DAS.FAT.Web.Models
         public int Total { get ; set ; }
         public int TotalFiltered { get ; set ; }
         public List<SectorViewModel> Sectors { get ; set ; }
+        public string TotalMessage => GetTotalMessage();
+
+        private string GetTotalMessage()
+        {
+            var totalToUse = string.IsNullOrEmpty(Keyword) ? Total : TotalFiltered;
+
+            return $"{totalToUse} result" + (totalToUse!=1 ? "s": "");
+        }
     }
     
 }

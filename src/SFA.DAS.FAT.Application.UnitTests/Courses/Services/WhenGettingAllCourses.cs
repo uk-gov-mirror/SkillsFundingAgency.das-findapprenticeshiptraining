@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Configuration.Internal;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
@@ -26,7 +28,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             var courseApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, null);
             
             //Act
-            await courseService.GetCourses(null);
+            await courseService.GetCourses(null, null);
             
             //Assert
             apiClient.Verify(x=>x.Get<TrainingCourses>(
@@ -34,17 +36,18 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
         }
 
         [Test, MoqAutoData]
-        public async Task Then_The_Keyword_Is_Added_To_The_Request(
+        public async Task Then_The_Keyword_And_RouteIds_Are_Added_To_The_Request(
             string keyword,
+            List<Guid> routeIds,
             [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
             [Frozen] Mock<IApiClient> apiClient,
             CourseService courseService)
         {
             //Arrange
-            var coursesApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, keyword);
+            var coursesApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, keyword, routeIds);
 
             //Act
-            await courseService.GetCourses(keyword);
+            await courseService.GetCourses(keyword, routeIds);
 
             //Assert
             apiClient.Verify(x =>

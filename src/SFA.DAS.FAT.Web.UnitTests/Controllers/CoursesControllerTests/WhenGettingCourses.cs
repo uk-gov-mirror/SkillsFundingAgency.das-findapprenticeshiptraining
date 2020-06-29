@@ -65,6 +65,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             actualModel.Courses.Should().NotBeEmpty();
             actualModel.Sectors.Should().NotBeEmpty();
             actualModel.Keyword.Should().Be(request.Keyword);
+            actualModel.SelectedSectors.Should().BeEquivalentTo(request.Sectors);
             actualModel.Total.Should().Be(response.Total);
             actualModel.TotalFiltered.Should().Be(response.TotalFiltered);
         }

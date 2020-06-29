@@ -35,7 +35,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                 Sectors = result.Sectors.Select(sector => new SectorViewModel(sector, request.Sectors)).ToList(),
                 Total = result.Total,
                 TotalFiltered = result.TotalFiltered,
-                Keyword = request.Keyword
+                Keyword = request.Keyword,
+                SelectedSectors = request.Sectors
             };
             
             return View(viewModel);

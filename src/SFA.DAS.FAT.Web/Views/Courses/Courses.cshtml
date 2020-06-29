@@ -1,4 +1,5 @@
-﻿@using SFA.DAS.FAT.Web.Infrastructure
+﻿@using Microsoft.EntityFrameworkCore
+@using SFA.DAS.FAT.Web.Infrastructure
 @model SFA.DAS.FAT.Web.Models.CoursesViewModel
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
 <div class="govuk-grid-row">
@@ -27,7 +28,7 @@
 
             <div class="fat-filter__content">
 
-                @if (!string.IsNullOrEmpty(Model.Keyword))
+                @if (Model.ClearSectorLinks.Any() || !string.IsNullOrEmpty(Model.Keyword))
                 {
                     <div class="fat-filter__selected">
                         <div class="fat-filter__selected-heading">
@@ -38,11 +39,25 @@
                                 <p><a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.Training">Clear</a></p>
                             </div>
                         </div>
-          
-                        <h3 class="govuk-heading-s govuk-!-margin-bottom-0">@Model.Keyword</h3> 
-                        <ul class="fat-filter-tags"> 
-                             <li><a class="fat-filter__tag" asp-route="@RouteNames.Training"><span class="govuk-visually-hidden">Clear this filter</span> @Model.Keyword</a></li> 
-                        </ul> 
+                      @if (!string.IsNullOrEmpty(Model.Keyword))
+                      {
+                          <h3 class="govuk-heading-s govuk-!-margin-bottom-0">Keywords</h3>
+                          <ul class="fat-filter-tags">
+                              <li><a class="fat-filter__tag" asp-querystring="@Model.ClearKeywordLink"><span class="govuk-visually-hidden">Clear this filter</span> @Model.Keyword</a></li>
+                          </ul>
+                      }
+                        
+                        @if (Model.ClearSectorLinks.Any())
+                        {
+                            <h3 class="govuk-heading-s govuk-!-margin-bottom-0">Sector</h3>
+                            <ul class="fat-filter-tags">
+                                @foreach (var filterLink in Model.ClearSectorLinks)
+                                {
+                                    <li><a class="fat-filter__tag" asp-querystring="@filterLink.Value"><span class="govuk-visually-hidden">Clear this filter</span> @filterLink.Key</a></li>    
+                                }
+                            </ul>    
+                        }
+                         
                     </div>
                 
                 }

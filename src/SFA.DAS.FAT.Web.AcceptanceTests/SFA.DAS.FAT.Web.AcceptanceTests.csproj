@@ -23,7 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Features\Home.feature" />
+    <SpecFlowFeatureFiles Update="Features\Home.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Home.feature.cs</LastGenOutput>
+    </SpecFlowFeatureFiles>
   </ItemGroup>
 
 </Project>

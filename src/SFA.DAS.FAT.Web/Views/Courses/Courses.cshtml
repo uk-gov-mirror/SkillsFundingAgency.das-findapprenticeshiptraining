@@ -1,90 +1,51 @@
 ﻿@using Microsoft.EntityFrameworkCore
 @using SFA.DAS.FAT.Web.Infrastructure
 @model SFA.DAS.FAT.Web.Models.CoursesViewModel
-<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-full">
 
-                <h1 class="govuk-heading-xl">
-                    Apprenticeship training courses
-                </h1>
-
-            </div>
-        </div>
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-one-third">
-
-        <div class="fat-filter">
-
-            <div class="fat-filter__header">
-                <div class="fat-filter__header-title">
-                    <h2 class="govuk-heading-m">Filter</h2>
+<main class="govuk-main-wrapper" id="main-content" role="main">
+    <h1 class="govuk-heading-xl">Apprenticeship training courses</h1>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-third">
+            <div class="das-filter">
+                <div class="das-filter__header">
+                    <h2 class="das-filter__heading">Filter</h2>
                 </div>
-                <div class="fat-filter__header-action">
-                </div>
-            </div>
-
-            <div class="fat-filter__content">
-
                 @if (Model.ClearSectorLinks.Any() || !string.IsNullOrEmpty(Model.Keyword))
                 {
-                    <div class="fat-filter__selected">
-                        <div class="fat-filter__selected-heading">
-                            <div class="fat-filter__heading-title">
-                                <h2 class="govuk-heading-m">Selected filters</h2>
-                            </div>
-                            <div class="fat-filter__heading-action">
-                                <p><a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.Training">Clear</a></p>
-                            </div>
+                    <div class="das-filter__selected-filters">
+                        <div class="das-filter__selected-header">
+                            <h3 class="das-filter__selected-heading">Selected filters</h3>
+                            <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.Training">Clear <span class="govuk-visually-hidden">the selected filters</span></a>
                         </div>
-                      @if (!string.IsNullOrEmpty(Model.Keyword))
-                      {
-                          <h3 class="govuk-heading-s govuk-!-margin-bottom-0">Keywords</h3>
-                          <ul class="fat-filter-tags">
-                              <li><a class="fat-filter__tag" asp-querystring="@Model.ClearKeywordLink"><span class="govuk-visually-hidden">Clear this filter</span> @Model.Keyword</a></li>
-                          </ul>
-                      }
-                        
+                        @if (!string.IsNullOrEmpty(Model.Keyword))
+                        {
+                            <h4 class="das-filter__selected-sub-heading">Keywords</h4>
+                            <a  asp-querystring="@Model.ClearKeywordLink" title="Clear this filter '@Model.Keyword'" class="das-filter__tag">&lsquo;@Model.Keyword&rsquo;</a>    
+                        }   
                         @if (Model.ClearSectorLinks.Any())
                         {
-                            <h3 class="govuk-heading-s govuk-!-margin-bottom-0">Sector</h3>
-                            <ul class="fat-filter-tags">
-                                @foreach (var filterLink in Model.ClearSectorLinks)
-                                {
-                                    <li><a class="fat-filter__tag" asp-querystring="@filterLink.Value"><span class="govuk-visually-hidden">Clear this filter</span> @filterLink.Key</a></li>    
-                                }
-                            </ul>    
+                            <h4 class="das-filter__selected-sub-heading">Sector</h4>
+                            @foreach (var filterLink in Model.ClearSectorLinks)
+                            {
+                                <a class="das-filter__tag" asp-querystring="@filterLink.Value" title="Clear this sector filter @filterLink.Key">@filterLink.Key</a>
+                            }
                         }
-                         
                     </div>
                 
                 }
-                
-                </div>
-                <div class="fat-filter__options">
-
-                    <!-- Search box -->
+                <div class="das-filter__body">
                     <form asp-route="@RouteNames.Training" method="GET" >
-
-                        <button type="submit" class="govuk-button fat-filter__submit" id="filters-submit">Apply filters</button>
-
-                        
-                        <div class="govuk-form-group" data-list-search-filter >
-                            <label for="search-training" class="govuk-label" >
-                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Keywords</span>
-                            </label>
-                            <input asp-for="Keyword" type="search" title="Search" class="govuk-input search-input" >
+                        <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
+                        <div class="govuk-form-group">
+                            <label for="Keyword" class="govuk-label das-filter__search-label">Keywords</label>
+                            <input asp-for="Keyword" type="search" title="Search" class="govuk-input">
                         </div>
-                        
                         <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                                     Sector
                                 </legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    
+                                <div class="govuk-checkboxes govuk-checkboxes--small">                           
                                     @foreach (var sector in Model.Sectors)
                                     {
                                         <div class="govuk-checkboxes__item">
@@ -93,28 +54,16 @@
                                                 @sector.Route
                                             </label>
                                         </div>
-                                    }
-                                    
+                                    } 
                                 </div>
                             </fieldset>
                         </div>
-
                     </form>
-
                 </div>
-
             </div>
-
         </div>
-        
-
-    </div>
-        
-
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-full">
-
-                <h2 class="govuk-heading-m">@Model.TotalMessage</h2>
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-m">@Model.TotalMessage</h2>
                 @if (Model.Courses.Count > 0)
                 {
                     
@@ -162,8 +111,6 @@
                         No apprenticeship training courses for the selected filters.
                     </p>
                 }
-            </div>
         </div>
     </div>
-</div>
 </main>

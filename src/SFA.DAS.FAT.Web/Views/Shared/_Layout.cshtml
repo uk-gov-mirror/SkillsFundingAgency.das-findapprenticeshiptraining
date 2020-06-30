@@ -67,12 +67,13 @@
     <div class="govuk-width-container">
         @if (!Context.GetRouteData().Values["Controller"].Equals("Home") && !Context.GetRouteData().Values["Action"].Equals("Index"))
         {
-            <br/>
-            <ol class="govuk-breadcrumbs__list">
-                <li class="govuk-breadcrumbs__list-item">
-                    <a class="govuk-breadcrumbs__link" asp-route="@RouteNames.ServiceStart">Home: Find apprenticeship training</a>
-                </li>
-            </ol>
+            <div class="govuk-breadcrumbs">
+                <ol class="govuk-breadcrumbs__list">
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" asp-route="@RouteNames.ServiceStart">Home: Find apprenticeship training</a>
+                    </li>
+                </ol>
+            </div>
         }
         
         @RenderBody()

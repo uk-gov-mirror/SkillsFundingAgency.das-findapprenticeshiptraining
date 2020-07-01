@@ -30,7 +30,7 @@ namespace SFA.DAS.FAT.Application.Courses.Services
 
         public async Task<TrainingCourses> GetCourses(string keyword, List<Guid> requestRouteIds)
         {
-            var request = new GetCoursesApiRequest(_config.BaseUrl, keyword);
+            var request = new GetCoursesApiRequest(_config.BaseUrl, keyword, requestRouteIds);
 
             var response = await _apiClient.Get<TrainingCourses>(request);
 

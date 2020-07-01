@@ -52,7 +52,8 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             //Assert
             apiClient.Verify(x =>
                 x.Get<TrainingCourses>(It.Is<GetCoursesApiRequest>(request =>
-                    request.Keyword.Equals(coursesApiRequest.Keyword))));
+                    request.Keyword.Equals(coursesApiRequest.Keyword)
+                    && request.Sectors.Equals(coursesApiRequest.Sectors))));
         }
     }
 }

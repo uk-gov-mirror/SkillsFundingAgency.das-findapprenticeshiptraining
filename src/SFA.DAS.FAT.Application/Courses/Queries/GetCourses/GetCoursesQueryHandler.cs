@@ -22,7 +22,6 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourses
             return new GetCoursesResult
             {
                 Courses = response.Courses.ToList(),
-                Sectors = response.Sectors.ToList(),
                 Total = response.Total,
                 TotalFiltered = response.TotalFiltered
             };

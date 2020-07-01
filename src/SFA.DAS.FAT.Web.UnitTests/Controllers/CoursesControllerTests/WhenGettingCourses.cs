@@ -45,7 +45,9 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         {
             //Arrange
             var controller = new CoursesController(mediator.Object);
-            mediator.Setup(x => x.Send(It.IsAny<GetCoursesQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(response);
+            mediator.Setup(x => 
+                    x.Send(It.Is<GetCoursesQuery>(c => c.Keyword.Equals(routeModel.Keyword)),It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
 
             //Act
             var actual = await controller.Courses(routeModel);
@@ -56,10 +58,13 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             Assert.IsNotNull(actualResult);
             var actualModel = actualResult.Model as CoursesViewModel;
             Assert.IsNotNull(actualModel);
+            actualModel.Courses.Should().NotBeEmpty();
+            actualModel.Sectors.Should().NotBeEmpty();
             actualModel.Keyword.Should().Be(routeModel.Keyword);
-            mediator.Verify(
-                x => x.Send(It.Is<GetCoursesQuery>(query => query.Keyword == routeModel.Keyword), It.IsAny<CancellationToken>()),
-                Times.Once);
+            actualModel.Total.Should().Be(response.Total);
+            actualModel.TotalFiltered.Should().Be(response.TotalFiltered);
+            
+            
         }
     }
 }

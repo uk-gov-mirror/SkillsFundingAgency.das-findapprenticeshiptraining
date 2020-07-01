@@ -213,5 +213,24 @@
       "route": "Care services",
       "id": "a04f54c3-800b-4c66-9b04-ef8559909f23"
     }
-  ]
+  ],
+  "levels": [{
+    "code": 2,
+    "name": "GCSE grades 9 to 4"
+  }, {
+    "code": 3,
+    "name": "A level"
+  }, {
+    "code": 4,
+    "name": "HNC"
+  }, {
+    "code": 5,
+    "name": "foundation degree"
+  }, {
+    "code": 6,
+    "name": "degree"
+  }, {
+    "code": 7,
+    "name": "master’s degree"
+  }]
 }

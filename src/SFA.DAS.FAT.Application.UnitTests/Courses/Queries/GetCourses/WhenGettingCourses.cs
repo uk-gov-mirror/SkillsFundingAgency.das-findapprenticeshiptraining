@@ -22,15 +22,36 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
             GetCoursesQueryHandler handler)
         {
             //Arrange
-            mockService.Setup(x => x.GetCourses()).ReturnsAsync(courseResponse);
+            request.Keyword = null;
+            mockService.Setup(x => x.GetCourses(null)).ReturnsAsync(courseResponse);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
             
             //Assert
-            mockService.Verify(x=>x.GetCourses(), Times.Once);
+            mockService.Verify(x=>x.GetCourses(null), Times.Once);
             Assert.IsNotNull(actual);
             actual.Courses.Should().BeEquivalentTo(courseResponse.Courses);
+            actual.TotalFiltered.Should().Be(courseResponse.TotalFiltered);
+            actual.Total.Should().Be(courseResponse.Total);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_Keywords_Are_Passed_To_The_Service(
+            GetCoursesQuery request,
+            TrainingCourses courseResponse,
+            [Frozen] Mock<ICourseService> mockService,
+            GetCoursesQueryHandler handler)
+        {
+            //Arrange
+            mockService.Setup(x => x.GetCourses(request.Keyword)).ReturnsAsync(courseResponse);
+
+            //Act
+            var actual = await handler.Handle(request, CancellationToken.None);
+
+            //Assert
+            mockService.Verify(x => x.GetCourses(request.Keyword), Times.Once);
+            Assert.IsNotNull(actual);
         }
     }
 }

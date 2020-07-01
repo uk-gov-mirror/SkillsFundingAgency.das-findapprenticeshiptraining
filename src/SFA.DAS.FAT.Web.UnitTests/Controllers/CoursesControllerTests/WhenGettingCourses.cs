@@ -1,7 +1,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
+using FluentAssertions;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -16,24 +18,52 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
     {
         [Test, MoqAutoData]
         public async Task Then_The_Query_Is_Sent_And_Data_Retrieved_And_View_Shown(
+            CoursesRouteModel routeModel,
             GetCoursesResult response,
             [Frozen] Mock<IMediator> mediator,
             CoursesController controller)
         {
             //Arrange
             mediator.Setup(x => 
-                    x.Send(It.IsAny<GetCoursesQuery>(),It.IsAny<CancellationToken>()))
+                    x.Send(It.Is<GetCoursesQuery>(c => c.Keyword.Equals(routeModel.Keyword)),It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
             
             //Act
-            var actual = await controller.Courses();
-            
+            var actual = await controller.Courses(routeModel);
+            var actualResult = actual as ViewResult;
+
+            //Assert
+            Assert.IsNotNull(actual);
+            Assert.IsNotNull(actualResult);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_The_Keyword_Is_Added_To_The_Query_And_Returned_To_The_View(
+            CoursesRouteModel routeModel,
+            GetCoursesResult response,
+            [Frozen] Mock<IMediator> mediator)
+        {
+            //Arrange
+            var controller = new CoursesController(mediator.Object);
+            mediator.Setup(x => 
+                    x.Send(It.Is<GetCoursesQuery>(c => c.Keyword.Equals(routeModel.Keyword)),It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+
+            //Act
+            var actual = await controller.Courses(routeModel);
+
             //Assert
             Assert.IsNotNull(actual);
             var actualResult = actual as ViewResult;
             Assert.IsNotNull(actualResult);
             var actualModel = actualResult.Model as CoursesViewModel;
             Assert.IsNotNull(actualModel);
+            actualModel.Courses.Should().NotBeEmpty();
+            actualModel.Keyword.Should().Be(routeModel.Keyword);
+            actualModel.Total.Should().Be(response.Total);
+            actualModel.TotalFiltered.Should().Be(response.TotalFiltered);
+            
+            
         }
     }
 }

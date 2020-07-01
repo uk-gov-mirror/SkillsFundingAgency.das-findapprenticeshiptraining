@@ -1,27 +1,59 @@
 ﻿@using SFA.DAS.FAT.Web.Infrastructure
 @model SFA.DAS.FAT.Web.Models.CoursesViewModel
-<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-full">
-
-                <h1 class="govuk-heading-xl">
-                    Apprenticeship training courses
-                </h1>
-
+<main class="govuk-main-wrapper" id="main-content" role="main">
+    <h1 class="govuk-heading-xl">Apprenticeship training courses</h1>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-third">
+            <div class="das-filter">
+                <div class="das-filter__header">
+                    <h2 class="das-filter__heading">Filter</h2>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.Keyword))
+                {
+                    <div class="das-filter__selected-filters">
+                        <div class="das-filter__selected-header">
+                            <h3 class="das-filter__selected-heading">Selected filters</h3>
+                            <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.Training">Clear <span class="govuk-visually-hidden">the selected filters</span></a>
+                        </div>
+                        <h4 class="das-filter__selected-sub-heading">Keywords</h4>
+                        <a asp-route="@RouteNames.Training" title="Clear this filter '@Model.Keyword'" class="das-filter__tag">&lsquo;@Model.Keyword&rsquo;</a>        
+                    </div>
+                
+                }
+                <div class="das-filter__body">
+                    <form asp-route="@RouteNames.Training" method="GET" >
+                        <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
+                        <div class="govuk-form-group">
+                            <label for="Keyword" class="govuk-label das-filter__search-label">Keywords</label>
+                            <input asp-for="Keyword" type="search" title="Search" class="govuk-input">
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-
-        <div class="govuk-grid-row">
-                <div class="govuk-grid-column-full">
-
-                <h2 class="govuk-heading-m">@Model.Courses.Count results</h2>
-
-                <p class="govuk-body govuk-!-margin-bottom-6">
-                    Sorted by:
-                    <span class="govuk-!-font-weight-bold">Name</span>
-                </p>
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-m">@Model.TotalMessage</h2>
+            @if (Model.Courses.Count > 0)
+            {
+                
+                if (!string.IsNullOrEmpty(Model.Keyword))
+                {
+                    <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
+    
+                        <span class="govuk-!-font-weight-bold">Relevance</span>, 
+                        <a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.Training">Name</a>
+    
+                    </p>
+                }
+                else
+                {
+                    <p class="govuk-body govuk-!-margin-bottom-6">
+                        Sorted by:
+                    <span class="govuk-!-font-weight-bold">Name</span> 
+                    </p>
+                }
+                    
+                
 
                 <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 ">
 
@@ -41,9 +73,13 @@
                         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-2 govuk-!-margin-bottom-3">
                     }
                 </div>
-            
-            </div>
+            }
+            else
+            {
+                <p class="govuk-body govuk-!-margin-bottom-6">
+                    No apprenticeship training courses for the selected filters.
+                </p>
+            }
         </div>
     </div>
-</div>
 </main>

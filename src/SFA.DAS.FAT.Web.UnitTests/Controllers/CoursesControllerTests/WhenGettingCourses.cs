@@ -59,7 +59,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             var actualModel = actualResult.Model as CoursesViewModel;
             Assert.IsNotNull(actualModel);
             actualModel.Courses.Should().NotBeEmpty();
-            actualModel.Sectors.Should().NotBeEmpty();
             actualModel.Keyword.Should().Be(routeModel.Keyword);
             actualModel.Total.Should().Be(response.Total);
             actualModel.TotalFiltered.Should().Be(response.TotalFiltered);

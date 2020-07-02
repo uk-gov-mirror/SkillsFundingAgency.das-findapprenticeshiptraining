@@ -22,31 +22,16 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
 
         private string BuildUrl()
         {
-            string url = "";
-            if (Sectors == null && Levels == null)
+            string url = $"{BaseUrl}trainingcourses?keyword={Keyword}";
+            if (Sectors != null)
             {
-                url = $"{BaseUrl}trainingcourses?keyword={Keyword}";
-                return url;
+                url += "&routeIds=" + string.Join("&routeIds=", Sectors);
             }
-            else if (Sectors != null && Levels != null)
+            if (Levels != null)
             {
-                url = $"{BaseUrl}trainingcourses?keyword={Keyword}&routeIds={string.Join("&routeIds=", Sectors)}&levels={string.Join("&levels=", Levels)}";
-                return url;
+                url += "&levels=" + string.Join("&levels=", Levels);
             }
-            else if (Sectors != null)
-            {
-                url = $"{BaseUrl}trainingcourses?keyword={Keyword}&routeIds={string.Join("&routeIds=", Sectors)}";
-                return url;
-            }
-            else if (Levels != null)
-            {
-                url = $"{BaseUrl}trainingcourses?keyword={Keyword}&levels={string.Join("&levels=", Levels)}";
-                return url;
-            }
-            else 
-            {
-                return null;
-            }
+            return url;
         }
 
         public string Keyword { get; set; }

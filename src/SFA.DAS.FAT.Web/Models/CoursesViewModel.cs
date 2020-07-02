@@ -10,6 +10,7 @@ namespace SFA.DAS.FAT.Web.Models
         public string Keyword { get; set; }
         public int Total { get ; set ; }
         public int TotalFiltered { get ; set ; }
+        // public List<LevelViewModel> Levels { get; set; }
         public List<SectorViewModel> Sectors { get ; set ; }
         public string TotalMessage => GetTotalMessage();
         public List<Guid> SelectedSectors { get ; set ; }

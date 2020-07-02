@@ -28,5 +28,15 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
             //Assert
             actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}");
         }
+        
+        [Test, AutoData]
+        public void Then_If_The_List_Of_Sectors_Is_Empty_The_Url_Is_Constructed_Correctly(string baseUrl, string keyword)
+        {
+            //Arrange Act
+            var actual = new GetCoursesApiRequest(baseUrl, keyword, new List<Guid>());
+            
+            //Assert
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}");
+        }
     }
 }

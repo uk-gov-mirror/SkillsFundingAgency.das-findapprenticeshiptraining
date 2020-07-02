@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAT.Domain.Courses.Api
@@ -16,7 +17,7 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
         public List<Guid> Sectors { get ; set ; }
 
         public string BaseUrl { get; }
-        public string GetUrl => Sectors == null 
+        public string GetUrl => Sectors == null || !Sectors.Any()
             ? $"{BaseUrl}trainingcourses?keyword={Keyword}" 
             : $"{BaseUrl}trainingcourses?keyword={Keyword}&routeIds={string.Join("&routeIds=", Sectors)}";
         public string Keyword { get; set; }

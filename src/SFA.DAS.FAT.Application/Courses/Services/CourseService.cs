@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -27,9 +28,9 @@ namespace SFA.DAS.FAT.Application.Courses.Services
             return response;
         }
 
-        public async Task<TrainingCourses> GetCourses(string keyword)
+        public async Task<TrainingCourses> GetCourses(string keyword, List<Guid> requestRouteIds)
         {
-            var request = new GetCoursesApiRequest(_config.BaseUrl, keyword);
+            var request = new GetCoursesApiRequest(_config.BaseUrl, keyword, requestRouteIds);
 
             var response = await _apiClient.Get<TrainingCourses>(request);
 

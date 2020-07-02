@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using Microsoft.Extensions.FileSystemGlobbing.Internal;
@@ -12,9 +14,17 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         [Test, AutoData]
         public void Then_The_Values_Are_Mapped_Correctly(Sector sector)
         {
-            var actual = (SectorViewModel) sector;
+            var actual = new SectorViewModel(sector, null);
             
             actual.Should().BeEquivalentTo(sector);
+        }
+
+        [Test, AutoData]
+        public void Then_Any_Selected_Ids_Are_Marked_As_Selected(Sector sector)
+        {
+            var actual = new SectorViewModel(sector, new List<Guid>{sector.Id});
+
+            actual.Selected.Should().BeTrue();
         }
     }
 }

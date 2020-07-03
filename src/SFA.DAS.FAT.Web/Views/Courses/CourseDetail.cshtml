@@ -80,25 +80,19 @@
                 Full information on <a class="govuk-link govuk-link--no-visited-state" href="@Model.ExternalCourseUrl" target="_blank" rel="external">@Model.TitleAndLevel</a> is available from the Institute for Apprenticeships and Technical Education.
             </p>
 
-            <div class="govuk-!-margin-bottom-8">
+            <div class="das-highlight">
                 <h2 class="govuk-heading-l">Find training providers for this course</h2>
-                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h2>
+                <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h3>
                 <p class="govuk-body">Check if a provider can offer this training for the apprenticeship location.</p>
-                <form method="GET" class="govuk-!-width-three-quarters">
+                <form method="GET">
                     <div class="govuk-form-group">
-                        <label for="search-location" class="govuk-label">
-                            <span class="govuk-!-font-weight-bol">Enter location</span>
-                        </label>
-                        <input type="search" id="search-location" name="location" title="Search" class="govuk-input govuk-input-background">
+                        <label for="search-location" class="govuk-label">Enter location</label>
+                        <input type="search" id="search-location" name="location" title="Search" class="govuk-input govuk-!-width-three-quarters">
                     </div>
-                    <button class="govuk-button location-submit" data-module="govuk-button">
+                    <button class="govuk-button govuk-!-margin-bottom-0">
                         View providers for this course
                     </button>
                 </form>
-            </div>
-
-            <div class="govuk-grid-column-one-third">
-
             </div>
         </div>
     </div>

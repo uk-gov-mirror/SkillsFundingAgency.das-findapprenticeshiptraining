@@ -6,7 +6,7 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
 {
     public class GetCoursesApiRequest : IGetApiRequest
     {
-        public GetCoursesApiRequest( string baseUrl, string keyword, List<Guid> sectors = null, List<int> levels = null)
+        public GetCoursesApiRequest( string baseUrl, string keyword, List<Guid> sectors = null, List<Guid> levels = null)
         {
             BaseUrl = baseUrl;
             Keyword = keyword;
@@ -15,7 +15,7 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
         }
 
         public List<Guid> Sectors { get ; set ; }
-        public List<int> Levels { get; set; }
+        public List<Guid> Levels { get; set; }
 
         public string BaseUrl { get; }
         public string GetUrl => BuildUrl();

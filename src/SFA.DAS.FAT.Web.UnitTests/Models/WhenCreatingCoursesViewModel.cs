@@ -31,6 +31,19 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         }
 
         [Test, AutoData]
+        public void Then_The_Total_Message_Uses_Filtered_Total_If_There_Are_Selected_Filters()
+        {
+            var viewModel = new CoursesViewModel
+            {
+                Total = 10,
+                TotalFiltered = 5,
+                SelectedSectors = new List<Guid>{new Guid()}
+            };
+
+            viewModel.TotalMessage.Should().Be("5 results");
+        }
+
+        [Test, AutoData]
         public void Then_No_Filter_Items_Builds_Correct_Clear_Links()
         {
             //Arrange
@@ -41,6 +54,20 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             viewModel.ClearSectorLinks.Should().BeEmpty();
         }
 
+        [Test, AutoData]
+        public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword(string keyword)
+        {
+            //Arrange Act
+            var model = new CoursesViewModel
+            {
+                Keyword = keyword,
+            };
+            
+            //Assert
+            Assert.IsNotNull(model.ClearKeywordLink);
+            Assert.AreEqual("",model.ClearKeywordLink);
+        }
+        
         [Test, AutoData]
         public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_Sectors(List<Guid> selectedRoutes, string keyword)
         {

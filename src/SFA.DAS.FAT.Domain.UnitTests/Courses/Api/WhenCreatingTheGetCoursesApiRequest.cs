@@ -39,10 +39,10 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
         }
 
         [Test, AutoData]
-        public void Then_The_Get_Url_Is_Constructed_Correctly_With_Levels_And_Routes_Null(string baseUrl, string keyword, List<Guid> sectors, List<int> levels)
+        public void Then_The_Get_Url_Is_Constructed_Correctly_With_Levels_And_Routes_Null(string baseUrl, string keyword, List<int> levels)
         {
             //Arrange Act
-            var actual = new GetCoursesApiRequest(baseUrl, keyword, sectors = null, levels);
+            var actual = new GetCoursesApiRequest(baseUrl, keyword, null, levels);
 
             //Assert
             actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}&levels={string.Join("&levels=", levels)}");

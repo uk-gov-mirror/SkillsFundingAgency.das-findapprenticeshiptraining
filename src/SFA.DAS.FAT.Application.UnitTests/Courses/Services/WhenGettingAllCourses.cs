@@ -24,7 +24,6 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             CourseService courseService)
         {
             //Arrange
-            
             var courseApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, null);
             
             //Act
@@ -75,6 +74,29 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
                 x.Get<TrainingCourses>(It.Is<GetCoursesApiRequest>(request =>
                     request.Keyword.Equals(coursesApiRequest.Keyword)
                     && request.Levels.Equals(coursesApiRequest.Levels))));
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_The_Keyword_And_Levels_And_Sectors_Are_Added_To_The_Request(
+        string keyword,
+        List<Guid> routeIds,
+        List<int> levels,
+        [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
+        [Frozen] Mock<IApiClient> apiClient,
+        CourseService courseService)
+        {
+            //Arrange
+            var coursesApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, keyword, routeIds, levels);
+
+            //Act
+            await courseService.GetCourses(keyword, routeIds, levels);
+
+            //Assert
+            apiClient.Verify(x =>
+                x.Get<TrainingCourses>(It.Is<GetCoursesApiRequest>(request =>
+                    request.Keyword.Equals(coursesApiRequest.Keyword)
+                    && request.Levels.Equals(coursesApiRequest.Levels)
+                    && request.Sectors.Equals(coursesApiRequest.Sectors))));
         }
     }
 }

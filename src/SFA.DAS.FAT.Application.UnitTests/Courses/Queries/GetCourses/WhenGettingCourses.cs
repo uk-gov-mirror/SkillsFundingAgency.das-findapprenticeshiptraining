@@ -24,7 +24,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
             //Arrange
             request.Keyword = null;
             request.RouteIds = null;
-            request.Codes = null;
+            request.Levels = null;
             mockService.Setup(x => x.GetCourses(null, null, null)).ReturnsAsync(courseResponse);
 
             //Act
@@ -40,7 +40,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
         }
 
         [Test, MoqAutoData]
-        public async Task Then_The_Service_Is_Called_And_Keywords_Are_Returned(
+        public async Task Then_The_Service_Is_Called_Passing_Keywords_From_Query(
             GetCoursesQuery request,
             TrainingCourses courseResponse,
             [Frozen] Mock<ICourseService> mockService,
@@ -48,7 +48,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
         {
             //Arrange
             request.RouteIds = null;
-            request.Codes = null;
+            request.Levels = null;
             mockService.Setup(x => x.GetCourses(request.Keyword, null, null)).ReturnsAsync(courseResponse);
 
             //Act
@@ -71,7 +71,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
             GetCoursesQueryHandler handler)
         {
             //Arrange
-            request.Codes = null;
+            request.Levels = null;
             mockService.Setup(x => x.GetCourses(request.Keyword, request.RouteIds, null)).ReturnsAsync(courseResponse);
 
             //Act
@@ -91,13 +91,31 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
         {
             //Arrange
             request.RouteIds = null;
-            mockService.Setup(x => x.GetCourses(request.Keyword, null, request.Codes)).ReturnsAsync(courseResponse);
+            mockService.Setup(x => x.GetCourses(request.Keyword, null, request.Levels)).ReturnsAsync(courseResponse);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
 
             //Assert
-            mockService.Verify(x => x.GetCourses(request.Keyword, null, request.Codes), Times.Once);
+            mockService.Verify(x => x.GetCourses(request.Keyword, null, request.Levels), Times.Once);
+            Assert.IsNotNull(actual);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_Keywords_And_Levels_And_Sectors_Are_Passed_To_The_Service(
+            GetCoursesQuery request,
+            TrainingCourses courseResponse,
+            [Frozen] Mock<ICourseService> mockService,
+            GetCoursesQueryHandler handler)
+        {
+            //Arrange
+            mockService.Setup(x => x.GetCourses(request.Keyword, request.RouteIds, request.Levels)).ReturnsAsync(courseResponse);
+
+            //Act
+            var actual = await handler.Handle(request, CancellationToken.None);
+
+            //Assert
+            mockService.Verify(x => x.GetCourses(request.Keyword, request.RouteIds, request.Levels), Times.Once);
             Assert.IsNotNull(actual);
         }
     }

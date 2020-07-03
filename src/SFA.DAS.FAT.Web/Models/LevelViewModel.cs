@@ -21,6 +21,7 @@ namespace SFA.DAS.FAT.Web.Models
         public bool Selected { get; }
         public int Code { get; set; }
         public string Name { get; set; }
+        public string Title => $"Level {Code} - {Name}";
 
     }
 }

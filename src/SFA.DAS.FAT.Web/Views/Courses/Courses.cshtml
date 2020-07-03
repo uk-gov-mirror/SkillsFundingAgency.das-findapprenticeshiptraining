@@ -58,6 +58,8 @@
                                     }
                                 </div>
                             </fieldset>
+                        </div>
+                        <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                                     Level
@@ -68,7 +70,7 @@
                                         <div class="govuk-checkboxes__item">
                                             <input @(level.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="route-@level.Code" name="levels" type="checkbox" value="@level.Code" />
                                             <label class="govuk-label govuk-checkboxes__label" for="route-@level.Code">
-                                                Level @level.Code - @level.Name
+                                                @level.Title
                                             </label>
                                         </div>
                                     }

@@ -22,7 +22,7 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
 
         private string BuildUrl()
         {
-            string url = $"{BaseUrl}trainingcourses?keyword={Keyword}";
+            var url = $"{BaseUrl}trainingcourses?keyword={Keyword}";
             if (Sectors != null)
             {
                 url += "&routeIds=" + string.Join("&routeIds=", Sectors);

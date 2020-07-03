@@ -21,16 +21,22 @@ namespace SFA.DAS.FAT.Web.Controllers
             _mediator = mediator;
         }
         [Route("", Name = RouteNames.Training)]
-        public async Task<IActionResult> Courses(CoursesRouteModel routeModel)
+        public async Task<IActionResult> Courses(GetCoursesRequest request)
         {
-            var result = await _mediator.Send(new GetCoursesQuery{Keyword = routeModel.Keyword});
+            var result = await _mediator.Send(new GetCoursesQuery
+            {
+                Keyword = request.Keyword,
+                RouteIds = request.Sectors
+            });
 
             var viewModel = new CoursesViewModel
             {
                 Courses = result.Courses.Select(c=>(CourseViewModel)c).ToList(),
+                Sectors = result.Sectors.Select(sector => new SectorViewModel(sector, request.Sectors)).ToList(),
                 Total = result.Total,
                 TotalFiltered = result.TotalFiltered,
-                Keyword = routeModel.Keyword
+                Keyword = request.Keyword,
+                SelectedSectors = request.Sectors
             };
             
             return View(viewModel);

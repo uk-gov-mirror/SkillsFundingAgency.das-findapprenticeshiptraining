@@ -1,4 +1,4 @@
-@using Microsoft.EntityFrameworkCore
+﻿@using Microsoft.EntityFrameworkCore
 @using SFA.DAS.FAT.Web.Infrastructure
 @model SFA.DAS.FAT.Web.Models.CoursesViewModel
 
@@ -76,8 +76,8 @@
                                     @foreach (var level in Model.Levels)
                                     {
                                         <div class="govuk-checkboxes__item">
-                                            <input @(level.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="route-@level.Code" name="levels" type="checkbox" value="@level.Code" />
-                                            <label class="govuk-label govuk-checkboxes__label" for="route-@level.Code">
+                                            <input @(level.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="level-@level.Code" name="levels" type="checkbox" value="@level.Code" />
+                                            <label class="govuk-label govuk-checkboxes__label" for="level-@level.Code">
                                                 @level.Title
                                             </label>
                                         </div>
@@ -85,6 +85,7 @@
                                 </div>
                             </fieldset>
                         </div>
+                        <p class="govuk-body govuk-!-font-size-16"><a class="govuk-link govuk-link--no-visited-state" href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels" target="_blank" rel="external">What levels mean (opens in new tab or window)</a></p>
                     </form>
                 </div>
             </div>

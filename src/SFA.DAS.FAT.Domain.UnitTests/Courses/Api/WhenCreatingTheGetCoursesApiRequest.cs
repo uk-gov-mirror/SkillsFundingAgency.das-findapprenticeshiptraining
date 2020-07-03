@@ -19,10 +19,10 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
         }
 
         [Test, AutoData]
-        public void Then_The_Get_Url_Is_Constructed_Correctly_With_Routes_And_Levels_Is_Null(string baseUrl, string keyword, List<Guid> sectors, List<int> levels)
+        public void Then_The_Get_Url_Is_Constructed_Correctly_With_Routes_And_Levels_Is_Null(string baseUrl, string keyword, List<Guid> sectors)
         {
             //Arrange Act
-            var actual = new GetCoursesApiRequest(baseUrl, keyword, sectors, levels = null);
+            var actual = new GetCoursesApiRequest(baseUrl, keyword, sectors);
             
             //Assert
             actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}&routeIds={string.Join("&routeIds=", sectors)}");
@@ -33,6 +33,17 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
         {
             //Arrange Act
             var actual = new GetCoursesApiRequest(baseUrl, keyword);
+            
+            //Assert
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}");
+        }
+        
+        
+        [Test, AutoData]
+        public void Then_If_The_List_Of_Sectors_And_Levels_Are_Empty_The_Url_Is_Constructed_Correctly(string baseUrl, string keyword)
+        {
+            //Arrange Act
+            var actual = new GetCoursesApiRequest(baseUrl, keyword, new List<Guid>(), new List<int>());
             
             //Assert
             actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}");

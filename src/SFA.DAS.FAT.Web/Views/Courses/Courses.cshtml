@@ -46,7 +46,7 @@
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                                     Sector
                                 </legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">                           
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
                                     @foreach (var sector in Model.Sectors)
                                     {
                                         <div class="govuk-checkboxes__item">
@@ -55,7 +55,23 @@
                                                 @sector.Route
                                             </label>
                                         </div>
-                                    } 
+                                    }
+                                </div>
+                            </fieldset>
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    Level
+                                </legend>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    @foreach (var level in Model.Levels)
+                                    {
+                                        <div class="govuk-checkboxes__item">
+                                            <input @(level.Selected ? "checked='checked" : "") class="govuk-checkboxes_input" id="route-@level.Code" name="levels" type="checkbox" value="@level.Code" />
+                                            <label class="govuk-label govuk-checkboxes__label" for="route-@level.Code">
+                                                Level @level.Code - @level.Name
+                                            </label>
+                                        </div>
+                                    }
                                 </div>
                             </fieldset>
                         </div>

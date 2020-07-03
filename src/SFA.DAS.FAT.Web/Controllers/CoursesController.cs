@@ -27,7 +27,7 @@ namespace SFA.DAS.FAT.Web.Controllers
             {
                 Keyword = request.Keyword,
                 RouteIds = request.Sectors,
-                // something here about levels
+                Codes = request.Levels
             });
 
             var viewModel = new CoursesViewModel
@@ -38,7 +38,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                 TotalFiltered = result.TotalFiltered,
                 Keyword = request.Keyword,
                 SelectedSectors = request.Sectors,
-                // something here about levels
+                Levels = result.Levels.Select(level => new LevelViewModel(level, request.Levels)).ToList()
             };
             
             return View(viewModel);

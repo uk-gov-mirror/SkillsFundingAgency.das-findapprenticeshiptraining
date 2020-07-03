@@ -28,7 +28,7 @@ namespace SFA.DAS.FAT.Application.Courses.Services
             return response;
         }
 
-        public async Task<TrainingCourses> GetCourses(string keyword, List<Guid> requestRouteIds, List<Guid> requestLevelCodes)
+        public async Task<TrainingCourses> GetCourses(string keyword, List<Guid> requestRouteIds, List<int> requestLevelCodes)
         {
             var request = new GetCoursesApiRequest(_config.BaseUrl, keyword, requestRouteIds, requestLevelCodes);
 

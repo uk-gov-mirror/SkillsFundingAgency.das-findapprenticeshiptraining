@@ -59,7 +59,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
         [Test, MoqAutoData]
         public async Task Then_The_Keyword_And_Levels_Are_Added_To_The_Request(
         string keyword,
-        List<Guid> levels,
+        List<int> levels,
         [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
         [Frozen] Mock<IApiClient> apiClient,
         CourseService courseService)

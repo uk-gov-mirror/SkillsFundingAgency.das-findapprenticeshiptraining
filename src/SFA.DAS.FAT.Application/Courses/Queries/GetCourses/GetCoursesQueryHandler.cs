@@ -25,7 +25,7 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourses
                 Sectors = response.Sectors.ToList(),
                 Total = response.Total,
                 TotalFiltered = response.TotalFiltered,
-                Levels = response.Levels
+                Levels = response.Levels.ToList()
             };
         }
     }

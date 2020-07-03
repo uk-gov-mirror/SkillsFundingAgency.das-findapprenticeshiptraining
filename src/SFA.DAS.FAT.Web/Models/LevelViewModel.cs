@@ -11,7 +11,7 @@ namespace SFA.DAS.FAT.Web.Models
 
         }
 
-        public LevelViewModel(Level level, ICollection<Guid> selectedCodes)
+        public LevelViewModel(Level level, ICollection<int> selectedCodes)
         {
             Selected = selectedCodes?.Contains(level.Code) ?? false;
             Code = level.Code;
@@ -19,7 +19,7 @@ namespace SFA.DAS.FAT.Web.Models
         }
 
         public bool Selected { get; }
-        public Guid Code { get; set; }
+        public int Code { get; set; }
         public string Name { get; set; }
 
     }

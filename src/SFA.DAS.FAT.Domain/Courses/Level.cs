@@ -8,7 +8,7 @@ namespace SFA.DAS.FAT.Domain.Courses
     public class Level
     {
         [JsonProperty("code")]
-        public Guid Code { get; set; }
+        public int Code { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }

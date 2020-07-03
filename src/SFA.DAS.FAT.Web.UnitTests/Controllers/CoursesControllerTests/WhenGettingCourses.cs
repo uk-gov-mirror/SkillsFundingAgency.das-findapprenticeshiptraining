@@ -40,7 +40,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         }
 
         [Test, MoqAutoData]
-        public async Task Then_The_Keyword_And_Sectors_Are_Added_To_The_Query_And_Returned_To_The_View(
+        public async Task Then_The_Keyword_And_Sectors_And_Levels_Are_Added_To_The_Query_And_Returned_To_The_View(
             GetCoursesRequest request,
             GetCoursesResult response,
             [Frozen] Mock<IMediator> mediator)
@@ -50,7 +50,8 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             mediator.Setup(x => 
                     x.Send(It.Is<GetCoursesQuery>(c 
                         => c.Keyword.Equals(request.Keyword)
-                        && c.RouteIds.Equals(request.Sectors)),It.IsAny<CancellationToken>()))
+                        && c.RouteIds.Equals(request.Sectors)
+                        && c.Levels.Equals(request.Levels)),It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
 
             //Act
@@ -65,6 +66,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             actualModel.Courses.Should().NotBeEmpty();
             actualModel.Sectors.Should().NotBeEmpty();
             actualModel.Keyword.Should().Be(request.Keyword);
+            actualModel.SelectedLevels.Should().BeEquivalentTo(request.Levels);
             actualModel.SelectedSectors.Should().BeEquivalentTo(request.Sectors);
             actualModel.Total.Should().Be(response.Total);
             actualModel.TotalFiltered.Should().Be(response.TotalFiltered);

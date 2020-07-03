@@ -38,6 +38,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                 TotalFiltered = result.TotalFiltered,
                 Keyword = request.Keyword,
                 SelectedSectors = request.Sectors,
+                SelectedLevels = request.Levels,
                 Levels = result.Levels.Select(level => new LevelViewModel(level, request.Levels)).ToList()
             };
             

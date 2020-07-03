@@ -1,4 +1,4 @@
-﻿@using Microsoft.EntityFrameworkCore
+@using Microsoft.EntityFrameworkCore
 @using SFA.DAS.FAT.Web.Infrastructure
 @model SFA.DAS.FAT.Web.Models.CoursesViewModel
 
@@ -11,7 +11,7 @@
                     <h2 class="das-filter__heading">Filter</h2>
                 </div>
                 
-                @if (Model.ClearSectorLinks.Any() || !string.IsNullOrEmpty(Model.Keyword))
+                @if (Model.ClearSectorLinks.Any() || Model.ClearLevelLinks.Any() || !string.IsNullOrEmpty(Model.Keyword))
                 {
                     <div class="das-filter__selected-filters">
                         <div class="das-filter__selected-header">
@@ -29,6 +29,14 @@
                             @foreach (var filterLink in Model.ClearSectorLinks)
                             {
                                 <a class="das-filter__tag" asp-querystring="@filterLink.Value" title="Clear this sector filter @filterLink.Key">@filterLink.Key</a>
+                            }
+                        }
+                        @if (Model.ClearLevelLinks.Any())
+                        {
+                            <h4 class="das-filter__selected-sub-heading">Level</h4>
+                            @foreach (var levelLink in Model.ClearLevelLinks)
+                            {
+                                <a class="das-filter__tag" asp-querystring="@levelLink.Value" title="Clear this level filter @levelLink.Key">@levelLink.Key</a>
                             }
                         }
                     </div>

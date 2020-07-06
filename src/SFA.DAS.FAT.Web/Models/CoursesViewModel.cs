@@ -21,7 +21,9 @@ namespace SFA.DAS.FAT.Web.Models
 
         private string GetTotalMessage()
         {
-            var totalToUse = string.IsNullOrEmpty(Keyword) && (SelectedSectors == null || !SelectedSectors.Any()) 
+            var totalToUse = string.IsNullOrEmpty(Keyword) 
+                             && (SelectedSectors == null || !SelectedSectors.Any()) 
+                             && (SelectedLevels == null || !SelectedLevels.Any())
                                     ? Total 
                                     : TotalFiltered;
 

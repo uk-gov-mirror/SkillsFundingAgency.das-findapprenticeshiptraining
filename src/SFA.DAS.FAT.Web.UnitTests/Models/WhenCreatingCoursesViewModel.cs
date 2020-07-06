@@ -44,6 +44,34 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         }
 
         [Test, AutoData]
+        public void Then_The_Total_Message_Uses_Filtered_Total_If_There_Are_Selected_Levels()
+        {
+            var viewModel = new CoursesViewModel
+            {
+                Total = 10,
+                TotalFiltered = 5,
+                SelectedLevels = new List<int>{1}
+            };
+
+            viewModel.TotalMessage.Should().Be("5 results");
+        }
+
+        [Test, AutoData]
+        public void Then_The_Total_Message_Uses_Filtered_Total_If_There_Are_Selected_Levels_Sectors_And_Keyword()
+        {
+            var viewModel = new CoursesViewModel
+            {
+                Total = 10,
+                TotalFiltered = 5,
+                SelectedLevels = new List<int>{1},
+                SelectedSectors = new List<Guid>{new Guid()},
+                Keyword = "Test"
+            };
+
+            viewModel.TotalMessage.Should().Be("5 results");
+        }
+
+        [Test, AutoData]
         public void Then_No_Filter_Items_Builds_Correct_Clear_Links()
         {
             //Arrange

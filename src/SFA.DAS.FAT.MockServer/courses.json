@@ -1,218 +1,236 @@
 {
-    "trainingCourses": [
-        {
-            "id": 1,
-            "title": "Network engineer",
-            "level": 4,
-            "version": 1,
-            "maxFunding": 17000,
-            "overviewOfRole": "Designing, installing, maintaining and supporting communication networks within an organisation or between organisations",
-            "keywords": "communication|networks",
-            "typicalDuration": 24,
-            "route": "Digital",
-            "typicalJobTitles": "Network Technician|Network Engineer",
-            "coreSkillsCount": null,
-            "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/network-engineer/",
-            "integratedDegree": ""
-        },
-        {
-            "id": 2,
-            "title": "Software developer",
-            "level": 4,
-            "version": 1,
-            "maxFunding": 18000,
-            "overviewOfRole": "Building and testing simple, high-quality code for software.",
-            "keywords": "coding|technology",
-            "typicalDuration": 24,
-            "route": "Digital",
-            "typicalJobTitles": "Web Developer|Application Developer",
-            "coreSkillsCount": null,
-            "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/software-developer/",
-            "integratedDegree": ""
-        },
-        {
-            "id": 5,
-            "title": "Installation electrician / maintenance electrician",
-            "level": 3,
-            "version": 1,
-            "maxFunding": 18000,
-            "overviewOfRole": "Install, maintain and repair electrical systems in industrial, commercial and domestic environments.",
-            "keywords": "electrical systems|electricity|electrical",
-            "typicalDuration": 42,
-            "route": "Construction",
-            "typicalJobTitles": "Installation Electrician|Maintenance Electrician|Electrician",
-            "coreSkillsCount": null,
-            "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/installation-electrician-maintenance-electrician/",
-            "integratedDegree": ""
-        },
-        {
-            "id": 6,
-            "title": "Power network craftsperson",
-            "level": 3,
-            "version": 1,
-            "maxFunding": 26000,
-            "overviewOfRole": "Constructing, maintaining and repairing the UK's electrical power network, providing a safe and reliable supply of electricity to the country",
-            "keywords": "power lines|overhead lines|cabling|underground cables|substation fitting",
-            "typicalDuration": 30,
-            "route": "Engineering and manufacturing",
-            "typicalJobTitles": "linesman|lineman|lineswoman|linewoman",
-            "coreSkillsCount": null,
-            "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/power-network-craftsperson/",
-            "integratedDegree": ""
-        },
-        {
-            "id": 8,
-            "title": "Financial services administrator",
-            "level": 3,
-            "version": 1,
-            "maxFunding": 12000,
-            "overviewOfRole": "Providing administrative support to a financial organisation, to provide a high quality and compliant service.",
-            "keywords": "financial planning|mortgage planning|insurance advice|finance|banking|money|admin|office administration|life|pensions|general insurance|investments",
-            "typicalDuration": 12,
-            "route": "Legal, finance and accounting",
-            "typicalJobTitles": "finance worker",
-            "coreSkillsCount": null,
-            "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/financial-services-administrator/",
-            "integratedDegree": ""
-        },
-        {
-            "id": 9,
-            "title": "Control / technical support engineer (degree)",
-            "level": 6,
-            "version": 1,
-            "maxFunding": 27000,
-            "overviewOfRole": "Assuring that manufacturing runs smoothly in areas such as site maintenance",
-            "keywords": "manufacturing|installation|mechatronics|machinery|maintenance|assembly|car|automotive|degree",
-            "typicalDuration": 60,
-            "route": "Engineering and manufacturing",
-            "typicalJobTitles": "Control Support Engineer|Technical Support Engineer|Maintenance Technician",
-            "coreSkillsCount": null,
-            "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/control-technical-support-engineer-degree/",
-            "integratedDegree": "non-integrated degree"
-        },
-        {
-            "id": 10,
-            "title": "Electrical / electronic technical support engineer (degree)",
-            "level": 6,
-            "version": 1,
-            "maxFunding": 27000,
-            "overviewOfRole": "Supporting the manufacturing of new products by bringing the product to life and resolving manufacturing problems.",
-            "keywords": "product design|product development|supplier support|test engineering|assembly|car|automotive|degree",
-            "typicalDuration": 60,
-            "route": "Engineering and manufacturing",
-            "typicalJobTitles": "electrician|electrical engineer|electrical technical support engineer|electronic technical support engineer|electronic support engineer|electrical support engineer|support engineer|technical support engineer",
-            "coreSkillsCount": null,
-            "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/electrical-electronic-technical-support-engineer-degree/",
-            "integratedDegree": "non-integrated degree"
-        },
-        {
-            "id": 11,
-            "title": "Manufacturing engineer (degree)",
-            "level": 6,
-            "version": 1,
-            "maxFunding": 27000,
-            "overviewOfRole": "Helping take products from design to manufacture, ensuring that they are launched on time, at cost and to the right quality.",
-            "keywords": "model development|automotive|degree|Manufacturing engineer|engineer|manufacturing",
-            "typicalDuration": 60,
-            "route": "Engineering and manufacturing",
-            "typicalJobTitles": "Manufacturing engineer",
-            "coreSkillsCount": null,
-            "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/manufacturing-engineer-degree/",
-            "integratedDegree": "non-integrated degree"
-        },
-        {
-            "id": 12,
-            "title": "Product design and development engineer (degree)",
-            "level": 6,
-            "version": 1,
-            "maxFunding": 27000,
-            "overviewOfRole": "Using engineering techniques to bring new products to life or redesign existing products.",
-            "keywords": "product creation|product modification|product componentry|prototyping|assembly|car|automotive|degree",
-            "typicalDuration": 60,
-            "route": "Engineering and manufacturing",
-            "typicalJobTitles": "designer|product designer|product development engineer",
-            "coreSkillsCount": null,
-            "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/product-design-and-development-engineer-degree/",
-            "integratedDegree": "non-integrated degree"
-        },
-        {
-            "id": 14,
-            "title": "Laboratory technician",
-            "level": 3,
-            "version": 1,
-            "maxFunding": 21000,
-            "overviewOfRole": "Providing routine and one-off testing and technical support in a scientific laboratory environment",
-            "keywords": "Science|Chemistry|Biology|Lab|Pharmaceutical|Biotechnology|Formulated Products|Nuclear Companies|Analytical Science Services|Practical Science|Investigations|Research",
-            "typicalDuration": 24,
-            "route": "Health and science",
-            "typicalJobTitles": "Laboratory Technician|Laboratory Assistant (prefixed by sector).",
-            "coreSkillsCount": "Work safely in a laboratory, maintaining excellent housekeeping whilst following appropriate safety, environment and risk management systems.|Follow quality procedures to meet the requirements of quality standards relevant to the workplace.|Prepare for laboratory tasks using the appropriate scientific techniques, procedures and methods|Perform laboratory tasks following specified methodologies, such as Standard Operating Procedures.|Use of specified instrumentation and laboratory equipment, including calibration where required.|Produce reliable, accurate data and keep accurate records of laboratory work undertaken and results.|Analyse, interpret and evaluate data and identify results requiring further investigation seeking advice of senior colleagues as appropriate.|Communicate scientific information appropriately, including the use of Laboratory Information Management systems, either digital or paper based.|Apply scientific techniques for data presentation. e.g. statistics|Recognise problems and apply appropriate scientific methods to identify causes and achieve solutions.|Participate in continuous business performance improvement.",
-            "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/laboratory-technician/",
-            "integratedDegree": ""
-        }
-    ],
-    "total": 14,
-    "totalFiltered": 10,
-    "sectors": [
-        {
-            "id": "e1d55077-b7ff-46fe-92b3-40feb22d7f23",
-            "route": "Agriculture, environmental and animal care"
-        },
-        {
-            "id": "ddd47656-e3fe-40fa-9c5f-f52a6fffbd5b",
-            "route": "Business and administration"
-        },
-        {
-            "id": "fc058366-58fd-4a2c-aab7-514ab95aa969",
-            "route": "Care services"
-        },
-        {
-            "id": "ec4b840e-3f08-4a3d-ac09-74d368834243",
-            "route": "Catering and hospitality"
-        },
-        {
-            "id": "c75bb572-e655-443b-9baf-fd1cac63fee0",
-            "route": "Construction"
-        },
-        {
-            "id": "f215778c-ab45-414b-82ea-bde6ffc1560b",
-            "route": "Creative and design"
-        },
-        {
-            "id": "4bc92634-0838-46e7-95f6-bd425405d470",
-            "route": "Digital"
-        },
-        {
-            "id": "a2ab86d3-3547-4535-9c5d-17d16c55b9c9",
-            "route": "Education and childcare"
-        },
-        {
-            "id": "4c3af137-19ab-49c5-a5ed-5bac0463886c",
-            "route": "Engineering and manufacturing"
-        },
-        {
-            "id": "d16a4487-9d77-44bc-92ed-fb1e47d801c9",
-            "route": "Hair and beauty"
-        },
-        {
-            "id": "c732ad3b-b9e7-4216-99ba-1fc3c7d5cb3d",
-            "route": "Health and science"
-        },
-        {
-            "id": "29c9fd33-12a6-439c-842c-e2291b1a1a55",
-            "route": "Legal, finance and accounting"
-        },
-        {
-            "id": "5c59c64b-e985-43f7-b908-462992c5f40b",
-            "route": "Protective services"
-        },
-        {
-            "id": "70d8811e-6287-4390-bd15-67a083387ef0",
-            "route": "Sales, marketing and procurement"
-        },
-        {
-            "id": "084d615b-471b-482b-bc60-563c85dc0d46",
-            "route": "Transport and logistics"
-        }
-    ]
+  "trainingCourses": [
+    {
+      "id": 1,
+      "title": "Network engineer",
+      "level": 4,
+      "version": 1,
+      "maxFunding": 17000,
+      "overviewOfRole": "Designing, installing, maintaining and supporting communication networks within an organisation or between organisations",
+      "keywords": "communication|networks",
+      "typicalDuration": 24,
+      "route": "Digital",
+      "typicalJobTitles": "Network Technician|Network Engineer",
+      "coreSkillsCount": null,
+      "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/network-engineer/",
+      "integratedDegree": ""
+    },
+    {
+      "id": 2,
+      "title": "Software developer",
+      "level": 4,
+      "version": 1,
+      "maxFunding": 18000,
+      "overviewOfRole": "Building and testing simple, high-quality code for software.",
+      "keywords": "coding|technology",
+      "typicalDuration": 24,
+      "route": "Digital",
+      "typicalJobTitles": "Web Developer|Application Developer",
+      "coreSkillsCount": null,
+      "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/software-developer/",
+      "integratedDegree": ""
+    },
+    {
+      "id": 5,
+      "title": "Installation electrician / maintenance electrician",
+      "level": 3,
+      "version": 1,
+      "maxFunding": 18000,
+      "overviewOfRole": "Install, maintain and repair electrical systems in industrial, commercial and domestic environments.",
+      "keywords": "electrical systems|electricity|electrical",
+      "typicalDuration": 42,
+      "route": "Construction",
+      "typicalJobTitles": "Installation Electrician|Maintenance Electrician|Electrician",
+      "coreSkillsCount": null,
+      "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/installation-electrician-maintenance-electrician/",
+      "integratedDegree": ""
+    },
+    {
+      "id": 6,
+      "title": "Power network craftsperson",
+      "level": 3,
+      "version": 1,
+      "maxFunding": 26000,
+      "overviewOfRole": "Constructing, maintaining and repairing the UK's electrical power network, providing a safe and reliable supply of electricity to the country",
+      "keywords": "power lines|overhead lines|cabling|underground cables|substation fitting",
+      "typicalDuration": 30,
+      "route": "Engineering and manufacturing",
+      "typicalJobTitles": "linesman|lineman|lineswoman|linewoman",
+      "coreSkillsCount": null,
+      "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/power-network-craftsperson/",
+      "integratedDegree": ""
+    },
+    {
+      "id": 8,
+      "title": "Financial services administrator",
+      "level": 3,
+      "version": 1,
+      "maxFunding": 12000,
+      "overviewOfRole": "Providing administrative support to a financial organisation, to provide a high quality and compliant service.",
+      "keywords": "financial planning|mortgage planning|insurance advice|finance|banking|money|admin|office administration|life|pensions|general insurance|investments",
+      "typicalDuration": 12,
+      "route": "Legal, finance and accounting",
+      "typicalJobTitles": "finance worker",
+      "coreSkillsCount": null,
+      "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/financial-services-administrator/",
+      "integratedDegree": ""
+    },
+    {
+      "id": 9,
+      "title": "Control / technical support engineer (degree)",
+      "level": 6,
+      "version": 1,
+      "maxFunding": 27000,
+      "overviewOfRole": "Assuring that manufacturing runs smoothly in areas such as site maintenance",
+      "keywords": "manufacturing|installation|mechatronics|machinery|maintenance|assembly|car|automotive|degree",
+      "typicalDuration": 60,
+      "route": "Engineering and manufacturing",
+      "typicalJobTitles": "Control Support Engineer|Technical Support Engineer|Maintenance Technician",
+      "coreSkillsCount": null,
+      "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/control-technical-support-engineer-degree/",
+      "integratedDegree": "non-integrated degree"
+    },
+    {
+      "id": 10,
+      "title": "Electrical / electronic technical support engineer (degree)",
+      "level": 6,
+      "version": 1,
+      "maxFunding": 27000,
+      "overviewOfRole": "Supporting the manufacturing of new products by bringing the product to life and resolving manufacturing problems.",
+      "keywords": "product design|product development|supplier support|test engineering|assembly|car|automotive|degree",
+      "typicalDuration": 60,
+      "route": "Engineering and manufacturing",
+      "typicalJobTitles": "electrician|electrical engineer|electrical technical support engineer|electronic technical support engineer|electronic support engineer|electrical support engineer|support engineer|technical support engineer",
+      "coreSkillsCount": null,
+      "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/electrical-electronic-technical-support-engineer-degree/",
+      "integratedDegree": "non-integrated degree"
+    },
+    {
+      "id": 11,
+      "title": "Manufacturing engineer (degree)",
+      "level": 6,
+      "version": 1,
+      "maxFunding": 27000,
+      "overviewOfRole": "Helping take products from design to manufacture, ensuring that they are launched on time, at cost and to the right quality.",
+      "keywords": "model development|automotive|degree|Manufacturing engineer|engineer|manufacturing",
+      "typicalDuration": 60,
+      "route": "Engineering and manufacturing",
+      "typicalJobTitles": "Manufacturing engineer",
+      "coreSkillsCount": null,
+      "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/manufacturing-engineer-degree/",
+      "integratedDegree": "non-integrated degree"
+    },
+    {
+      "id": 12,
+      "title": "Product design and development engineer (degree)",
+      "level": 6,
+      "version": 1,
+      "maxFunding": 27000,
+      "overviewOfRole": "Using engineering techniques to bring new products to life or redesign existing products.",
+      "keywords": "product creation|product modification|product componentry|prototyping|assembly|car|automotive|degree",
+      "typicalDuration": 60,
+      "route": "Engineering and manufacturing",
+      "typicalJobTitles": "designer|product designer|product development engineer",
+      "coreSkillsCount": null,
+      "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/product-design-and-development-engineer-degree/",
+      "integratedDegree": "non-integrated degree"
+    },
+    {
+      "id": 14,
+      "title": "Laboratory technician",
+      "level": 3,
+      "version": 1,
+      "maxFunding": 21000,
+      "overviewOfRole": "Providing routine and one-off testing and technical support in a scientific laboratory environment",
+      "keywords": "Science|Chemistry|Biology|Lab|Pharmaceutical|Biotechnology|Formulated Products|Nuclear Companies|Analytical Science Services|Practical Science|Investigations|Research",
+      "typicalDuration": 24,
+      "route": "Health and science",
+      "typicalJobTitles": "Laboratory Technician|Laboratory Assistant (prefixed by sector).",
+      "coreSkillsCount": "Work safely in a laboratory, maintaining excellent housekeeping whilst following appropriate safety, environment and risk management systems.|Follow quality procedures to meet the requirements of quality standards relevant to the workplace.|Prepare for laboratory tasks using the appropriate scientific techniques, procedures and methods|Perform laboratory tasks following specified methodologies, such as Standard Operating Procedures.|Use of specified instrumentation and laboratory equipment, including calibration where required.|Produce reliable, accurate data and keep accurate records of laboratory work undertaken and results.|Analyse, interpret and evaluate data and identify results requiring further investigation seeking advice of senior colleagues as appropriate.|Communicate scientific information appropriately, including the use of Laboratory Information Management systems, either digital or paper based.|Apply scientific techniques for data presentation. e.g. statistics|Recognise problems and apply appropriate scientific methods to identify causes and achieve solutions.|Participate in continuous business performance improvement.",
+      "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/laboratory-technician/",
+      "integratedDegree": ""
+    }],
+  "total": 14,
+  "totalFiltered": 10,
+  "sectors": [
+    {
+      "id": "e1d55077-b7ff-46fe-92b3-40feb22d7f23",
+      "route": "Agriculture, environmental and animal care"
+    },
+    {
+      "id": "ddd47656-e3fe-40fa-9c5f-f52a6fffbd5b",
+      "route": "Business and administration"
+    },
+    {
+      "id": "fc058366-58fd-4a2c-aab7-514ab95aa969",
+      "route": "Care services"
+    },
+    {
+      "id": "ec4b840e-3f08-4a3d-ac09-74d368834243",
+      "route": "Catering and hospitality"
+    },
+    {
+      "id": "c75bb572-e655-443b-9baf-fd1cac63fee0",
+      "route": "Construction"
+    },
+    {
+      "id": "f215778c-ab45-414b-82ea-bde6ffc1560b",
+      "route": "Creative and design"
+    },
+    {
+      "id": "4bc92634-0838-46e7-95f6-bd425405d470",
+      "route": "Digital"
+    },
+    {
+      "id": "a2ab86d3-3547-4535-9c5d-17d16c55b9c9",
+      "route": "Education and childcare"
+    },
+    {
+      "id": "4c3af137-19ab-49c5-a5ed-5bac0463886c",
+      "route": "Engineering and manufacturing"
+    },
+    {
+      "id": "d16a4487-9d77-44bc-92ed-fb1e47d801c9",
+      "route": "Hair and beauty"
+    },
+    {
+      "id": "c732ad3b-b9e7-4216-99ba-1fc3c7d5cb3d",
+      "route": "Health and science"
+    },
+    {
+      "id": "29c9fd33-12a6-439c-842c-e2291b1a1a55",
+      "route": "Legal, finance and accounting"
+    },
+    {
+      "id": "5c59c64b-e985-43f7-b908-462992c5f40b",
+      "route": "Protective services"
+    },
+    {
+      "id": "70d8811e-6287-4390-bd15-67a083387ef0",
+      "route": "Sales, marketing and procurement"
+    },
+    {
+      "id": "084d615b-471b-482b-bc60-563c85dc0d46",
+      "route": "Transport and logistics"
+    }
+  ],
+  "levels": [{
+    "code": 2,
+    "name": "GCSE grades 9 to 4"
+  }, {
+    "code": 3,
+    "name": "A level"
+  }, {
+    "code": 4,
+    "name": "HNC"
+  }, {
+    "code": 5,
+    "name": "foundation degree"
+  }, {
+    "code": 6,
+    "name": "degree"
+  }, {
+    "code": 7,
+    "name": "master’s degree"
+  }]
 }

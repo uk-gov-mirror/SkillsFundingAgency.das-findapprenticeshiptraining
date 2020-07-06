@@ -17,14 +17,15 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourses
 
         public async Task<GetCoursesResult> Handle(GetCoursesQuery query, CancellationToken cancellationToken)
         {
-            var response = await _courseService.GetCourses(query.Keyword, query.RouteIds);
+            var response = await _courseService.GetCourses(query.Keyword, query.RouteIds, query.Levels);
 
             return new GetCoursesResult
             {
                 Courses = response.Courses.ToList(),
                 Sectors = response.Sectors.ToList(),
                 Total = response.Total,
-                TotalFiltered = response.TotalFiltered
+                TotalFiltered = response.TotalFiltered,
+                Levels = response.Levels.ToList()
             };
         }
     }

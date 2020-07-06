@@ -13,5 +13,7 @@ namespace SFA.DAS.FAT.Domain.Courses
         public int TotalFiltered { get; set; }
         [JsonProperty("sectors")]
         public List<Sector> Sectors { get; set; }
+        [JsonProperty("levels")]
+        public List<Level> Levels { get; set; }
     }
 }

@@ -10,7 +10,8 @@
                 <div class="das-filter__header">
                     <h2 class="das-filter__heading">Filter</h2>
                 </div>
-                @if (Model.ClearSectorLinks.Any() || !string.IsNullOrEmpty(Model.Keyword))
+                
+                @if (Model.ClearSectorLinks.Any() || Model.ClearLevelLinks.Any() || !string.IsNullOrEmpty(Model.Keyword))
                 {
                     <div class="das-filter__selected-filters">
                         <div class="das-filter__selected-header">
@@ -30,6 +31,14 @@
                                 <a class="das-filter__tag" asp-querystring="@filterLink.Value" title="Clear this sector filter @filterLink.Key">@filterLink.Key</a>
                             }
                         }
+                        @if (Model.ClearLevelLinks.Any())
+                        {
+                            <h4 class="das-filter__selected-sub-heading">Level</h4>
+                            @foreach (var levelLink in Model.ClearLevelLinks)
+                            {
+                                <a class="das-filter__tag" asp-querystring="@levelLink.Value" title="Clear this level filter @levelLink.Key">@levelLink.Key</a>
+                            }
+                        }
                     </div>
                 
                 }
@@ -45,7 +54,7 @@
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                                     Sector
                                 </legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">                           
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
                                     @foreach (var sector in Model.Sectors)
                                     {
                                         <div class="govuk-checkboxes__item">
@@ -54,10 +63,29 @@
                                                 @sector.Route
                                             </label>
                                         </div>
-                                    } 
+                                    }
                                 </div>
                             </fieldset>
                         </div>
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    Level
+                                </legend>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    @foreach (var level in Model.Levels)
+                                    {
+                                        <div class="govuk-checkboxes__item">
+                                            <input @(level.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="level-@level.Code" name="levels" type="checkbox" value="@level.Code" />
+                                            <label class="govuk-label govuk-checkboxes__label" for="level-@level.Code">
+                                                @level.Title
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                            </fieldset>
+                        </div>
+                        <p class="govuk-body govuk-!-font-size-16"><a class="govuk-link govuk-link--no-visited-state" href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels" target="_blank" rel="external">What levels mean (opens in new tab or window)</a></p>
                     </form>
                 </div>
             </div>

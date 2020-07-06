@@ -29,4 +29,8 @@
     </SpecFlowFeatureFiles>
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Features\Home.feature" />
+  </ItemGroup>
+
 </Project>

@@ -26,17 +26,20 @@ namespace SFA.DAS.FAT.Web.Controllers
             var result = await _mediator.Send(new GetCoursesQuery
             {
                 Keyword = request.Keyword,
-                RouteIds = request.Sectors
+                RouteIds = request.Sectors,
+                Levels = request.Levels
             });
 
             var viewModel = new CoursesViewModel
             {
-                Courses = result.Courses.Select(c=>(CourseViewModel)c).ToList(),
+                Courses = result.Courses.Select(c => (CourseViewModel)c).ToList(),
                 Sectors = result.Sectors.Select(sector => new SectorViewModel(sector, request.Sectors)).ToList(),
                 Total = result.Total,
                 TotalFiltered = result.TotalFiltered,
                 Keyword = request.Keyword,
-                SelectedSectors = request.Sectors
+                SelectedSectors = request.Sectors,
+                SelectedLevels = request.Levels,
+                Levels = result.Levels.Select(level => new LevelViewModel(level, request.Levels)).ToList()
             };
             
             return View(viewModel);

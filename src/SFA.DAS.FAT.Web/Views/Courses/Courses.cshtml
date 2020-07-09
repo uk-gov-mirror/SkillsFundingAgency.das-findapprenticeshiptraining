@@ -1,9 +1,5 @@
-﻿@using Microsoft.EntityFrameworkCore
-@using SFA.DAS.FAT.Web.Infrastructure
+﻿@using SFA.DAS.FAT.Web.Infrastructure
 @model SFA.DAS.FAT.Web.Models.CoursesViewModel
-@{
-    var ShowFilterOptions = Model.ClearSectorLinks.Any() || Model.ClearLevelLinks.Any() || !string.IsNullOrEmpty(Model.Keyword);
-}
 
 <main class="govuk-main-wrapper" id="main-content" role="main">
     <div class="govuk-grid-row">
@@ -18,7 +14,7 @@
                     <div class="das-filter__header">
                         <h2 class="das-filter__heading">Filter</h2>
                     </div>
-                    @if (ShowFilterOptions)
+                    @if (Model.ShowFilterOptions)
                     {
                         <div class="das-filter__selected-filters">
                             <div class="das-filter__selected-header">
@@ -96,7 +92,7 @@
                         </form>
                     </div>
                 </div>
-                <button class="govuk-button das-filter__toggle das-show-hide__button das-!-show--mobile" data-aria-controls="fat-filter@(ShowFilterOptions ? "-options" : "")" data-button-string="filter @(ShowFilterOptions ? " options" : "")" data-focus-id="Keyword">Show/hide</button>
+                <button class="govuk-button das-filter__toggle das-show-hide__button das-!-show--mobile" data-aria-controls="fat-filter@(Model.ShowFilterOptions ? "-options" : "")" data-button-string="filter @(Model.ShowFilterOptions ? " options" : "")" data-focus-id="Keyword">Show/hide</button>
             </div>
         </div>
         <div class="govuk-grid-column-two-thirds">

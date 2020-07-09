@@ -4,6 +4,7 @@ using System.Linq;
 using AutoFixture;
 using AutoFixture.NUnit3;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 using NUnit.Framework;
 using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Web.Models;
@@ -147,8 +148,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
                 Assert.AreEqual(clearLinkCount-1, model.ClearSectorLinks.Count(c=>c.Value.Contains($"sectors={selectedRoute}")));    
                 Assert.AreEqual(clearLinkCount, model.ClearSectorLinks.Count(c=>c.Value.Contains($"keyword={keyword}")));    
             }
-
-            
         }
 
         [Test, AutoData]
@@ -204,6 +203,44 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
                 Assert.AreEqual(clearSectorsLinkCount, model.ClearSectorLinks.Count(c=>c.Value.Contains($"?keyword={keyword}")));    
                 Assert.AreEqual(clearSectorsLinkCount, model.ClearSectorLinks.Count(c=>c.Value.Contains("&levels=" + string.Join("&levels=", model.SelectedLevels))));    
             }
+        }
+
+        [Test, AutoData]
+        public void Then_If_There_Are_Filtered_Levels_Sectors_Keywords_The_ShowFilterOptions_Property_Is_True(List<int> selectedLevels, List<Guid> selectedRoutes, string keyword)
+        {
+            //Arrange Act
+            var model = BuildCoursesViewModel(selectedRoutes, keyword, selectedLevels);
+            
+            //Assert
+            Assert.IsTrue(model.ShowFilterOptions); 
+        }
+        [Test, AutoData]
+        public void Then_If_There_Are_Filtered_Sectors_Keywords_The_ShowFilterOptions_Property_Is_True(List<Guid> selectedRoutes, string keyword)
+        {
+            //Arrange Act
+            var model = BuildCoursesViewModel(selectedRoutes, keyword, new List<int>());
+            
+            //Assert
+            Assert.IsTrue(model.ShowFilterOptions); 
+        }
+        
+        [Test, AutoData]
+        public void Then_If_There_Are_Filtered_Keywords_The_ShowFilterOptions_Property_Is_True(string keyword)
+        {
+            //Arrange Act
+            var model = BuildCoursesViewModel(new List<Guid>(), keyword, new List<int>());
+            
+            //Assert
+            Assert.IsTrue(model.ShowFilterOptions); 
+        }
+        [Test]
+        public void Then_If_There_Are_No_Filtered_Options_The_ShowFilterOptions_Property_Is_False()
+        {
+            //Arrange Act
+            var model = BuildCoursesViewModel(new List<Guid>(), "", new List<int>());
+            
+            //Assert
+            Assert.IsFalse(model.ShowFilterOptions); 
         }
         
         private static CoursesViewModel BuildCoursesViewModel(List<Guid> selectedRoutes, string keyword, List<int> selectedLevels)

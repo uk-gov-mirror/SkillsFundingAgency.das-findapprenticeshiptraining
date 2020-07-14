@@ -9,5 +9,7 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourses
         public string Keyword { get; set; }
         public List<Guid> RouteIds { get; set; }
         public List<int> Levels { get; set; }
+
+        public string OrderBy { get; set; }
     }
 }

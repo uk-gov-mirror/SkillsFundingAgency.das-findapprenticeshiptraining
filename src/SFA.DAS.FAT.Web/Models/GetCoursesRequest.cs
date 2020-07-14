@@ -14,5 +14,8 @@ namespace SFA.DAS.FAT.Web.Models
         [FromQuery]
         public List<int> Levels { get; set; }
 
+        [FromQuery]
+        public string OrderBy { get; set; }
+
     }
 }

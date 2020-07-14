@@ -97,11 +97,10 @@
                     
                     if (!string.IsNullOrEmpty(Model.Keyword))
                     {
-                        <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
-        
-                            <span class="govuk-!-font-weight-bold">Relevance</span>, 
-                            <a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.Training">Name</a>
-        
+                        <p class="govuk-body govuk-!-margin-bottom-6">
+                            Sort by:
+                            <span class="govuk-!-font-weight-bold">Relevance</span>,
+                            <a class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildKeywordOrder">Name</a>
                         </p>
                     }
                     else

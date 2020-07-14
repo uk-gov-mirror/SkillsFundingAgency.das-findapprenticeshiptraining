@@ -18,6 +18,8 @@ namespace SFA.DAS.FAT.Web.Models
         public string ClearKeywordLink => BuildClearKeywordFilterLink();
         public List<int> SelectedLevels { get ; set ; }
         public Dictionary<string, string> ClearLevelLinks => BuildClearLevelsFilterLink();
+        public string BuildKeywordOrder => BuildKeywordOrderByNameLink();
+
 
         private string GetTotalMessage()
         {
@@ -28,6 +30,22 @@ namespace SFA.DAS.FAT.Web.Models
                                     : TotalFiltered;
 
             return $"{totalToUse} result" + (totalToUse!=1 ? "s": "");
+        }
+        private string BuildKeywordOrderByNameLink()
+        {
+            // If Selectors add it to the URL
+            var buildKeywordOrderByNameLink = SelectedSectors != null && SelectedSectors.Any() ? "?sectors=" + string.Join("&sectors=", SelectedSectors) : "";
+
+            // place the above Sector build on each occurence of '?' or '&'?
+            var separator = string.IsNullOrEmpty(buildKeywordOrderByNameLink) ? "?" : "&";
+
+            // Because you can have multple Levels this will also build the levels
+            buildKeywordOrderByNameLink += SelectedLevels != null && SelectedLevels.Any() ? $"{separator}levels=" + string.Join("&levels=", SelectedLevels) : "";
+
+            // Now add the keyword
+            buildKeywordOrderByNameLink += Keyword != null ? $"{separator}Keyword=" + string.Join("&keywords=", Keyword) : "";
+
+            return buildKeywordOrderByNameLink;
         }
 
         private string BuildClearKeywordFilterLink()

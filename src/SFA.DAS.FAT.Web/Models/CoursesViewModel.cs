@@ -21,9 +21,7 @@ namespace SFA.DAS.FAT.Web.Models
         public string BuildKeywordOrder => BuildKeywordOrderByNameLink();
         public string KeywordOrderByRelevance => BuildKeywordOrderByRelevanceLink();
 
-        /**/
         public string OrderBy { get; set; }
-        /**/
 
 
         private string GetTotalMessage()
@@ -40,13 +38,8 @@ namespace SFA.DAS.FAT.Web.Models
         {
             OrderBy = "Relevance";
 
-            // Now add the keyword
             var buildKeywordOrderByNameLink = Keyword != null ? $"?Keyword=" + string.Join("?keywords=", Keyword) : "";
-
-            // place the above Sector build on each occurence of '?' or '&'?
             var separator = string.IsNullOrEmpty(buildKeywordOrderByNameLink) ? "?" : "&";
-
-            // Now add the order
             buildKeywordOrderByNameLink += OrderBy != null ? $"{separator}OrderBy=" + string.Join("&orderby=", OrderBy) : "";
 
             return buildKeywordOrderByNameLink;
@@ -56,13 +49,8 @@ namespace SFA.DAS.FAT.Web.Models
         {
             OrderBy = "Name";
 
-            // Now add the keyword
             var buildKeywordOrderByNameLink = Keyword != null ? $"?Keyword=" + string.Join("?keywords=", Keyword) : "";
-
-            // place the above Sector build on each occurence of '?' or '&'?
             var separator = string.IsNullOrEmpty(buildKeywordOrderByNameLink) ? "?" : "&";
-
-            // Now add the order
             buildKeywordOrderByNameLink += OrderBy != null ? $"{separator}OrderBy=" + string.Join("&orderby=", OrderBy) : "";
             
             /*

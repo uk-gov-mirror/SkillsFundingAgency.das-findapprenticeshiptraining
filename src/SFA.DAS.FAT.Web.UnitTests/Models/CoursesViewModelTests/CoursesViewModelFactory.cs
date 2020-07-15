@@ -21,15 +21,12 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
                         Route = fixture.Create<string>()
                     }, null))
                 .ToList();
-​
             var levels = selectedLevels
                 .Select(selectedLevel => new LevelViewModel(
-​
                     new Level
                     {
                         Code = selectedLevel,
                         Name = fixture.Create<string>()
-​
                     }, null))
                 .ToList();
 

@@ -12,70 +12,11 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
 {
     public class WhenCreatingCoursesViewModel
     {
-        [TestCase(10, 5, "", "10 results")]
-        [TestCase(10, 5, "test", "5 results")]
-        [TestCase(1, 5, "", "1 result")]
-        [TestCase(5, 1, "test", "1 result")]
-        [TestCase(0, 5, "", "0 results")]
-        [TestCase(5, 0, "test", "0 results")]
-        public void Then_The_Total_Message_Is_Created_Correctly(int totalCount,int filterTotal, string keyword, string expectedMessage)
-        {
-            var viewModel = new CoursesViewModel
-            {
-                Total = totalCount,
-                TotalFiltered = filterTotal,
-                Keyword = keyword
-            };
-
-            viewModel.TotalMessage.Should().Be(expectedMessage);
-        }
-
-        [Test, AutoData]
-        public void Then_The_Total_Message_Uses_Filtered_Total_If_There_Are_Selected_Filters()
-        {
-            var viewModel = new CoursesViewModel
-            {
-                Total = 10,
-                TotalFiltered = 5,
-                SelectedSectors = new List<Guid>{new Guid()}
-            };
-
-            viewModel.TotalMessage.Should().Be("5 results");
-        }
-
-        [Test, AutoData]
-        public void Then_The_Total_Message_Uses_Filtered_Total_If_There_Are_Selected_Levels()
-        {
-            var viewModel = new CoursesViewModel
-            {
-                Total = 10,
-                TotalFiltered = 5,
-                SelectedLevels = new List<int>{1}
-            };
-
-            viewModel.TotalMessage.Should().Be("5 results");
-        }
-
-        [Test, AutoData]
-        public void Then_The_Total_Message_Uses_Filtered_Total_If_There_Are_Selected_Levels_Sectors_And_Keyword()
-        {
-            var viewModel = new CoursesViewModel
-            {
-                Total = 10,
-                TotalFiltered = 5,
-                SelectedLevels = new List<int>{1},
-                SelectedSectors = new List<Guid>{new Guid()},
-                Keyword = "Test"
-            };
-
-            viewModel.TotalMessage.Should().Be("5 results");
-        }
-
         [Test, AutoData]
         public void Then_No_Filter_Items_Builds_Correct_Clear_Links()
         {
             //Arrange
-            var viewModel = new CoursesViewModel();
+            var viewModel = new Web.Models.CoursesViewModel();
             
             //Assert
             viewModel.ClearKeywordLink.Should().BeEmpty();
@@ -86,7 +27,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword(string keyword)
         {
             //Arrange Act
-            var model = new CoursesViewModel
+            var model = new Web.Models.CoursesViewModel
             {
                 Keyword = keyword,
             };
@@ -100,7 +41,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_Sectors(List<Guid> selectedRoutes, string keyword)
         {
             //Arrange Act
-            var model = BuildCoursesViewModel(selectedRoutes, keyword, new List<int>());
+            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, new List<int>());
 
             //Assert
             Assert.IsNotNull(model.ClearKeywordLink);
@@ -111,7 +52,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_Levels(List<int> selectedLevels, string keyword)
         {
             //Arrange Act
-            var model = BuildCoursesViewModel(new List<Guid>(), keyword, selectedLevels);
+            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels);
 
             //Assert
             Assert.IsNotNull(model.ClearKeywordLink);
@@ -121,7 +62,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_Sectors_And_Levels(List<Guid> selectedRoutes,List<int> selectedLevels, string keyword)
         {
             //Arrange Act
-            var model = BuildCoursesViewModel(selectedRoutes, keyword, selectedLevels);
+            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels);
 
             //Assert
             Assert.IsNotNull(model.ClearKeywordLink);
@@ -132,7 +73,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Sectors(List<Guid> selectedRoutes, string keyword)
         {
             //Arrange Act
-            var model = BuildCoursesViewModel(selectedRoutes, keyword, new List<int>());
+            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, new List<int>());
 
             //Assert
             var clearLinkCount = selectedRoutes.Count;
@@ -155,7 +96,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels(List<int> selectedLevels, string keyword)
         {
             //Arrange Act
-            var model = BuildCoursesViewModel(new List<Guid>(), keyword, selectedLevels);
+            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels);
 
             //Assert
             var clearLinkCount = selectedLevels.Count;
@@ -176,7 +117,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels_And_Sectors(List<int> selectedLevels, List<Guid> selectedRoutes, string keyword)
         {
             //Arrange Act
-            var model = BuildCoursesViewModel(selectedRoutes, keyword, selectedLevels);
+            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels);
 
             //Assert
             var clearSectorsLinkCount = selectedRoutes.Count;

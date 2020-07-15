@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModel
 {
-    class WhenOrderingLinks
+    class WhenOrderingLinksByRelevance
     {
     }
 }

@@ -26,7 +26,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModel
         public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_Sectors(List<Guid> selectedRoutes, string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, new List<int>());
+            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, new List<int>(), null);
 
             //Assert
             Assert.IsNotNull(model.ClearKeywordLink);
@@ -37,7 +37,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModel
         public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_Levels(List<int> selectedLevels, string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels);
+            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels, null);
 
             //Assert
             Assert.IsNotNull(model.ClearKeywordLink);
@@ -47,7 +47,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModel
         public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_Sectors_And_Levels(List<Guid> selectedRoutes, List<int> selectedLevels, string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels);
+            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels, null);
 
             //Assert
             Assert.IsNotNull(model.ClearKeywordLink);

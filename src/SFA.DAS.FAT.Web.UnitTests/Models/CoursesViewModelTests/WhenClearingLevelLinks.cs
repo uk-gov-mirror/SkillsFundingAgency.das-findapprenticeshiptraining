@@ -13,7 +13,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModel
         public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels(List<int> selectedLevels, string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels);
+            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels, null);
 
             //Assert
             var clearLinkCount = selectedLevels.Count;

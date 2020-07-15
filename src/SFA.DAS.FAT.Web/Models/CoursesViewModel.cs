@@ -22,8 +22,8 @@ namespace SFA.DAS.FAT.Web.Models
         public Dictionary<string, string> ClearSectorLinks => BuildClearSelectedFilterLink();
         public string ClearKeywordLink => BuildClearKeywordFilterLink();
         public Dictionary<string, string> ClearLevelLinks => BuildClearLevelsFilterLink();
-        public string BuildKeywordOrder => BuildKeywordOrderByNameLink();
-        public string KeywordOrderByRelevance => BuildKeywordOrderByRelevanceLink();
+        public string OrderByName => BuildOrderByNameLink();
+        public string OrderByRelevance => BuildKeywordOrderByRelevanceLink();
 
         /******************************/
 
@@ -48,25 +48,25 @@ namespace SFA.DAS.FAT.Web.Models
             return buildKeywordOrderByNameLink;
         }
 
-        private string BuildKeywordOrderByNameLink()
+        private string BuildOrderByNameLink()
         {
             OrderBy = "Name";
 
-            var buildKeywordOrderByNameLink = Keyword != null ? $"?Keyword=" + string.Join("?keywords=", Keyword) : "";
-            var separator = string.IsNullOrEmpty(buildKeywordOrderByNameLink) ? "?" : "&";
-            buildKeywordOrderByNameLink += OrderBy != null ? $"{separator}OrderBy=" + string.Join("&orderby=", OrderBy) : "";
+            var buildOrderByNameLink = OrderBy != null ? $"?OrderBy=" + string.Join("&orderby=", OrderBy) : "";
+            var separator = string.IsNullOrEmpty(buildOrderByNameLink) ? "?" : "&";
+            buildOrderByNameLink += Keyword != null ? $"{separator}Keyword=" + string.Join("?keywords=", Keyword) : "";
             
             /*
 
             // If Selectors add it to the URL
-            buildKeywordOrderByNameLink += SelectedSectors != null && SelectedSectors.Any() ? $"{separator}sectors=" + string.Join("&sectors=", SelectedSectors) : "";
+            buildOrderByNameLink += SelectedSectors != null && SelectedSectors.Any() ? $"{separator}sectors=" + string.Join("&sectors=", SelectedSectors) : "";
 
 
             // Because you can have multple Levels this will also build the levels
-            buildKeywordOrderByNameLink += SelectedLevels != null && SelectedLevels.Any() ? $"{separator}levels=" + string.Join("&levels=", SelectedLevels) : "";
+            buildOrderByNameLink += SelectedLevels != null && SelectedLevels.Any() ? $"{separator}levels=" + string.Join("&levels=", SelectedLevels) : "";
             */
 
-            return buildKeywordOrderByNameLink;
+            return buildOrderByNameLink;
         }
 
         private string BuildClearKeywordFilterLink()

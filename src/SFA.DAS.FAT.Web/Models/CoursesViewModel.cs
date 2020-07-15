@@ -12,17 +12,20 @@ namespace SFA.DAS.FAT.Web.Models
         public int TotalFiltered { get ; set ; }
         public List<LevelViewModel> Levels { get; set; }
         public List<SectorViewModel> Sectors { get ; set ; }
-        public string TotalMessage => GetTotalMessage();
         public List<Guid> SelectedSectors { get ; set ; }
+        public List<int> SelectedLevels { get ; set ; }
+        public string OrderBy { get; set; }
+
+        /******************************/
+
+        public string TotalMessage => GetTotalMessage();
         public Dictionary<string, string> ClearSectorLinks => BuildClearSelectedFilterLink();
         public string ClearKeywordLink => BuildClearKeywordFilterLink();
-        public List<int> SelectedLevels { get ; set ; }
         public Dictionary<string, string> ClearLevelLinks => BuildClearLevelsFilterLink();
         public string BuildKeywordOrder => BuildKeywordOrderByNameLink();
         public string KeywordOrderByRelevance => BuildKeywordOrderByRelevanceLink();
 
-        public string OrderBy { get; set; }
-
+        /******************************/
 
         private string GetTotalMessage()
         {

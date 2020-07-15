@@ -206,38 +206,5 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             }
         }
         
-        private static CoursesViewModel BuildCoursesViewModel(List<Guid> selectedRoutes, string keyword, List<int> selectedLevels)
-        {
-            var fixture = new Fixture();
-            var sectors = selectedRoutes
-                .Select(selectedRoute => new SectorViewModel(
-                    new Sector
-                    {
-                        Id = selectedRoute,
-                        Route = fixture.Create<string>()
-                    }, null))
-                .ToList();
-
-            var levels = selectedLevels
-                .Select(selectedLevel => new LevelViewModel(
-
-                    new Level
-                    {
-                        Code = selectedLevel,
-                        Name = fixture.Create<string>()
-
-                    }, null))
-                .ToList();
-            
-            var model = new CoursesViewModel
-            {
-                Sectors = sectors,
-                Levels = levels,
-                Keyword = keyword,
-                SelectedSectors = selectedRoutes,
-                SelectedLevels = selectedLevels
-            };
-            return model;
-        }
     }
 }

@@ -102,18 +102,16 @@
             @if (@Model.OrderBy == "Name")
             {
                 <span class="govuk-link govuk-link--no-visited-state">
-                    <a asp-querystring="@Model.KeywordOrderByRelevance">Relevance</a>
+                    <a asp-querystring="@Model.KeywordOrderByRelevance">Relevance</a>,
                 </span>
-                <span>, </span>
-                <a class="govuk-!-font-weight-bold" asp-querystring="@Model.BuildKeywordOrder">Name</a>
+                <a class="govuk-!-font-weight-bold" asp-querystring="@Model.BuildKeywordOrder"> Name</a>
             }
             else
             {
                 <span class="govuk-!-font-weight-bold">
-                    <a asp-querystring="@Model.KeywordOrderByRelevance">Relevance</a>
+                    <a asp-querystring="@Model.KeywordOrderByRelevance">Relevance</a>,
                 </span>
-                <span>, </span>
-                <a class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildKeywordOrder">Name</a>
+                <a class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildKeywordOrder"> Name</a>
             }
 
         </p>

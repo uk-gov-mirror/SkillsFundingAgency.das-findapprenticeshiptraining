@@ -22,52 +22,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             viewModel.ClearKeywordLink.Should().BeEmpty();
             viewModel.ClearSectorLinks.Should().BeEmpty();
         }
-
-        [Test, AutoData]
-        public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword(string keyword)
-        {
-            //Arrange Act
-            var model = new Web.Models.CoursesViewModel
-            {
-                Keyword = keyword,
-            };
-            
-            //Assert
-            Assert.IsNotNull(model.ClearKeywordLink);
-            Assert.AreEqual("",model.ClearKeywordLink);
-        }
-        
-        [Test, AutoData]
-        public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_Sectors(List<Guid> selectedRoutes, string keyword)
-        {
-            //Arrange Act
-            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, new List<int>());
-
-            //Assert
-            Assert.IsNotNull(model.ClearKeywordLink);
-            Assert.AreEqual("?sectors=" + string.Join("&sectors=", model.SelectedSectors), model.ClearKeywordLink);
-        }
-
-        [Test, AutoData]
-        public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_Levels(List<int> selectedLevels, string keyword)
-        {
-            //Arrange Act
-            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels);
-
-            //Assert
-            Assert.IsNotNull(model.ClearKeywordLink);
-            Assert.AreEqual("?levels=" + string.Join("&levels=", model.SelectedLevels), model.ClearKeywordLink);
-        }
-        [Test, AutoData]
-        public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_Sectors_And_Levels(List<Guid> selectedRoutes,List<int> selectedLevels, string keyword)
-        {
-            //Arrange Act
-            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels);
-
-            //Assert
-            Assert.IsNotNull(model.ClearKeywordLink);
-            Assert.AreEqual("?sectors=" + string.Join("&sectors=", model.SelectedSectors) + "&levels=" + string.Join("&levels=", model.SelectedLevels), model.ClearKeywordLink);
-        }
         
         [Test, AutoData]
         public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Sectors(List<Guid> selectedRoutes, string keyword)

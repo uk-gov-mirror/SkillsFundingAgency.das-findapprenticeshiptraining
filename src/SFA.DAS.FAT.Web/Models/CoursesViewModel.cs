@@ -19,6 +19,7 @@ namespace SFA.DAS.FAT.Web.Models
         public List<int> SelectedLevels { get ; set ; }
         public Dictionary<string, string> ClearLevelLinks => BuildClearLevelsFilterLink();
         public string BuildKeywordOrder => BuildKeywordOrderByNameLink();
+        public string KeywordOrderByRelevance => BuildKeywordOrderByRelevanceLink();
 
         /**/
         public string OrderBy { get; set; }
@@ -35,10 +36,25 @@ namespace SFA.DAS.FAT.Web.Models
 
             return $"{totalToUse} result" + (totalToUse!=1 ? "s": "");
         }
+        private string BuildKeywordOrderByRelevanceLink()
+        {
+            OrderBy = "Relevance";
+
+            // Now add the keyword
+            var buildKeywordOrderByNameLink = Keyword != null ? $"?Keyword=" + string.Join("?keywords=", Keyword) : "";
+
+            // place the above Sector build on each occurence of '?' or '&'?
+            var separator = string.IsNullOrEmpty(buildKeywordOrderByNameLink) ? "?" : "&";
+
+            // Now add the order
+            buildKeywordOrderByNameLink += OrderBy != null ? $"{separator}OrderBy=" + string.Join("&orderby=", OrderBy) : "";
+
+            return buildKeywordOrderByNameLink;
+        }
+
         private string BuildKeywordOrderByNameLink()
         {
             OrderBy = "Name";
-
 
             // Now add the keyword
             var buildKeywordOrderByNameLink = Keyword != null ? $"?Keyword=" + string.Join("?keywords=", Keyword) : "";

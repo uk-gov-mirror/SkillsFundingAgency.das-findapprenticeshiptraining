@@ -33,14 +33,17 @@ namespace SFA.DAS.FAT.Web.Controllers
 
             var viewModel = new CoursesViewModel
             {
-                Courses = result.Courses.Select(c => (CourseViewModel)c).ToList(),
+                Courses = request.OrderBy == "Name" ? 
+                    result.Courses.Select(c => (CourseViewModel)c).OrderBy(x => x.Title).ToList() :
+                    result.Courses.Select(c => (CourseViewModel)c).ToList(),
                 Sectors = result.Sectors.Select(sector => new SectorViewModel(sector, request.Sectors)).ToList(),
                 Total = result.Total,
                 TotalFiltered = result.TotalFiltered,
                 Keyword = request.Keyword,
                 SelectedSectors = request.Sectors,
                 SelectedLevels = request.Levels,
-                Levels = result.Levels.Select(level => new LevelViewModel(level, request.Levels)).ToList()
+                Levels = result.Levels.Select(level => new LevelViewModel(level, request.Levels)).ToList(),
+                OrderBy = request.OrderBy
             };
             
             return View(viewModel);

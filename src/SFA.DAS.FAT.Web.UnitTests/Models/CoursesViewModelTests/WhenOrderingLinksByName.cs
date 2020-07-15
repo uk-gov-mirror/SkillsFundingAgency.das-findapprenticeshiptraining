@@ -3,6 +3,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
@@ -26,29 +27,38 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             // Assert
             model.OrderByName.Should​().Be($"?OrderBy=Name&Keyword={model.Keyword}");
         }
-//​
-//        [Test]
-//        public void And_Then_Adds_Sectors_To_Query_String()
-//        {
-//            // Arrange Act
-//            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), null, new List<int>(), "Name");
-//            // Assert​
-//        }
-//​
-//        [Test]
-//        public void And_Then_Adds_Levels_To_Query_String()
-//        {
-//            // Arrange Act
-//            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), null, new List<int>(), "Name");
-//            // Assert​
-//        }
-//​
-//        [Test]
-//        public void And_Then_Adds_Sectors_And_Levels_To_Query_String()
-//        {
-//            // Arrange Act
-//            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), null, new List<int>(), "Name");
-//            // Assert
-//        }
+        
+        [Test, AutoData]
+        public void And_Then_Adds_Sectors_To_Query_String(List<Guid> selectedRoutes)
+        {
+            // Arrange 
+            var buildSectorLink = "";
+            
+            // Act
+            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, null, new List<int>(), "Name");
+            foreach (var selectedRoute in selectedRoutes)
+            {
+                buildSectorLink += model.SelectedSectors != null && model.SelectedSectors.Any() ? $"&Sectors=" + string.Join("&Sectors=", selectedRoute) : "";
+            }
+
+            // Assert​
+            model.OrderByName.Should().Be($"?OrderBy=Name{buildSectorLink}");
+        }
+        //​
+        //        [Test]
+        //        public void And_Then_Adds_Levels_To_Query_String()
+        //        {
+        //            // Arrange Act
+        //            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), null, new List<int>(), "Name");
+        //            // Assert​
+        //        }
+        //​
+        //        [Test]
+        //        public void And_Then_Adds_Sectors_And_Levels_To_Query_String()
+        //        {
+        //            // Arrange Act
+        //            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), null, new List<int>(), "Name");
+        //            // Assert
+        //        }
     }
 }

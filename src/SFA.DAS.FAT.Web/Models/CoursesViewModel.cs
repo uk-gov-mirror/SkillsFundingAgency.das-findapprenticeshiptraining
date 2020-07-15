@@ -55,11 +55,9 @@ namespace SFA.DAS.FAT.Web.Models
             var buildOrderByNameLink = OrderBy != null ? $"?OrderBy=" + string.Join("&orderby=", OrderBy) : "";
             var separator = string.IsNullOrEmpty(buildOrderByNameLink) ? "?" : "&";
             buildOrderByNameLink += Keyword != null ? $"{separator}Keyword=" + string.Join("?keywords=", Keyword) : "";
-            
-            /*
+            buildOrderByNameLink += SelectedSectors != null && SelectedSectors.Any() ? $"{separator}Sectors=" + string.Join("&Sectors=", SelectedSectors) : "";
 
-            // If Selectors add it to the URL
-            buildOrderByNameLink += SelectedSectors != null && SelectedSectors.Any() ? $"{separator}sectors=" + string.Join("&sectors=", SelectedSectors) : "";
+            /*
 
 
             // Because you can have multple Levels this will also build the levels

@@ -56,13 +56,7 @@ namespace SFA.DAS.FAT.Web.Models
             var separator = string.IsNullOrEmpty(buildOrderByNameLink) ? "?" : "&";
             buildOrderByNameLink += Keyword != null ? $"{separator}Keyword=" + string.Join("?keywords=", Keyword) : "";
             buildOrderByNameLink += SelectedSectors != null && SelectedSectors.Any() ? $"{separator}Sectors=" + string.Join("&Sectors=", SelectedSectors) : "";
-
-            /*
-
-
-            // Because you can have multple Levels this will also build the levels
-            buildOrderByNameLink += SelectedLevels != null && SelectedLevels.Any() ? $"{separator}levels=" + string.Join("&levels=", SelectedLevels) : "";
-            */
+            buildOrderByNameLink += SelectedLevels != null && SelectedLevels.Any() ? $"{separator}Levels=" + string.Join("&Levels=", SelectedLevels) : "";
 
             return buildOrderByNameLink;
         }

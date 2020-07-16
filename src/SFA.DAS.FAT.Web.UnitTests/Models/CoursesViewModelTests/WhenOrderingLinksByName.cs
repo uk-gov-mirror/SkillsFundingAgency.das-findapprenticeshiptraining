@@ -53,21 +53,35 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             // Act
             var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), null, selectedLevels, "Name");
             
-            // Assert​
             foreach (var selectedLevel in selectedLevels)
             {
                 buildLevelsLink += model.SelectedLevels != null && model.SelectedLevels.Any() ? $"&Levels=" + string.Join("Levels=", selectedLevel) : "";
             }
 
+            // Assert​
             model.OrderByName.Should().Be($"?OrderBy=Name{buildLevelsLink}");
         }
-        //​
-        //        [Test]
-        //        public void And_Then_Adds_Sectors_And_Levels_To_Query_String()
-        //        {
-        //            // Arrange Act
-        //            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), null, new List<int>(), "Name");
-        //            // Assert
-        //        }
+        [Test, AutoData]
+        public void And_Then_Adds_Sectors_And_Levels_To_Query_String(List<int> selectedLevels, List<Guid> selectedRoutes)
+        {
+            // Arrange 
+            var buildLevelsLink = "";
+            var buildSectorLink = "";
+
+            // Act
+            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), null, new List<int>(), "Name");
+            foreach (var selectedLevel in selectedLevels)
+            {
+                buildLevelsLink += model.SelectedLevels != null && model.SelectedLevels.Any() ? $"&Levels=" + string.Join("Levels=", selectedLevel) : "";
+            }
+
+            foreach (var selectedRoute in selectedRoutes)
+            {
+                buildSectorLink += model.SelectedSectors != null && model.SelectedSectors.Any() ? $"&Sectors=" + string.Join("&Sectors=", selectedRoute) : "";
+            }
+
+            // Assert
+            model.OrderByName.Should().Be($"?OrderBy=Name{buildLevelsLink}{buildSectorLink}");
+        }
     }
 }

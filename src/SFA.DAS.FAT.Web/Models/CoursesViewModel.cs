@@ -35,9 +35,9 @@ namespace SFA.DAS.FAT.Web.Models
         }
         private string BuildOrderByRelevanceLink()
         {
-            OrderBy = "Relevance";
+            OrderBy = "relevance";
 
-            var buildOrderByRelevanceLink = OrderBy != null ? $"?orderBy=" + string.Join("&orderby=", OrderBy) : "";
+            var buildOrderByRelevanceLink = OrderBy != null ? $"?orderby=" + string.Join("&orderby=", OrderBy) : "";
             var separator = string.IsNullOrEmpty(buildOrderByRelevanceLink) ? "?" : "&";
 
             buildOrderByRelevanceLink += Keyword != null ? $"{separator}keyword=" + string.Join("?keywords=", Keyword) : "";
@@ -49,9 +49,9 @@ namespace SFA.DAS.FAT.Web.Models
 
         private string BuildOrderByNameLink()
         {
-            OrderBy = "Name";
+            OrderBy = "name";
 
-            var buildOrderByNameLink = OrderBy != null ? $"?orderBy=" + string.Join("&orderby=", OrderBy) : "";
+            var buildOrderByNameLink = OrderBy != null ? $"?orderby=" + string.Join("&orderby=", OrderBy) : "";
             var separator = string.IsNullOrEmpty(buildOrderByNameLink) ? "?" : "&";
 
             buildOrderByNameLink += Keyword != null ? $"{separator}keyword=" + string.Join("?keywords=", Keyword) : "";

@@ -1,4 +1,5 @@
 ﻿using AutoFixture.NUnit3;
+using FluentAssertions;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,17 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModel
 {
     class WhenBuildingKeywordLink
     {
+        [Test, AutoData]
+        public void Then_No_Filter_Items_Builds_Correct_Clear_Links()
+        {
+            //Arrange
+            var viewModel = new Web.Models.CoursesViewModel();
+
+            //Assert
+            viewModel.ClearKeywordLink.Should().BeEmpty();
+            viewModel.ClearSectorLinks.Should().BeEmpty();
+        }
+
         [Test, AutoData]
         public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword(string keyword)
         {

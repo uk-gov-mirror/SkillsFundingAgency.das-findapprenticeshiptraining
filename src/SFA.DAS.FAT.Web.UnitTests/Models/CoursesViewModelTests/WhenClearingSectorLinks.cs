@@ -12,7 +12,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Sectors(List<Guid> selectedRoutes, string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, new List<int>(), null);
+            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, new List<int>(), null);
 
             //Assert
             var clearLinkCount = selectedRoutes.Count;

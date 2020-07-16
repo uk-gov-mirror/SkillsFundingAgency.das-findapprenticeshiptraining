@@ -19,7 +19,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         }
 
         [Test, AutoData]
-        public void And_Then_Adds_Keyword_To_Query_String(string keyword)
+        public void Then_Adds_Keyword_To_Query_String(string keyword)
         {
             // Arrange Act
             var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, new List<int>(), "relevance");
@@ -43,6 +43,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             // Assert​
             model.OrderByRelevance.Should().Be($"?orderby=relevance{buildSectorLink}");
         }
+
         [Test, AutoData]
         public void And_Then_Adds_Levels_To_Query_String(List<int> selectedLevels)
         {
@@ -60,8 +61,9 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             // Assert​
             model.OrderByRelevance.Should().Be($"?orderby=relevance{buildLevelsLink}");
         }
+
         [Test, AutoData]
-        public void And_Then_Adds_Sectors_And_Levels_To_Query_String(List<int> selectedLevels, List<Guid> selectedRoutes)
+        public void Then_Adds_Sectors_And_Levels_To_Query_String(List<int> selectedLevels, List<Guid> selectedRoutes)
         {
             // Arrange 
             var buildLevelsLink = "";

@@ -12,7 +12,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels(List<int> selectedLevels, string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels, null);
+            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels, null);
 
             //Assert
             var clearLinkCount = selectedLevels.Count;
@@ -29,11 +29,33 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             }
         }
 
+        [Test, AutoData, Ignore("todo")]//todo: fix this
+        public void And_Has_Keyword_And_OrderBy_Then_Builds_QueryString_With_Keyword_And_OrderBy(List<int> selectedLevels, string keyword)
+        {
+            //Arrange Act
+            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels, "name");
+
+            //Assert
+            var clearLinkCount = selectedLevels.Count;
+            Assert.AreEqual(clearLinkCount, model.ClearLevelLinks.Count);
+
+            foreach (var selectedLevel in selectedLevels)
+            {
+                var levelViewModel = model.Levels.SingleOrDefault(c => c.Code.Equals(selectedLevel));
+
+                Assert.IsNotNull(levelViewModel);
+                Assert.IsTrue(model.ClearLevelLinks.ContainsKey(levelViewModel.Title));
+                Assert.AreEqual(clearLinkCount - 1, model.ClearLevelLinks.Count(c => c.Value.Contains($"levels={selectedLevel}")));
+                Assert.AreEqual(clearLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains($"keyword={keyword}")));
+                Assert.AreEqual(clearLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains($"orderby=name")));
+            }
+        }
+
         [Test, AutoData]
         public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels_And_Sectors(List<int> selectedLevels, List<Guid> selectedRoutes, string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels, null);
+            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels, null);
 
             //Assert
             var clearSectorsLinkCount = selectedRoutes.Count;

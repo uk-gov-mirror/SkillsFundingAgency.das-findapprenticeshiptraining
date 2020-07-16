@@ -9,7 +9,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 {
     public static class CoursesViewModelFactory
     {
-        public static Web.Models.CoursesViewModel BuildModel(List<Guid> selectedRoutes, string keyword, List<int> selectedLevels, string order)
+        public static CoursesViewModel BuildModel(List<Guid> selectedRoutes, string keyword, List<int> selectedLevels, string order)
         {
             var fixture = new Fixture();
             var sectors = selectedRoutes
@@ -29,7 +29,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
                     }, null))
                 .ToList();
 
-            var model = new Web.Models.CoursesViewModel
+            var model = new CoursesViewModel
             {
                 Sectors = sectors,
                 Levels = levels,

@@ -37,7 +37,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_Sectors(List<Guid> selectedRoutes, string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, new List<int>(), null);
+            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, new List<int>(), null);
 
             //Assert
             Assert.IsNotNull(model.ClearKeywordLink);
@@ -48,29 +48,18 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_Levels(List<int> selectedLevels, string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels, null);
+            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels, null);
 
             //Assert
             Assert.IsNotNull(model.ClearKeywordLink);
             Assert.AreEqual("?levels=" + string.Join("&levels=", model.SelectedLevels), model.ClearKeywordLink);
         }
 
-        [Test, AutoData, Ignore("todo")]//todo: fix this test
-        public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_OrderBy(string keyword)
-        {
-            //Arrange Act
-            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, new List<int>(), "name");
-
-            //Assert
-            Assert.IsNotNull(model.ClearKeywordLink);
-            Assert.AreEqual("?orderby=name", model.ClearKeywordLink);
-        }
-
-        [Test, AutoData]//todo: add orderby
+        [Test, AutoData]
         public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_Sectors_And_Levels(List<Guid> selectedRoutes, List<int> selectedLevels, string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels, null);
+            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels, null);
 
             //Assert
             Assert.IsNotNull(model.ClearKeywordLink);

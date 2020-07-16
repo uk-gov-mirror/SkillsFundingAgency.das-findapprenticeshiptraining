@@ -17,9 +17,9 @@ namespace SFA.DAS.FAT.Web.Models
         public string OrderBy { get; set; }
 
         public string TotalMessage => GetTotalMessage();
-        public Dictionary<string, string> ClearSectorLinks => BuildClearSelectedFilterLink();
+        public Dictionary<string, string> ClearSectorLinks => BuildClearSectorFilterLinks();
         public string ClearKeywordLink => BuildClearKeywordFilterLink();
-        public Dictionary<string, string> ClearLevelLinks => BuildClearLevelsFilterLink();
+        public Dictionary<string, string> ClearLevelLinks => BuildClearLevelFilterLinks();
         public string OrderByName => BuildOrderByNameLink();
         public string OrderByRelevance => BuildOrderByRelevanceLink();
 
@@ -74,7 +74,7 @@ namespace SFA.DAS.FAT.Web.Models
             return buildClearKeywordFilterLink;
         }
 
-        private Dictionary<string, string> BuildClearSelectedFilterLink ( )
+        private Dictionary<string, string> BuildClearSectorFilterLinks ( )
         {
             var clearFilterLinks = new Dictionary<string, string>();
             if (SelectedSectors == null)
@@ -106,7 +106,7 @@ namespace SFA.DAS.FAT.Web.Models
             return clearFilterLinks;
         }
 
-        private Dictionary<string, string> BuildClearLevelsFilterLink()
+        private Dictionary<string, string> BuildClearLevelFilterLinks()
         {
             var clearLevelLink = new Dictionary<string,string>();
             if (SelectedLevels == null)
@@ -135,7 +135,5 @@ namespace SFA.DAS.FAT.Web.Models
             
             return clearLevelLink;
         }
-
     }
-    
 }

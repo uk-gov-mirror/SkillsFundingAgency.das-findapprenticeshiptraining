@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoFixture.NUnit3;
 using NUnit.Framework;
+using SFA.DAS.FAT.Domain.Courses;
 
 namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 {
@@ -12,7 +13,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Sectors(List<Guid> selectedRoutes, string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, new List<int>(), null);
+            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, new List<int>(), OrderBy.Relevance);
 
             //Assert
             var clearLinkCount = selectedRoutes.Count;

@@ -4,6 +4,7 @@ using System.Linq;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
+using SFA.DAS.FAT.Domain.Courses;
 
 namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 {
@@ -13,18 +14,18 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_Adds_OrderBy_Relevance_To_Query_String()
         {
             // Arrange Act
-            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), null, new List<int>(), "relevance");
+            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), null, new List<int>(), OrderBy.Relevance);
             // Assert
-            model.OrderByRelevance.Should().Be("?orderby=relevance");
+            model.OrderByRelevance.Should().Be($"?orderby={model.OrderBy}");
         }
 
         [Test, AutoData]
         public void Then_Adds_Keyword_To_Query_String(string keyword)
         {
             // Arrange Act
-            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, new List<int>(), "relevance");
+            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, new List<int>(), OrderBy.Relevance);
             // Assert
-            model.OrderByRelevance.Should​().Be($"?keyword={model.Keyword}&orderby=relevance");
+            model.OrderByRelevance.Should​().Be($"?keyword={model.Keyword}&orderby={model.OrderBy}");
         }
 
         [Test, AutoData]
@@ -34,7 +35,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             var buildSectorLink = "";
 
             // Act
-            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, null, new List<int>(), "relevance");
+            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, null, new List<int>(), OrderBy.Relevance);
             foreach (var selectedRoute in selectedRoutes)
             {
                 var separator = string.IsNullOrEmpty(buildSectorLink) ? "?" : "&";
@@ -42,7 +43,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             }
 
             // Assert​
-            model.OrderByRelevance.Should().Be($"{buildSectorLink}&orderby=relevance");
+            model.OrderByRelevance.Should().Be($"{buildSectorLink}&orderby={model.OrderBy}");
         }
 
         [Test, AutoData]
@@ -52,7 +53,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             var buildLevelsLink = "";
 
             // Act
-            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), null, selectedLevels, "relevance");
+            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), null, selectedLevels, OrderBy.Relevance);
 
             foreach (var selectedLevel in selectedLevels)
             {
@@ -61,7 +62,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             }
 
             // Assert​
-            model.OrderByRelevance.Should().Be($"{buildLevelsLink}&orderby=relevance");
+            model.OrderByRelevance.Should().Be($"{buildLevelsLink}&orderby={model.OrderBy}");
         }
 
         [Test, AutoData]
@@ -72,7 +73,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             var buildSectorLink = "";
 
             // Act
-            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, null, selectedLevels, "relevance");
+            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, null, selectedLevels, OrderBy.Relevance);
             foreach (var selectedLevel in selectedLevels)
             {
                 var separator = string.IsNullOrEmpty(buildLevelsLink) ? "?" : "&";
@@ -86,7 +87,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             }
 
             // Assert
-            model.OrderByRelevance.Should().Be($"{buildSectorLink}{buildLevelsLink}&orderby=relevance");
+            model.OrderByRelevance.Should().Be($"{buildSectorLink}{buildLevelsLink}&orderby={model.OrderBy}");
         }
     }
 }

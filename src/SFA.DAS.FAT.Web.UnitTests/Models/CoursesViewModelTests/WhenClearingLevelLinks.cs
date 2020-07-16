@@ -13,7 +13,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels(List<int> selectedLevels, string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels, OrderBy.Name);
+            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels, OrderBy.Relevance);
 
             //Assert
             var clearLinkCount = selectedLevels.Count;
@@ -34,7 +34,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void And_Has_Keyword_And_OrderBy_Then_Builds_QueryString_With_Keyword_And_OrderBy(List<int> selectedLevels, string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels, OrderBy.Name);
+            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels, OrderBy.Relevance);
 
             //Assert
             var clearLinkCount = selectedLevels.Count;
@@ -56,7 +56,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels_And_Sectors(List<int> selectedLevels, List<Guid> selectedRoutes, string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels, OrderBy.Name);
+            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels, OrderBy.Relevance);
 
             //Assert
             var clearSectorsLinkCount = selectedRoutes.Count;

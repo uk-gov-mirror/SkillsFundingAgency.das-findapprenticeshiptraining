@@ -8,6 +8,7 @@ using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Web.Infrastructure;
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using SFA.DAS.FAT.Domain.Courses;
 
 namespace SFA.DAS.FAT.Web.Controllers
 {
@@ -33,7 +34,7 @@ namespace SFA.DAS.FAT.Web.Controllers
 
             var viewModel = new CoursesViewModel
             {
-                Courses = request.OrderBy == "Name" ? 
+                Courses = request.OrderBy == OrderBy.Name ? 
                     result.Courses.Select(c => (CourseViewModel)c).OrderBy(x => x.Title).ToList() :
                     result.Courses.Select(c => (CourseViewModel)c).ToList(),
                 Sectors = result.Sectors.Select(sector => new SectorViewModel(sector, request.Sectors)).ToList(),

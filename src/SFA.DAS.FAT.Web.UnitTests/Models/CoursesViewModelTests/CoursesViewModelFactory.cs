@@ -9,7 +9,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 {
     public static class CoursesViewModelFactory
     {
-        public static CoursesViewModel BuildModel(List<Guid> selectedRoutes, string keyword, List<int> selectedLevels, string order)
+        public static CoursesViewModel BuildModel(List<Guid> selectedRoutes, string keyword, List<int> selectedLevels, OrderBy order)
         {
             var fixture = new Fixture();
             var sectors = selectedRoutes

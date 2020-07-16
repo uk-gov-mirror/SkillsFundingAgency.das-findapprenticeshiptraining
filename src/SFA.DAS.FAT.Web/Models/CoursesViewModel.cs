@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SFA.DAS.FAT.Domain.Courses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,7 +15,7 @@ namespace SFA.DAS.FAT.Web.Models
         public List<SectorViewModel> Sectors { get ; set ; }
         public List<Guid> SelectedSectors { get ; set ; }
         public List<int> SelectedLevels { get ; set ; }
-        public string OrderBy { get; set; }
+        public OrderBy OrderBy { get; set; }
 
         public string TotalMessage => GetTotalMessage();
         public Dictionary<string, string> ClearSectorLinks => BuildClearSectorFilterLinks();
@@ -35,7 +36,7 @@ namespace SFA.DAS.FAT.Web.Models
         }
         private string BuildOrderByRelevanceLink()
         {
-            OrderBy = "relevance";
+            OrderBy = OrderBy.Relevance;
 
             var buildOrderByRelevanceLink = Keyword != null ? $"?keyword=" + string.Join("?keywords=", Keyword) : "";
 
@@ -50,7 +51,7 @@ namespace SFA.DAS.FAT.Web.Models
 
         private string BuildOrderByNameLink()
         {
-            OrderBy = "name";
+            OrderBy = OrderBy.Name;
 
             var buildOrderByNameLink = Keyword != null ? $"?keyword=" + string.Join("?keywords=", Keyword) : "";
 

@@ -16,8 +16,6 @@ namespace SFA.DAS.FAT.Web.Models
         public List<int> SelectedLevels { get ; set ; }
         public string OrderBy { get; set; }
 
-        /******************************/
-
         public string TotalMessage => GetTotalMessage();
         public Dictionary<string, string> ClearSectorLinks => BuildClearSelectedFilterLink();
         public string ClearKeywordLink => BuildClearKeywordFilterLink();
@@ -39,12 +37,12 @@ namespace SFA.DAS.FAT.Web.Models
         {
             OrderBy = "Relevance";
 
-            var buildOrderByRelevanceLink = OrderBy != null ? $"?OrderBy=" + string.Join("&orderby=", OrderBy) : "";
+            var buildOrderByRelevanceLink = OrderBy != null ? $"?orderBy=" + string.Join("&orderby=", OrderBy) : "";
             var separator = string.IsNullOrEmpty(buildOrderByRelevanceLink) ? "?" : "&";
 
-            buildOrderByRelevanceLink += Keyword != null ? $"{separator}Keyword=" + string.Join("?keywords=", Keyword) : "";
-            buildOrderByRelevanceLink += SelectedSectors != null && SelectedSectors.Any() ? $"{separator}Sectors=" + string.Join("&Sectors=", SelectedSectors) : "";
-            buildOrderByRelevanceLink += SelectedLevels != null && SelectedLevels.Any() ? $"{separator}Levels=" + string.Join("&Levels=", SelectedLevels) : "";
+            buildOrderByRelevanceLink += Keyword != null ? $"{separator}keyword=" + string.Join("?keywords=", Keyword) : "";
+            buildOrderByRelevanceLink += SelectedSectors != null && SelectedSectors.Any() ? $"{separator}sectors=" + string.Join("&sectors=", SelectedSectors) : "";
+            buildOrderByRelevanceLink += SelectedLevels != null && SelectedLevels.Any() ? $"{separator}levels=" + string.Join("&levels=", SelectedLevels) : "";
             
             return buildOrderByRelevanceLink;
         }
@@ -53,12 +51,12 @@ namespace SFA.DAS.FAT.Web.Models
         {
             OrderBy = "Name";
 
-            var buildOrderByNameLink = OrderBy != null ? $"?OrderBy=" + string.Join("&orderby=", OrderBy) : "";
+            var buildOrderByNameLink = OrderBy != null ? $"?orderBy=" + string.Join("&orderby=", OrderBy) : "";
             var separator = string.IsNullOrEmpty(buildOrderByNameLink) ? "?" : "&";
 
-            buildOrderByNameLink += Keyword != null ? $"{separator}Keyword=" + string.Join("?keywords=", Keyword) : "";
-            buildOrderByNameLink += SelectedSectors != null && SelectedSectors.Any() ? $"{separator}Sectors=" + string.Join("&Sectors=", SelectedSectors) : "";
-            buildOrderByNameLink += SelectedLevels != null && SelectedLevels.Any() ? $"{separator}Levels=" + string.Join("&Levels=", SelectedLevels) : "";
+            buildOrderByNameLink += Keyword != null ? $"{separator}keyword=" + string.Join("?keywords=", Keyword) : "";
+            buildOrderByNameLink += SelectedSectors != null && SelectedSectors.Any() ? $"{separator}sectors=" + string.Join("&sectors=", SelectedSectors) : "";
+            buildOrderByNameLink += SelectedLevels != null && SelectedLevels.Any() ? $"{separator}levels=" + string.Join("&levels=", SelectedLevels) : "";
 
             return buildOrderByNameLink;
         }

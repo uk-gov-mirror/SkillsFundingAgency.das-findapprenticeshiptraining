@@ -17,7 +17,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModel
             // Arrange Act
             var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), null, new List<int>(), "Relevance");
             // Assert
-            model.OrderByRelevance.Should().Be("?OrderBy=Relevance");
+            model.OrderByRelevance.Should().Be("?orderBy=Relevance");
         }
 
         [Test, AutoData]
@@ -26,7 +26,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModel
             // Arrange Act
             var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, new List<int>(), "Relevance");
             // Assert
-            model.OrderByRelevance.Should​().Be($"?OrderBy=Relevance&Keyword={model.Keyword}");
+            model.OrderByRelevance.Should​().Be($"?orderBy=Relevance&keyword={model.Keyword}");
         }
 
         [Test, AutoData]
@@ -39,11 +39,11 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModel
             var model = CoursesViewModelFactory.BuildModel(selectedRoutes, null, new List<int>(), "Relevance");
             foreach (var selectedRoute in selectedRoutes)
             {
-                buildSectorLink += model.SelectedSectors != null && model.SelectedSectors.Any() ? $"&Sectors=" + string.Join("&Sectors=", selectedRoute) : "";
+                buildSectorLink += model.SelectedSectors != null && model.SelectedSectors.Any() ? $"&sectors=" + string.Join("&sectors=", selectedRoute) : "";
             }
 
             // Assert​
-            model.OrderByRelevance.Should().Be($"?OrderBy=Relevance{buildSectorLink}");
+            model.OrderByRelevance.Should().Be($"?orderBy=Relevance{buildSectorLink}");
         }
         [Test, AutoData]
         public void And_Then_Adds_Levels_To_Query_String(List<int> selectedLevels)
@@ -56,11 +56,11 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModel
 
             foreach (var selectedLevel in selectedLevels)
             {
-                buildLevelsLink += model.SelectedLevels != null && model.SelectedLevels.Any() ? $"&Levels=" + string.Join("Levels=", selectedLevel) : "";
+                buildLevelsLink += model.SelectedLevels != null && model.SelectedLevels.Any() ? $"&levels=" + string.Join("levels=", selectedLevel) : "";
             }
 
             // Assert​
-            model.OrderByRelevance.Should().Be($"?OrderBy=Relevance{buildLevelsLink}");
+            model.OrderByRelevance.Should().Be($"?orderBy=Relevance{buildLevelsLink}");
         }
         [Test, AutoData]
         public void And_Then_Adds_Sectors_And_Levels_To_Query_String(List<int> selectedLevels, List<Guid> selectedRoutes)
@@ -73,16 +73,16 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModel
             var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), null, new List<int>(), "Relevance");
             foreach (var selectedLevel in selectedLevels)
             {
-                buildLevelsLink += model.SelectedLevels != null && model.SelectedLevels.Any() ? $"&Levels=" + string.Join("Levels=", selectedLevel) : "";
+                buildLevelsLink += model.SelectedLevels != null && model.SelectedLevels.Any() ? $"&levels=" + string.Join("levels=", selectedLevel) : "";
             }
 
             foreach (var selectedRoute in selectedRoutes)
             {
-                buildSectorLink += model.SelectedSectors != null && model.SelectedSectors.Any() ? $"&Sectors=" + string.Join("&Sectors=", selectedRoute) : "";
+                buildSectorLink += model.SelectedSectors != null && model.SelectedSectors.Any() ? $"&sectors=" + string.Join("&sectors=", selectedRoute) : "";
             }
 
             // Assert
-            model.OrderByRelevance.Should().Be($"?OrderBy=Relevance{buildLevelsLink}{buildSectorLink}");
+            model.OrderByRelevance.Should().Be($"?orderBy=Relevance{buildLevelsLink}{buildSectorLink}");
         }
     }
 }

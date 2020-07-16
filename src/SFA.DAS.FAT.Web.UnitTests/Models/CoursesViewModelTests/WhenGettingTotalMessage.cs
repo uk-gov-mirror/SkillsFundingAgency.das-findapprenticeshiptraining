@@ -1,12 +1,10 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using SFA.DAS.FAT.Web.Models;
-using FluentAssertions;
 using AutoFixture.NUnit3;
+using FluentAssertions;
+using NUnit.Framework;
 
-namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModel
+namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 {
     public class WhenGettingTotals
     {

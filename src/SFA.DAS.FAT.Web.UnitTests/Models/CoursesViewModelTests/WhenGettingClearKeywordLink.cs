@@ -1,13 +1,12 @@
-﻿using AutoFixture.NUnit3;
+﻿using System;
+using System.Collections.Generic;
+using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModel
+namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 {
-    class WhenBuildingKeywordLink
+    class WhenGettingClearKeywordLink
     {
         [Test, AutoData]
         public void Then_No_Filter_Items_Builds_Correct_Clear_Links()
@@ -55,7 +54,19 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModel
             Assert.IsNotNull(model.ClearKeywordLink);
             Assert.AreEqual("?levels=" + string.Join("&levels=", model.SelectedLevels), model.ClearKeywordLink);
         }
-        [Test, AutoData]
+
+        [Test, AutoData, Ignore("todo")]//todo: fix this test
+        public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_OrderBy(string keyword)
+        {
+            //Arrange Act
+            var model = CoursesViewModelTests.CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, new List<int>(), "name");
+
+            //Assert
+            Assert.IsNotNull(model.ClearKeywordLink);
+            Assert.AreEqual("?orderby=name", model.ClearKeywordLink);
+        }
+
+        [Test, AutoData]//todo: add orderby
         public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_Sectors_And_Levels(List<Guid> selectedRoutes, List<int> selectedLevels, string keyword)
         {
             //Arrange Act

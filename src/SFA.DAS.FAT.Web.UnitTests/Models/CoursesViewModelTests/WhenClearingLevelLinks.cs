@@ -1,11 +1,10 @@
-﻿using AutoFixture.NUnit3;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using AutoFixture.NUnit3;
+using NUnit.Framework;
 
-namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModel
+namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 {
     class WhenClearingLevelLinks
     {

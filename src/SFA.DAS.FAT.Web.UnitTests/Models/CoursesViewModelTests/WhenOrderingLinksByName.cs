@@ -25,7 +25,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             // Arrange Act
             var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, new List<int>(), "name");
             // Assert
-            model.OrderByName.Should​().Be($"?orderby=name&keyword={model.Keyword}");
+            model.OrderByName.Should​().Be($"?keyword={model.Keyword}&orderby=name");
         }
         
         [Test, AutoData]
@@ -38,11 +38,12 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             var model = CoursesViewModelFactory.BuildModel(selectedRoutes, null, new List<int>(), "name");
             foreach (var selectedRoute in selectedRoutes)
             {
-                buildSectorLink += model.SelectedSectors != null && model.SelectedSectors.Any() ? $"&sectors=" + string.Join("&sectors=", selectedRoute) : "";
+                var separator = string.IsNullOrEmpty(buildSectorLink) ? "?" : "&";
+                buildSectorLink += model.SelectedSectors != null && model.SelectedSectors.Any() ? $"{separator}sectors=" + string.Join("&sectors=", selectedRoute) : "";
             }
 
             // Assert​
-            model.OrderByName.Should().Be($"?orderby=name{buildSectorLink}");
+            model.OrderByName.Should().Be($"{buildSectorLink}&orderby=name");
         }
         [Test, AutoData]
         public void And_Then_Adds_Levels_To_Query_String(List<int> selectedLevels)
@@ -55,11 +56,12 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             
             foreach (var selectedLevel in selectedLevels)
             {
-                buildLevelsLink += model.SelectedLevels != null && model.SelectedLevels.Any() ? $"&levels=" + string.Join("levels=", selectedLevel) : "";
+                var separator = string.IsNullOrEmpty(buildLevelsLink) ? "?" : "&";
+                buildLevelsLink += model.SelectedLevels != null && model.SelectedLevels.Any() ? $"{separator}levels=" + string.Join("levels=", selectedLevel) : "";
             }
 
             // Assert​
-            model.OrderByName.Should().Be($"?orderby=name{buildLevelsLink}");
+            model.OrderByName.Should().Be($"{buildLevelsLink}&orderby=name");
         }
         [Test, AutoData]
         public void And_Then_Adds_Sectors_And_Levels_To_Query_String(List<int> selectedLevels, List<Guid> selectedRoutes)
@@ -67,21 +69,24 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             // Arrange 
             var buildLevelsLink = "";
             var buildSectorLink = "";
-
+           
             // Act
-            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), null, new List<int>(), "name");
-            foreach (var selectedLevel in selectedLevels)
-            {
-                buildLevelsLink += model.SelectedLevels != null && model.SelectedLevels.Any() ? $"&levels=" + string.Join("levels=", selectedLevel) : "";
-            }
+            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, null, selectedLevels, "name");
 
             foreach (var selectedRoute in selectedRoutes)
             {
-                buildSectorLink += model.SelectedSectors != null && model.SelectedSectors.Any() ? $"&sectors=" + string.Join("&sectors=", selectedRoute) : "";
+                var separator = string.IsNullOrEmpty(buildSectorLink) ? "?" : "&";
+                buildSectorLink += model.SelectedSectors != null && model.SelectedSectors.Any() ? $"{separator}sectors=" + string.Join("&sectors=", selectedRoute) : "";
+            }
+
+            foreach (var selectedLevel in selectedLevels)
+            {
+                var separator = string.IsNullOrEmpty(buildLevelsLink) ? "?" : "&";
+                buildLevelsLink += model.SelectedLevels != null && model.SelectedLevels.Any() ? $"{separator}levels=" + string.Join("&levels=", selectedLevel) : "";
             }
 
             // Assert
-            model.OrderByName.Should().Be($"?orderby=name{buildLevelsLink}{buildSectorLink}");
+            model.OrderByName.Should().Be($"{buildSectorLink}{buildLevelsLink}&orderby=name");
         }
     }
 }

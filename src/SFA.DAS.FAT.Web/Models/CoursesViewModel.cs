@@ -37,13 +37,14 @@ namespace SFA.DAS.FAT.Web.Models
         {
             OrderBy = "relevance";
 
-            var buildOrderByRelevanceLink = OrderBy != null ? $"?orderby=" + string.Join("&orderby=", OrderBy) : "";
+            var buildOrderByRelevanceLink = Keyword != null ? $"?keyword=" + string.Join("?keywords=", Keyword) : "";
+
             var separator = string.IsNullOrEmpty(buildOrderByRelevanceLink) ? "?" : "&";
 
-            buildOrderByRelevanceLink += Keyword != null ? $"{separator}keyword=" + string.Join("?keywords=", Keyword) : "";
             buildOrderByRelevanceLink += SelectedSectors != null && SelectedSectors.Any() ? $"{separator}sectors=" + string.Join("&sectors=", SelectedSectors) : "";
             buildOrderByRelevanceLink += SelectedLevels != null && SelectedLevels.Any() ? $"{separator}levels=" + string.Join("&levels=", SelectedLevels) : "";
-            
+            buildOrderByRelevanceLink += buildOrderByRelevanceLink.Count() > 0 ? $"&orderby=" + string.Join("&orderby=", OrderBy) : "?orderby=" + string.Join($"&orderby=", OrderBy);
+
             return buildOrderByRelevanceLink;
         }
 
@@ -51,12 +52,13 @@ namespace SFA.DAS.FAT.Web.Models
         {
             OrderBy = "name";
 
-            var buildOrderByNameLink = OrderBy != null ? $"?orderby=" + string.Join("&orderby=", OrderBy) : "";
+            var buildOrderByNameLink = Keyword != null ? $"?keyword=" + string.Join("?keywords=", Keyword) : "";
+
             var separator = string.IsNullOrEmpty(buildOrderByNameLink) ? "?" : "&";
 
-            buildOrderByNameLink += Keyword != null ? $"{separator}keyword=" + string.Join("?keywords=", Keyword) : "";
             buildOrderByNameLink += SelectedSectors != null && SelectedSectors.Any() ? $"{separator}sectors=" + string.Join("&sectors=", SelectedSectors) : "";
             buildOrderByNameLink += SelectedLevels != null && SelectedLevels.Any() ? $"{separator}levels=" + string.Join("&levels=", SelectedLevels) : "";
+            buildOrderByNameLink += buildOrderByNameLink.Count() > 0 ? $"&orderby=" + string.Join("&orderby=", OrderBy) : "?orderby=" + string.Join($"&orderby=", OrderBy);
 
             return buildOrderByNameLink;
         }

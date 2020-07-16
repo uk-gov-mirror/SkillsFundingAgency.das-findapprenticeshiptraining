@@ -23,9 +23,7 @@ namespace SFA.DAS.FAT.Web.Models
         public string ClearKeywordLink => BuildClearKeywordFilterLink();
         public Dictionary<string, string> ClearLevelLinks => BuildClearLevelsFilterLink();
         public string OrderByName => BuildOrderByNameLink();
-        public string OrderByRelevance => BuildKeywordOrderByRelevanceLink();
-
-        /******************************/
+        public string OrderByRelevance => BuildOrderByRelevanceLink();
 
         private string GetTotalMessage()
         {
@@ -37,15 +35,18 @@ namespace SFA.DAS.FAT.Web.Models
 
             return $"{totalToUse} result" + (totalToUse!=1 ? "s": "");
         }
-        private string BuildKeywordOrderByRelevanceLink()
+        private string BuildOrderByRelevanceLink()
         {
             OrderBy = "Relevance";
 
-            var buildKeywordOrderByNameLink = Keyword != null ? $"?Keyword=" + string.Join("?keywords=", Keyword) : "";
-            var separator = string.IsNullOrEmpty(buildKeywordOrderByNameLink) ? "?" : "&";
-            buildKeywordOrderByNameLink += OrderBy != null ? $"{separator}OrderBy=" + string.Join("&orderby=", OrderBy) : "";
+            var buildOrderByRelevanceLink = OrderBy != null ? $"?OrderBy=" + string.Join("&orderby=", OrderBy) : "";
+            var separator = string.IsNullOrEmpty(buildOrderByRelevanceLink) ? "?" : "&";
 
-            return buildKeywordOrderByNameLink;
+            buildOrderByRelevanceLink += Keyword != null ? $"{separator}Keyword=" + string.Join("?keywords=", Keyword) : "";
+            buildOrderByRelevanceLink += SelectedSectors != null && SelectedSectors.Any() ? $"{separator}Sectors=" + string.Join("&Sectors=", SelectedSectors) : "";
+            buildOrderByRelevanceLink += SelectedLevels != null && SelectedLevels.Any() ? $"{separator}Levels=" + string.Join("&Levels=", SelectedLevels) : "";
+            
+            return buildOrderByRelevanceLink;
         }
 
         private string BuildOrderByNameLink()
@@ -54,6 +55,7 @@ namespace SFA.DAS.FAT.Web.Models
 
             var buildOrderByNameLink = OrderBy != null ? $"?OrderBy=" + string.Join("&orderby=", OrderBy) : "";
             var separator = string.IsNullOrEmpty(buildOrderByNameLink) ? "?" : "&";
+
             buildOrderByNameLink += Keyword != null ? $"{separator}Keyword=" + string.Join("?keywords=", Keyword) : "";
             buildOrderByNameLink += SelectedSectors != null && SelectedSectors.Any() ? $"{separator}Sectors=" + string.Join("&Sectors=", SelectedSectors) : "";
             buildOrderByNameLink += SelectedLevels != null && SelectedLevels.Any() ? $"{separator}Levels=" + string.Join("&Levels=", SelectedLevels) : "";

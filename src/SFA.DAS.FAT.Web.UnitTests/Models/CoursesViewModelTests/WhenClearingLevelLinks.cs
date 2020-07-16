@@ -48,7 +48,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
                 Assert.IsTrue(model.ClearLevelLinks.ContainsKey(levelViewModel.Title));
                 Assert.AreEqual(clearLinkCount - 1, model.ClearLevelLinks.Count(c => c.Value.Contains($"levels={selectedLevel}")));
                 Assert.AreEqual(clearLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains($"keyword={keyword}")));
-                Assert.AreEqual(clearLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains($"orderby=name")));
+                Assert.AreEqual(clearLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains($"orderby={OrderBy.Relevance}")));
             }
         }
 

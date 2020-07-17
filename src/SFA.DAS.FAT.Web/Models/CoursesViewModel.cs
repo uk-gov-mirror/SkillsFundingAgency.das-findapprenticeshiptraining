@@ -18,6 +18,7 @@ namespace SFA.DAS.FAT.Web.Models
         public string ClearKeywordLink => BuildClearKeywordFilterLink();
         public List<int> SelectedLevels { get ; set ; }
         public Dictionary<string, string> ClearLevelLinks => BuildClearLevelsFilterLink();
+        public bool ShowFilterOptions =>  ClearSectorLinks.Any() || ClearLevelLinks.Any() || !string.IsNullOrEmpty(Keyword);
 
         private string GetTotalMessage()
         {

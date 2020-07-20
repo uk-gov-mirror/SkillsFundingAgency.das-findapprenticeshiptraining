@@ -45,6 +45,7 @@
                 }
                 <div class="das-filter__body">
                     <form asp-route="@RouteNames.Training" method="GET">
+                        <input type="hidden" asp-for="OrderBy"/>
                         <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
                         <div class="govuk-form-group">
                             <label for="Keyword" class="govuk-label das-filter__search-label">Keywords</label>
@@ -77,7 +78,7 @@
                                     @foreach (var level in Model.Levels)
                                     {
                                         <div class="govuk-checkboxes__item">
-                                            <input @(level.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="level-@level.Code" name="levels" type="checkbox" value="@level.Code" />
+                                            <input @(level.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="level-@level.Code" name="levels" type="checkbox" value="@level.Code"/>
                                             <label class="govuk-label govuk-checkboxes__label" for="level-@level.Code">
                                                 @level.Title
                                             </label>
@@ -100,7 +101,7 @@
                 {
                     <p class="govuk-body govuk-!-margin-bottom-6">
                         Sort by:
-                        @if (@Model.OrderBy == OrderBy.Name)
+                        @if (Model.OrderBy == OrderBy.Name)
                         {
                             <span class="govuk-link govuk-link--no-visited-state">
                                 <a asp-querystring="@Model.OrderByRelevance">Relevance</a>,
@@ -116,6 +117,7 @@
                         }
 
                     </p>
+                    
                 }
                 else
                 {

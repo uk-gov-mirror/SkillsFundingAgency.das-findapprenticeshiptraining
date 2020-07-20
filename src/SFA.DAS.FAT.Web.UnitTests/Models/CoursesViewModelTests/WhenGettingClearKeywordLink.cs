@@ -7,7 +7,7 @@ using SFA.DAS.FAT.Domain.Courses;
 
 namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 {
-    class WhenGettingClearKeywordLink
+    public class WhenGettingClearKeywordLink
     {
         [Test, AutoData]
         public void Then_No_Filter_Items_Builds_Correct_Clear_Links()
@@ -33,12 +33,12 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             Assert.IsNotNull(model.ClearKeywordLink);
             Assert.AreEqual("", model.ClearKeywordLink);
         }
-
+        
         [Test, AutoData]
         public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_Sectors(List<Guid> selectedRoutes, string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, new List<int>(), OrderBy.Relevance);
+            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, new List<int>());
 
             //Assert
             Assert.IsNotNull(model.ClearKeywordLink);
@@ -49,7 +49,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_Levels(List<int> selectedLevels, string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels, OrderBy.Relevance);
+            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels);
 
             //Assert
             Assert.IsNotNull(model.ClearKeywordLink);
@@ -60,11 +60,12 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_The_Clear_Keyword_Link_Is_Generated_If_Filtered_By_Keyword_With_Sectors_And_Levels(List<Guid> selectedRoutes, List<int> selectedLevels, string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels, OrderBy.Relevance);
+            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels);
 
             //Assert
             Assert.IsNotNull(model.ClearKeywordLink);
             Assert.AreEqual("?sectors=" + string.Join("&sectors=", model.SelectedSectors) + "&levels=" + string.Join("&levels=", model.SelectedLevels), model.ClearKeywordLink);
         }
+        
     }
 }

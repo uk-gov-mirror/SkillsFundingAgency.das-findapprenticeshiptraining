@@ -9,7 +9,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 {
     public static class CoursesViewModelFactory
     {
-        public static CoursesViewModel BuildModel(List<Guid> selectedRoutes, string keyword, List<int> selectedLevels, OrderBy order)
+        public static CoursesViewModel BuildModel(List<Guid> selectedRoutes, string keyword, List<int> selectedLevels, OrderBy orderBy = OrderBy.Name)
         {
             var fixture = new Fixture();
             var sectors = selectedRoutes
@@ -36,7 +36,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
                 Keyword = keyword,
                 SelectedSectors = selectedRoutes,
                 SelectedLevels = selectedLevels,
-                OrderBy = order
+                OrderBy = orderBy
             };
             return model;
         }

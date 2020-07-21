@@ -16,6 +16,7 @@ namespace SFA.DAS.FAT.Web.Models
         public List<Guid> SelectedSectors { get ; set ; }
         public List<int> SelectedLevels { get ; set ; }
         public OrderBy OrderBy { get; set; } = OrderBy.None;
+        public bool ShowFilterOptions =>  ClearSectorLinks.Any() || ClearLevelLinks.Any() || !string.IsNullOrEmpty(Keyword);
 
         public string TotalMessage => GetTotalMessage();
         public Dictionary<string, string> ClearSectorLinks => BuildClearSectorFilterLinks();

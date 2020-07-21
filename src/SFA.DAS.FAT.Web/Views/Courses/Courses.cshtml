@@ -1,95 +1,100 @@
-﻿@using Microsoft.EntityFrameworkCore
-@using SFA.DAS.FAT.Web.Infrastructure
+﻿@using SFA.DAS.FAT.Web.Infrastructure
 @using SFA.DAS.FAT.Domain.Courses
 @model SFA.DAS.FAT.Web.Models.CoursesViewModel
 
 <main class="govuk-main-wrapper" id="main-content" role="main">
-    <h1 class="govuk-heading-xl">Apprenticeship training courses</h1>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">Apprenticeship training courses</h1>
+        </div>
+    </div>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-one-third">
-            <div class="das-filter">
-                <div class="das-filter__header">
-                    <h2 class="das-filter__heading">Filter</h2>
-                </div>
-
-                @if (Model.ClearSectorLinks.Any() || Model.ClearLevelLinks.Any() || !string.IsNullOrEmpty(Model.Keyword))
-                {
-                    <div class="das-filter__selected-filters">
-                        <div class="das-filter__selected-header">
-                            <h3 class="das-filter__selected-heading">Selected filters</h3>
-                            <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.Training">Clear <span class="govuk-visually-hidden">the selected filters</span></a>
-                        </div>
-                        @if (!string.IsNullOrEmpty(Model.Keyword))
-                        {
-                            <h4 class="das-filter__selected-sub-heading">Keywords</h4>
-                            <a asp-querystring="@Model.ClearKeywordLink" title="Clear this filter '@Model.Keyword'" class="das-filter__tag">&lsquo;@Model.Keyword&rsquo;</a>
-                        }
-                        @if (Model.ClearSectorLinks.Any())
-                        {
-                            <h4 class="das-filter__selected-sub-heading">Sector</h4>
-                            @foreach (var filterLink in Model.ClearSectorLinks)
-                            {
-                                <a class="das-filter__tag" asp-querystring="@filterLink.Value" title="Clear this sector filter @filterLink.Key">@filterLink.Key</a>
-                            }
-                        }
-                        @if (Model.ClearLevelLinks.Any())
-                        {
-                            <h4 class="das-filter__selected-sub-heading">Level</h4>
-                            @foreach (var levelLink in Model.ClearLevelLinks)
-                            {
-                                <a class="das-filter__tag" asp-querystring="@levelLink.Value" title="Clear this level filter @levelLink.Key">@levelLink.Key</a>
-                            }
-                        }
+            <div class="das-show-hide" data-module="das-show-hide">
+                <div class="das-filter das-!-show--from-tablet" id="fat-filter">
+                    <div class="das-filter__header">
+                        <h2 class="das-filter__heading">Filter</h2>
                     </div>
-
-                }
-                <div class="das-filter__body">
-                    <form asp-route="@RouteNames.Training" method="GET">
-                        <input type="hidden" asp-for="OrderBy"/>
-                        <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
-                        <div class="govuk-form-group">
-                            <label for="Keyword" class="govuk-label das-filter__search-label">Keywords</label>
-                            <input asp-for="Keyword" type="search" title="Search" class="govuk-input">
+                    @if (Model.ShowFilterOptions)
+                    {
+                        <div class="das-filter__selected-filters">
+                            <div class="das-filter__selected-header">
+                                <h3 class="das-filter__selected-heading">Selected filters</h3>
+                                <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.Training">Clear <span class="govuk-visually-hidden">the selected filters</span></a>
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.Keyword))
+                            {
+                                <h4 class="das-filter__selected-sub-heading">Keywords</h4>
+                                <a  asp-querystring="@Model.ClearKeywordLink" title="Clear this filter '@Model.Keyword'" class="das-filter__tag">&lsquo;@Model.Keyword&rsquo;</a>    
+                            }   
+                            @if (Model.ClearSectorLinks.Any())
+                            {
+                                <h4 class="das-filter__selected-sub-heading">Sector</h4>
+                                @foreach (var filterLink in Model.ClearSectorLinks)
+                                {
+                                    <a class="das-filter__tag" asp-querystring="@filterLink.Value" title="Clear this sector filter @filterLink.Key">@filterLink.Key</a>
+                                }
+                            }
+                            @if (Model.ClearLevelLinks.Any())
+                            {
+                                <h4 class="das-filter__selected-sub-heading">Level</h4>
+                                @foreach (var levelLink in Model.ClearLevelLinks)
+                                {
+                                    <a class="das-filter__tag" asp-querystring="@levelLink.Value" title="Clear this level filter @levelLink.Key">@levelLink.Key</a>
+                                }
+                            }
                         </div>
-                        <div class="govuk-form-group">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    Sector
-                                </legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    @foreach (var sector in Model.Sectors)
-                                    {
-                                        <div class="govuk-checkboxes__item">
-                                            <input @(sector.Selected ? "checked='checked'" : "") class="govuk-checkboxes__input" id="route-@sector.Id" name="sectors" type="checkbox" value="@sector.Id">
-                                            <label class="govuk-label govuk-checkboxes__label" for="route-@sector.Id">
-                                                @sector.Route
-                                            </label>
-                                        </div>
-                                    }
-                                </div>
-                            </fieldset>
-                        </div>
-                        <div class="govuk-form-group">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    Level
-                                </legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    @foreach (var level in Model.Levels)
-                                    {
-                                        <div class="govuk-checkboxes__item">
-                                            <input @(level.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="level-@level.Code" name="levels" type="checkbox" value="@level.Code"/>
-                                            <label class="govuk-label govuk-checkboxes__label" for="level-@level.Code">
-                                                @level.Title
-                                            </label>
-                                        </div>
-                                    }
-                                </div>
-                            </fieldset>
-                        </div>
-                        <p class="govuk-body govuk-!-font-size-16"><a class="govuk-link govuk-link--no-visited-state" href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels" target="_blank" rel="external">What levels mean (opens in new tab or window)</a></p>
-                    </form>
+                    
+                    }
+                    <div class="das-filter__body das-!-show--from-tablet" id="fat-filter-options">
+                        <form asp-route="@RouteNames.Training" method="GET">
+                            <input type="hidden" asp-for="OrderBy"/>
+                            <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
+                            <div class="govuk-form-group">
+                                <label for="Keyword" class="govuk-label das-filter__search-label">Keywords</label>
+                                <input asp-for="Keyword" type="search" title="Search" class="govuk-input">
+                            </div>
+                            <div class="govuk-form-group">
+                                <fieldset class="govuk-fieldset">
+                                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                        Sector
+                                    </legend>
+                                    <div class="govuk-checkboxes govuk-checkboxes--small">
+                                        @foreach (var sector in Model.Sectors)
+                                        {
+                                            <div class="govuk-checkboxes__item">
+                                                <input @(sector.Selected ? "checked='checked'" : "") class="govuk-checkboxes__input" id="route-@sector.Id" name="sectors" type="checkbox" value="@sector.Id">
+                                                <label class="govuk-label govuk-checkboxes__label" for="route-@sector.Id">
+                                                    @sector.Route
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="govuk-form-group">
+                                <fieldset class="govuk-fieldset">
+                                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                        Level
+                                    </legend>
+                                    <div class="govuk-checkboxes govuk-checkboxes--small">
+                                        @foreach (var level in Model.Levels)
+                                        {
+                                            <div class="govuk-checkboxes__item">
+                                                <input @(level.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="level-@level.Code" name="levels" type="checkbox" value="@level.Code"/>
+                                                <label class="govuk-label govuk-checkboxes__label" for="level-@level.Code">
+                                                    @level.Title
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <p class="govuk-body govuk-!-font-size-16"><a class="govuk-link govuk-link--no-visited-state" href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels" target="_blank" rel="external">What levels mean (opens in new tab or window)</a></p>
+                        </form>
+                    </div>
                 </div>
+                <button class="govuk-button das-filter__toggle das-show-hide__button das-!-show--mobile" data-aria-controls="fat-filter@(Model.ShowFilterOptions ? "-options" : "")" data-button-string="filter @(Model.ShowFilterOptions ? " options" : "")" data-focus-id="Keyword">Show/hide</button>
             </div>
         </div>
         <div class="govuk-grid-column-two-thirds">
@@ -99,36 +104,34 @@
 
                 if (!string.IsNullOrEmpty(Model.Keyword))
                 {
-                    <p class="govuk-body govuk-!-margin-bottom-6">
-                        Sort by:
-                        @if (Model.OrderBy == OrderBy.Name)
-                        {
-                            <span class="govuk-link govuk-link--no-visited-state">
-                                <a asp-querystring="@Model.OrderByRelevance">Relevance</a>,
-                            </span>
-                            <a class="govuk-!-font-weight-bold" asp-querystring="@Model.OrderByName"> Name</a>
-                        }
-                        else
-                        {
-                            <span class="govuk-!-font-weight-bold">
-                                <a asp-querystring="@Model.OrderByRelevance">Relevance</a>,
-                            </span>
-                            <a class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.OrderByName"> Name</a>
-                        }
-
-                    </p>
+                    if (Model.OrderBy == OrderBy.Relevance)
+                    {
+                        <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
+    
+                            <span class="govuk-!-font-weight-bold">Relevance</span>, 
+                            <a class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.OrderByName">Name</a>
+    
+                        </p>    
+                    }
+                    else
+                    {
+                        <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
+    
+                            <a class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.OrderByRelevance">Relevance</a>,
+                            <span class="govuk-!-font-weight-bold">Name</span>
+    
+                        </p>
+                    }
                     
                 }
                 else
                 {
                     <p class="govuk-body govuk-!-margin-bottom-6">
-                        Sorted by:
-                        <span class="govuk-!-font-weight-bold">Name</span>
+                     Sorted by:
+                    <span class="govuk-!-font-weight-bold">Name</span> 
                     </p>
                 }
-
-
-
+              
                 <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 ">
 
 

@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 {
-    public class WhenGettingTotals
+    public class WhenCreatingCoursesViewModel
     {
         [TestCase(10, 5, "", "10 results")]
         [TestCase(10, 5, "test", "5 results")]
@@ -65,6 +65,44 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             };
 
             viewModel.TotalMessage.Should().Be("5 results");
+        }
+        
+        [Test, AutoData]
+        public void Then_If_There_Are_Filtered_Levels_Sectors_Keywords_The_ShowFilterOptions_Property_Is_True(List<int> selectedLevels, List<Guid> selectedRoutes, string keyword)
+        {
+            //Arrange Act
+            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels);
+            
+            //Assert
+            Assert.IsTrue(model.ShowFilterOptions); 
+        }
+        [Test, AutoData]
+        public void Then_If_There_Are_Filtered_Sectors_Keywords_The_ShowFilterOptions_Property_Is_True(List<Guid> selectedRoutes, string keyword)
+        {
+            //Arrange Act
+            var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, new List<int>());
+            
+            //Assert
+            Assert.IsTrue(model.ShowFilterOptions); 
+        }
+        
+        [Test, AutoData]
+        public void Then_If_There_Are_Filtered_Keywords_The_ShowFilterOptions_Property_Is_True(string keyword)
+        {
+            //Arrange Act
+            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, new List<int>());
+            
+            //Assert
+            Assert.IsTrue(model.ShowFilterOptions); 
+        }
+        [Test]
+        public void Then_If_There_Are_No_Filtered_Options_The_ShowFilterOptions_Property_Is_False()
+        {
+            //Arrange Act
+            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), "", new List<int>());
+            
+            //Assert
+            Assert.IsFalse(model.ShowFilterOptions); 
         }
     }
 }

@@ -61,21 +61,17 @@ namespace SFA.DAS.FAT.Web.Models
 
             buildOrderByNameLink += !string.IsNullOrEmpty(order.ToString()) ? $"{GetSeparator(buildOrderByNameLink)}orderby={order}" : "";
 
-            buildOrderByNameLink += BuildSelectedSectorList(buildOrderByNameLink);
+            buildOrderByNameLink += BuildSelectedSectorListLink(buildOrderByNameLink);
             
-            buildOrderByNameLink += BuildSelectedLevelsLink(buildOrderByNameLink);
+            buildOrderByNameLink += BuildSelectedLevelsListLink(buildOrderByNameLink);
             
             return buildOrderByNameLink;
         }
 
         private string BuildClearKeywordFilterLink()
         {
-            var buildClearKeywordFilterLink = SelectedSectors != null && SelectedSectors.Any() 
-                ? "?sectors=" + string.Join("&sectors=", SelectedSectors) : "";
-
-            buildClearKeywordFilterLink += SelectedLevels!=null && SelectedLevels.Any() 
-                ?  $"{GetSeparator(buildClearKeywordFilterLink)}levels=" + string.Join("&levels=", SelectedLevels) : "";
-            
+            var buildClearKeywordFilterLink = BuildSelectedSectorListLink("");
+            buildClearKeywordFilterLink += BuildSelectedLevelsListLink(buildClearKeywordFilterLink);
             return buildClearKeywordFilterLink;
         }
 
@@ -87,8 +83,7 @@ namespace SFA.DAS.FAT.Web.Models
                 return clearFilterLinks;
             }
             
-            var levels = SelectedLevels!=null && SelectedLevels.Any() 
-                ?  $"&levels=" + string.Join("&levels=", SelectedLevels) : "";
+            var levels = BuildSelectedLevelsListLink("appendTo");
             
             foreach (var selectedSector in SelectedSectors)
             {
@@ -112,8 +107,8 @@ namespace SFA.DAS.FAT.Web.Models
             {
                 return clearLevelLink;
             }
-            var sectors = SelectedSectors != null && SelectedSectors.Any() 
-                ? "&sectors=" + string.Join("&sectors=", SelectedSectors) : "";
+
+            var sectors = BuildSelectedSectorListLink("appendTo");
             
             foreach (var selectedLevel in SelectedLevels)
             {
@@ -146,14 +141,14 @@ namespace SFA.DAS.FAT.Web.Models
             return clearFilterString;
         }
 
-        private string BuildSelectedLevelsLink(string buildOrderByNameLink)
+        private string BuildSelectedLevelsListLink(string linkToAppendTo)
         {
-            return SelectedLevels != null && SelectedLevels.Any() ? $"{GetSeparator(buildOrderByNameLink)}levels=" + string.Join("&levels=", SelectedLevels) : "";
+            return SelectedLevels != null && SelectedLevels.Any() ? $"{GetSeparator(linkToAppendTo)}levels=" + string.Join("&levels=", SelectedLevels) : "";
         }
 
-        private string BuildSelectedSectorList(string buildOrderByNameLink)
+        private string BuildSelectedSectorListLink(string linkToAppendTo)
         {
-            return SelectedSectors != null && SelectedSectors.Any() ? $"{GetSeparator(buildOrderByNameLink)}sectors=" + string.Join("&sectors=", SelectedSectors) : "";
+            return SelectedSectors != null && SelectedSectors.Any() ? $"{GetSeparator(linkToAppendTo)}sectors=" + string.Join("&sectors=", SelectedSectors) : "";
         }
 
         private string GetSeparator(string url)

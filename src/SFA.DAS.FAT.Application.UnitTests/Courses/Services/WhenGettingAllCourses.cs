@@ -140,5 +140,26 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
                     && request.OrderBy.Equals(coursesApiRequest.OrderBy)
                     )));
         }
+
+        [Test, MoqAutoData]
+        public async Task Then_The_Keyword_And_OrderBy_Is_Set_To_Relevance_Added_To_The_Request(
+            string keyword,
+            [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
+            [Frozen] Mock<IApiClient> apiClient,
+            CourseService courseService)
+        {
+            //Arrange
+            var coursesApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, keyword, null, null, OrderBy.Relevance);
+
+            //Act
+            await courseService.GetCourses(keyword, null, null, OrderBy.Relevance);
+
+            //Assert
+            apiClient.Verify(x =>
+                x.Get<TrainingCourses>(It.Is<GetCoursesApiRequest>(request =>
+                    request.Keyword.Equals(coursesApiRequest.Keyword)
+                    && request.OrderBy.Equals(coursesApiRequest.OrderBy)
+                    )));
+        }
     }
 }

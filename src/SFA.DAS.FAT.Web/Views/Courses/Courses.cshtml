@@ -48,7 +48,11 @@
                     }
                     <div class="das-filter__body das-!-show--from-tablet" id="fat-filter-options">
                         <form asp-route="@RouteNames.Training" method="GET">
-                            <input type="hidden" asp-for="OrderBy"/>
+                            @if (Model.OrderBy != OrderBy.None)
+                            {
+                                <input type="hidden" asp-for="OrderBy"/>    
+                            }
+                            
                             <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
                             <div class="govuk-form-group">
                                 <label for="Keyword" class="govuk-label das-filter__search-label">Keywords</label>

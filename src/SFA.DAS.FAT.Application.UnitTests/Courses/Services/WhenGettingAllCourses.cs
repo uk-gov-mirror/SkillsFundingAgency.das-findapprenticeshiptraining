@@ -46,7 +46,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             var coursesApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, keyword, routeIds);
 
             //Act
-            await courseService.GetCourses(keyword, routeIds, null);
+            await courseService.GetCourses(keyword, routeIds, null, OrderBy.None);
 
             //Assert
             apiClient.Verify(x =>
@@ -67,7 +67,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             var coursesApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, keyword, null, levels);
 
             //Act
-            await courseService.GetCourses(keyword, null, levels);
+            await courseService.GetCourses(keyword, null, levels, OrderBy.None);
 
             //Assert
             apiClient.Verify(x =>
@@ -89,7 +89,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             var coursesApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, keyword, routeIds, levels);
 
             //Act
-            await courseService.GetCourses(keyword, routeIds, levels);
+            await courseService.GetCourses(keyword, routeIds, levels, OrderBy.None);
 
             //Assert
             apiClient.Verify(x =>
@@ -97,6 +97,48 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
                     request.Keyword.Equals(coursesApiRequest.Keyword)
                     && request.Levels.Equals(coursesApiRequest.Levels)
                     && request.Sectors.Equals(coursesApiRequest.Sectors))));
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_The_Keyword_Is_Added_To_The_Request_And_OrderBy_Is_Default(
+            string keyword,
+            [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
+            [Frozen] Mock<IApiClient> apiClient,
+            CourseService courseService)
+        {
+            //Arrange
+            var coursesApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, keyword, null, null, OrderBy.None);
+
+            //Act
+            await courseService.GetCourses(keyword, null, null, OrderBy.None);
+
+            //Assert
+            apiClient.Verify(x =>
+                x.Get<TrainingCourses>(It.Is<GetCoursesApiRequest>(request =>
+                    request.Keyword.Equals(coursesApiRequest.Keyword)
+                    && request.OrderBy.Equals(coursesApiRequest.OrderBy)
+                    )));
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_The_Keyword_And_OrderBy_Is_Added_To_The_Request(
+            string keyword,
+            [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
+            [Frozen] Mock<IApiClient> apiClient,
+            CourseService courseService)
+        {
+            //Arrange
+            var coursesApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, keyword, null, null, OrderBy.Name);
+
+            //Act
+            await courseService.GetCourses(keyword, null, null, OrderBy.Name);
+
+            //Assert
+            apiClient.Verify(x =>
+                x.Get<TrainingCourses>(It.Is<GetCoursesApiRequest>(request =>
+                    request.Keyword.Equals(coursesApiRequest.Keyword)
+                    && request.OrderBy.Equals(coursesApiRequest.OrderBy)
+                    )));
         }
     }
 }

@@ -27,7 +27,7 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
             var url = $"{BaseUrl}trainingcourses?keyword={Keyword}";
             if (OrderBy != OrderBy.None)
             {
-                url += "orderby=" + string.Join("&orderby=", OrderBy);
+                url += $"orderby={OrderBy}";
             }
             if (Sectors != null && Sectors.Any())
             {

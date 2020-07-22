@@ -27,7 +27,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             var courseApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, null);
             
             //Act
-            await courseService.GetCourses(null, null, null);
+            await courseService.GetCourses(null, null, null, OrderBy.None);
             
             //Assert
             apiClient.Verify(x=>x.Get<TrainingCourses>(

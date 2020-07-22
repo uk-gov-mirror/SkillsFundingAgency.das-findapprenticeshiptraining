@@ -27,8 +27,8 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, new List<int>());
             
             // Assert
-            model.OrderByName.Should​().Be($"?keyword={model.Keyword}&orderby={OrderBy.Name}");
-            model.OrderByRelevance.Should​().Be($"?keyword={model.Keyword}&orderby={OrderBy.Relevance}");
+            model.OrderByName.Should().Be($"?keyword={model.Keyword}&orderby={OrderBy.Name}");
+            model.OrderByRelevance.Should().Be($"?keyword={model.Keyword}&orderby={OrderBy.Relevance}");
         }
         
         

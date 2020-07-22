@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
+using SFA.DAS.FAT.Domain.Courses;
 
 namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 {
@@ -103,6 +104,37 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             
             //Assert
             Assert.IsFalse(model.ShowFilterOptions); 
+        }
+
+        [Test]
+        public void Then_If_There_Is_A_Keyword_Search_And_No_OrderBy_It_Is_Set_To_Relevance()
+        {
+            //Arrange Act
+            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), "test", new List<int>(), OrderBy.None);
+            
+            //Assert
+            Assert.AreEqual(OrderBy.Relevance, model.OrderBy); 
+        }
+        
+        [Test]
+        public void Then_If_There_Is_A_Keyword_Search_And_OrderBy_It_Is_Maintained()
+        {
+            //Arrange Act
+            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), "test", new List<int>());
+            
+            //Assert
+            Assert.AreEqual(OrderBy.Name, model.OrderBy); 
+        }
+        
+        
+        [Test]
+        public void Then_If_There_Is_No_Keyword_Search_And_OrderBy_It_Is_Set_To_None()
+        {
+            //Arrange Act
+            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), "", new List<int>());
+            
+            //Assert
+            Assert.AreEqual(OrderBy.None, model.OrderBy); 
         }
     }
 }

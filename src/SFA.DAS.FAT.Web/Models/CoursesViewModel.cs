@@ -7,6 +7,7 @@ namespace SFA.DAS.FAT.Web.Models
 {
     public class CoursesViewModel
     {
+        private OrderBy _orderBy = OrderBy.None;
         public List<CourseViewModel> Courses { get; set; }
         public string Keyword { get; set; }
         public int Total { get ; set ; }
@@ -15,7 +16,26 @@ namespace SFA.DAS.FAT.Web.Models
         public List<SectorViewModel> Sectors { get ; set ; }
         public List<Guid> SelectedSectors { get ; set ; }
         public List<int> SelectedLevels { get ; set ; }
-        public OrderBy OrderBy { get; set; } = OrderBy.None;
+        public OrderBy OrderBy
+        {
+            get => _orderBy;
+            set
+            {
+                if (value == OrderBy.None && !string.IsNullOrEmpty(Keyword))
+                {
+                    _orderBy = OrderBy.Relevance;
+                }
+                else if (value != OrderBy.None && string.IsNullOrEmpty(Keyword))
+                {
+                    _orderBy = OrderBy.None;
+                }
+                else
+                {
+                    _orderBy = value;    
+                }
+            }
+        }
+
         public bool ShowFilterOptions =>  ClearSectorLinks.Any() || ClearLevelLinks.Any() || !string.IsNullOrEmpty(Keyword);
 
         public string TotalMessage => GetTotalMessage();

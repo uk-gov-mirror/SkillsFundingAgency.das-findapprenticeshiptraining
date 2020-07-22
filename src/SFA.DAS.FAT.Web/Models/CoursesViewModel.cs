@@ -61,9 +61,9 @@ namespace SFA.DAS.FAT.Web.Models
 
             buildOrderByNameLink += !string.IsNullOrEmpty(order.ToString()) ? $"{GetSeparator(buildOrderByNameLink)}orderby={order}" : "";
 
-            buildOrderByNameLink += SelectedSectors != null && SelectedSectors.Any() ? $"{GetSeparator(buildOrderByNameLink)}sectors=" + string.Join("&sectors=", SelectedSectors) : "";
+            buildOrderByNameLink += BuildSelectedSectorList(buildOrderByNameLink);
             
-            buildOrderByNameLink += SelectedLevels != null && SelectedLevels.Any() ? $"{GetSeparator(buildOrderByNameLink)}levels=" + string.Join("&levels=", SelectedLevels) : "";
+            buildOrderByNameLink += BuildSelectedLevelsLink(buildOrderByNameLink);
             
             return buildOrderByNameLink;
         }
@@ -144,6 +144,16 @@ namespace SFA.DAS.FAT.Web.Models
             }
 
             return clearFilterString;
+        }
+
+        private string BuildSelectedLevelsLink(string buildOrderByNameLink)
+        {
+            return SelectedLevels != null && SelectedLevels.Any() ? $"{GetSeparator(buildOrderByNameLink)}levels=" + string.Join("&levels=", SelectedLevels) : "";
+        }
+
+        private string BuildSelectedSectorList(string buildOrderByNameLink)
+        {
+            return SelectedSectors != null && SelectedSectors.Any() ? $"{GetSeparator(buildOrderByNameLink)}sectors=" + string.Join("&sectors=", SelectedSectors) : "";
         }
 
         private string GetSeparator(string url)

@@ -33,7 +33,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 
         
         [Test, AutoData]
-        public void And_Has_Keyword_Then_Builds_QueryString_With_Keyword(List<int> selectedLevels, string keyword)
+        public void Then_Has_Keyword_Then_Builds_QueryString_With_Keyword(List<int> selectedLevels, string keyword)
         {
             //Arrange Act
             var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels);
@@ -55,7 +55,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         }
         
         [Test, AutoData]
-        public void And_Has_Keyword_And_OrderBy_Then_Builds_QueryString_With_Keyword_And_OrderBy(List<int> selectedLevels, string keyword)
+        public void Then_Has_Keyword_And_OrderBy_Then_Builds_QueryString_With_Keyword_And_OrderBy(List<int> selectedLevels, string keyword)
         {
             //Arrange Act
             var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels);

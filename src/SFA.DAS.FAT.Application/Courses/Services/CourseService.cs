@@ -36,5 +36,14 @@ namespace SFA.DAS.FAT.Application.Courses.Services
 
             return response;
         }
+
+        public async Task<TrainingCourseProviders> GetCourseProviders(int courseId)
+        {
+            var request = new GetCourseProvidersApiRequest(_config.BaseUrl, courseId);
+
+            var response = await _apiClient.Get<TrainingCourseProviders>(request);
+
+            return response;
+        }
     }
 }

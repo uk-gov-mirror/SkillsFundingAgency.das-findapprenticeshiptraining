@@ -6,9 +6,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="course-providers.json" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="WireMock.Net.StandAlone" Version="1.2.12" />
     </ItemGroup>
     <ItemGroup>
+        <Content Include="course-providers.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="course.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>

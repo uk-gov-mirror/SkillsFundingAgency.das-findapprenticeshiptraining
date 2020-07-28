@@ -9,8 +9,8 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 {
     public class WhenClearingLevelLinks
     {
-        [Test, AutoData]
-        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels(List<int> selectedLevels, string keyword)
+        [Test, AutoData]// todo: this test failed randomly, check data setup 
+        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels(List<int> selectedLevels)
         {
             //Arrange Act
             var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), "", selectedLevels);
@@ -28,10 +28,8 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
                 Assert.AreEqual(clearLinkCount - 1, model.ClearLevelLinks.Count(c => c.Value.Contains($"levels={selectedLevel}")));
                 Assert.AreEqual(0, model.ClearLevelLinks.Count(c => c.Value.Contains("orderby=")));
             }
-            
         }
 
-        
         [Test, AutoData]
         public void Then_Has_Keyword_Then_Builds_QueryString_With_Keyword(List<int> selectedLevels, string keyword)
         {

@@ -3,6 +3,7 @@
 	I want a list of providers for a particular course
 	So that I can compare providers and choose
 
+@ignore
 Scenario: Navigate to providers for course page
 Given I have an http client
 When I navigate to the following url: /courses/123/providers

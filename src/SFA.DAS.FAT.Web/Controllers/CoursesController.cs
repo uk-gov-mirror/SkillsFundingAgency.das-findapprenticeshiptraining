@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -7,21 +7,26 @@ using SFA.DAS.FAT.Web.Models;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Web.Infrastructure;
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using SFA.DAS.FAT.Domain.Courses;
+using Microsoft.Extensions.Logging;
+using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
 
 namespace SFA.DAS.FAT.Web.Controllers
 {
-    [Route("courses")]
+    [Route("[controller]")]
     public class CoursesController : Controller
     {
+        private readonly ILogger<CoursesController> _logger;
         private readonly IMediator _mediator;
 
-        public CoursesController (IMediator mediator)
+        public CoursesController (
+            ILogger<CoursesController> logger,
+            IMediator mediator)
         {
+            _logger = logger;
             _mediator = mediator;
         }
-        [Route("", Name = RouteNames.Training)]
+
+        [Route("", Name = RouteNames.Courses)]
         public async Task<IActionResult> Courses(GetCoursesRequest request)
         {
             var result = await _mediator.Send(new GetCoursesQuery
@@ -48,7 +53,7 @@ namespace SFA.DAS.FAT.Web.Controllers
             return View(viewModel);
         }
 
-        [Route("{id}", Name = RouteNames.TrainingDetail)]
+        [Route("{id}", Name = RouteNames.CourseDetails)]
         public async Task<IActionResult> CourseDetail(int id)
         {
             var result = await _mediator.Send(new GetCourseQuery {CourseId = id});
@@ -56,6 +61,27 @@ namespace SFA.DAS.FAT.Web.Controllers
             var viewModel = (CourseViewModel)result.Course;
             
             return View(viewModel);
+        }
+
+        [Route("{id}/providers", Name = RouteNames.CourseProviders)]
+        public async Task<IActionResult> CourseProviders(int id)
+        {
+            try
+            {
+                var result = await _mediator.Send(new GetCourseProvidersQuery {CourseId = id});
+
+                return View(new CourseProvidersViewModel
+                {
+                    Course = result.Course,
+                    Providers = result.Providers, 
+                    Total = result.Total
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                return RedirectToRoute(RouteNames.Error500);
+            }
         }
     }
 }

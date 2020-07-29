@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Domain.Configuration;
+using SFA.DAS.FAT.Infrastructure.HealthCheck;
 using SFA.DAS.FAT.Web.AppStart;
 
 namespace SFA.DAS.FAT.Web
@@ -55,6 +57,15 @@ namespace SFA.DAS.FAT.Web
             services.AddMediatRValidation();
             
             services.AddApplicationInsightsTelemetry(_configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
+
+            if (!_environment.IsDevelopment())
+            {
+                services.AddHealthChecks()
+                    .AddCheck<FatOuterApiHealthCheck>(
+                        "FAT Outer Api",
+                        failureStatus: HealthStatus.Unhealthy,
+                        tags: new[] {"ready"});
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

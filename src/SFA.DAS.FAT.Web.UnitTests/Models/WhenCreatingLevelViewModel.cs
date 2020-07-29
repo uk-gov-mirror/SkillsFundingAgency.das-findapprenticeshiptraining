@@ -3,9 +3,6 @@ using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Web.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SFA.DAS.FAT.Web.UnitTests.Models
 {

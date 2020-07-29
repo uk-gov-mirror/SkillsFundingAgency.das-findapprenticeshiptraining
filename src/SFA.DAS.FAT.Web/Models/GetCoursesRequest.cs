@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAT.Domain.Courses;
 
 namespace SFA.DAS.FAT.Web.Models
 {
@@ -13,6 +14,9 @@ namespace SFA.DAS.FAT.Web.Models
 
         [FromQuery]
         public List<int> Levels { get; set; }
+
+        [FromQuery]
+        public OrderBy OrderBy { get; set; }
 
     }
 }

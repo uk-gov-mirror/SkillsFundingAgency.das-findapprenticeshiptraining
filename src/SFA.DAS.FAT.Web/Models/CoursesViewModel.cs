@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SFA.DAS.FAT.Domain.Courses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,19 +7,43 @@ namespace SFA.DAS.FAT.Web.Models
 {
     public class CoursesViewModel
     {
+        private OrderBy _orderBy = OrderBy.None;
         public List<CourseViewModel> Courses { get; set; }
         public string Keyword { get; set; }
         public int Total { get ; set ; }
         public int TotalFiltered { get ; set ; }
         public List<LevelViewModel> Levels { get; set; }
         public List<SectorViewModel> Sectors { get ; set ; }
-        public string TotalMessage => GetTotalMessage();
         public List<Guid> SelectedSectors { get ; set ; }
-        public Dictionary<string, string> ClearSectorLinks => BuildClearSelectedFilterLink();
-        public string ClearKeywordLink => BuildClearKeywordFilterLink();
         public List<int> SelectedLevels { get ; set ; }
-        public Dictionary<string, string> ClearLevelLinks => BuildClearLevelsFilterLink();
+        public OrderBy OrderBy
+        {
+            get => _orderBy;
+            set
+            {
+                if (value == OrderBy.None && !string.IsNullOrEmpty(Keyword))
+                {
+                    _orderBy = OrderBy.Relevance;
+                }
+                else if (value != OrderBy.None && string.IsNullOrEmpty(Keyword))
+                {
+                    _orderBy = OrderBy.None;
+                }
+                else
+                {
+                    _orderBy = value;    
+                }
+            }
+        }
+
         public bool ShowFilterOptions =>  ClearSectorLinks.Any() || ClearLevelLinks.Any() || !string.IsNullOrEmpty(Keyword);
+
+        public string TotalMessage => GetTotalMessage();
+        public Dictionary<string, string> ClearSectorLinks => BuildClearSectorFilterLinks();
+        public string ClearKeywordLink => BuildClearKeywordFilterLink();
+        public Dictionary<string, string> ClearLevelLinks => BuildClearLevelFilterLinks();
+        public string OrderByName => BuildOrderByLink(OrderBy.Name);
+        public string OrderByRelevance => BuildOrderByLink(OrderBy.Relevance);
 
         private string GetTotalMessage()
         {
@@ -30,21 +55,27 @@ namespace SFA.DAS.FAT.Web.Models
 
             return $"{totalToUse} result" + (totalToUse!=1 ? "s": "");
         }
+        private string BuildOrderByLink(OrderBy order)
+        {
+            var buildOrderByNameLink = !string.IsNullOrEmpty(Keyword) ? $"?keyword={Keyword}" : "";
+
+            buildOrderByNameLink += !string.IsNullOrEmpty(order.ToString()) ? $"{GetSeparator(buildOrderByNameLink)}orderby={order}" : "";
+
+            buildOrderByNameLink += BuildSelectedSectorListLink(buildOrderByNameLink);
+            
+            buildOrderByNameLink += BuildSelectedLevelsListLink(buildOrderByNameLink);
+            
+            return buildOrderByNameLink;
+        }
 
         private string BuildClearKeywordFilterLink()
         {
-            var buildClearKeywordFilterLink = SelectedSectors != null && SelectedSectors.Any() 
-                ? "?sectors=" + string.Join("&sectors=", SelectedSectors) : "";
-
-            var separator = string.IsNullOrEmpty(buildClearKeywordFilterLink) ? "?" : "&";
-            
-            buildClearKeywordFilterLink += SelectedLevels!=null && SelectedLevels.Any() 
-                ?  $"{separator}levels=" + string.Join("&levels=", SelectedLevels) : "";
-            
+            var buildClearKeywordFilterLink = BuildSelectedSectorListLink("");
+            buildClearKeywordFilterLink += BuildSelectedLevelsListLink(buildClearKeywordFilterLink);
             return buildClearKeywordFilterLink;
         }
 
-        private Dictionary<string, string> BuildClearSelectedFilterLink ( )
+        private Dictionary<string, string> BuildClearSectorFilterLinks ( )
         {
             var clearFilterLinks = new Dictionary<string, string>();
             if (SelectedSectors == null)
@@ -52,20 +83,13 @@ namespace SFA.DAS.FAT.Web.Models
                 return clearFilterLinks;
             }
             
-            var levels = SelectedLevels!=null && SelectedLevels.Any() 
-                ?  $"&levels=" + string.Join("&levels=", SelectedLevels) : "";
+            var levels = BuildSelectedLevelsListLink("appendTo");
             
             foreach (var selectedSector in SelectedSectors)
             {
-                var clearFilterString = string.Empty;
-                var separator = "?";
-                if (!string.IsNullOrEmpty(Keyword))
-                {
-                    clearFilterString = $"?keyword={Keyword}";
-                    separator = "&";
-                }
+                var clearFilterString = BuildClearFilterStringForKeywordAndOrderBy();
 
-                clearFilterString += $"{separator}sectors=" + string.Join("&sectors=", SelectedSectors.Where(c => !c.Equals(selectedSector)));
+                clearFilterString += $"{GetSeparator(clearFilterString)}sectors=" + string.Join("&sectors=", SelectedSectors.Where(c => !c.Equals(selectedSector)));
                 clearFilterString += levels;
                 
                 var sector = Sectors.SingleOrDefault(c => c.Id.Equals(selectedSector));
@@ -76,27 +100,21 @@ namespace SFA.DAS.FAT.Web.Models
             return clearFilterLinks;
         }
 
-        private Dictionary<string, string> BuildClearLevelsFilterLink()
+        private Dictionary<string, string> BuildClearLevelFilterLinks()
         {
             var clearLevelLink = new Dictionary<string,string>();
             if (SelectedLevels == null)
             {
                 return clearLevelLink;
             }
-            var sectors = SelectedSectors != null && SelectedSectors.Any() 
-                ? "&sectors=" + string.Join("&sectors=", SelectedSectors) : "";
+
+            var sectors = BuildSelectedSectorListLink("appendTo");
             
             foreach (var selectedLevel in SelectedLevels)
             {
-                var clearFilterString = string.Empty;
-                var separator = "?";
-                if (!string.IsNullOrEmpty(Keyword))
-                {
-                    clearFilterString = $"?keyword={Keyword}";
-                    separator = "&";
-                }
+                var clearFilterString = BuildClearFilterStringForKeywordAndOrderBy();
 
-                clearFilterString += $"{separator}levels=" + string.Join("&levels=", SelectedLevels.Where(c => !c.Equals(selectedLevel)));
+                clearFilterString += $"{GetSeparator(clearFilterString)}levels=" + string.Join("&levels=", SelectedLevels.Where(c => !c.Equals(selectedLevel)));
                 clearFilterString += sectors;
                 var sector = Levels.SingleOrDefault(c => c.Code.Equals(selectedLevel));
                 
@@ -106,6 +124,36 @@ namespace SFA.DAS.FAT.Web.Models
             return clearLevelLink;
         }
 
+        private string BuildClearFilterStringForKeywordAndOrderBy()
+        {
+            var clearFilterString = "";
+            
+            if (!string.IsNullOrEmpty(Keyword))
+            {
+                clearFilterString = $"?keyword={Keyword}";
+            }
+
+            if (OrderBy != OrderBy.None)
+            {
+                clearFilterString += $"{GetSeparator(clearFilterString)}orderby={OrderBy}";
+            }
+
+            return clearFilterString;
+        }
+
+        private string BuildSelectedLevelsListLink(string linkToAppendTo)
+        {
+            return SelectedLevels != null && SelectedLevels.Any() ? $"{GetSeparator(linkToAppendTo)}levels=" + string.Join("&levels=", SelectedLevels) : "";
+        }
+
+        private string BuildSelectedSectorListLink(string linkToAppendTo)
+        {
+            return SelectedSectors != null && SelectedSectors.Any() ? $"{GetSeparator(linkToAppendTo)}sectors=" + string.Join("&sectors=", SelectedSectors) : "";
+        }
+
+        private string GetSeparator(string url)
+        {
+            return string.IsNullOrEmpty(url) ? "?" : "&";
+        }
     }
-    
 }

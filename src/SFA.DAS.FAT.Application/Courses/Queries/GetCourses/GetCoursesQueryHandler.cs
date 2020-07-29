@@ -17,7 +17,7 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourses
 
         public async Task<GetCoursesResult> Handle(GetCoursesQuery query, CancellationToken cancellationToken)
         {
-            var response = await _courseService.GetCourses(query.Keyword, query.RouteIds, query.Levels);
+            var response = await _courseService.GetCourses(query.Keyword, query.RouteIds, query.Levels, query.OrderBy);
 
             return new GetCoursesResult
             {
@@ -25,7 +25,7 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourses
                 Sectors = response.Sectors.ToList(),
                 Total = response.Total,
                 TotalFiltered = response.TotalFiltered,
-                Levels = response.Levels.ToList()
+                Levels = response.Levels.ToList(),
             };
         }
     }

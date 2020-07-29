@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
+using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Domain.Courses.Api;
 
 namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
@@ -58,5 +59,41 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
             //Assert
             actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}&levels={string.Join("&levels=", levels)}");
         }
+
+        [Test, AutoData]
+        public void Then_The_Get_Url_Is_Constructed_Correctly_With_OrderBy(string baseUrl)
+        {
+            //Arrange Act
+            var orderBy = OrderBy.Name;
+            var actual = new GetCoursesApiRequest(baseUrl, "", null, null, orderBy);
+
+            //Assert
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword=&orderby={orderBy}");
+        }
+
+        [Test, AutoData]
+        public void Then_OrderBy_Is_Not_Added_If_None(string baseUrl, string keyword)
+        {
+            //Arrange Act
+            var orderBy = OrderBy.None;
+            var actual = new GetCoursesApiRequest(baseUrl, keyword, null, null, orderBy);
+
+            //Assert
+            actual.GetUrl.Should().NotContain("orderby");
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}");
+            
+        }
+        
+        [Test, AutoData]
+        public void Then_The_Get_Url_Is_Constructed_Correctly_With_Levels_And_Routes_And_OrderBy(string baseUrl, string keyword, List<Guid> sectors, List<int> levels)
+        {
+            //Arrange Act
+            var orderBy = OrderBy.Relevance;
+            var actual = new GetCoursesApiRequest(baseUrl, keyword, sectors, levels,orderBy);
+            
+            //Assert
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}&orderby={orderBy}&routeIds={string.Join("&routeIds=", sectors)}&levels={string.Join("&levels=", levels)}");
+        }
+        
     }
 }

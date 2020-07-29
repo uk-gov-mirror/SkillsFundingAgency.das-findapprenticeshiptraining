@@ -85,7 +85,8 @@ namespace SFA.DAS.FAT.Web.Controllers
             }
         }
 
-        [Route("{id}", Name = RouteNames.CourseProviderDetails)]
+        
+        [Route("{id}/course-provider-details", Name = RouteNames.CourseProviderDetails)]
         public async Task<IActionResult> CourseProviderDetail(int id)
         {
             
@@ -95,6 +96,6 @@ namespace SFA.DAS.FAT.Web.Controllers
 
             return View(viewModel);
         }
-
+        
     }
 }

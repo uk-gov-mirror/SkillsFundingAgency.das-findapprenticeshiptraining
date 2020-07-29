@@ -1,9 +1,12 @@
-﻿<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
+﻿@using SFA.DAS.FAT.Web.Infrastructure
+@model SFA.DAS.FAT.Web.Models.CourseProviderViewModel
+
+<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <span class="govuk-caption-xl">Training Provider</span>
             <h1 class="govuk-heading-xl">
-                <span class="das-no-wrap">#TRAINING PROVIDER NAME#</span>
+                <span class="das-no-wrap">#TRAINING PROVIDER @Model.Name #</span>
             </h1>
 
             <div class="das-highlight">

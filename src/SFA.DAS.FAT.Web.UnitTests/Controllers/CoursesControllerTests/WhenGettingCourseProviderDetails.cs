@@ -11,9 +11,9 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
     {
 
         [Test, MoqAutoData]
-        public async Task Then_The_Query_Is_Sent_And_Provider_Detail_Retrieved_And_Shown()
+        public async Task Then_The_Query_Is_Sent_And_Provider_Detail_Retrieved_And_Shown(int providerId, )
         {
-
+            
         }
     }
 }

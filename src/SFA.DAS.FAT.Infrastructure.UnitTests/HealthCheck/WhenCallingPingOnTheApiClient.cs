@@ -4,6 +4,7 @@ using AutoFixture.NUnit3;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Moq;
 using NUnit.Framework;
+using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.FAT.Infrastructure.Api;
 using SFA.DAS.FAT.Infrastructure.HealthCheck;
 using SFA.DAS.Testing.AutoFixture;
@@ -14,7 +15,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.HealthCheck
     {
         [Test, MoqAutoData]
         public async Task Then_The_Ping_Endpoint_Is_Called_For_OuterApi(
-            [Frozen] Mock<ApiClient> client,
+            [Frozen] Mock<IApiClient> client,
             HealthCheckContext healthCheckContext,
             FatOuterApiHealthCheck healthCheck)
         {
@@ -26,7 +27,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.HealthCheck
 
         [Test, MoqAutoData]
         public async Task Then_If_It_Is_Successful_200_Is_Returned(
-            [Frozen] Mock<ApiClient> client,
+            [Frozen] Mock<IApiClient> client,
             HealthCheckContext healthCheckContext,
             FatOuterApiHealthCheck healthCheck)
         {
@@ -36,12 +37,12 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.HealthCheck
             //Act
             var actual = await healthCheck.CheckHealthAsync(healthCheckContext, CancellationToken.None);
             //Assert
-            Assert.AreEqual(200, actual);
+            Assert.AreEqual(HealthStatus.Healthy, actual.Status);
         }
 
         [Test, MoqAutoData]
         public async Task Then_If_It_Is_Not_Successful_An_Exception_Is_Thrown(
-            [Frozen] Mock<ApiClient> client,
+            [Frozen] Mock<IApiClient> client,
             HealthCheckContext healthCheckContext,
             FatOuterApiHealthCheck healthCheck)
         {
@@ -51,7 +52,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.HealthCheck
             //Act
             var actual = await healthCheck.CheckHealthAsync(healthCheckContext, CancellationToken.None);
             //Assert
-            Assert.AreNotEqual(200, actual);
+            Assert.AreEqual(HealthStatus.Unhealthy, actual.Status);
         }
     }
 }

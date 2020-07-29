@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using SFA.DAS.FAT.Domain.Courses;
+using MediatR;
 
 namespace SFA.DAS.FAT.Application.Courses.Queries.GetProvider
 {
-    public class GetProviderResult
+    public class GetProviderQuery : IRequest<GetProviderResult>
     {
-        public Provider Provider { get; set; }
+        public int ProviderId { get; set; }
     }
 }

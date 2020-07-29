@@ -1,7 +1,43 @@
-﻿
-@{
-    ViewData["Title"] = "CourseProviderDetails";
-}
+﻿<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <span class="govuk-caption-xl">Training Provider</span>
+            <h1 class="govuk-heading-xl">
+                <span class="das-no-wrap">#TRAINING PROVIDER NAME#</span>
+            </h1>
 
-<h1>CourseProviderDetails</h1>
+            <div class="das-highlight">
+                <span class="govuk-caption-xl">Apprenticeship training course</span>
+                <h2 class="govuk-heading-l">#Name of Training Course & level#</h2>
+                <p><a>A link will go here</a></p>
+                <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship Location</h3>
+                <p class="govuk-body">Check #NAME OF PROVIDER# training options for the apprenticeship location.</p>
+                <form method="GET" asp-route="#" asp-route-id="#">
+                    <div class="govuk-form-group">
+                        <label for="search-location" class="govuk-label">Enter location</label>
+                        <input type="search" id="search-location" name="location" title="Search" class="govuk-input govuk-!-width-three-quarters">
+                    </div>
+                </form>
+            </div>
+            <div class="das-highlight">
+                <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship Location</h3>
 
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Email</dt>
+                        <dd class="govuk-summary-list__value">#email address#</dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Telephone</dt>
+                        <dd class="govuk-summary-list__value">#Telephone Number#</dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Website</dt>
+                        <dd class="govuk-summary-list__value">#website link#</dd>
+                    </div>
+                </dl>
+
+            </div>
+        </div>
+    </div>
+</main>

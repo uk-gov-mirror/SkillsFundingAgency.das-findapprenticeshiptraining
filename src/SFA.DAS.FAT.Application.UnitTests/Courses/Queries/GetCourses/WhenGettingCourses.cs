@@ -25,13 +25,13 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
             request.Keyword = null;
             request.RouteIds = null;
             request.Levels = null;
-            mockService.Setup(x => x.GetCourses(null, null, null)).ReturnsAsync(courseResponse);
+            mockService.Setup(x => x.GetCourses(null, null, null, OrderBy.None)).ReturnsAsync(courseResponse);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
             
             //Assert
-            mockService.Verify(x=>x.GetCourses(null, null, null), Times.Once);
+            mockService.Verify(x=>x.GetCourses(null, null, null, OrderBy.None), Times.Once);
             Assert.IsNotNull(actual);
             actual.Courses.Should().BeEquivalentTo(courseResponse.Courses);
             actual.Sectors.Should().BeEquivalentTo(courseResponse.Sectors);
@@ -49,13 +49,13 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
             //Arrange
             request.RouteIds = null;
             request.Levels = null;
-            mockService.Setup(x => x.GetCourses(request.Keyword, null, null)).ReturnsAsync(courseResponse);
+            mockService.Setup(x => x.GetCourses(request.Keyword, null, null, OrderBy.None)).ReturnsAsync(courseResponse);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
 
             //Assert
-            mockService.Verify(x => x.GetCourses(request.Keyword, null, null), Times.Once);
+            mockService.Verify(x => x.GetCourses(request.Keyword, null, null, OrderBy.None), Times.Once);
             Assert.IsNotNull(actual);
             actual.Courses.Should().BeEquivalentTo(courseResponse.Courses);
             actual.Sectors.Should().BeEquivalentTo(courseResponse.Sectors);
@@ -72,13 +72,13 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
         {
             //Arrange
             request.Levels = null;
-            mockService.Setup(x => x.GetCourses(request.Keyword, request.RouteIds, null)).ReturnsAsync(courseResponse);
+            mockService.Setup(x => x.GetCourses(request.Keyword, request.RouteIds, null, OrderBy.None)).ReturnsAsync(courseResponse);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
 
             //Assert
-            mockService.Verify(x => x.GetCourses(request.Keyword, request.RouteIds, null), Times.Once);
+            mockService.Verify(x => x.GetCourses(request.Keyword, request.RouteIds, null, OrderBy.None), Times.Once);
             Assert.IsNotNull(actual);
         }
 
@@ -91,13 +91,13 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
         {
             //Arrange
             request.RouteIds = null;
-            mockService.Setup(x => x.GetCourses(request.Keyword, null, request.Levels)).ReturnsAsync(courseResponse);
+            mockService.Setup(x => x.GetCourses(request.Keyword, null, request.Levels, OrderBy.None)).ReturnsAsync(courseResponse);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
 
             //Assert
-            mockService.Verify(x => x.GetCourses(request.Keyword, null, request.Levels), Times.Once);
+            mockService.Verify(x => x.GetCourses(request.Keyword, null, request.Levels, OrderBy.None), Times.Once);
             Assert.IsNotNull(actual);
         }
 
@@ -109,13 +109,13 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
             GetCoursesQueryHandler handler)
         {
             //Arrange
-            mockService.Setup(x => x.GetCourses(request.Keyword, request.RouteIds, request.Levels)).ReturnsAsync(courseResponse);
+            mockService.Setup(x => x.GetCourses(request.Keyword, request.RouteIds, request.Levels, OrderBy.None)).ReturnsAsync(courseResponse);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
 
             //Assert
-            mockService.Verify(x => x.GetCourses(request.Keyword, request.RouteIds, request.Levels), Times.Once);
+            mockService.Verify(x => x.GetCourses(request.Keyword, request.RouteIds, request.Levels, OrderBy.None), Times.Once);
             Assert.IsNotNull(actual);
         }
     }

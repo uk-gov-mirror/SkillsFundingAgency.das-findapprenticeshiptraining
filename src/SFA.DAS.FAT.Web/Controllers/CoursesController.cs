@@ -8,6 +8,7 @@ using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Web.Infrastructure;
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using SFA.DAS.FAT.Domain.Courses;
 
 namespace SFA.DAS.FAT.Web.Controllers
 {
@@ -27,7 +28,8 @@ namespace SFA.DAS.FAT.Web.Controllers
             {
                 Keyword = request.Keyword,
                 RouteIds = request.Sectors,
-                Levels = request.Levels
+                Levels = request.Levels,
+                OrderBy = request.OrderBy
             });
 
             var viewModel = new CoursesViewModel
@@ -39,7 +41,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                 Keyword = request.Keyword,
                 SelectedSectors = request.Sectors,
                 SelectedLevels = request.Levels,
-                Levels = result.Levels.Select(level => new LevelViewModel(level, request.Levels)).ToList()
+                Levels = result.Levels.Select(level => new LevelViewModel(level, request.Levels)).ToList(),
+                OrderBy = request.OrderBy
             };
             
             return View(viewModel);

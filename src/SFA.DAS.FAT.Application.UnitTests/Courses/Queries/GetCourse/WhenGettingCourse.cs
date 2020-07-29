@@ -18,7 +18,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourse
     public class WhenGettingCourse
     {
         [Test, MoqAutoData]
-        public void And_Fails_Validation_Then_Throws_ValidationException(
+        public void Then_Throws_ValidationException_When_Request_Fails_Validation(
             GetCourseQuery request,
             string propertyName,
             [Frozen] Mock<IValidator<GetCourseQuery>> mockValidator,
@@ -64,7 +64,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourse
         }
         
         [Test, MoqAutoData]
-        public async Task And_No_Course_Then_Returns_Null(
+        public async Task Then_If_There_Is_No_Course_Returns_Null(
             GetCourseQuery request,
             Course courseResponse,
             [Frozen] Mock<IValidator<GetCourseQuery>> mockValidator,

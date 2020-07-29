@@ -9,6 +9,7 @@ using SFA.DAS.FAT.Web.Infrastructure;
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
+using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
 
 namespace SFA.DAS.FAT.Web.Controllers
 {
@@ -87,11 +88,10 @@ namespace SFA.DAS.FAT.Web.Controllers
         [Route("{id}", Name = RouteNames.CourseProviderDetails)]
         public async Task<IActionResult> CourseProviderDetail(int id)
         {
-            /*
-            var result = await _mediator.Send(new GetCourseQuery { CourseId = id });
+            
+            var result = await _mediator.Send(new GetProviderQuery { ProviderId = id });
 
-            var viewModel = (CourseViewModel)result.Course;
-            */
+            var viewModel = (CourseProviderViewModel)result.Provider;
 
             return View(viewModel);
         }

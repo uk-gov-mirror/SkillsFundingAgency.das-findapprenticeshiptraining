@@ -8,6 +8,8 @@ using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
 using Moq;
 using AutoFixture.NUnit3;
 using MediatR;
+using System.Threading;
+using SFA.DAS.FAT.Web.Controllers;
 
 namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
 {
@@ -19,11 +21,16 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             int providerId, 
             GetProviderResult response, 
             [Frozen] Mock<IMediator> mediator,
-            CoursesControler controller)
+            CoursesController controller
+            )
         {
             //Arrange
-            mediator.Setup(x => x.Send(It.Is<GetProviderQuery>))
+            mediator.Setup(x => x.Send(It.Is<GetProviderQuery>(c =>
+                c.ProviderId.Equals(providerId)), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+                
             //Act
+            var actual = await controller.CourseProviderDetail(providerId)
 
             //Assert
         }

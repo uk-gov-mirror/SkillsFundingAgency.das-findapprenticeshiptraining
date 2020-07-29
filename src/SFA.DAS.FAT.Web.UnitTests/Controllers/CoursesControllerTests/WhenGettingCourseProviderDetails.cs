@@ -10,6 +10,8 @@ using AutoFixture.NUnit3;
 using MediatR;
 using System.Threading;
 using SFA.DAS.FAT.Web.Controllers;
+using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAT.Web.Models;
 
 namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
 {
@@ -28,11 +30,16 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             mediator.Setup(x => x.Send(It.Is<GetProviderQuery>(c =>
                 c.ProviderId.Equals(providerId)), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
-                
+
             //Act
-            var actual = await controller.CourseProviderDetail(providerId)
+            var actual = await controller.CourseProviderDetail(providerId);
 
             //Assert
+            Assert.IsNotNull(actual);
+            var actualResult = actual as ViewResult;
+            Assert.IsNotNull(actualResult);
+            var actualModel = actualResult.Model as CourseProviderViewModel;
+            Assert.IsNotNull(actualModel);
         }
     }
 }

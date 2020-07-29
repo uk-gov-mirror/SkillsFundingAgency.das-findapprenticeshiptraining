@@ -83,5 +83,18 @@ namespace SFA.DAS.FAT.Web.Controllers
                 return RedirectToRoute(RouteNames.Error500);
             }
         }
+
+        [Route("{id}", Name = RouteNames.CourseProviderDetails)]
+        public async Task<IActionResult> CourseProviderDetail(int id)
+        {
+            /*
+            var result = await _mediator.Send(new GetCourseQuery { CourseId = id });
+
+            var viewModel = (CourseViewModel)result.Course;
+            */
+
+            return View(viewModel);
+        }
+
     }
 }

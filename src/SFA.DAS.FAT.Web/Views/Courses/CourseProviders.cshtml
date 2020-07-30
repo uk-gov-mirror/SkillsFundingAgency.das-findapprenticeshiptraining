@@ -4,8 +4,13 @@
 <main class="govuk-main-wrapper" id="main-content" role="main">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <h2 class="govuk-heading-l">Training providers for</h2>
-            <h1 class="govuk-heading-xl">@Model.Course.Title</h1>
+            <h1 class="govuk-heading-xl">
+                <span class="govuk-caption-xl">Training providers for</span>
+                @Model.Course.TitleAndLevel
+            </h1>
+            <p class="govuk-body govuk-!-margin-bottom-8">
+                <a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.CourseDetails" asp-route-id="@Model.Course.Id">Overview of @Model.Course.TitleAndLevel</a>
+            </p>
         </div>
     </div>
     <div class="govuk-grid-row">
@@ -16,14 +21,17 @@
         </div>
         <div class="govuk-grid-column-two-thirds">
             <h2 class="govuk-heading-m">@Model.TotalMessage</h2>
-
-            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 ">
+            <p class="govuk-body govuk-!-margin-bottom-6">
+                Sorted by:
+                <span class="govuk-!-font-weight-bold">Name</span>
+            </p>
+            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3">
 
             <div data-list>
                 @foreach (var provider in Model.Providers)
                 {
                     <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-                        <a class="govuk-link govuk-link--no-visited-state" id="provider-@provider.ProviderId" asp-route-id="@provider.ProviderId" asp-route="@RouteNames.CourseProviderDetails">
+                        <a class="govuk-link govuk-link--no-visited-state" id="provider-@provider.ProviderId" asp-route="@RouteNames.CourseProviderDetails" asp-route-id="@Model.Course.Id" asp-route-providerid="@provider.ProviderId">
                             @provider.Name
                         </a>
                     </h2>

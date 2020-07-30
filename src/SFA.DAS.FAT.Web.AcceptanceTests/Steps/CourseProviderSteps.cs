@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using FluentAssertions;
 using Newtonsoft.Json;
 using SFA.DAS.FAT.Domain.Courses;
@@ -31,7 +32,7 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Steps
 
             foreach (var courseProvider in expectedApiResponse.CourseProviders)
             {
-                actualContent.Should().Contain(courseProvider.Name);
+                actualContent.Should().Contain(HttpUtility.HtmlEncode(courseProvider.Name));
             }
         }
     }

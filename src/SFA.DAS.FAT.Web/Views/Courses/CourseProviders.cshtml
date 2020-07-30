@@ -6,7 +6,7 @@
         <div class="govuk-grid-column-two-thirds">
             <h1 class="govuk-heading-xl">
                 <span class="govuk-caption-xl">Training providers for</span>
-                @Model.Course.TitleAndLevel
+                @Model.Course.Title <span class="das-no-wrap">(level @Model.Course.Level)</span>
             </h1>
             <p class="govuk-body govuk-!-margin-bottom-8">
                 <a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.CourseDetails" asp-route-id="@Model.Course.Id">Overview of @Model.Course.TitleAndLevel</a>

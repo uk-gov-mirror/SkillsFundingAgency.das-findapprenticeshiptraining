@@ -65,5 +65,27 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviderDet
             Assert.IsNotNull(actual);
             actual.Provider.Should().BeEquivalentTo(courseProviderResponse.CourseProviderDetails);
         }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_There_Is_No_Course_Provider_Returns_Null(
+            GetProviderQuery request,
+            Provider courseProviderResponse,
+            [Frozen] Mock<IValidator<GetProviderQuery>> mockValidator,
+            [Frozen] ValidationResult validationResult,
+            [Frozen] Mock<ICourseService> mockService,
+            GetProviderQueryHandler handler)
+        {
+            //Arrange
+            validationResult.ValidationDictionary.Clear();
+            mockValidator.Setup(x => x.ValidateAsync(request)).ReturnsAsync(validationResult);
+            mockService.Setup(x => x.GetCourseProviderDetails(request.ProviderId)).ReturnsAsync((TrainingCourseProviderDetails)null);
+
+            //Act
+            var actual = await handler.Handle(request, CancellationToken.None);
+
+            //Assert
+            mockService.Verify(x => x.GetCourseProviderDetails(request.ProviderId), Times.Once);
+            Assert.IsNull(actual.Provider);
+        }
     }
 }

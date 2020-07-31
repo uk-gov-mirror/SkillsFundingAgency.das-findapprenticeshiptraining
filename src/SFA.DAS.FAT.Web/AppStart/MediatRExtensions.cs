@@ -1,5 +1,6 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
+using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
 using SFA.DAS.FAT.Domain.Validation;
 
 namespace SFA.DAS.FAT.Web.AppStart
@@ -9,6 +10,7 @@ namespace SFA.DAS.FAT.Web.AppStart
         public static void AddMediatRValidation(this IServiceCollection services)
         {
             services.AddScoped(typeof(IValidator<GetCourseQuery>), typeof(GetCourseQueryValidator));
+            services.AddScoped(typeof(IValidator<GetProviderQuery>), typeof(GetCourseProviderDetailsQueryValidator));
         }
     }
 }

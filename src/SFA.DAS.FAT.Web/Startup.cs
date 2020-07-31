@@ -113,6 +113,8 @@ namespace SFA.DAS.FAT.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseHealthChecks();
         }
     }
 }

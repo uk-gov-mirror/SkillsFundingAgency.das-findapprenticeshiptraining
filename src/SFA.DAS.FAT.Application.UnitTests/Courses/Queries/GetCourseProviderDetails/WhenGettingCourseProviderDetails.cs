@@ -37,8 +37,8 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviderDet
             var act = new Func<Task>(async () => await handler.Handle(request, CancellationToken.None));
 
             // Assert
-            act.Should().Throw<ValidateException>().WithMessage($"*{propertyName}");
-
+            act.Should().Throw<ValidationException>()
+                .WithMessage($"*{propertyName}*");
         }
     }
 }

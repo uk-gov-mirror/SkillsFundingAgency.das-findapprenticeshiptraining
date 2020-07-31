@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,12 +23,14 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetProvider
         public async Task<GetProviderResult> Handle(GetProviderQuery query, CancellationToken cancellationToken)
         {
 
-            var validatationResult = await _validator.ValidateAsync(query);
-            if (!validatationResult.IsValid())
+            var validationResult = await _validator.ValidateAsync(query);
+            if (!validationResult.IsValid())
             {
                 throw new ValidationException(validationResult.DataAnnotationResult, null, null);
             }
-            var response = await _courseService.
+
+            return null;
+            // var response = await _courseService.
         }
     }
 }

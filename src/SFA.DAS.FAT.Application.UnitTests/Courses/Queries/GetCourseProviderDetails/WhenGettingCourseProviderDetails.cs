@@ -13,7 +13,7 @@ using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.FAT.Domain.Validation;
 using SFA.DAS.Testing.AutoFixture;
 using ValidationResult = SFA.DAS.FAT.Domain.Validation.ValidationResult;
-
+using SFA.DAS.FAT.Domain.Courses;
 
 namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviderDetails
 {
@@ -41,6 +41,29 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviderDet
             // Assert
             act.Should().Throw<ValidationException>()
                 .WithMessage($"*{propertyName}*");
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_The_Query_Is_Valid_The_Service_Is_Called_And_The_Data_Returned(
+            GetProviderQuery request,
+            TrainingCourseProviderDetails courseProviderResponse,
+            [Frozen] Mock<IValidator<GetProviderQuery>> mockValidator,
+            [Frozen] ValidationResult validationResult,
+            [Frozen] Mock<ICourseService> mockService,
+            GetProviderQueryHandler handler)
+        {
+            //Arrange
+            validationResult.ValidationDictionary.Clear();
+            mockValidator.Setup(x => x.ValidateAsync(request)).ReturnsAsync(validationResult);
+            mockService.Setup(x => x.GetCourseProviderDetails(request.ProviderId)).ReturnsAsync(courseProviderResponse);
+
+            //Act
+            var actual = await handler.Handle(request, CancellationToken.None);
+
+            //Assert
+            mockService.Verify(x => x.GetCourseProviderDetails(request.ProviderId), Times.Once);
+            Assert.IsNotNull(actual);
+            actual.Provider.Should().BeEquivalentTo(courseProviderResponse.CourseProviderDetails);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace SFA.DAS.FAT.Domain.Courses
 {
     public class TrainingCourseProviderDetails
     {
-        [JsonProperty("trainingCourseProviderDetails")]
+        [JsonProperty("courseproviderdetails")]
         public Provider CourseProviderDetails { get; set; }
     }
 }

@@ -28,9 +28,9 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetProvider
             {
                 throw new ValidationException(validationResult.DataAnnotationResult, null, null);
             }
+            var response = await _courseService.GetCourseProviderDetails(query.ProviderId);
+            return new GetProviderResult { Provider = response?.CourseProviderDetails };
 
-            return null;
-            // var response = await _courseService.
         }
     }
 }

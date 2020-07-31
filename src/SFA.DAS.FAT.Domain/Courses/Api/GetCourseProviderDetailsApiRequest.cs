@@ -14,6 +14,6 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
         }
         private int Id { get; }
         public string BaseUrl { get; }
-        public string GetUrl => $"{BaseUrl}trainingcourses/{Id}";
+        public string GetUrl => $"{BaseUrl}trainingcourses/{Id}/course-provider-details";
     }
 }

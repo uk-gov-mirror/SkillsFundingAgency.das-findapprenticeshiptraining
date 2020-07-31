@@ -46,5 +46,11 @@ namespace SFA.DAS.FAT.Application.Courses.Services
             return response;
         }
 
+        public async Task<TrainingCourseProviderDetails> GetCourseProviderDetails(int providerId)
+        {
+
+        }
+
+
     }
 }

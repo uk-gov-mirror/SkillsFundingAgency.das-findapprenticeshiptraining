@@ -10,5 +10,6 @@ namespace SFA.DAS.FAT.Domain.Interfaces
         Task<TrainingCourse> GetCourse(int courseId);
         Task<TrainingCourses> GetCourses(string keyword, List<Guid> requestRouteIds, List<int> requestLevels, OrderBy orderBy);
         Task<TrainingCourseProviders> GetCourseProviders(int courseId);
+        Task<TrainingCourseProviderDetails> GetCourseProviderDetails(int providerId);
     }
 }

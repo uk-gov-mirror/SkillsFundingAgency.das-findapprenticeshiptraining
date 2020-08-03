@@ -1,0 +1,44 @@
+﻿@using SFA.DAS.FAT.Web.Infrastructure
+@model SFA.DAS.FAT.Web.Models.CourseProvidersViewModel
+
+<main class="govuk-main-wrapper" id="main-content" role="main">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl govuk-!-margin-bottom-4">
+                <span class="govuk-caption-xl">Training providers for</span>
+                @Model.Course.Title <span class="das-no-wrap">(level @Model.Course.Level)</span>
+            </h1>
+            <p class="govuk-body govuk-!-margin-bottom-8">
+                <a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.CourseDetails" asp-route-id="@Model.Course.Id">Overview of @Model.Course.TitleAndLevel</a>
+            </p>
+        </div>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-third">
+            <div class="das-show-hide" data-module="das-show-hide">
+                <!--filters-->
+            </div>
+        </div>
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-m">@Model.TotalMessage</h2>
+            <p class="govuk-body govuk-!-margin-bottom-6">
+                Sorted by:
+                <span class="govuk-!-font-weight-bold">Name</span>
+            </p>
+            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3">
+
+            <div data-list>
+                @foreach (var provider in Model.Providers)
+                {
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+                        <a class="govuk-link govuk-link--no-visited-state" id="provider-@provider.ProviderId" asp-route="@RouteNames.CourseProviderDetails" asp-route-id="@Model.Course.Id" asp-route-providerid="@provider.ProviderId">
+                            @provider.Name
+                        </a>
+                    </h2>
+                    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-2 govuk-!-margin-bottom-3">
+                }
+            </div>
+
+        </div>
+    </div>
+</main>

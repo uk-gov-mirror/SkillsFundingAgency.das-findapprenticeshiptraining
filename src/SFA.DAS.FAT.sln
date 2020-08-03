@@ -9,23 +9,28 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CF3B6AF8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.FAT.Web.UnitTests", "SFA.DAS.FAT.Web.UnitTests\SFA.DAS.FAT.Web.UnitTests.csproj", "{FC2F7779-7188-4BA2-817E-C30457EDBACB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.FAT.Web.AcceptanceTests", "SFA.DAS.FAT.Web.AcceptanceTests\SFA.DAS.FAT.Web.AcceptanceTests.csproj", "{324A2AB7-A708-4473-B487-44B7DBEDE24C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.FAT.Web.AcceptanceTests", "SFA.DAS.FAT.Web.AcceptanceTests\SFA.DAS.FAT.Web.AcceptanceTests.csproj", "{324A2AB7-A708-4473-B487-44B7DBEDE24C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.FAT.Domain", "SFA.DAS.FAT.Domain\SFA.DAS.FAT.Domain.csproj", "{193A8699-5443-4B12-B265-D3F4A3F6CA33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.FAT.Domain", "SFA.DAS.FAT.Domain\SFA.DAS.FAT.Domain.csproj", "{193A8699-5443-4B12-B265-D3F4A3F6CA33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.FAT.Application", "SFA.DAS.FAT.Application\SFA.DAS.FAT.Application.csproj", "{CD7D2A42-A4F6-4EC8-9E97-545C744D0E90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.FAT.Application", "SFA.DAS.FAT.Application\SFA.DAS.FAT.Application.csproj", "{CD7D2A42-A4F6-4EC8-9E97-545C744D0E90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.FAT.Infrastructure", "SFA.DAS.FAT.Infrastructure\SFA.DAS.FAT.Infrastructure.csproj", "{2DDE9701-F263-4929-89CE-78B245B2156C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.FAT.Infrastructure", "SFA.DAS.FAT.Infrastructure\SFA.DAS.FAT.Infrastructure.csproj", "{2DDE9701-F263-4929-89CE-78B245B2156C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.FAT.Application.UnitTests", "SFA.DAS.FAT.Application.UnitTests\SFA.DAS.FAT.Application.UnitTests.csproj", "{1D1EED3D-9536-40A9-9C58-11BF7462B64A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.FAT.Application.UnitTests", "SFA.DAS.FAT.Application.UnitTests\SFA.DAS.FAT.Application.UnitTests.csproj", "{1D1EED3D-9536-40A9-9C58-11BF7462B64A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.FAT.Infrastructure.UnitTests", "SFA.DAS.FAT.Infrastructure.UnitTests\SFA.DAS.FAT.Infrastructure.UnitTests.csproj", "{90D089F6-00A4-48F0-A0D9-A8C0911BEF0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.FAT.Infrastructure.UnitTests", "SFA.DAS.FAT.Infrastructure.UnitTests\SFA.DAS.FAT.Infrastructure.UnitTests.csproj", "{90D089F6-00A4-48F0-A0D9-A8C0911BEF0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.FAT.Domain.UnitTests", "SFA.DAS.FAT.Domain.UnitTests\SFA.DAS.FAT.Domain.UnitTests.csproj", "{E66CB9B7-ED65-4381-A600-E0EA711F0ACE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.FAT.Domain.UnitTests", "SFA.DAS.FAT.Domain.UnitTests\SFA.DAS.FAT.Domain.UnitTests.csproj", "{E66CB9B7-ED65-4381-A600-E0EA711F0ACE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MockServer", "MockServer", "{A20232FC-0B9D-4EDC-AD9B-8B0E3812741C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.FAT.MockServer", "SFA.DAS.FAT.MockServer\SFA.DAS.FAT.MockServer.csproj", "{18CA7582-E6FD-4F4D-9F16-B3498043774D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.FAT.MockServer", "SFA.DAS.FAT.MockServer\SFA.DAS.FAT.MockServer.csproj", "{18CA7582-E6FD-4F4D-9F16-B3498043774D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{10126833-6922-4167-8E86-9CA292B2592F}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

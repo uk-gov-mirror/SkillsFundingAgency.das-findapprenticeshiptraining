@@ -92,7 +92,7 @@ namespace SFA.DAS.FAT.Web.Controllers
             
             var result = await _mediator.Send(new GetCourseProviderQuery { ProviderId = providerId ,CourseId = id});
 
-            var viewModel = (CourseProviderViewModel)result.Provider;
+            var viewModel = (CourseProviderViewModel)result;
 
             return View(viewModel);
         }

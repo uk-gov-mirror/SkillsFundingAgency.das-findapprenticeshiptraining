@@ -36,7 +36,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.HealthCheck
             FindApprenticeshipTrainingApi config)
         {
             //Arrange
-            config.OuterApiPingUrl = "https://test.local/";
+            config.PingUrl = "https://test.local/";
             var configMock = new Mock<IOptions<FindApprenticeshipTrainingApi>>();
             configMock.Setup(x => x.Value).Returns(config);
             var response = new HttpResponseMessage
@@ -44,7 +44,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.HealthCheck
                 Content = new StringContent(""),
                 StatusCode = HttpStatusCode.Accepted
             };
-            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, $"{config.OuterApiPingUrl}ping", config.Key);
+            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, $"{config.PingUrl}ping", config.Key);
             var client = new HttpClient(httpMessageHandler.Object);
             var apiClient = new ApiClient(client, configMock.Object);
             //Act

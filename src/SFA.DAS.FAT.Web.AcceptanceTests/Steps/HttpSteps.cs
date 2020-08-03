@@ -1,7 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
 using NUnit.Framework;
 using SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure;
 using TechTalk.SpecFlow;
@@ -16,13 +15,6 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Steps
         public HttpSteps(ScenarioContext context)
         {
             _context = context;
-        }
-
-        [Given("I have an http client")]
-        public void GivenIHaveAnHttpClient()
-        {
-            var client = new WebApplicationFactory<Startup>().CreateClient();
-            _context.Set(client,ContextKeys.HttpClient);
         }
 
         [When("I navigate to the following url: (.*)")]

@@ -31,7 +31,7 @@
         "apimBaseUrl": {
             "type": "string"
         },
-        "apimPingUrl": {
+        "outerApiPingUrl": {
             "type": "string"
         },
         "apimSubscriptionKey": {
@@ -152,7 +152,7 @@
                             },
                             {
                                 "name": "FindApprenticeshipTrainingApi:PingUrl",
-                                "value": "[parameters('apimPingUrl')]"
+                                "value": "[parameters('outerApiPingUrl')]"
                             },
                             {
                                 "name": "FindApprenticeshipTrainingApi:Key",

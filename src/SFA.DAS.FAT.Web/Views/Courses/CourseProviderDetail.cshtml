@@ -1,42 +1,64 @@
+@using SFA.DAS.FAT.Web.Infrastructure
 @model SFA.DAS.FAT.Web.Models.CourseProviderViewModel
 
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <span class="govuk-caption-xl">Training Provider</span>
+            <span class="govuk-caption-xl">Training provider</span>
             <h1 class="govuk-heading-xl">
                 @Model.Name
             </h1>
 
             <div class="das-highlight">
-                <span class="govuk-caption-xl">Apprenticeship training course</span>
-                <h2 class="govuk-heading-l">@Model.Course.Title <span class="das-no-wrap">(level @Model.Course.Level)</span></h2>
-                <p><a>A link will go here</a></p>
-                <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship Location</h3>
-                <p class="govuk-body">Check @Model.Name training options for the apprenticeship location.</p>
-                <form method="GET" asp-route="#" asp-route-id="#">
-                    <div class="govuk-form-group">
-                        <label for="search-location" class="govuk-label">Enter location</label>
-                        <input type="search" id="search-location" name="location" title="Search" class="govuk-input govuk-!-width-three-quarters">
+                <span class="govuk-caption-l">Apprenticeship training course</span>
+                <h2 class="govuk-heading-l govuk-!-margin-bottom-3">@Model.Course.Title <span class="das-no-wrap">(level @Model.Course.Level)</span></h2>
+                <p class="govuk-body govuk-!-margin-bottom-5">
+                    <a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.CourseDetails" asp-route-id="@Model.Course.Id">Overview of @Model.Course.TitleAndLevel</a>
+                </p>
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Apprenticeship location</h2>
+                <p class="govuk-body">Check @Model.Name's training options for the apprenticeship location.</p>
+                <form method="post" class="das-search-form govuk-!-width-two-thirds">
+                  <div class="govuk-form-group">
+                    <label for="searchTerm" class="govuk-label">
+                      Enter location
+                    </label>
+                    <div class="das-search-form__group">
+                      <input id="searchTerm" name="searchTerm" title="Search" class="govuk-input das-search-form__input" type="text">
+                      <div class="das-search-form__button-wrap">
+                        <button class="govuk-button das-search-form__button" type="submit">
+                          Search
+                        </button>
+                      </div>
                     </div>
+                  </div>
                 </form>
             </div>
             <div class="das-highlight">
-                <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship Location</h3>
+                <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Contact this provider about this course</h3>
 
                 <dl class="govuk-summary-list">
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Email</dt>
-                        <dd class="govuk-summary-list__value">@Model.Email</dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Telephone</dt>
-                        <dd class="govuk-summary-list__value">@Model.Phone</dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Website</dt>
-                        <dd class="govuk-summary-list__value">@Model.Website</dd>
-                    </div>
+                    @if (!string.IsNullOrEmpty(Model.Email))
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Email</dt>
+                            <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="mailto:@Model.Email">@Model.Email</a></dd>
+                        </div>    
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Phone))
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Telephone</dt>
+                            <dd class="govuk-summary-list__value">@Model.Phone</dd>
+                        </div>    
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Website))
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Website</dt>
+                            <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" target="_blank" rel="noreferrer noopener" href="@Model.Website">@Model.Website</a></dd>
+                        </div>    
+                    }
+                    
                 </dl>
 
             </div>

@@ -18,7 +18,6 @@
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Apprenticeship location</h2>
                 <p class="govuk-body">Check @Model.Name's training options for the apprenticeship location.</p>
                 <form method="GET" class="das-search-form govuk-!-width-two-thirds">
-                  <div class="govuk-form-group">
                     <label for="searchTerm" class="govuk-label">
                       Enter location
                     </label>
@@ -30,13 +29,12 @@
                         </button>
                       </div>
                     </div>
-                  </div>
                 </form>
             </div>
             <div class="das-highlight govuk-!-margin-bottom-5">
                 <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Contact this provider about this course</h3>
 
-                <dl class="govuk-summary-list">
+                <dl class="govuk-summary-list govuk-!-margin-bottom-0">
                     @if (!string.IsNullOrEmpty(Model.Email))
                     {
                         <div class="govuk-summary-list__row">

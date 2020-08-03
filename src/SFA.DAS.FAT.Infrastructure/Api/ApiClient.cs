@@ -44,6 +44,15 @@ namespace SFA.DAS.FAT.Infrastructure.Api
             return JsonConvert.DeserializeObject<IEnumerable<TResponse>>(json);
         }
 
+        public async Task<int> Ping()
+        {
+            AddHeaders();
+
+            var result = await _httpClient.GetAsync($"{_config.PingUrl}ping");
+            
+            return (int)result.StatusCode;
+        }
+
         private void AddHeaders()
         {
             _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _config.Key);

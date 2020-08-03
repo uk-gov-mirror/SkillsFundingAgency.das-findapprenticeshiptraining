@@ -7,5 +7,6 @@ namespace SFA.DAS.FAT.Domain.Interfaces
     {
         Task<TResponse> Get<TResponse>(IGetApiRequest request);
         Task<IEnumerable<TResponse>> GetAll<TResponse>(IGetAllApiRequest request);
+        Task<int> Ping();
     }
 }

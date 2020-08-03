@@ -48,7 +48,7 @@ namespace SFA.DAS.FAT.Infrastructure.Api
         {
             AddHeaders();
 
-            var result = await _httpClient.GetAsync($"{_config.PingUrl}ping");
+            var result = await _httpClient.GetAsync($"{_config.OuterApiPingUrl}ping");
             
             return (int)result.StatusCode;
         }

@@ -89,12 +89,19 @@ namespace SFA.DAS.FAT.Web.Controllers
         [Route("{id}/providers/{providerId}/course-provider-details", Name = RouteNames.CourseProviderDetails)]
         public async Task<IActionResult> CourseProviderDetail(int id, int providerId)
         {
-            
-            var result = await _mediator.Send(new GetCourseProviderQuery { ProviderId = providerId ,CourseId = id});
+            try
+            {
+                var result = await _mediator.Send(new GetCourseProviderQuery { ProviderId = providerId ,CourseId = id});
 
-            var viewModel = (CourseProviderViewModel)result;
+                var viewModel = (CourseProviderViewModel)result;
 
-            return View(viewModel);
+                return View(viewModel);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                return RedirectToRoute(RouteNames.Error500);
+            }
         }
         
     }

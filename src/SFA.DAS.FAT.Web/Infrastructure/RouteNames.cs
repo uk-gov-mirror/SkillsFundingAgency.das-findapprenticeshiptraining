@@ -4,8 +4,10 @@ namespace SFA.DAS.FAT.Web.Infrastructure
     {
         public const string ServiceStart = "service-start";
         
-        public const string Training = "training";
-        public const string TrainingDetail = "training-detail";
+        public const string Courses = "courses";
+        public const string CourseDetails = "course-details";
+        public const string CourseProviders = "course-providers";
+        public const string CourseProviderDetails = "course-provider-details";
         
         public const string Error403 = "403";
         public const string Error404 = "404";

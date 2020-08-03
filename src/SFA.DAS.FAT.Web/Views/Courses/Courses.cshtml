@@ -20,7 +20,7 @@
                         <div class="das-filter__selected-filters">
                             <div class="das-filter__selected-header">
                                 <h3 class="das-filter__selected-heading">Selected filters</h3>
-                                <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.Training">Clear <span class="govuk-visually-hidden">the selected filters</span></a>
+                                <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.Courses">Clear <span class="govuk-visually-hidden">the selected filters</span></a>
                             </div>
                             @if (!string.IsNullOrEmpty(Model.Keyword))
                             {
@@ -47,7 +47,7 @@
                     
                     }
                     <div class="das-filter__body das-!-show--from-tablet" id="fat-filter-options">
-                        <form asp-route="@RouteNames.Training" method="GET">
+                        <form asp-route="@RouteNames.Courses" method="GET">
                             @if (Model.OrderBy != OrderBy.None)
                             {
                                 <input type="hidden" asp-for="OrderBy"/>    
@@ -143,7 +143,7 @@
                     @foreach (var course in Model.Courses)
                     {
                         <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-                            <a class="govuk-link govuk-link--no-visited-state" id="standard-@course.Id" asp-route-id="@course.Id" asp-route="@RouteNames.TrainingDetail">
+                            <a class="govuk-link govuk-link--no-visited-state" id="standard-@course.Id" asp-route-id="@course.Id" asp-route="@RouteNames.CourseDetails">
                                 @course.Title <span class="das-no-wrap">(level @course.Level)</span>
                             </a>
                         </h2>

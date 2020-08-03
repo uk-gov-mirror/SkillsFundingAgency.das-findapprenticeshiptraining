@@ -43,10 +43,10 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         public async Task Then_The_Keyword_And_Sectors_And_Levels_Are_Added_To_The_Query_And_Returned_To_The_View(
             GetCoursesRequest request,
             GetCoursesResult response,
-            [Frozen] Mock<IMediator> mediator)
+            [Frozen] Mock<IMediator> mediator,
+            CoursesController controller)
         {
             //Arrange
-            var controller = new CoursesController(mediator.Object);
             mediator.Setup(x => 
                     x.Send(It.Is<GetCoursesQuery>(c 
                         => c.Keyword.Equals(request.Keyword)
@@ -63,8 +63,9 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             Assert.IsNotNull(actualResult);
             var actualModel = actualResult.Model as CoursesViewModel;
             Assert.IsNotNull(actualModel);
-            actualModel.Courses.Should().NotBeEmpty();
-            actualModel.Sectors.Should().NotBeEmpty();
+            actualModel.Courses.Should().BeEquivalentTo(response.Courses, options => options.Including(course => course.Id));
+            actualModel.Sectors.Should().BeEquivalentTo(response.Sectors);
+            actualModel.Levels.Should().BeEquivalentTo(response.Levels);
             actualModel.Keyword.Should().Be(request.Keyword);
             actualModel.SelectedLevels.Should().BeEquivalentTo(request.Levels);
             actualModel.SelectedSectors.Should().BeEquivalentTo(request.Sectors);
@@ -76,7 +77,8 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         public async Task Then_Any_Sectors_In_The_Request_Are_Marked_As_Selected_On_The_ViewModel(
             GetCoursesRequest request,
             GetCoursesResult response,
-            [Frozen] Mock<IMediator> mediator)
+            [Frozen] Mock<IMediator> mediator,
+            CoursesController controller)
         {
             //Arrange
             response.Sectors.Add(new Sector
@@ -89,7 +91,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 Id=request.Sectors.Skip(1).First(), 
                 Route = "Selected"
             });
-            var controller = new CoursesController(mediator.Object);
             mediator.Setup(x => 
                     x.Send(It.Is<GetCoursesQuery>(c 
                         => c.Keyword.Equals(request.Keyword)
@@ -105,8 +106,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             Assert.IsNotNull(actualResult);
             var actualModel = actualResult.Model as CoursesViewModel;
             Assert.IsNotNull(actualModel);
-            actualModel.Sectors.Should().NotBeEmpty();
-            Assert.AreEqual(2, actualModel.Sectors.Count(c=>c.Selected));
+            Assert.AreEqual(2, actualModel.Sectors.Count(sector=>sector.Selected));
             Assert.IsNotNull(actualModel.Sectors.SingleOrDefault(c=>c.Id.Equals(request.Sectors.First())));
             Assert.IsNotNull(actualModel.Sectors.SingleOrDefault(c=>c.Id.Equals(request.Sectors.Skip(1).First())));
         }

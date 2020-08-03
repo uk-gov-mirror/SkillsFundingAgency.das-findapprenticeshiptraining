@@ -21,18 +21,19 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         [Test, MoqAutoData]
         public async Task Then_The_Query_Is_Sent_And_Provider_Detail_Retrieved_And_Shown(
             int providerId, 
-            GetProviderResult response, 
+            int courseId,
+            GetCourseProviderResult response, 
             [Frozen] Mock<IMediator> mediator,
             CoursesController controller
             )
         {
             //Arrange
-            mediator.Setup(x => x.Send(It.Is<GetProviderQuery>(c =>
-                c.ProviderId.Equals(providerId)), It.IsAny<CancellationToken>()))
+            mediator.Setup(x => x.Send(It.Is<GetCourseProviderQuery>(c =>
+                c.ProviderId.Equals(providerId) && c.CourseId.Equals(courseId)), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
 
             //Act
-            var actual = await controller.CourseProviderDetail(providerId);
+            var actual = await controller.CourseProviderDetail(courseId,providerId);
 
             //Assert
             Assert.IsNotNull(actual);

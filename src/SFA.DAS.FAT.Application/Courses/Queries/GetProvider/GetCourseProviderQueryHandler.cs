@@ -10,17 +10,17 @@ using SFA.DAS.FAT.Domain.Validation;
 
 namespace SFA.DAS.FAT.Application.Courses.Queries.GetProvider
 {
-    public class GetProviderQueryHandler : IRequestHandler<GetProviderQuery, GetProviderResult>
+    public class GetCourseProviderQueryHandler : IRequestHandler<GetCourseProviderQuery, GetCourseProviderResult>
     {
         private readonly ICourseService _courseService;
-        private readonly IValidator<GetProviderQuery> _validator;
-        public GetProviderQueryHandler(IValidator<GetProviderQuery> validator, ICourseService courseService)
+        private readonly IValidator<GetCourseProviderQuery> _validator;
+        public GetCourseProviderQueryHandler(IValidator<GetCourseProviderQuery> validator, ICourseService courseService)
         {
             _validator = validator;
             _courseService = courseService;
         }
 
-        public async Task<GetProviderResult> Handle(GetProviderQuery query, CancellationToken cancellationToken)
+        public async Task<GetCourseProviderResult> Handle(GetCourseProviderQuery query, CancellationToken cancellationToken)
         {
 
             var validationResult = await _validator.ValidateAsync(query);
@@ -29,9 +29,13 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetProvider
                 throw new ValidationException(validationResult.DataAnnotationResult, null, null);
             }
 
-            var response = await _courseService.GetCourseProviderDetails(query.ProviderId);
+            var response = await _courseService.GetCourseProviderDetails(query.ProviderId, query.CourseId);
 
-            return new GetProviderResult { Provider = response?.CourseProviderDetails };
+            return new GetCourseProviderResult
+            {
+                Provider = response?.CourseProviderDetails,
+                Course = response?.TrainingCourse
+            };
         }
     }
 }

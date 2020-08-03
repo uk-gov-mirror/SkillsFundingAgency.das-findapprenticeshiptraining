@@ -66,7 +66,7 @@ namespace SFA.DAS.FAT.Web.Controllers
 
         [Route("{id}/providers", Name = RouteNames.CourseProviders)]
         public async Task<IActionResult> CourseProviders(int id)
-            {
+        {
             try
             {
                 var result = await _mediator.Send(new GetCourseProvidersQuery {CourseId = id});
@@ -86,11 +86,11 @@ namespace SFA.DAS.FAT.Web.Controllers
         }
 
         
-        [Route("{id}/course-provider-details", Name = RouteNames.CourseProviderDetails)]
-        public async Task<IActionResult> CourseProviderDetail(int id)
+        [Route("{id}/providers/{providerId}/course-provider-details", Name = RouteNames.CourseProviderDetails)]
+        public async Task<IActionResult> CourseProviderDetail(int id, int providerId)
         {
             
-            var result = await _mediator.Send(new GetProviderQuery { ProviderId = id });
+            var result = await _mediator.Send(new GetCourseProviderQuery { ProviderId = providerId ,CourseId = id});
 
             var viewModel = (CourseProviderViewModel)result.Provider;
 

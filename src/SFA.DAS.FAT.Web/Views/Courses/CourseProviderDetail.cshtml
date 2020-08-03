@@ -9,7 +9,7 @@
                 @Model.Name
             </h1>
 
-            <div class="das-highlight">
+            <div class="das-highlight govuk-!-margin-bottom-5">
                 <span class="govuk-caption-l">Apprenticeship training course</span>
                 <h2 class="govuk-heading-l govuk-!-margin-bottom-3">@Model.Course.Title <span class="das-no-wrap">(level @Model.Course.Level)</span></h2>
                 <p class="govuk-body govuk-!-margin-bottom-5">
@@ -17,7 +17,7 @@
                 </p>
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Apprenticeship location</h2>
                 <p class="govuk-body">Check @Model.Name's training options for the apprenticeship location.</p>
-                <form method="post" class="das-search-form govuk-!-width-two-thirds">
+                <form method="GET" class="das-search-form govuk-!-width-two-thirds">
                   <div class="govuk-form-group">
                     <label for="searchTerm" class="govuk-label">
                       Enter location
@@ -33,7 +33,7 @@
                   </div>
                 </form>
             </div>
-            <div class="das-highlight">
+            <div class="das-highlight govuk-!-margin-bottom-5">
                 <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Contact this provider about this course</h3>
 
                 <dl class="govuk-summary-list">

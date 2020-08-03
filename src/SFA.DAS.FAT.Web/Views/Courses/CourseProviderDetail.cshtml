@@ -5,15 +5,15 @@
         <div class="govuk-grid-column-two-thirds">
             <span class="govuk-caption-xl">Training Provider</span>
             <h1 class="govuk-heading-xl">
-                @Model.Course.Title <span class="das-no-wrap">(level @Model.Course.Level)</span>
+                @Model.Name
             </h1>
 
             <div class="das-highlight">
                 <span class="govuk-caption-xl">Apprenticeship training course</span>
-                <h2 class="govuk-heading-l">#Name of Training Course & level#</h2>
+                <h2 class="govuk-heading-l">@Model.Course.Title <span class="das-no-wrap">(level @Model.Course.Level)</span></h2>
                 <p><a>A link will go here</a></p>
                 <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship Location</h3>
-                <p class="govuk-body">Check #NAME OF PROVIDER# training options for the apprenticeship location.</p>
+                <p class="govuk-body">Check @Model.Name training options for the apprenticeship location.</p>
                 <form method="GET" asp-route="#" asp-route-id="#">
                     <div class="govuk-form-group">
                         <label for="search-location" class="govuk-label">Enter location</label>
@@ -27,15 +27,15 @@
                 <dl class="govuk-summary-list">
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Email</dt>
-                        <dd class="govuk-summary-list__value">#email address#</dd>
+                        <dd class="govuk-summary-list__value">@Model.Email</dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Telephone</dt>
-                        <dd class="govuk-summary-list__value">#Telephone Number#</dd>
+                        <dd class="govuk-summary-list__value">@Model.Phone</dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Website</dt>
-                        <dd class="govuk-summary-list__value">#website link#</dd>
+                        <dd class="govuk-summary-list__value">@Model.Website</dd>
                     </div>
                 </dl>
 

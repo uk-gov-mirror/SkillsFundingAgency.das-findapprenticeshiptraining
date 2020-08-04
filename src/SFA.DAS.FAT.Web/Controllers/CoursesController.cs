@@ -9,6 +9,7 @@ using SFA.DAS.FAT.Web.Infrastructure;
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
+using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
 
 namespace SFA.DAS.FAT.Web.Controllers
 {
@@ -83,5 +84,25 @@ namespace SFA.DAS.FAT.Web.Controllers
                 return RedirectToRoute(RouteNames.Error500);
             }
         }
+
+        
+        [Route("{id}/providers/{providerId}/course-provider-details", Name = RouteNames.CourseProviderDetails)]
+        public async Task<IActionResult> CourseProviderDetail(int id, int providerId)
+        {
+            try
+            {
+                var result = await _mediator.Send(new GetCourseProviderQuery { ProviderId = providerId ,CourseId = id});
+
+                var viewModel = (CourseProviderViewModel)result;
+
+                return View(viewModel);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                return RedirectToRoute(RouteNames.Error500);
+            }
+        }
+        
     }
 }

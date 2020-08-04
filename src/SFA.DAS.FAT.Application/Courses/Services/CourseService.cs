@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -36,6 +36,12 @@ namespace SFA.DAS.FAT.Application.Courses.Services
 
             return response;
         }
+        public async Task<TrainingCourseProviderDetails> GetCourseProviderDetails(int providerId, int courseId)
+        {
+            var request = new GetCourseProviderDetailsApiRequest(_config.BaseUrl,courseId, providerId);
+            var response = await _apiClient.Get<TrainingCourseProviderDetails>(request);
+            return response;
+        }
 
         public async Task<TrainingCourseProviders> GetCourseProviders(int courseId)
         {
@@ -45,5 +51,8 @@ namespace SFA.DAS.FAT.Application.Courses.Services
 
             return response;
         }
+
+
+
     }
 }

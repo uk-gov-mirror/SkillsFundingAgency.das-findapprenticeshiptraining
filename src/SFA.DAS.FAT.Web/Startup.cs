@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -57,6 +57,8 @@ namespace SFA.DAS.FAT.Web
             services.AddMediatRValidation();
             
             services.AddApplicationInsightsTelemetry(_configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
+
+            services.AddRouting(options => options.LowercaseUrls = true);
 
             if (!_environment.IsDevelopment())
             {

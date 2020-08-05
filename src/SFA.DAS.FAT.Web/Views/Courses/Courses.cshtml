@@ -113,7 +113,7 @@
                         <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
     
                             <span class="govuk-!-font-weight-bold">Relevance</span>, 
-                            <a class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.OrderByName">Name</a>
+                            <a id="sort-by-name" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.OrderByName">Name</a>
     
                         </p>    
                     }
@@ -121,7 +121,7 @@
                     {
                         <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
     
-                            <a class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.OrderByRelevance">Relevance</a>,
+                            <a id="sort-by-relevance" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.OrderByRelevance">Relevance</a>,
                             <span class="govuk-!-font-weight-bold">Name</span>
     
                         </p>

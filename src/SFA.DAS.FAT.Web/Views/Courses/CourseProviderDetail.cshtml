@@ -1,6 +1,6 @@
 @using SFA.DAS.FAT.Web.Infrastructure
 @model SFA.DAS.FAT.Web.Models.CourseProviderViewModel
-@{ 
+@{
     ViewData["Title"] = "Training provider details";
 }
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
@@ -21,15 +21,15 @@
                 <p class="govuk-body">Check @Model.Name's training options for the apprenticeship location.</p>
                 <form method="GET" class="das-search-form govuk-!-width-two-thirds">
                     <label for="searchTerm" class="govuk-label">
-                      Enter location
+                        Enter location
                     </label>
                     <div class="das-search-form__group">
-                      <input id="searchTerm" name="searchTerm" title="Search" class="govuk-input das-search-form__input" type="text">
-                      <div class="das-search-form__button-wrap">
-                        <button class="govuk-button das-search-form__button" type="submit">
-                          Search
-                        </button>
-                      </div>
+                        <input id="searchTerm" name="searchTerm" title="Search" class="govuk-input das-search-form__input" type="text">
+                        <div class="das-search-form__button-wrap">
+                            <button class="govuk-button das-search-form__button" type="submit">
+                                Search
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -42,26 +42,54 @@
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Email</dt>
                             <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="mailto:@Model.Email">@Model.Email</a></dd>
-                        </div>    
+                        </div>
+
                     }
                     @if (!string.IsNullOrEmpty(Model.Phone))
                     {
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Telephone</dt>
                             <dd class="govuk-summary-list__value">@Model.Phone</dd>
-                        </div>    
+                        </div>
+
                     }
                     @if (!string.IsNullOrEmpty(Model.Website))
                     {
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Website</dt>
                             <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" target="_blank" rel="noreferrer noopener" href="@Model.Website">@Model.Website</a></dd>
-                        </div>    
+                        </div>
+
                     }
-                    
+
                 </dl>
 
             </div>
+            <details class="govuk-details govuk-!-margin-top-7" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text govuk-!-font-size">
+                        View all @Model.AdditionalCourses.Total courses offered by this provider
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+                    <p class="govuk-body ">Select a course to view locations, training options and contact details.</p>
+                    <table class="govuk-table">
+                        <tbody class="govuk-table__body">
+                            @foreach (var course in Model.AdditionalCourses.Courses)
+                            {
+                                <tr class="govuk-table__row">
+                                    <td class="govuk-table__cell">
+                                        <a class="govuk-link govuk-link--no-visited-state" 
+                                           asp-route="@RouteNames.CourseProviderDetails" 
+                                           asp-route-id="@course.Id" 
+                                           asp-route-providerId="@Model.ProviderId">@course.Title (level @course.Level)</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </details>
         </div>
     </div>
 </main>

@@ -19,7 +19,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             int standardCode,
             GetCourseResult response,
             [Frozen] Mock<IMediator> mediator,
-            CoursesController controller)
+            [Greedy]CoursesController controller)
         {
             //Arrange
             mediator.Setup(x => 

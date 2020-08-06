@@ -23,7 +23,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             GetCoursesRequest request,
             GetCoursesResult response,
             [Frozen] Mock<IMediator> mediator,
-            CoursesController controller)
+            [Greedy] CoursesController controller)
         {
             //Arrange
             mediator.Setup(x => 
@@ -44,7 +44,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             GetCoursesRequest request,
             GetCoursesResult response,
             [Frozen] Mock<IMediator> mediator,
-            CoursesController controller)
+            [Greedy] CoursesController controller)
         {
             //Arrange
             mediator.Setup(x => 
@@ -78,7 +78,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             GetCoursesRequest request,
             GetCoursesResult response,
             [Frozen] Mock<IMediator> mediator,
-            CoursesController controller)
+            [Greedy] CoursesController controller)
         {
             //Arrange
             response.Sectors.Add(new Sector

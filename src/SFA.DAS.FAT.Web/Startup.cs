@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Domain.Configuration;
@@ -17,10 +18,10 @@ namespace SFA.DAS.FAT.Web
 {
     public class Startup
     {
-        private IHostingEnvironment _environment;
-        private IConfigurationRoot _configuration;
+        private readonly IWebHostEnvironment _environment;
+        private readonly IConfigurationRoot _configuration;
 
-        public Startup(IConfiguration configuration, IHostingEnvironment environment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             _environment = environment;
             var config = new ConfigurationBuilder()
@@ -50,7 +51,7 @@ namespace SFA.DAS.FAT.Web
             services.Configure<FindApprenticeshipTrainingApi>(_configuration.GetSection("FindApprenticeshipTrainingApi"));
             services.AddSingleton(cfg => cfg.GetService<IOptions<FindApprenticeshipTrainingApi>>().Value);
             
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddServiceRegistration();
             services.AddMediatR(typeof(GetCourseQueryHandler).Assembly);
@@ -58,7 +59,11 @@ namespace SFA.DAS.FAT.Web
             
             services.AddApplicationInsightsTelemetry(_configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
 
-            services.AddRouting(options => options.LowercaseUrls = true);
+            services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true;
+                options.LowercaseQueryStrings = true;
+            });
 
             if (!_environment.IsDevelopment())
             {
@@ -71,7 +76,7 @@ namespace SFA.DAS.FAT.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -111,14 +116,14 @@ namespace SFA.DAS.FAT.Web
                     await next();
                 }
             });
-            
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
 
+            app.UseRouting();
+            app.UseEndpoints(builder =>
+            {
+                builder.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
             
         }
     }

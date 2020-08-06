@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
+using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
@@ -35,6 +36,28 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             //Assert
             apiClient.Verify(x => x.Get<TrainingCourseProviderDetails>(
                 It.Is<GetCourseProviderDetailsApiRequest>(request => request.GetUrl.Equals(courseApiRequest.GetUrl))));
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_The_Response_Is_Returned_From_The_Api(
+            int providerId,
+            int courseId,
+            string baseUrl,
+            TrainingCourseProviderDetails apiResponse,
+            [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
+            [Frozen] Mock<IApiClient> apiClient,
+            CourseService courseService)
+        {
+            //Arrange
+            apiClient.Setup(x => x.Get<TrainingCourseProviderDetails>(
+                It.Is<GetCourseProviderDetailsApiRequest>(request =>
+                    request.GetUrl.Contains(courseId.ToString())
+                    && request.GetUrl.Contains(providerId.ToString())
+                    ))).ReturnsAsync(apiResponse);
+            //Act
+            var actual = await courseService.GetCourseProviderDetails(providerId, courseId);
+            //Assert
+            actual.Should().BeEquivalentTo(apiResponse);
         }
     }
 }

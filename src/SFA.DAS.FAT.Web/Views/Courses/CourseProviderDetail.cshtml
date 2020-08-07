@@ -65,31 +65,45 @@
                 </dl>
 
             </div>
-            <details class="govuk-details govuk-!-margin-top-7" data-module="govuk-details">
-                <summary class="govuk-details__summary">
-                    <span class="govuk-details__summary-text govuk-!-font-size">
-                        View all @Model.AdditionalCourses.Total courses offered by this provider
-                    </span>
-                </summary>
-                <div class="govuk-details__text">
-                    <p class="govuk-body ">Select a course to view locations, training options and contact details.</p>
-                    <table class="govuk-table">
-                        <tbody class="govuk-table__body">
-                            @foreach (var course in Model.AdditionalCourses.Courses)
+            @if (Model.AdditionalCourses.Total > 0)
+            {
+                <details class="govuk-details govuk-!-margin-top-7" data-module="govuk-details">
+                    <summary class="govuk-details__summary">
+                        <span class="govuk-details__summary-text govuk-!-font-size">
+                            @(Model.AdditionalCourses.Total == 1?
+                            "View the 1 other course offered by this provider" :
+                            $"View all {Model.AdditionalCourses.Total} courses offered by this provider")
+                            @*@if (Model.AdditionalCourses.Total == 1)
                             {
-                                <tr class="govuk-table__row">
-                                    <td class="govuk-table__cell">
-                                        <a class="govuk-link govuk-link--no-visited-state" 
-                                           asp-route="@RouteNames.CourseProviderDetails" 
-                                           asp-route-id="@course.Id" 
-                                           asp-route-providerId="@Model.ProviderId">@course.Title (level @course.Level)</a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </details>
+                                return "View all @Model.AdditionalCourses.Total course@(Model.AdditionalCourses.Total == 0 ? "" : "s") offered by this provider
+                                                    }
+                            else
+                            {
+                                View all @Model.AdditionalCourses.Total course@(Model.AdditionalCourses.Total == 0 ? "" : "s") offered by this provider
+                                                    }*@
+
+                        </span>
+                    </summary>
+                    <div class="govuk-details__text">
+                        <p class="govuk-body ">Select a course to view locations, training options and contact details.</p>
+                        <table class="govuk-table">
+                            <tbody class="govuk-table__body">
+                                @foreach (var course in Model.AdditionalCourses.Courses)
+                                {
+                                    <tr class="govuk-table__row">
+                                        <td class="govuk-table__cell">
+                                            <a class="govuk-link govuk-link--no-visited-state"
+                                               asp-route="@RouteNames.CourseProviderDetails"
+                                               asp-route-id="@course.Id"
+                                               asp-route-providerId="@Model.ProviderId">@course.TitleAndLevel</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
+            }
         </div>
     </div>
 </main>

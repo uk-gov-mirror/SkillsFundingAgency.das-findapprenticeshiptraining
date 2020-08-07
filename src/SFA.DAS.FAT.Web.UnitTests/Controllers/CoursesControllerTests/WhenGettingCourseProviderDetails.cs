@@ -24,7 +24,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             int courseId,
             GetCourseProviderResult response,
             [Frozen] Mock<IMediator> mediator,
-            CoursesController controller
+            [Greedy] CoursesController controller
             )
         {
             //Arrange
@@ -49,7 +49,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             int courseId,
             Exception exception,
             [Frozen] Mock<IMediator> mediator,
-            CoursesController controller
+            [Greedy] CoursesController controller
             )
         {
             // Arrange

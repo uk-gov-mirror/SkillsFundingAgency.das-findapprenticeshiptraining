@@ -1,4 +1,7 @@
 @using SFA.DAS.FAT.Web.Infrastructure
+@{
+    ViewData["Title"] = "Page not found";
+}
 <main class="govuk-main-wrapper " id="main-content" role="main">
     <div class="govuk-grid-row">
 
@@ -6,8 +9,7 @@
 
             <h1 class="govuk-heading-xl">Page not found</h1>
 
-
-                <p class="govuk-body">If you entered a web address, check that it's correct. Or you can <a asp-route="@RouteNames.ServiceStart">return to the homepage</a>.</p>
+            <p class="govuk-body">If you entered a web address, check that it's correct. Or you can <a asp-route="@RouteNames.ServiceStart">return to the homepage</a>.</p>
 
         </div>
     </div>

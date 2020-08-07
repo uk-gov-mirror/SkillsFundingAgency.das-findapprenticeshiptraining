@@ -5,7 +5,7 @@
 
 ## Requirements
 
-DotNet Core 2.2 and any supported IDE for DEV running.
+DotNet Core 3.1 and any supported IDE for DEV running.
 
 ## About
 

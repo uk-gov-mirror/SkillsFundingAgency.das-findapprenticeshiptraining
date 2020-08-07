@@ -5,7 +5,8 @@ namespace SFA.DAS.FAT.Web.Controllers
 {
     public class HomeController : Controller
     {
-        [Route("",Name = RouteNames.ServiceStart)]
+        [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
+        [Route("start", Name = RouteNames.ServiceStart, Order = 1)]
         public IActionResult Index()
         {
             return View();

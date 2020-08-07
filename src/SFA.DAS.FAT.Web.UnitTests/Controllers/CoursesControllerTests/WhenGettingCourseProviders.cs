@@ -22,7 +22,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             int standardCode,
             GetCourseProvidersResult response,
             [Frozen] Mock<IMediator> mediator,
-            CoursesController controller)
+            [Greedy] CoursesController controller)
         {
             //Arrange
             mediator.Setup(x => x.Send(
@@ -45,7 +45,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             int standardCode,
             Exception exception,
             [Frozen] Mock<IMediator> mediator,
-            CoursesController controller)
+            [Greedy] CoursesController controller)
         {
             //Arrange
             mediator.Setup(x => x.Send(

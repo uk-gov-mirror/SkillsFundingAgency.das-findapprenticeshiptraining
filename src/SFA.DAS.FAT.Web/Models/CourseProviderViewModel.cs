@@ -15,7 +15,7 @@ namespace SFA.DAS.FAT.Web.Models
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Website { get; set; }
-        public AdditionalCourses AdditionalCourses { get; set; }
+        public ProviderCoursesViewModel AdditionalCourses { get; set; }
 
         public static implicit operator CourseProviderViewModel(GetCourseProviderResult provider)
         {

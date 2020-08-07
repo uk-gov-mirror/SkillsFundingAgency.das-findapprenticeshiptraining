@@ -65,6 +65,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviderDet
             Assert.IsNotNull(actual);
             actual.Provider.Should().BeEquivalentTo(courseProviderResponse.CourseProviderDetails);
             actual.Course.Should().BeEquivalentTo(courseProviderResponse.TrainingCourse);
+            actual.AdditionalCourses.Should().BeEquivalentTo(courseProviderResponse.AdditionalCourses);
         }
 
         [Test, MoqAutoData]
@@ -88,6 +89,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviderDet
             mockService.Verify(x => x.GetCourseProviderDetails(request.ProviderId, request.CourseId), Times.Once);
             Assert.IsNull(actual.Provider);
             Assert.IsNull(actual.Course);
+            Assert.IsNull(actual.AdditionalCourses);
         }
     }
 }

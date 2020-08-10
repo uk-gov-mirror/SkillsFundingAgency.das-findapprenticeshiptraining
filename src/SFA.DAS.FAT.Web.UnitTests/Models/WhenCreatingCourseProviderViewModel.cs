@@ -1,4 +1,4 @@
-using AutoFixture.NUnit3;
+﻿using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
@@ -14,6 +14,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             var actual = (CourseProviderViewModel) source;
             
             actual.Course.Should().BeAssignableTo<CourseViewModel>();
+            actual.AdditionalCourses.Should().BeAssignableTo<ProviderCoursesViewModel>();
             actual.Should().BeEquivalentTo(source.Provider, options => options.Excluding(c=>c));
         }
     }

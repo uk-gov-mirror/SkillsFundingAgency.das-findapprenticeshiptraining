@@ -73,15 +73,6 @@
                             @(Model.AdditionalCourses.Total == 1?
                             "View the 1 other course offered by this provider" :
                             $"View all {Model.AdditionalCourses.Total} courses offered by this provider")
-                            @*@if (Model.AdditionalCourses.Total == 1)
-                            {
-                                return "View all @Model.AdditionalCourses.Total course@(Model.AdditionalCourses.Total == 0 ? "" : "s") offered by this provider
-                                                    }
-                            else
-                            {
-                                View all @Model.AdditionalCourses.Total course@(Model.AdditionalCourses.Total == 0 ? "" : "s") offered by this provider
-                                                    }*@
-
                         </span>
                     </summary>
                     <div class="govuk-details__text">

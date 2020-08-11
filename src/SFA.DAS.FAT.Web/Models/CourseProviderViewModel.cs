@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
-using SFA.DAS.FAT.Domain.Courses;
+﻿using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
 
 namespace SFA.DAS.FAT.Web.Models
 {
@@ -25,7 +20,7 @@ namespace SFA.DAS.FAT.Web.Models
                 Phone = provider.Provider.Phone,
                 Email = provider.Provider.Email,
                 Website = provider.Provider.Website,
-                Course = provider.Course
+                Course = provider.Course,
             };
         }
     }

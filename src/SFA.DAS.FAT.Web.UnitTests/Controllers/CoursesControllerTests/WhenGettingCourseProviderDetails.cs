@@ -43,10 +43,8 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             Assert.IsNotNull(actualResult);
             var actualModel = actualResult.Model as CourseProviderViewModel;
             Assert.IsNotNull(actualModel);
-            var actualModelAdditionalCourses = actualModel.AdditionalCourses as ProviderCoursesViewModel;
-            Assert.IsNotNull(actualModelAdditionalCourses);
-            var actualModelAdditionalCoursesList = actualModel.AdditionalCourses.Courses as List<ProviderCourseViewModel>;
-            Assert.IsNotNull(actualModelAdditionalCoursesList);
+            Assert.IsNotNull(actualModel.AdditionalCourses);
+            Assert.IsNotNull(actualModel.AdditionalCourses.Courses);
         }
 
         [Test, MoqAutoData]

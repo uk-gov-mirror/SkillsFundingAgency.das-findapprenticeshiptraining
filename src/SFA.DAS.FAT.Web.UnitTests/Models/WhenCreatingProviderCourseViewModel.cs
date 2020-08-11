@@ -6,7 +6,7 @@ using SFA.DAS.FAT.Web.Models;
 
 namespace SFA.DAS.FAT.Web.UnitTests.Models
 {
-    class WhenCreatingProviderCourseViewModel
+    public class WhenCreatingProviderCourseViewModel
     {
         [Test, AutoData]
         public void Then_The_Fields_Are_Correctly_Mapped(AdditionalCourse source)

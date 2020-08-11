@@ -7,5 +7,7 @@
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Website { get; set; }
+        public int? OverallCohort { get; set; }
+        public decimal? OverallAchievementRate { get; set; }
     }
 }

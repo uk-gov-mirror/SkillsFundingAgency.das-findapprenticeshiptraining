@@ -34,8 +34,11 @@
         "outerApiPingUrl": {
             "type": "string"
         },
-        "apimSubscriptionKey": {
-            "type": "securestring"
+        "sharedApimResourceGroup": {
+            "type": "string"
+        },
+        "sharedApimName": {
+            "type": "string"
         },
         "cdnUrl": {
             "type": "string"
@@ -60,7 +63,7 @@
         }
     },
     "variables": {
-        "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
+        "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/apim-subscription-output/templates/",
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "uiAppServiceName": "[concat(variables('resourceNamePrefix'), 'ui-as')]"
     },
@@ -105,6 +108,30 @@
                     },
                     "attachedService": {
                         "value": "[variables('uiAppServiceName')]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-05-10",
+            "name": "apim-subscription",
+            "resourceGroup": "[parameters('sharedApimResourceGroup')]",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'apim/apim-subscription.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "apimName": {
+                        "value": "[parameters('sharedApimName')]"
+                    },
+                    "subscriptionName": {
+                        "value": "[variables('uiAppServiceName')]"
+                    },
+                    "subscriptionScope": {
+                        "value": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('sharedApimResourceGroup'), '/providers/Microsoft.ApiManagement/service/', parameters('sharedApimName'), '/products/FindApprenticeshipTrainingOuterApi')]"
                     }
                 }
             }
@@ -156,7 +183,7 @@
                             },
                             {
                                 "name": "FindApprenticeshipTrainingApi:Key",
-                                "value": "[parameters('apimSubscriptionKey')]"
+                                "value": "[reference('apim-subscription').outputs.PrimaryKey.value]"
                             },
                             {
                                 "name": "Cdn:Url",

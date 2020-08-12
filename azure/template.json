@@ -22,8 +22,7 @@
         },
         "appServiceAllowedIPs": {
             "type": "array",
-            "defaultValue": [
-            ]
+            "defaultValue": []
         },
         "uiCustomHostname": {
             "type": "string"
@@ -34,8 +33,11 @@
         "outerApiPingUrl": {
             "type": "string"
         },
-        "apimSubscriptionKey": {
-            "type": "securestring"
+        "sharedApimResourceGroup": {
+            "type": "string"
+        },
+        "sharedApimName": {
+            "type": "string"
         },
         "cdnUrl": {
             "type": "string"
@@ -111,8 +113,35 @@
         },
         {
             "apiVersion": "2017-05-10",
+            "name": "apim-product-subscription",
+            "resourceGroup": "[parameters('sharedApimResourceGroup')]",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'apim/apim-subscription.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "apimName": {
+                        "value": "[parameters('sharedApimName')]"
+                    },
+                    "subscriptionName": {
+                        "value": "[variables('uiAppServiceName')]"
+                    },
+                    "subscriptionScope": {
+                        "value": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('sharedApimResourceGroup'), '/providers/Microsoft.ApiManagement/service/', parameters('sharedApimName'), '/products/FindApprenticeshipTrainingOuterApi')]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-05-10",
             "name": "ui-app-service",
             "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "apim-product-subscription"
+            ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -156,7 +185,7 @@
                             },
                             {
                                 "name": "FindApprenticeshipTrainingApi:Key",
-                                "value": "[parameters('apimSubscriptionKey')]"
+                                "value": "[reference(resourceId(parameters('sharedApimResourceGroup'),'Microsoft.ApiManagement/service/subscriptions', parameters('sharedApimName'), variables('uiAppServiceName')), '2019-01-01').primaryKey]"
                             },
                             {
                                 "name": "Cdn:Url",

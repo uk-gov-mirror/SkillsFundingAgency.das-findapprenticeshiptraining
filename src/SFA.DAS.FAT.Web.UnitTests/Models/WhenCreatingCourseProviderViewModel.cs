@@ -14,10 +14,10 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             var actual = (CourseProviderViewModel) source;
             
             actual.Course.Should().BeAssignableTo<CourseViewModel>();
-            actual.Should().BeEquivalentTo(source.Provider, options => 
+            actual.Provider.Should().BeEquivalentTo(source.Provider, options => 
                 options
                     .Excluding(c=>c.OverallAchievementRate)
-                    .Excluding(c=>c.OverallCohort));
+                    .Excluding(c=>c.OverallCohort).ExcludingMissingMembers());
         }
     }
 }

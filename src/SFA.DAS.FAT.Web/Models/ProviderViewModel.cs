@@ -19,6 +19,7 @@ namespace SFA.DAS.FAT.Web.Models
 
         public string Name { get ; set ; }
         public string OverallAchievementRatePercentage { get ; set ; }
+        public string NationalOverallAchievementRatePercentage { get ; set ; }
 
         public static implicit operator ProviderViewModel(Provider source)
         {
@@ -27,11 +28,12 @@ namespace SFA.DAS.FAT.Web.Models
                 Name = source.Name,
                 Email = source.Email,
                 Phone = source.Phone,
-                Website = source.Website,
+                Website = source.Website,    
                 ProviderId = source.ProviderId,
                 OverallCohort = source.OverallCohort,
                 OverallAchievementRate = source.OverallAchievementRate,
-                OverallAchievementRatePercentage = source.OverallAchievementRate.HasValue ? $"{Math.Round(source.OverallAchievementRate.Value)/100:0%}" : ""
+                OverallAchievementRatePercentage = source.OverallAchievementRate.HasValue ? $"{Math.Round(source.OverallAchievementRate.Value)/100:0%}" : "",
+                NationalOverallAchievementRatePercentage = source.NationalOverallAchievementRate.HasValue ? $"{Math.Round(source.NationalOverallAchievementRate.Value)/100:0%}" : ""
             };
                 
         }

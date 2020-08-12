@@ -9,5 +9,7 @@
         public string Website { get; set; }
         public int? OverallCohort { get; set; }
         public decimal? OverallAchievementRate { get; set; }
+        public int? NationalOverallCohort { get; set; }
+        public decimal? NationalOverallAchievementRate { get; set; }
     }
 }

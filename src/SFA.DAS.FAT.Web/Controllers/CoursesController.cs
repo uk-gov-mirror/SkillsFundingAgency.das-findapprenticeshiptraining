@@ -74,7 +74,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                 return View(new CourseProvidersViewModel
                 {
                     Course = result.Course,
-                    Providers = result.Providers, 
+                    Providers = result.Providers.Select(c=>(ProviderViewModel)c), 
                     Total = result.Total
                 });
             }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
-using SFA.DAS.FAT.Domain.Courses;
+﻿using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
 
 namespace SFA.DAS.FAT.Web.Models
 {

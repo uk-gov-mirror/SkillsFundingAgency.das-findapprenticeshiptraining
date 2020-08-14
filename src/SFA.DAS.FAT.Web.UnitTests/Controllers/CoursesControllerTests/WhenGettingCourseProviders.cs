@@ -35,7 +35,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             
             //Assert
             var actualModel = actual.Model as CourseProvidersViewModel;
-            actualModel.Providers.Should().BeEquivalentTo(response.Providers);
+            actualModel.Providers.Should().BeEquivalentTo(response.Providers, options=>options.ExcludingMissingMembers());
             actualModel.Course.Should().BeEquivalentTo((CourseViewModel)response.Course);
             actualModel.Total.Should().Be(response.Total);
         }

@@ -8,7 +8,7 @@
         <div class="govuk-grid-column-two-thirds">
             <span class="govuk-caption-xl">Training provider</span>
             <h1 class="govuk-heading-xl">
-                @Model.Name
+                @Model.Provider.Name
             </h1>
 
             <div class="das-highlight govuk-!-margin-bottom-5">
@@ -17,8 +17,13 @@
                 <p class="govuk-body govuk-!-margin-bottom-5">
                     <a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.CourseDetails" asp-route-id="@Model.Course.Id">Overview of @Model.Course.TitleAndLevel</a>
                 </p>
+                @if (!string.IsNullOrEmpty(Model.Provider.OverallAchievementRatePercentage))
+                {
+                    <p class="govuk-body govuk-!-margin-bottom-1"><span class=" govuk-!-font-weight-bold">@Model.Provider.OverallAchievementRatePercentage pass rate</span> <span>(out of @Model.Provider.OverallCohort apprentices)</span></p>
+                    <p class="govuk-body "><span>@Model.Provider.NationalOverallAchievementRatePercentage national average pass rate</span></p>    
+                }
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Apprenticeship location</h2>
-                <p class="govuk-body">Check @Model.Name's training options for the apprenticeship location.</p>
+                <p class="govuk-body">Check @Model.Provider.Name's training options for the apprenticeship location.</p>
                 <form method="GET" class="das-search-form govuk-!-width-two-thirds">
                     <label for="searchTerm" class="govuk-label">
                       Enter location
@@ -37,25 +42,25 @@
                 <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Contact this provider about this course</h3>
 
                 <dl class="govuk-summary-list govuk-!-margin-bottom-0">
-                    @if (!string.IsNullOrEmpty(Model.Email))
+                    @if (!string.IsNullOrEmpty(Model.Provider.Email))
                     {
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Email</dt>
-                            <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="mailto:@Model.Email">@Model.Email</a></dd>
+                            <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="mailto:@Model.Provider.Email">@Model.Provider.Email</a></dd>
                         </div>    
                     }
-                    @if (!string.IsNullOrEmpty(Model.Phone))
+                    @if (!string.IsNullOrEmpty(Model.Provider.Phone))
                     {
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Telephone</dt>
-                            <dd class="govuk-summary-list__value">@Model.Phone</dd>
+                            <dd class="govuk-summary-list__value">@Model.Provider.Phone</dd>
                         </div>    
                     }
-                    @if (!string.IsNullOrEmpty(Model.Website))
+                    @if (!string.IsNullOrEmpty(Model.Provider.Website))
                     {
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Website</dt>
-                            <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" target="_blank" rel="noreferrer noopener" href="@Model.Website">@Model.Website</a></dd>
+                            <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" target="_blank" rel="noreferrer noopener" href="@Model.Provider.Website">@Model.Provider.Website</a></dd>
                         </div>    
                     }
                     

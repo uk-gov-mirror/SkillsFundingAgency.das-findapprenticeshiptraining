@@ -9,5 +9,6 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetProvider
     {
         public Provider Provider { get; set; }
         public Course Course { get ; set ; }
+        public AdditionalCourses AdditionalCourses { get; set; }
     }
 }

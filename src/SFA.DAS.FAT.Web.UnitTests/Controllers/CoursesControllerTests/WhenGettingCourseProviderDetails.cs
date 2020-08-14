@@ -12,6 +12,8 @@ using SFA.DAS.FAT.Web.Controllers;
 using SFA.DAS.FAT.Web.Infrastructure;
 using SFA.DAS.Testing.AutoFixture;
 using SFA.DAS.FAT.Web.Models;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
 {
@@ -41,6 +43,8 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             Assert.IsNotNull(actualResult);
             var actualModel = actualResult.Model as CourseProviderViewModel;
             Assert.IsNotNull(actualModel);
+            Assert.IsNotNull(actualModel.AdditionalCourses);
+            Assert.IsNotNull(actualModel.AdditionalCourses.Courses);
         }
 
         [Test, MoqAutoData]

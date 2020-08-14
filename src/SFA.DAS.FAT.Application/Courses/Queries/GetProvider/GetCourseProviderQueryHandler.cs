@@ -34,7 +34,8 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetProvider
             return new GetCourseProviderResult
             {
                 Provider = response?.CourseProviderDetails,
-                Course = response?.TrainingCourse
+                Course = response?.TrainingCourse,
+                AdditionalCourses = response?.AdditionalCourses
             };
         }
     }

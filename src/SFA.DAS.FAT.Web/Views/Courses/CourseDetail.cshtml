@@ -82,21 +82,27 @@
             <p class="govuk-body-s govuk-!-margin-bottom-6">
                 Full information on <a class="govuk-link govuk-link--no-visited-state" href="@Model.ExternalCourseUrl" target="_blank" rel="external">@Model.TitleAndLevel</a> is available from the Institute for Apprenticeships and Technical Education.
             </p>
+            @if (Model.ProvidersCount == 0)
+            {
 
-            <div class="das-highlight">
-                <h2 class="govuk-heading-l">Find training providers for this course</h2>
-                <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h3>
-                <p class="govuk-body">Check if a provider can offer this training for the apprenticeship location.</p>
-                <form method="GET" asp-route="@RouteNames.CourseProviders" asp-route-id="@Model.Id">
-                    <div class="govuk-form-group">
-                        <label for="Locations" class="govuk-label">Enter location</label>
-                        <input type="search" id="search-location" name="location" title="Search" class="govuk-input govuk-!-width-three-quarters">
-                    </div>
-                    <button class="govuk-button govuk-!-margin-bottom-0">
-                        View providers for this course
-                    </button>
-                </form>
-            </div>
+            }
+            else
+            {
+                <div class="das-highlight">
+                    <h2 class="govuk-heading-l">Find training providers for this course</h2>
+                    <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h3>
+                    <p class="govuk-body">Check if a provider can offer this training for the apprenticeship location.</p>
+                    <form method="GET" asp-route="@RouteNames.CourseProviders" asp-route-id="@Model.Id">
+                        <div class="govuk-form-group">
+                            <label for="search-location" class="govuk-label">Enter location</label>
+                            <input type="search" id="search-location" name="location" title="Search" class="govuk-input govuk-!-width-three-quarters">
+                        </div>
+                        <button class="govuk-button govuk-!-margin-bottom-0">
+                            View providers for this course
+                        </button>
+                    </form>
+                </div> 
+            }
         </div>
     </div>
 </main>

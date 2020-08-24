@@ -1,3 +1,5 @@
+﻿using System;
+
 namespace SFA.DAS.FAT.Domain.Courses
 {
     public class Course
@@ -13,5 +15,6 @@ namespace SFA.DAS.FAT.Domain.Courses
         public string StandardPageUrl { get ; set ; }
         public int TypicalDuration { get ; set ; }
         public long MaxFunding { get ; set ; }
+        public StandardDates StandardDates { get; set; }
     }
 }

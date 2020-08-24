@@ -40,7 +40,7 @@ namespace SFA.DAS.FAT.Web.Models
                 TypicalDuration = course.TypicalDuration,
                 MaximumFunding = course.MaxFunding.ToGdsCostFormat(),
                 LastDateStarts = course.StandardDates?.LastDateStarts,
-                AfterLastStartDate = DateTime.Now > course.StandardDates?.LastDateStarts,
+                AfterLastStartDate = DateTime.UtcNow > course.StandardDates?.LastDateStarts,
             };
         }
     }

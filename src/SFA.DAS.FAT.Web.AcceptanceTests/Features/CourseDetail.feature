@@ -6,4 +6,4 @@
 Scenario: Navigate to course detail page for expired course
 When I navigate to the following url: /courses/101
 Then an http status code of 200 is returned
-And there is a message and button to course list displayed if course last start date has passed
+And there is a message and button to go to course list displayed

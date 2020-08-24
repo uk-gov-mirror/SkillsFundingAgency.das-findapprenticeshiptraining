@@ -22,21 +22,14 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Steps
             _context = context;
         }
 
-        [Then("there is a message and button to course list displayed if course last start date has passed")]
+        [Then("there is a message and button to go to course list displayed")]
         public async Task ThenThePageContentIncludesTheFollowing()
         {
             var response = _context.Get<HttpResponseMessage>(ContextKeys.HttpResponse);
-
             var actualContent = await response.Content.ReadAsStringAsync();
 
-            var json = DataFileManager.GetFile("course-expired.json");
-            var expectedApiResponse = JsonConvert.DeserializeObject<TrainingCourse>(json);
-
-            if (DateTime.Now > expectedApiResponse.Course.StandardDates.LastDateStarts)
-            {
-                actualContent.Should().Contain("This apprenticeship training course is no longer available for new starts.");
-                actualContent.Should().ContainAll("<a role=\"button\" draggable=\"false\" class=\"govuk-button\" data-module=\"govuk-button\" href=\"/courses\">", "View apprenticeship training courses", "</a>");
-            }
+            actualContent.Should().Contain("This apprenticeship training course is no longer available for new starts.");
+            actualContent.Should().ContainAll("<a role=\"button\" draggable=\"false\" class=\"govuk-button\" data-module=\"govuk-button\" href=\"/courses\">", "View apprenticeship training courses", "</a>");           
         }
     }
 }

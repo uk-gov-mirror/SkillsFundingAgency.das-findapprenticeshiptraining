@@ -8,9 +8,9 @@ if ($keywordsInput.length > 0) {
 
     var container, apiUrl;
 
-    $keywordsInput.wrap('<div id="fat-autocomplete-container"></div>');
-    container = document.querySelector('#fat-autocomplete-container');
-        apiUrl = '/locations';
+    $keywordsInput.wrap('<div id="autocomplete-container" class="das-autocomplete-wrap"></div>');
+    var container = document.querySelector('#autocomplete-container');
+    var apiUrl = '/locations';
 
     $(container).empty();
     var getSuggestions = function (query, updateResults) {

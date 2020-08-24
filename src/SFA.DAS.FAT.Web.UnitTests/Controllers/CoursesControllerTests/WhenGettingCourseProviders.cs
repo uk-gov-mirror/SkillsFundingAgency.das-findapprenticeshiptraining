@@ -20,18 +20,20 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         [Test, MoqAutoData]
         public async Task Then_The_Query_Is_Sent_And_Data_Retrieved_And_View_Shown(
             int standardCode,
+            string location,
             GetCourseProvidersResult response,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] CoursesController controller)
         {
             //Arrange
             mediator.Setup(x => x.Send(
-                    It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(standardCode)),
+                    It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(standardCode) 
+                    && c.Location.Equals(location)),
                     It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
             
             //Act
-            var actual = await controller.CourseProviders(standardCode) as ViewResult;
+            var actual = await controller.CourseProviders(standardCode, location) as ViewResult;
             
             //Assert
             var actualModel = actual.Model as CourseProvidersViewModel;
@@ -43,6 +45,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         [Test, MoqAutoData]
         public async Task And_Error_Then_Redirect_To_Error_Route(
             int standardCode,
+            string location,
             Exception exception,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] CoursesController controller)
@@ -54,7 +57,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ThrowsAsync(exception);
             
             //Act
-            var actual = await controller.CourseProviders(standardCode) as RedirectToRouteResult;
+            var actual = await controller.CourseProviders(standardCode, location) as RedirectToRouteResult;
             
             //Assert
             actual.RouteName.Should().Be(RouteNames.Error500);

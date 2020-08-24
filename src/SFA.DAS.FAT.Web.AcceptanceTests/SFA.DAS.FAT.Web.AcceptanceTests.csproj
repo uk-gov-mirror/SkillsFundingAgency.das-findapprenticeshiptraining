@@ -28,10 +28,15 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Home.feature.cs</LastGenOutput>
     </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Features\CourseProviders.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CourseProviders.feature.cs</LastGenOutput>
+    </SpecFlowFeatureFiles>
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Features\Home.feature" />
+    <Content Include="Features\CourseProviders.feature" />
   </ItemGroup>
 
 </Project>

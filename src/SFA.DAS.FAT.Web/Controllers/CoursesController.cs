@@ -65,7 +65,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         }
 
         [Route("{id}/providers", Name = RouteNames.CourseProviders)]
-        public async Task<IActionResult> CourseProviders(int id)
+        public async Task<IActionResult> CourseProviders(int id, string locations)
         {
             try
             {

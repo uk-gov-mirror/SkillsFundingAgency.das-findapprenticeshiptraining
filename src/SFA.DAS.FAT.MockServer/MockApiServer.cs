@@ -41,6 +41,15 @@ namespace SFA.DAS.FAT.MockServer
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("course.json"));
 
+            server.Given(Request.Create()
+                .WithPath(IsExpiredCourse)
+                .UsingGet()
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("course-expired.json"));
+
             server.Given(Request.Create().WithPath(IsListOfProviders)
                 .UsingGet()
             ).RespondWith(
@@ -62,8 +71,16 @@ namespace SFA.DAS.FAT.MockServer
         private static bool IsCourse(string arg)
         {
             return !arg.Contains("providers", StringComparison.CurrentCultureIgnoreCase) 
+                   && !Regex.IsMatch(arg, @"/trainingcourses/101") 
                    && Regex.IsMatch(arg, @"/trainingcourses/[0-9]*");
         }
+
+        private static bool IsExpiredCourse(string arg)
+        {
+            return !arg.Contains("providers", StringComparison.CurrentCultureIgnoreCase)
+                   && Regex.IsMatch(arg, @"/trainingcourses/101");
+        }
+
         private static bool IsListOfProviders(string arg)
         {
             var partCount = arg.Split("/");

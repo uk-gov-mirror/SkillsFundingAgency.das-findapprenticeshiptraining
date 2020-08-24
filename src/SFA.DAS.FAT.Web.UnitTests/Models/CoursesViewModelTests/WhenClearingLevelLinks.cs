@@ -9,9 +9,10 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 {
     public class WhenClearingLevelLinks
     {
-        [Test, AutoData]// todo: this test failed randomly, check data setup 
-        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels(List<int> selectedLevels)
+        [Test]
+        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels()
         {
+            List<int> selectedLevels = new List<int> {1, 2, 3};
             //Arrange Act
             var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), "", selectedLevels);
 
@@ -31,9 +32,10 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         }
 
         [Test, AutoData]
-        public void Then_Has_Keyword_Then_Builds_QueryString_With_Keyword(List<int> selectedLevels, string keyword)
+        public void Then_Has_Keyword_Then_Builds_QueryString_With_Keyword(string keyword)
         {
             //Arrange Act
+            List<int> selectedLevels = new List<int> { 1, 2, 3 };
             var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels);
 
             //Assert
@@ -53,9 +55,10 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         }
         
         [Test, AutoData]
-        public void Then_Has_Keyword_And_OrderBy_Then_Builds_QueryString_With_Keyword_And_OrderBy(List<int> selectedLevels, string keyword)
+        public void Then_Has_Keyword_And_OrderBy_Then_Builds_QueryString_With_Keyword_And_OrderBy(string keyword)
         {
             //Arrange Act
+            List<int> selectedLevels = new List<int> { 1, 2, 3 };
             var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels);
 
             //Assert
@@ -75,9 +78,10 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         }
 
         [Test, AutoData]
-        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels_And_Sectors(List<int> selectedLevels, List<Guid> selectedRoutes, string keyword)
+        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels_And_Sectors(List<Guid> selectedRoutes, string keyword)
         {
             //Arrange Act
+            List<int> selectedLevels = new List<int> { 1, 2, 3 };
             var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels);
 
             //Assert
@@ -110,9 +114,10 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             }
         }
         [Test, AutoData]
-        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels_And_Sectors_And_OrderBy(List<int> selectedLevels, List<Guid> selectedRoutes, string keyword)
+        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels_And_Sectors_And_OrderBy(List<Guid> selectedRoutes, string keyword)
         {
             //Arrange Act
+            List<int> selectedLevels = new List<int> { 1, 2, 3 };
             var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels);
 
             //Assert

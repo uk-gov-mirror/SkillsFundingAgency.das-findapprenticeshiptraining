@@ -56,6 +56,11 @@ namespace SFA.DAS.FAT.MockServer
                     .WithStatusCode(200)
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("course-provider.json"));
+            
+            server.Given(Request.Create().WithPath(IsLocation).UsingGet()).RespondWith(Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/json")
+                .WithBodyFromFile("locations.json"));
             return server;
         }
 
@@ -81,6 +86,11 @@ namespace SFA.DAS.FAT.MockServer
         private static bool IsCourseProvider(string arg)
         {
             return Regex.IsMatch(arg, @"/trainingcourses/[0-9]*/providers/[0-9]*");
+        }
+
+        private static bool IsLocation(string arg)
+        {
+            return Regex.IsMatch(arg, @"/locations");
         }
 
     }

@@ -4,14 +4,17 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
 {
     public class GetCourseProvidersApiRequest : IGetApiRequest
     {
-        public GetCourseProvidersApiRequest (string baseUrl, int id)
+        private readonly string _location;
+        private readonly int _id;
+
+        public GetCourseProvidersApiRequest (string baseUrl, int id, string location)
         {
+            _location = location;
             BaseUrl = baseUrl;
-            Id = id;
+            _id = id;
         }
 
-        private int Id { get; }
         public string BaseUrl { get; }
-        public string GetUrl => $"{BaseUrl}trainingcourses/{Id}/providers";
+        public string GetUrl => $"{BaseUrl}trainingcourses/{_id}/providers?location={_location}";
     }
 }

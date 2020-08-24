@@ -16,7 +16,7 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders
 
         public async Task<GetCourseProvidersResult> Handle(GetCourseProvidersQuery request, CancellationToken cancellationToken)
         {
-            var courseProviders = await _courseService.GetCourseProviders(request.CourseId);
+            var courseProviders = await _courseService.GetCourseProviders(request.CourseId, request.Location);
 
             return new GetCourseProvidersResult
             {

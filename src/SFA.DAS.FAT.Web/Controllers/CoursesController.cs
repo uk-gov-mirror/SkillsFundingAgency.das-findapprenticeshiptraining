@@ -69,7 +69,11 @@ namespace SFA.DAS.FAT.Web.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new GetCourseProvidersQuery {CourseId = id});
+                var result = await _mediator.Send(new GetCourseProvidersQuery
+                {
+                    CourseId = id,
+                    Location = locations
+                });
 
                 return View(new CourseProvidersViewModel
                 {

@@ -29,7 +29,7 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Steps
 
             var actualContent = await response.Content.ReadAsStringAsync();
 
-            var json = DataFileManager.GetFile("course.json");
+            var json = DataFileManager.GetFile("course-expired.json");
             var expectedApiResponse = JsonConvert.DeserializeObject<TrainingCourse>(json);
 
             if (DateTime.Now > expectedApiResponse.Course.StandardDates.LastDateStarts)

@@ -17,6 +17,7 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Steps
             _context = context;
         }
 
+        [Given("I navigate to the following url: (.*)")]
         [When("I navigate to the following url: (.*)")]
         public async Task WhenINavigateToTheFollowingUrl(string url)
         {

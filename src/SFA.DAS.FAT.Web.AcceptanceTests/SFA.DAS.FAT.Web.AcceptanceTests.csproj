@@ -10,6 +10,7 @@
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.6" />
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.4.0" />
+    <PackageReference Include="Moq" Version="4.7.0" />
     <PackageReference Include="Nunit" Version="3.11.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
@@ -28,10 +29,20 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Home.feature.cs</LastGenOutput>
     </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Features\CourseProvider.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CourseProvider.feature.cs</LastGenOutput>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Features\Courses.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Courses.feature.cs</LastGenOutput>
+    </SpecFlowFeatureFiles>
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Features\Home.feature" />
+    <Content Include="Features\Courses.feature" />
+    <Content Include="Features\CourseProviders.feature" />
   </ItemGroup>
 
 </Project>

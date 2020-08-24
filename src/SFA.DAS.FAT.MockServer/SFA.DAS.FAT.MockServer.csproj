@@ -23,6 +23,9 @@
         <Content Include="course.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <Content Include="course-expired.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="courses.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>

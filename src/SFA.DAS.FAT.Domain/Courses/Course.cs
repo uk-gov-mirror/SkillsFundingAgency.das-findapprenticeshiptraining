@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SFA.DAS.FAT.Domain.Courses
+﻿namespace SFA.DAS.FAT.Domain.Courses
 {
     public class Course
     {

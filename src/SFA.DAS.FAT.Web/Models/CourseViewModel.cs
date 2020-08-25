@@ -21,7 +21,7 @@ namespace SFA.DAS.FAT.Web.Models
         public int Level { get ; private set ; }
         public string MaximumFunding { get ; set ; }
         public DateTime? LastDateStarts { get; set; }
-        public bool AfterLastStartDate { get; set; } = false;
+        public bool AfterLastStartDate { get; set; }
 
         public static implicit operator CourseViewModel(Course course)
         {

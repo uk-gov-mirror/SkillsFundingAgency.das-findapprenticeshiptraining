@@ -32,8 +32,7 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure
         public void StartWebApp()
         {
             _staticServer = MockApiServer.Start();
-            _staticClient = new WebApplicationFactory<Startup>().WithWebHostBuilder(options=>options.Build())
-                .CreateClient();
+            _staticClient = new WebApplicationFactory<Startup>().CreateClient();
             _context.Set(_staticClient,ContextKeys.HttpClient);
         }
 

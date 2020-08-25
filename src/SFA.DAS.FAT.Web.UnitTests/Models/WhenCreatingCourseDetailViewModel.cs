@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AutoFixture.NUnit3;
 using NUnit.Framework;
@@ -29,6 +29,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             Assert.AreEqual(course.TypicalJobTitles.Split("|").ToList(), actual.TypicalJobTitles);
             Assert.AreEqual(course.StandardPageUrl, actual.ExternalCourseUrl);
             Assert.AreEqual(course.TypicalDuration, actual.TypicalDuration);
+            Assert.AreEqual(course.OtherBodyApprovalRequired, actual.OtherBodyApprovalRequired);
         }
 
         [Test, AutoData]

@@ -41,6 +41,15 @@ namespace SFA.DAS.FAT.MockServer
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("course.json"));
 
+            server.Given(Request.Create()
+                .WithPath(IsRegulatedCourse)
+                .UsingGet()
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("course-regulated.json"));
+
             server.Given(Request.Create().WithPath(IsListOfProviders)
                 .UsingGet()
             ).RespondWith(
@@ -61,9 +70,16 @@ namespace SFA.DAS.FAT.MockServer
 
         private static bool IsCourse(string arg)
         {
-            return !arg.Contains("providers", StringComparison.CurrentCultureIgnoreCase) 
-                   && Regex.IsMatch(arg, @"/trainingcourses/[0-9]*");
+            return !arg.Contains("providers", StringComparison.CurrentCultureIgnoreCase)
+                   && Regex.IsMatch(arg, @"/trainingcourses/[0-9]*")
+                   && !Regex.IsMatch(arg, @"/trainingcourses/333");
         }
+        private static bool IsRegulatedCourse(string arg)
+        {
+            return !arg.Contains("providers", StringComparison.CurrentCultureIgnoreCase)
+                   && Regex.IsMatch(arg, @"/trainingcourses/333");
+        }
+
         private static bool IsListOfProviders(string arg)
         {
             var partCount = arg.Split("/");

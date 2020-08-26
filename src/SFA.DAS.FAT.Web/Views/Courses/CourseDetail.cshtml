@@ -6,21 +6,20 @@
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            @if (Model.LastDateStarts.HasValue && !Model.AfterLastStartDate)
-            {
-                <div class="alert-blue alert-blue-no-heading govuk-!-margin-bottom-7">
-                    <p class="govuk-body">
-                        @Model.TitleAndLevel is available for new starts until @Model.LastDateStarts.Value.ToString("d MMM yyyy").
-                    </p>
-                </div>
-            }
-            <span class="govuk-caption-xl">Apprenticeship training course</span>
-            <h1 class="govuk-heading-xl">
-                @Model.Title <span class="das-no-wrap">(level @Model.Level)</span>
-            </h1>
-
             @if (!Model.AfterLastStartDate)
             {
+                @if (Model.LastDateStarts.HasValue)
+                {
+                    <div class="das-notification das-notification--information">
+                        <p class="das-notification__body">
+                            @Model.TitleAndLevel is available for new starts until @Model.LastDateStarts.Value.ToString("d MMM yyyy").
+                        </p>
+                    </div>
+                }
+                <span class="govuk-caption-xl">Apprenticeship training course</span>
+                <h1 class="govuk-heading-xl">
+                    @Model.Title <span class="das-no-wrap">(level @Model.Level)</span>
+                </h1>
                 <p class="govuk-body-l">@Model.OverviewOfRole</p>
 
                 <dl class="govuk-summary-list">
@@ -115,6 +114,10 @@
             }
             else
             {
+                <span class="govuk-caption-xl">Apprenticeship training course</span>
+                <h1 class="govuk-heading-xl">
+                    @Model.Title <span class="das-no-wrap">(level @Model.Level)</span>
+                </h1>
                 <p class="govuk-body-l">This apprenticeship training course is no longer available for new starts.</p>
 
                 <a asp-route="@RouteNames.Courses" role="button" draggable="false" class="govuk-button" data-module="govuk-button">View apprenticeship training courses</a>

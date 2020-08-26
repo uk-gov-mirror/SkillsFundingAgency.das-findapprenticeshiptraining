@@ -22,6 +22,7 @@ namespace SFA.DAS.FAT.Web.Models
         public string MaximumFunding { get ; set ; }
         public DateTime? LastDateStarts { get; set; }
         public bool AfterLastStartDate { get; set; } = false;
+        public int ProvidersCount { get; set; }
 
         public static implicit operator CourseViewModel(Course course)
         {

@@ -84,7 +84,13 @@
                 <p class="govuk-body-s govuk-!-margin-bottom-6">
                     Full information on <a class="govuk-link govuk-link--no-visited-state" href="@Model.ExternalCourseUrl" target="_blank" rel="external">@Model.TitleAndLevel</a> is available from the Institute for Apprenticeships and Technical Education.
                 </p>
-
+            @if (Model.ProvidersCount == 0)
+            {
+                <h2 class="govuk-heading-m" >Training providers</h2>
+                <p class="govuk-body govuk-!-margin-bottom-6">0 training providers are available for this course.</p>
+            }
+            else
+            {
                 <div class="das-highlight">
                     <h2 class="govuk-heading-l">Find training providers for this course</h2>
                     <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h3>

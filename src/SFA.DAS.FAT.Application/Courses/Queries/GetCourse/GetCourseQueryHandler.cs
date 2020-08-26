@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -28,7 +28,7 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourse
 
             var response = await _courseService.GetCourse(query.CourseId);
             
-            return new GetCourseResult{Course = response?.Course};
+            return new GetCourseResult{Course = response?.Course, ProvidersCount = response.ProvidersCount};
         }
     }
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
@@ -75,7 +75,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourse
             //Arrange
             validationResult.ValidationDictionary.Clear();
             mockValidator.Setup(x => x.ValidateAsync(request)).ReturnsAsync(validationResult);
-            mockService.Setup(x => x.GetCourse(request.CourseId)).ReturnsAsync((TrainingCourse)null);
+            mockService.Setup(x => x.GetCourse(request.CourseId)).ReturnsAsync(new TrainingCourse{ProvidersCount = 0});
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);

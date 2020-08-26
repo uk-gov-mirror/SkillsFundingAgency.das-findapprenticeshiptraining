@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
+using AutoFixture;
 using AutoFixture.NUnit3;
 using NUnit.Framework;
 using SFA.DAS.FAT.Domain.Courses;
+using SFA.DAS.FAT.Web.Models;
 
 namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 {
     public class WhenClearingLevelLinks
     {
-        [Test, AutoData]// todo: this test failed randomly, check data setup 
-        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels(List<int> selectedLevels)
+        [Test, AutoData]
+        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels(Generator<int> selectedLevelsGenerator)
         {
             //Arrange Act
+            var selectedLevels = selectedLevelsGenerator.Distinct().Take(3).ToList();
+
             var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), "", selectedLevels);
 
             //Assert
@@ -25,15 +30,19 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 
                 Assert.IsNotNull(levelViewModel);
                 Assert.IsTrue(model.ClearLevelLinks.ContainsKey(levelViewModel.Title));
-                Assert.AreEqual(clearLinkCount - 1, model.ClearLevelLinks.Count(c => c.Value.Contains($"levels={selectedLevel}")));
+
+                AssertClearLevelLink(model, clearLinkCount);
+
                 Assert.AreEqual(0, model.ClearLevelLinks.Count(c => c.Value.Contains("orderby=")));
             }
         }
 
         [Test, AutoData]
-        public void Then_Has_Keyword_Then_Builds_QueryString_With_Keyword(List<int> selectedLevels, string keyword)
+        public void Then_Has_Keyword_Then_Builds_QueryString_With_Keyword(Generator<int> selectedLevelsGenerator, string keyword)
         {
             //Arrange Act
+            var selectedLevels = selectedLevelsGenerator.Distinct().Take(3).ToList();
+
             var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels);
 
             //Assert
@@ -46,16 +55,20 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 
                 Assert.IsNotNull(levelViewModel);
                 Assert.IsTrue(model.ClearLevelLinks.ContainsKey(levelViewModel.Title));
-                Assert.AreEqual(clearLinkCount - 1, model.ClearLevelLinks.Count(c => c.Value.Contains($"levels={selectedLevel}")));
+
+                AssertClearLevelLink(model, clearLinkCount);
+
                 Assert.AreEqual(clearLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains($"keyword={keyword}")));
                 Assert.AreEqual(clearLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains($"orderby=")));
             }
         }
         
         [Test, AutoData]
-        public void Then_Has_Keyword_And_OrderBy_Then_Builds_QueryString_With_Keyword_And_OrderBy(List<int> selectedLevels, string keyword)
+        public void Then_Has_Keyword_And_OrderBy_Then_Builds_QueryString_With_Keyword_And_OrderBy(Generator<int> selectedLevelsGenerator, string keyword)
         {
             //Arrange Act
+            var selectedLevels = selectedLevelsGenerator.Distinct().Take(3).ToList();
+
             var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels);
 
             //Assert
@@ -68,16 +81,20 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 
                 Assert.IsNotNull(levelViewModel);
                 Assert.IsTrue(model.ClearLevelLinks.ContainsKey(levelViewModel.Title));
-                Assert.AreEqual(clearLinkCount - 1, model.ClearLevelLinks.Count(c => c.Value.Contains($"levels={selectedLevel}")));
+
+                AssertClearLevelLink(model, clearLinkCount);
+
                 Assert.AreEqual(clearLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains($"keyword={keyword}")));
                 Assert.AreEqual(clearLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains($"orderby={OrderBy.Name}")));
             }
         }
 
         [Test, AutoData]
-        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels_And_Sectors(List<int> selectedLevels, List<Guid> selectedRoutes, string keyword)
+        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels_And_Sectors(Generator<int> selectedLevelsGenerator, List<Guid> selectedRoutes, string keyword)
         {
             //Arrange Act
+            var selectedLevels = selectedLevelsGenerator.Distinct().Take(3).ToList();
+
             var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels);
 
             //Assert
@@ -92,7 +109,9 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 
                 Assert.IsNotNull(levelViewModel);
                 Assert.IsTrue(model.ClearLevelLinks.ContainsKey(levelViewModel.Title));
-                Assert.AreEqual(clearLevelsLinkCount - 1, model.ClearLevelLinks.Count(c => c.Value.Contains($"levels={selectedLevel}")));
+
+                AssertClearLevelLink(model, clearLevelsLinkCount);
+
                 Assert.AreEqual(clearLevelsLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains($"?keyword={keyword}")));
                 Assert.AreEqual(clearLevelsLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains("&sectors=" + string.Join("&sectors=", model.SelectedSectors))));
                 Assert.AreEqual(clearLevelsLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains($"orderby=")));
@@ -110,9 +129,11 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             }
         }
         [Test, AutoData]
-        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels_And_Sectors_And_OrderBy(List<int> selectedLevels, List<Guid> selectedRoutes, string keyword)
+        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels_And_Sectors_And_OrderBy(Generator<int> selectedLevelsGenerator, List<Guid> selectedRoutes, string keyword)
         {
             //Arrange Act
+            var selectedLevels = selectedLevelsGenerator.Distinct().Take(3).ToList();
+
             var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels);
 
             //Assert
@@ -127,7 +148,9 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 
                 Assert.IsNotNull(levelViewModel);
                 Assert.IsTrue(model.ClearLevelLinks.ContainsKey(levelViewModel.Title));
-                Assert.AreEqual(clearLevelsLinkCount - 1, model.ClearLevelLinks.Count(c => c.Value.Contains($"levels={selectedLevel}")));
+
+                AssertClearLevelLink(model, clearLevelsLinkCount);
+
                 Assert.AreEqual(clearLevelsLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains($"?keyword={keyword}")));
                 Assert.AreEqual(clearLevelsLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains($"&orderby={OrderBy.Name}")));
                 Assert.AreEqual(clearLevelsLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains("&sectors=" + string.Join("&sectors=", model.SelectedSectors))));
@@ -142,6 +165,16 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
                 Assert.AreEqual(clearSectorsLinkCount, model.ClearSectorLinks.Count(c => c.Value.Contains($"?keyword={keyword}")));
                 Assert.AreEqual(clearSectorsLinkCount, model.ClearSectorLinks.Count(c => c.Value.Contains($"&orderby={OrderBy.Name}")));
                 Assert.AreEqual(clearSectorsLinkCount, model.ClearSectorLinks.Count(c => c.Value.Contains("&levels=" + string.Join("&levels=", model.SelectedLevels))));
+            }
+        }
+
+        private static void AssertClearLevelLink(CoursesViewModel model, int clearLinkCount)
+        {
+            foreach (var modelClearLevelLink in model.ClearLevelLinks)
+            {
+                var queryParams = HttpUtility.ParseQueryString(
+                        new Uri("https://test.com/" + modelClearLevelLink.Value).Query)["Levels"].Split(",");
+                Assert.AreEqual(clearLinkCount - 1, queryParams.Length);
             }
         }
     }

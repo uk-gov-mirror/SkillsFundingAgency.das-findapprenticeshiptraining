@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Web.Extensions;
@@ -20,6 +21,8 @@ namespace SFA.DAS.FAT.Web.Models
         public int Level { get ; private set ; }
         public string MaximumFunding { get ; set ; }
         public bool OtherBodyApprovalRequired { get; set; }
+        public DateTime? LastDateStarts { get; set; }
+        public bool AfterLastStartDate { get; set; }
 
         public static implicit operator CourseViewModel(Course course)
         {
@@ -38,6 +41,8 @@ namespace SFA.DAS.FAT.Web.Models
                 TypicalDuration = course.TypicalDuration,
                 MaximumFunding = course.MaxFunding.ToGdsCostFormat(),
                 OtherBodyApprovalRequired = course.OtherBodyApprovalRequired,
+                LastDateStarts = course.StandardDates?.LastDateStarts,
+                AfterLastStartDate = DateTime.UtcNow > course.StandardDates?.LastDateStarts,
             };
         }
     }

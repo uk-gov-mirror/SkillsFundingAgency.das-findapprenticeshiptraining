@@ -8,8 +8,8 @@
         <div class="govuk-grid-column-two-thirds">
             @if (Model.LastDateStarts.HasValue && !Model.AfterLastStartDate)
             {
-                <div class="alert-blue alert-blue-no-heading govuk-!-margin-bottom-7">
-                    <p class="govuk-body">
+                <div class="das-notification das-notification--information">
+                    <p class="das-notification__body">
                         @Model.TitleAndLevel is available for new starts until @Model.LastDateStarts.Value.ToString("d MMM yyyy").
                     </p>
                 </div>

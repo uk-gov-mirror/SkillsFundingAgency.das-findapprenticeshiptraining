@@ -8,13 +8,13 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
     public class WhenCreatingAGetCourseProvidersApiRequest
     {
         [Test, AutoData]
-        public void Then_The_Get_Url_Is_Constructed_Correctly(string baseUrl, int id, string location)
+        public void Then_The_Get_Url_Is_Constructed_Correctly(string baseUrl, int id, string location, int sortOrder)
         {
             //Arrange Act
-            var actual = new GetCourseProvidersApiRequest(baseUrl, id, location);
+            var actual = new GetCourseProvidersApiRequest(baseUrl, id, location, sortOrder);
             
             //Assert
-            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{id}/providers?location={location}");
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{id}/providers?location={location}&sortOrder={sortOrder}");
         }
     }
 }

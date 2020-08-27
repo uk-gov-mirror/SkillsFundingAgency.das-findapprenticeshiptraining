@@ -24,16 +24,44 @@ namespace SFA.DAS.FAT.MockServer
             
             var server = StandAloneApp.Start(settings);
             
-            server.Given(Request.Create().WithPath("/trainingcourses")
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s,"/trainingcourses/\\d+/providers/\\d+$"))
                 .UsingGet()
             ).RespondWith(
                 Response.Create()
                     .WithStatusCode(200)
                     .WithHeader("Content-Type", "application/json")
-                    .WithBodyFromFile("courses.json"));
+                    .WithBodyFromFile("course-provider.json"));
 
-            server.Given(Request.Create()
-                .WithPath(IsCourse)
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s,"/trainingcourses/\\d+/providers$"))
+                .UsingGet()
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("course-providers.json"));
+
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s,"/trainingcourses/101$"))
+                .UsingGet()
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("course-expired.json"));
+
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s,"/trainingcourses/24$"))
+                .UsingGet()
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("course-lastdatestarts.json"));
+                    
+            server.Given(Request.Create().WithPath(IsLocation).UsingGet()).RespondWith(Response.Create()
+                .WithStatusCode(200)
+                .WithHeader("Content-Type", "application/json")
+                .WithBodyFromFile("locations.json"));
+
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s,"/trainingcourses/(?!(?:101|24)$)\\d+$"))
                 .UsingGet()
             ).RespondWith(
                 Response.Create()
@@ -41,57 +69,23 @@ namespace SFA.DAS.FAT.MockServer
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("course.json"));
 
-            server.Given(Request.Create().WithPath(IsListOfProviders)
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s,"/trainingcourses$"))
                 .UsingGet()
             ).RespondWith(
                 Response.Create()
                     .WithStatusCode(200)
                     .WithHeader("Content-Type", "application/json")
-                    .WithBodyFromFile("course-providers.json"));
-            
-            server.Given(Request.Create().WithPath(IsCourseProvider)
-                .UsingGet()
-            ).RespondWith(
-                Response.Create()
-                    .WithStatusCode(200)
-                    .WithHeader("Content-Type", "application/json")
-                    .WithBodyFromFile("course-provider.json"));
-            
-            server.Given(Request.Create().WithPath(IsLocation).UsingGet()).RespondWith(Response.Create()
-                .WithStatusCode(200)
-                .WithHeader("Content-Type", "application/json")
-                .WithBodyFromFile("locations.json"));
+                    .WithBodyFromFile("courses.json"));
+
+
+
+
             return server;
-        }
-
-        private static bool IsCourse(string arg)
-        {
-            return !arg.Contains("providers", StringComparison.CurrentCultureIgnoreCase) 
-                   && Regex.IsMatch(arg, @"/trainingcourses/[0-9]*");
-        }
-        private static bool IsListOfProviders(string arg)
-        {
-            var partCount = arg.Split("/");
-
-            if (partCount.Length == 4 
-                && partCount[1].Equals("trainingcourses", StringComparison.CurrentCultureIgnoreCase) 
-                && partCount[3].Equals("providers", StringComparison.CurrentCultureIgnoreCase))
-            {
-                return Regex.IsMatch(arg, @"/trainingcourses/[0-9]*/providers");
-            }
-            return false;
-            
-        }
-        
-        private static bool IsCourseProvider(string arg)
-        {
-            return Regex.IsMatch(arg, @"/trainingcourses/[0-9]*/providers/[0-9]*");
         }
 
         private static bool IsLocation(string arg)
         {
             return Regex.IsMatch(arg, @"/locations");
         }
-
     }
 }

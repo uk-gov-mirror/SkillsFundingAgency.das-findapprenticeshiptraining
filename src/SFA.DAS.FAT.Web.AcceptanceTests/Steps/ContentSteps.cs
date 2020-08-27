@@ -25,5 +25,15 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Steps
 
             actualContent.Should().Contain(expectedContent);
         }
+
+        [Then("the page content does not include the following: (.*)")]
+        public async Task ThenThePageContentNotIncludeTheFollowing(string expectedContent)
+        {
+            var response = _context.Get<HttpResponseMessage>(ContextKeys.HttpResponse);
+
+            var actualContent = await response.Content.ReadAsStringAsync();
+
+            actualContent.Should().NotContain(expectedContent);
+        }
     }
 }

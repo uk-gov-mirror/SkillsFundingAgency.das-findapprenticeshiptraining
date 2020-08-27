@@ -38,6 +38,17 @@
                         </a>
                     </h2>
                     <ul class="govuk-list">
+                        @if (!string.IsNullOrEmpty(Model.Location))
+                        {
+                            <li>
+                                <ul class="govuk-list ">
+                                    @foreach (var mode in provider.DeliveryModes)
+                                    {
+                                        <li class="govuk-!-font-size-16 govuk-!-margin-top-2">@(mode.IsAvailable ? "tick":"cross" ) @mode.DeliveryModeType.ToString() @mode.FormattedDistanceInMiles</li>
+                                    }
+                                </ul>
+                            </li>
+                        }
                         @if (provider.OverallCohort != null)
                         {
                             <li class="govuk-!-font-size-16 govuk-!-margin-top-2">

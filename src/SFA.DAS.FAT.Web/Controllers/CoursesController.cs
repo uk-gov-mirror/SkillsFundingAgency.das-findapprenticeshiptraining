@@ -80,7 +80,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                 {
                     Course = result.Course,
                     Providers = result.Providers.Select(c=>(ProviderViewModel)c), 
-                    Total = result.Total
+                    Total = result.Total,
+                    Location = locations
                 });
             }
             catch (Exception e)

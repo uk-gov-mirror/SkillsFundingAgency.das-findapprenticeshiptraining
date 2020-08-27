@@ -9,5 +9,6 @@ namespace SFA.DAS.FAT.Web.Models
         public CourseViewModel Course { get; set; }
         public int Total { get; set; }
         public string TotalMessage => Total == 1 ? $"{Total} result" : $"{Total} results";
+        public string Location { get; set; }
     }
 }

@@ -28,10 +28,6 @@
           "distanceInMiles": 3.5
         },
         {
-          "deliveryModeType": 1,
-          "distanceInMiles": 5.5
-        },
-        {
           "deliveryModeType": 2,
           "distanceInMiles": 4.5
         }
@@ -43,10 +39,6 @@
       "overallCohort": null,
       "overallAchievementRate": null,
       "deliveryModes": [
-        {
-          "deliveryModeType": 0,
-          "distanceInMiles": 3.5
-        },
         {
           "deliveryModeType": 1,
           "distanceInMiles": 5.5

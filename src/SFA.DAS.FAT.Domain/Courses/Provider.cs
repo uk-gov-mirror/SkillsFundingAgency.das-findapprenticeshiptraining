@@ -19,7 +19,7 @@ namespace SFA.DAS.FAT.Domain.Courses
     public class DeliveryMode
     {
         public DeliveryModeType DeliveryModeType { get; set; }
-        public decimal Distance { get; set; }
+        public decimal DistanceInMiles { get; set; }
     }
 
     public enum DeliveryModeType

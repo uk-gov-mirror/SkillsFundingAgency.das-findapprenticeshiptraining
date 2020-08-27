@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Web.Models;
+using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType;
 
 namespace SFA.DAS.FAT.Web.UnitTests.Models
 {
@@ -23,6 +26,8 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             actual.OverallAchievementRatePercentage.Should().Be($"{(Math.Round(source.OverallAchievementRate.Value)/100):0%}");
             actual.NationalOverallAchievementRatePercentage.Should().Be($"{(Math.Round(source.NationalOverallAchievementRate.Value)/100):0%}");
         }
+
+        // achievement rate
 
         [Test, AutoData]
         public void Then_No_Achievement_Data_Shows_Empty_String(Provider source)
@@ -46,6 +51,125 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             
             actual.OverallAchievementRatePercentage.Should().Be("39%");
             actual.NationalOverallAchievementRatePercentage.Should().Be("79%");
+        }
+
+        // delivery modes
+
+        [Test, AutoData]
+        public void Then_Has_3_DeliveryModes_In_Correct_Order(Provider source)
+        {
+            var actual = (ProviderViewModel) source;
+
+            var modes = actual.DeliveryModes.ToList();
+            modes.Count.Should().Be(3);
+            modes[0].DeliveryModeType.Should().Be(DeliveryModeType.Workplace);
+            modes[1].DeliveryModeType.Should().Be(DeliveryModeType.DayRelease);
+            modes[2].DeliveryModeType.Should().Be(DeliveryModeType.BlockRelease);
+        }
+
+        [Test, AutoData]
+        public void And_No_Workplace_Delivery_Then_Blank_DeliveryMode(Provider source)
+        {
+            source.DeliveryModes = new List<DeliveryMode>();
+
+            var actual = (ProviderViewModel)source;
+
+            var workplaceDeliveryMode = actual.DeliveryModes.Single(model =>
+                model.DeliveryModeType == DeliveryModeType.Workplace);
+            workplaceDeliveryMode.FormattedDistanceInMiles.Should().BeNullOrEmpty();
+            workplaceDeliveryMode.IsAvailable.Should().BeFalse();
+        }
+
+        [Test, AutoData]
+        public void And_Has_Workplace_Delivery_Then_Formatted_DeliveryMode_With_No_Distance(
+            Provider source,
+            decimal distanceInMiles)
+        {
+            source.DeliveryModes = new List<DeliveryMode>
+            {
+                new DeliveryMode
+                {
+                    DeliveryModeType = Domain.Courses.DeliveryModeType.Workplace,
+                    DistanceInMiles = distanceInMiles
+                }
+            };
+
+            var actual = (ProviderViewModel)source;
+
+            var workplaceDeliveryMode = actual.DeliveryModes.Single(model =>
+                model.DeliveryModeType == DeliveryModeType.Workplace);
+            workplaceDeliveryMode.FormattedDistanceInMiles.Should().BeNullOrEmpty();
+            workplaceDeliveryMode.IsAvailable.Should().BeTrue();
+        }
+
+        [Test, AutoData]
+        public void And_No_DayRelease_Delivery_Then_Blank_DeliveryMode(Provider source)
+        {
+            source.DeliveryModes = new List<DeliveryMode>();
+
+            var actual = (ProviderViewModel)source;
+
+            var dayReleaseDeliveryMode = actual.DeliveryModes.Single(model =>
+                model.DeliveryModeType == DeliveryModeType.DayRelease);
+            dayReleaseDeliveryMode.FormattedDistanceInMiles.Should().BeNullOrEmpty();
+            dayReleaseDeliveryMode.IsAvailable.Should().BeFalse();
+        }
+
+        [Test, AutoData]
+        public void And_Has_DayRelease_Delivery_Then_Formatted_DeliveryMode(
+            Provider source,
+            decimal distanceInMiles)
+        {
+            source.DeliveryModes = new List<DeliveryMode>
+            {
+                new DeliveryMode
+                {
+                    DeliveryModeType = Domain.Courses.DeliveryModeType.DayRelease,
+                    DistanceInMiles = distanceInMiles
+                }
+            };
+
+            var actual = (ProviderViewModel)source;
+
+            var dayReleaseDeliveryMode = actual.DeliveryModes.Single(model =>
+                model.DeliveryModeType == DeliveryModeType.DayRelease);
+            dayReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($"({distanceInMiles} miles away)");
+            dayReleaseDeliveryMode.IsAvailable.Should().BeTrue();
+        }
+
+        [Test, AutoData]
+        public void And_No_BlockRelease_Delivery_Then_Blank_DeliveryMode(Provider source)
+        {
+            source.DeliveryModes = new List<DeliveryMode>();
+
+            var actual = (ProviderViewModel)source;
+
+            var blockReleaseDeliveryMode = actual.DeliveryModes.Single(model =>
+                model.DeliveryModeType == DeliveryModeType.BlockRelease);
+            blockReleaseDeliveryMode.FormattedDistanceInMiles.Should().BeNullOrEmpty();
+            blockReleaseDeliveryMode.IsAvailable.Should().BeFalse();
+        }
+
+        [Test, AutoData]
+        public void And_Has_BlockRelease_Delivery_Then_Formatted_DeliveryMode(
+            Provider source,
+            decimal distanceInMiles)
+        {
+            source.DeliveryModes = new List<DeliveryMode>
+            {
+                new DeliveryMode
+                {
+                    DeliveryModeType = Domain.Courses.DeliveryModeType.BlockRelease,
+                    DistanceInMiles = distanceInMiles
+                }
+            };
+
+            var actual = (ProviderViewModel)source;
+
+            var blockReleaseDeliveryMode = actual.DeliveryModes.Single(model =>
+                model.DeliveryModeType == DeliveryModeType.BlockRelease);
+            blockReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($"({distanceInMiles} miles away)");
+            blockReleaseDeliveryMode.IsAvailable.Should().BeTrue();
         }
     }
 }

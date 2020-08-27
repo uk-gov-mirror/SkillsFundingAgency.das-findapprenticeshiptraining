@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Web.Extensions;
@@ -19,6 +20,8 @@ namespace SFA.DAS.FAT.Web.Models
         public int TypicalDuration { get ; private set ; }
         public int Level { get ; private set ; }
         public string MaximumFunding { get ; set ; }
+        public DateTime? LastDateStarts { get; set; }
+        public bool AfterLastStartDate { get; set; }
         public int ProvidersCount { get; set; }
 
         public static implicit operator CourseViewModel(Course course)
@@ -36,7 +39,9 @@ namespace SFA.DAS.FAT.Web.Models
                 OverviewOfRole = course.OverviewOfRole,
                 TypicalJobTitles = string.IsNullOrEmpty(course.TypicalJobTitles) ? new List<string>() : course.TypicalJobTitles.Split("|").ToList(),
                 TypicalDuration = course.TypicalDuration,
-                MaximumFunding = course.MaxFunding.ToGdsCostFormat()
+                MaximumFunding = course.MaxFunding.ToGdsCostFormat(),
+                LastDateStarts = course.StandardDates?.LastDateStarts,
+                AfterLastStartDate = DateTime.UtcNow > course.StandardDates?.LastDateStarts,
             };
         }
     }

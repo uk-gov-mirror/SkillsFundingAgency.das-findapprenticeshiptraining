@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
@@ -37,7 +38,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             
             //Assert
             var actualModel = actual.Model as CourseProvidersViewModel;
-            actualModel.Providers.Should().BeEquivalentTo(response.Providers, options=>options.ExcludingMissingMembers());
+            actualModel.Providers.Should().BeEquivalentTo(response.Providers.Select(provider => (ProviderViewModel)provider));
             actualModel.Course.Should().BeEquivalentTo((CourseViewModel)response.Course);
             actualModel.Total.Should().Be(response.Total);
         }

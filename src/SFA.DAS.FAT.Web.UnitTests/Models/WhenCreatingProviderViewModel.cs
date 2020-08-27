@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
@@ -17,7 +17,8 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             actual.Should().BeEquivalentTo(source, options => options
                 .Excluding(c=>c.OverallAchievementRate)
                 .Excluding(c=>c.NationalOverallAchievementRate)
-                .Excluding(c=>c.NationalOverallCohort));
+                .Excluding(c=>c.NationalOverallCohort)
+                .Excluding(c => c.DeliveryModes));
 
             actual.OverallAchievementRatePercentage.Should().Be($"{(Math.Round(source.OverallAchievementRate.Value)/100):0%}");
             actual.NationalOverallAchievementRatePercentage.Should().Be($"{(Math.Round(source.NationalOverallAchievementRate.Value)/100):0%}");

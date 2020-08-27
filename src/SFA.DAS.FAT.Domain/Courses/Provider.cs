@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.FAT.Domain.Courses
+﻿using System.Collections.Generic;
+
+namespace SFA.DAS.FAT.Domain.Courses
 {
     public class Provider
     {
@@ -11,5 +13,19 @@
         public decimal? OverallAchievementRate { get; set; }
         public int? NationalOverallCohort { get; set; }
         public decimal? NationalOverallAchievementRate { get; set; }
+        public IEnumerable<DeliveryMode> DeliveryModes { get; set; }
+    }
+
+    public class DeliveryMode
+    {
+        public DeliveryModeType DeliveryModeType { get; set; }
+        public decimal Distance { get; set; }
+    }
+
+    public enum DeliveryModeType
+    {
+        Workplace = 0,
+        DayRelease = 1,
+        BlockRelease = 2
     }
 }

@@ -1,4 +1,6 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using SFA.DAS.FAT.Domain.Courses;
 
 namespace SFA.DAS.FAT.Web.Models
@@ -20,6 +22,7 @@ namespace SFA.DAS.FAT.Web.Models
         public string Name { get ; set ; }
         public string OverallAchievementRatePercentage { get ; set ; }
         public string NationalOverallAchievementRatePercentage { get ; set ; }
+        public IEnumerable<DeliveryModeViewModel> DeliveryModes { get; set; }
 
         public static implicit operator ProviderViewModel(Provider source)
         {
@@ -35,7 +38,22 @@ namespace SFA.DAS.FAT.Web.Models
                 OverallAchievementRatePercentage = source.OverallAchievementRate.HasValue ? $"{Math.Round(source.OverallAchievementRate.Value)/100:0%}" : "",
                 NationalOverallAchievementRatePercentage = source.NationalOverallAchievementRate.HasValue ? $"{Math.Round(source.NationalOverallAchievementRate.Value)/100:0%}" : ""
             };
-                
         }
+    }
+
+    public class DeliveryModeViewModel
+    {
+        public DeliveryModeType DeliveryModeType { get; set; }
+        public decimal DistanceInMiles { get; set; }
+    }
+
+    public enum DeliveryModeType
+    {
+        [Description("At apprentice's workplace")]
+        Workplace = 0,
+        [Description("Day release")]
+        DayRelease = 1,
+        [Description("Block release")]
+        BlockRelease = 2
     }
 }

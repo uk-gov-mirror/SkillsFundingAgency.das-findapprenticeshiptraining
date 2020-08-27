@@ -22,3 +22,8 @@ Then an http status code of 200 is returned
 And the expired course content is displayed
 And the last start date alert is not displayed
 #todo: and course details are not displayed
+
+Scenario: Regulated course
+When I navigate to the following url: /courses/333
+Then an http status code of 200 is returned
+And the regulated occupation header and message is displayed

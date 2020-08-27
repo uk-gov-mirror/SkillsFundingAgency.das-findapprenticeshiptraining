@@ -6,16 +6,13 @@ var $keywordsInput = $('#search-location');
 
 if ($keywordsInput.length > 0) {
 
-    var container, apiUrl;
-
     $keywordsInput.wrap('<div id="autocomplete-container" class="das-autocomplete-wrap"></div>');
     var container = document.querySelector('#autocomplete-container');
     var apiUrl = '/locations';
 
     $(container).empty();
 
-    var getSuggestions = function (query, updateResults) {
-
+    function getSuggestions (query, updateResults) {
         var results = [];
         $.ajax({
             url: apiUrl,
@@ -30,14 +27,15 @@ if ($keywordsInput.length > 0) {
             
             updateResults(results);
         });
-    };
-
-    var onConfirm = function () {
-      var form = this.element.parentElement.parentElement;
-      if (form.tagName.toLocaleLowerCase() === 'form') {
-        form.submit()
-      }
     }
+
+    function onConfirm() {
+        var form = this.element.parentElement.parentElement;  
+        setTimeout(function(){
+          if (form.tagName.toLocaleLowerCase() === 'form') {
+            form.submit()
+      }
+    },200,form);}
 
     accessibleAutocomplete({
         element: container,

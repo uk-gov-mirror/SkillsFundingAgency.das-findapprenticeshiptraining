@@ -13,6 +13,7 @@ if ($keywordsInput.length > 0) {
     var apiUrl = '/locations';
 
     $(container).empty();
+
     var getSuggestions = function (query, updateResults) {
 
         var results = [];
@@ -31,6 +32,13 @@ if ($keywordsInput.length > 0) {
         });
     };
 
+    var onConfirm = function () {
+      var form = this.element.parentElement.parentElement;
+      if (form.tagName.toLocaleLowerCase() === 'form') {
+        form.submit()
+      }
+    }
+
     accessibleAutocomplete({
         element: container,
         id: 'Locations',
@@ -39,6 +47,7 @@ if ($keywordsInput.length > 0) {
         showNoOptionsFound: false,
         minLength: 3,
         source: getSuggestions,
-        placeholder: ""
+        placeholder: "",
+        onConfirm: onConfirm
     });
 }

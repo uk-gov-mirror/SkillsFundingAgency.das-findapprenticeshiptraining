@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Web.Extensions;
@@ -19,6 +19,7 @@ namespace SFA.DAS.FAT.Web.Models
         public int TypicalDuration { get ; private set ; }
         public int Level { get ; private set ; }
         public string MaximumFunding { get ; set ; }
+        public int ProvidersCount { get; set; }
 
         public static implicit operator CourseViewModel(Course course)
         {

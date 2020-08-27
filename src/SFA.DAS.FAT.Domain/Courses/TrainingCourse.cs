@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace SFA.DAS.FAT.Domain.Courses
 {
@@ -6,5 +6,8 @@ namespace SFA.DAS.FAT.Domain.Courses
     {
         [JsonProperty("trainingCourse")]
         public Course Course { get; set; }
+
+        [JsonProperty("providersCount")] 
+        public int ProvidersCount { get; set; }
     }
 }

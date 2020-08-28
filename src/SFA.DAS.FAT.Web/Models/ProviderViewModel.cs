@@ -60,13 +60,13 @@ namespace SFA.DAS.FAT.Web.Models
                 {
                     DeliveryModeType = DeliveryModeType.DayRelease,
                     IsAvailable = dayRelease != default,
-                    FormattedDistanceInMiles = dayRelease != default ? $"({dayRelease.DistanceInMiles} miles away)" : null
+                    FormattedDistanceInMiles = dayRelease != default ? $"({dayRelease.DistanceInMiles:##.#} miles away)" : null
                 },
                 new DeliveryModeViewModel
                 {
                     DeliveryModeType = DeliveryModeType.BlockRelease,
                     IsAvailable = blockRelease != default,
-                    FormattedDistanceInMiles = blockRelease != default ? $"({blockRelease.DistanceInMiles} miles away)" : null
+                    FormattedDistanceInMiles = blockRelease != default ? $"({blockRelease.DistanceInMiles:##.#} miles away)" : null
                 },
             };
         }

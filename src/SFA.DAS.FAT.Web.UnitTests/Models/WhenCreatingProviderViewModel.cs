@@ -85,6 +85,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             Provider source,
             decimal distanceInMiles)
         {
+            distanceInMiles += 0.324m;
             source.DeliveryModes = new List<DeliveryMode>
             {
                 new DeliveryMode
@@ -120,6 +121,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             Provider source,
             decimal distanceInMiles)
         {
+            distanceInMiles += 0.324m;
             source.DeliveryModes = new List<DeliveryMode>
             {
                 new DeliveryMode
@@ -133,7 +135,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
 
             var dayReleaseDeliveryMode = actual.DeliveryModes.Single(model =>
                 model.DeliveryModeType == DeliveryModeType.DayRelease);
-            dayReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($"({distanceInMiles} miles away)");
+            dayReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($"({distanceInMiles:##.#} miles away)");
             dayReleaseDeliveryMode.IsAvailable.Should().BeTrue();
         }
 
@@ -155,6 +157,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             Provider source,
             decimal distanceInMiles)
         {
+            distanceInMiles += 0.324m;
             source.DeliveryModes = new List<DeliveryMode>
             {
                 new DeliveryMode
@@ -168,7 +171,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
 
             var blockReleaseDeliveryMode = actual.DeliveryModes.Single(model =>
                 model.DeliveryModeType == DeliveryModeType.BlockRelease);
-            blockReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($"({distanceInMiles} miles away)");
+            blockReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($"({distanceInMiles:##.#} miles away)");
             blockReleaseDeliveryMode.IsAvailable.Should().BeTrue();
         }
     }

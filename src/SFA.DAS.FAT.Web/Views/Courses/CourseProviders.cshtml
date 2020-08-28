@@ -1,5 +1,6 @@
 ﻿@using SFA.DAS.FAT.Web.Infrastructure
 @using SFA.DAS.FAT.Domain.Extensions
+@using SFA.DAS.FAT.Domain.Courses
 @model SFA.DAS.FAT.Web.Models.CourseProvidersViewModel
 @{
     ViewData["Title"] = "Available training providers";
@@ -24,10 +25,33 @@
         </div>
         <div class="govuk-grid-column-two-thirds">
             <h2 class="govuk-heading-m">@Model.TotalMessage</h2>
-            <p class="govuk-body govuk-!-margin-bottom-6">
-                Sorted by:
-                <span class="govuk-!-font-weight-bold">Name</span>
-            </p>
+            @if (Model.Total > 1 && !string.IsNullOrEmpty(Model.Location))
+            {
+                @if (Model.SortOrder == ProviderSortBy.Name)
+                {
+                    <p class="govuk-body govuk-!-margin-bottom-6">
+                        Sorted by:
+                        <span class="govuk-!-font-weight-bold">Name</span>
+                        <a id="sort-by-distance" class="govuk-link govuk-link--no-visited-state" asp-querystring="?locations=@Model.Location&sortOrder=@ProviderSortBy.Distance">Distance</a>
+                    </p>
+                }
+                else
+                {
+                    <p class="govuk-body govuk-!-margin-bottom-6">
+                        Sorted by:
+                        <a id="sort-by-name" class="govuk-link govuk-link--no-visited-state" asp-querystring="?locations=@Model.Location&sortOrder=@ProviderSortBy.Name">Name</a>
+                        <span class="govuk-!-font-weight-bold">Distance</span>
+                    </p>
+                }
+            }
+            else
+            {
+                <p class="govuk-body govuk-!-margin-bottom-6">
+                    Sorted by:
+                    <span class="govuk-!-font-weight-bold">Name</span>
+                </p>
+            }
+            
             <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3">
 
             <div data-list>

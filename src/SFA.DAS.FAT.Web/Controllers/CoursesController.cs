@@ -10,6 +10,7 @@ using SFA.DAS.FAT.Web.Infrastructure;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
 using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
+using SFA.DAS.FAT.Domain.Courses;
 
 namespace SFA.DAS.FAT.Web.Controllers
 {
@@ -66,14 +67,15 @@ namespace SFA.DAS.FAT.Web.Controllers
         }
 
         [Route("{id}/providers", Name = RouteNames.CourseProviders)]
-        public async Task<IActionResult> CourseProviders(int id, string locations)
+        public async Task<IActionResult> CourseProviders(int id, string locations, ProviderSortBy sortOrder)
         {
             try
             {
                 var result = await _mediator.Send(new GetCourseProvidersQuery
                 {
                     CourseId = id,
-                    Location = locations
+                    Location = locations,
+                    SortOrder = sortOrder
                 });
 
                 return View(new CourseProvidersViewModel
@@ -81,7 +83,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                     Course = result.Course,
                     Providers = result.Providers.Select(c=>(ProviderViewModel)c), 
                     Total = result.Total,
-                    Location = locations
+                    Location = locations,
+                    SortOrder = sortOrder
                 });
             }
             catch (Exception e)

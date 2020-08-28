@@ -13,6 +13,7 @@
         public string StandardPageUrl { get ; set ; }
         public int TypicalDuration { get ; set ; }
         public long MaxFunding { get ; set ; }
+        public bool OtherBodyApprovalRequired { get; set; }
         public StandardDates StandardDates { get; set; }
     }
 }

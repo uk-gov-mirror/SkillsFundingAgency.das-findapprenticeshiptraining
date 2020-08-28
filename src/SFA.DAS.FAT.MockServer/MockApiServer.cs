@@ -61,7 +61,15 @@ namespace SFA.DAS.FAT.MockServer
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("locations.json"));
 
-            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s,"/trainingcourses/(?!(?:101|24)$)\\d+$"))
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s, "/trainingcourses/333$"))
+                .UsingGet()
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("course-regulated.json"));
+
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s,"/trainingcourses/(?!(?:101|24|333)$)\\d+$"))
                 .UsingGet()
             ).RespondWith(
                 Response.Create()

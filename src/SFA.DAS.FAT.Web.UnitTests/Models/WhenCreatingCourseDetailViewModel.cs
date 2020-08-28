@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoFixture.NUnit3;
@@ -30,6 +30,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             Assert.AreEqual(course.TypicalJobTitles.Split("|").ToList(), actual.TypicalJobTitles);
             Assert.AreEqual(course.StandardPageUrl, actual.ExternalCourseUrl);
             Assert.AreEqual(course.TypicalDuration, actual.TypicalDuration);
+            Assert.AreEqual(course.OtherBodyApprovalRequired, actual.OtherBodyApprovalRequired);
             Assert.AreEqual(course.StandardDates.LastDateStarts, actual.LastDateStarts);
             Assert.AreEqual(DateTime.Now > course.StandardDates?.LastDateStarts, actual.AfterLastStartDate);
         }

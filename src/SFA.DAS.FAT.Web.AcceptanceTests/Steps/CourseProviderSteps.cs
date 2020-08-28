@@ -1,12 +1,17 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using FluentAssertions;
 using Newtonsoft.Json;
 using SFA.DAS.FAT.Domain.Courses;
+using SFA.DAS.FAT.Domain.Extensions;
 using SFA.DAS.FAT.MockServer;
 using SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure;
 using TechTalk.SpecFlow;
+using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType;
 
 namespace SFA.DAS.FAT.Web.AcceptanceTests.Steps
 {
@@ -33,6 +38,30 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Steps
             foreach (var courseProvider in expectedApiResponse.CourseProviders)
             {
                 actualContent.Should().Contain(HttpUtility.HtmlEncode(courseProvider.Name));
+            }
+        }
+
+        [Then("the delivery modes for each provider are (not )?displayed")]
+        public async Task ThenTheDeliveryModesForEachProviderAreDisplayed(string not)
+        {
+            var json = DataFileManager.GetFile("course-providers.json");
+            var expectedApiResponse = JsonConvert.DeserializeObject<TrainingCourseProviders>(json);
+
+            var response = _context.Get<HttpResponseMessage>(ContextKeys.HttpResponse);
+            var actualContent = await response.Content.ReadAsStringAsync();
+
+            foreach (var mode in Enum.GetValues(typeof(DeliveryModeType)).Cast<DeliveryModeType>())
+            {
+                var modeName = mode.GetDescription().Replace("’", "&#x2019;");// for some reason HtmlEncode doesn't encode '’'
+
+                if (not == string.Empty)
+                {
+                    actualContent.Should().Contain(modeName, Exactly.Times(expectedApiResponse.Total));
+                }
+                else
+                {
+                    actualContent.Should().NotContain(modeName);
+                }
             }
         }
     }

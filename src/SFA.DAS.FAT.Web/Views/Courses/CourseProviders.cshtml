@@ -66,10 +66,20 @@
                         @if (!string.IsNullOrEmpty(Model.Location))
                         {
                             <li>
-                                <ul class="govuk-list ">
+                                <ul class="govuk-list das-icon-list govuk-!-font-size-16">
                                     @foreach (var mode in provider.DeliveryModes)
                                     {
-                                        <li class="govuk-!-font-size-16 govuk-!-margin-top-2">@(mode.IsAvailable ? "tick":"cross" ) @mode.DeliveryModeType.GetDescription() @mode.FormattedDistanceInMiles</li>
+                                        <li class="das-icon-list__list-item">
+                                            @if (mode.IsAvailable)
+                                            {
+                                                <span class="das-icon-list__icon das-icon-list__icon--tick">available</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
+                                            }
+                                            @mode.DeliveryModeType.GetDescription() @mode.FormattedDistanceInMiles
+                                        </li>
                                     }
                                 </ul>
                             </li>

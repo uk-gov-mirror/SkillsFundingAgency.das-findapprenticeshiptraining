@@ -1,6 +1,6 @@
-{
+﻿{
   "trainingCourse": {
-    "id": 14,
+    "id": 101,
     "title": "Laboratory technician",
     "level": 3,
     "version": 1,
@@ -14,7 +14,7 @@
     "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/laboratory-technician/",
     "integratedDegree": "",
     "standardDates": {
-      "lastDateStarts": null,
+      "lastDateStarts": "2020-08-17",
       "effectiveTo": "2022-01-01",
       "effectiveFrom": "2020-01-01"
     }

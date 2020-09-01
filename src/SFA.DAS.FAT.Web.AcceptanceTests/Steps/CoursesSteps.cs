@@ -58,14 +58,14 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Steps
             }
         }
 
-        [Then("the Api is called with the keyword baker")]
-        public void WhenISearchForAField()
+        [Then("the Api is called with the keyword (.*)")]
+        public void WhenISearchForAField(string keyword)
         {
             var apiClient = _context.Get<Mock<IApiClient>>(ContextKeys.MockApiClient);
             
             apiClient.Verify(x =>
                 x.Get<TrainingCourses>(It.Is<GetCoursesApiRequest>(request =>
-                    request.Keyword.Equals("baker")
+                    request.Keyword.Equals(keyword)
                     )), Times.Once);
             
         }

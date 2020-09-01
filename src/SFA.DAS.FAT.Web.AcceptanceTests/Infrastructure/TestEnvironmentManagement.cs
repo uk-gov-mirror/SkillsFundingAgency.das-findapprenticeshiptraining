@@ -23,7 +23,6 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure
         private static HttpClient _staticClient;
         private static IWireMockServer _staticServer;
         private Mock<IApiClient> _mockApiClient;
-        private WebApplicationFactory<Startup> _factory;
         private TestServer _server;
 
         public TestEnvironmentManagement(ScenarioContext context)

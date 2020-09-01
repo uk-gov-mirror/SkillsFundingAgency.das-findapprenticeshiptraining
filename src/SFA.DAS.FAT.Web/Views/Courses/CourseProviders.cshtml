@@ -32,14 +32,14 @@
                     <p class="govuk-body govuk-!-margin-bottom-6">
                         Sorted by:
                         <span class="govuk-!-font-weight-bold">Name</span>
-                        <a id="sort-by-distance" class="govuk-link govuk-link--no-visited-state" asp-querystring="?locations=@Model.Location&sortOrder=@ProviderSortBy.Distance">Distance</a>
+                        <a id="sort-by-distance" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Distance</a>
                     </p>
                 }
                 else
                 {
                     <p class="govuk-body govuk-!-margin-bottom-6">
                         Sorted by:
-                        <a id="sort-by-name" class="govuk-link govuk-link--no-visited-state" asp-querystring="?locations=@Model.Location&sortOrder=@ProviderSortBy.Name">Name</a>
+                        <a id="sort-by-name" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Name</a>
                         <span class="govuk-!-font-weight-bold">Distance</span>
                     </p>
                 }

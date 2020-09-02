@@ -4,5 +4,6 @@
     {
         public const string HttpClient = nameof(HttpClient);
         public const string HttpResponse = nameof(HttpResponse);
+        public const string MockApiClient = nameof(MockApiClient);
     }
 }

@@ -1,4 +1,5 @@
-﻿using SFA.DAS.FAT.Domain.Interfaces;
+﻿using System.Web;
+using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAT.Domain.Courses.Api
 {
@@ -17,6 +18,6 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
         }
 
         public string BaseUrl { get; }
-        public string GetUrl => $"{BaseUrl}trainingcourses/{_id}/providers?location={_location}&sortOrder={_sortOrder}";
+        public string GetUrl => $"{BaseUrl}trainingcourses/{_id}/providers?location={HttpUtility.UrlEncode(_location)}&sortOrder={_sortOrder}";
     }
 }

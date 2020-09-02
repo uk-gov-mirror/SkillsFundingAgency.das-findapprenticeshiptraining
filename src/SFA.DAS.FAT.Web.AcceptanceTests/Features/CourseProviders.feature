@@ -2,7 +2,8 @@
 	As an employer
 	I want a list of providers for a particular course
 	So that I can compare providers and choose
-
+	
+@WireMockServer	
 Scenario: Navigate to providers for course page
 When I navigate to the following url: /courses/123/providers
 Then an http status code of 200 is returned

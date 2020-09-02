@@ -3,6 +3,8 @@
 
 // Write your Javascript code.
 var $keywordsInput = $('#search-location');
+var $submitOnConfirm = $('#search-location').data('submit-on-selection');
+var $defaultValue = $('#search-location').data('default-value');
 
 if ($keywordsInput.length > 0) {
 
@@ -32,7 +34,7 @@ if ($keywordsInput.length > 0) {
     function onConfirm() {
         var form = this.element.parentElement.parentElement;  
         setTimeout(function(){
-          if (form.tagName.toLocaleLowerCase() === 'form') {
+          if (form.tagName.toLocaleLowerCase() === 'form' && $submitOnConfirm) {
             form.submit()
       }
     },200,form);}
@@ -46,6 +48,7 @@ if ($keywordsInput.length > 0) {
         minLength: 3,
         source: getSuggestions,
         placeholder: "",
-        onConfirm: onConfirm
+        onConfirm: onConfirm,
+        defaultValue: $defaultValue
     });
 }

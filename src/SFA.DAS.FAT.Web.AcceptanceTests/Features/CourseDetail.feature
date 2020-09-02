@@ -2,28 +2,30 @@
 	As an employer
 	I want to know if the start date has passed for a bookmarked course
 	So that I can know it is no longer available
-
+	
+@WireMockServer
 Scenario: Course detail page
-When I navigate to the following url: /courses/14
-Then an http status code of 200 is returned
-And the page content includes the following: Apprenticeship training course
-#todo: and course details are displayed
-And the expired course content is not displayed
-And the last start date alert is not displayed
+	Given I navigate to the following url: /courses/14
+	Then an http status code of 200 is returned
+	And the page content includes the following: Apprenticeship training course
+	And the page content does not include the following: This apprenticeship training course is no longer available for new starts
+	And the page content does not include the following: is available for new starts until
+	And the page content does not include the following: needs a training provider who is approved by the appropriate regulatory body
 
+@WireMockServer
 Scenario: Course with last start date
-When I navigate to the following url: /courses/24 
-Then an http status code of 200 is returned
-And the last start date alert is displayed
-
+	Given I navigate to the following url: /courses/24 
+	Then an http status code of 200 is returned
+	And the page content includes the following: is available for new starts until
+	
+@WireMockServer	
 Scenario: Expired course
-When I navigate to the following url: /courses/101
-Then an http status code of 200 is returned
-And the expired course content is displayed
-And the last start date alert is not displayed
-#todo: and course details are not displayed
+	Given I navigate to the following url: /courses/101
+	Then an http status code of 200 is returned
+	And the page content includes the following: This apprenticeship training course is no longer available for new starts
 
+@WireMockServer
 Scenario: Regulated course
-When I navigate to the following url: /courses/333
-Then an http status code of 200 is returned
-And the regulated occupation header and message is displayed
+	Given I navigate to the following url: /courses/333
+	Then an http status code of 200 is returned
+	And the page content includes the following: needs a training provider who is approved by the appropriate regulatory body

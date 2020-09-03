@@ -1,0 +1,48 @@
+{
+  "locations": [
+    {
+      "location": {
+        "geoPoint": [
+          51.289916,
+          -0.773876
+        ]
+      },
+      "localAuthorityName": "Rushmoor",
+      "locationName": "Cove and Southwood",
+      "countyName": "Hampshire"
+    },
+    {
+      "location": {
+        "geoPoint": [
+          52.659518,
+          -2.136343
+        ]
+      },
+      "localAuthorityName": "South Staffordshire",
+      "locationName": "Coven",
+      "countyName": "Staffordshire"
+    },
+    {
+      "location": {
+        "geoPoint": [
+          52.454072,
+          -1.505398
+        ]
+      },
+      "localAuthorityName": "Nuneaton and Bedworth",
+      "locationName": "Coventry",
+      "countyName": "Warwickshire"
+    },
+    {
+      "location": {
+        "geoPoint": [
+          52.328888,
+          -0.447294
+        ]
+      },
+      "localAuthorityName": "Huntingdonshire",
+      "locationName": "Covington",
+      "countyName": "Cambridgeshire"
+    }
+  ]
+}

@@ -17,18 +17,238 @@
     "sectorSubjectAreaTier2": 4.1
   },
   "trainingCourseProviders": [
-      {"providerId": 1001, "name": "Lab trainings r us", "overallCohort": 10, "overallAchievementRate": 93.3 },
-      {"providerId": 1002, "name": "Lab trainings 4 u" , "overallCohort": null, "overallAchievementRate": null},
-      {"providerId": 1003, "name": "Lab trainings 4 all" , "overallCohort": null, "overallAchievementRate": null},
-      {"providerId": 1004, "name": "Lab trainings 4 some", "overallCohort": 15, "overallAchievementRate": 63.3 },
-      {"providerId": 1005, "name": "Lab trainings 4 none" , "overallCohort": null, "overallAchievementRate": null},
-      {"providerId": 1006, "name": "Lab trainings et al" , "overallCohort": null, "overallAchievementRate": null},
-      {"providerId": 1007, "name": "Lab trainings & stuff","overallCohort": 20, "overallAchievementRate": 73.3 },
-      {"providerId": 1008, "name": "Labs and lads" , "overallCohort": null, "overallAchievementRate": null},
-      {"providerId": 1009, "name": "Labrador training" , "overallCohort": null, "overallAchievementRate": null},
-      {"providerId": 1010, "name": "Lab coats", "overallCohort": null, "overallAchievementRate": null },
-      {"providerId": 1011, "name": "Lab door", "overallCohort": null, "overallAchievementRate": null },
-      {"providerId": 1012, "name": "Lab ra kadabra", "overallCohort": null, "overallAchievementRate": null }
+    {
+      "providerId": 1001,
+      "name": "Lab trainings r us",
+      "overallCohort": 10,
+      "overallAchievementRate": 93.3,
+      "deliveryModes": [
+        {
+          "deliveryModeType": 0,
+          "distanceInMiles": 3
+        },
+        {
+          "deliveryModeType": 2,
+          "distanceInMiles": 3.01
+        }
+      ]
+    },
+    {
+      "providerId": 1002,
+      "name": "Lab trainings 4 u",
+      "overallCohort": null,
+      "overallAchievementRate": null,
+      "deliveryModes": [
+        {
+          "deliveryModeType": 1,
+          "distanceInMiles": 5.5555555
+        },
+        {
+          "deliveryModeType": 2,
+          "distanceInMiles": 4.53333333
+        }
+      ]
+    },
+    {
+      "providerId": 1003,
+      "name": "Lab trainings 4 all",
+      "overallCohort": null,
+      "overallAchievementRate": null,
+      "deliveryModes": [
+        {
+          "deliveryModeType": 0,
+          "distanceInMiles": 3.5234
+        },
+        {
+          "deliveryModeType": 1,
+          "distanceInMiles": 5.5234
+        },
+        {
+          "deliveryModeType": 2,
+          "distanceInMiles": 4.234234
+        }
+      ]
+    },
+    {
+      "providerId": 1004,
+      "name": "Lab trainings 4 some",
+      "overallCohort": 15,
+      "overallAchievementRate": 63.3,
+      "deliveryModes": [
+        {
+          "deliveryModeType": 0,
+          "distanceInMiles": 3.5
+        },
+        {
+          "deliveryModeType": 1,
+          "distanceInMiles": 5.5
+        },
+        {
+          "deliveryModeType": 2,
+          "distanceInMiles": 4.5
+        }
+      ]
+    },
+    {
+      "providerId": 1005,
+      "name": "Lab trainings 4 none",
+      "overallCohort": null,
+      "overallAchievementRate": null,
+      "deliveryModes": [
+        {
+          "deliveryModeType": 0,
+          "distanceInMiles": 3.5
+        },
+        {
+          "deliveryModeType": 1,
+          "distanceInMiles": 5.5
+        },
+        {
+          "deliveryModeType": 2,
+          "distanceInMiles": 4.5
+        }
+      ]
+    },
+    {
+      "providerId": 1006,
+      "name": "Lab trainings et al",
+      "overallCohort": null,
+      "overallAchievementRate": null,
+      "deliveryModes": [
+        {
+          "deliveryModeType": 0,
+          "distanceInMiles": 3.5
+        },
+        {
+          "deliveryModeType": 1,
+          "distanceInMiles": 5.5
+        },
+        {
+          "deliveryModeType": 2,
+          "distanceInMiles": 4.5
+        }
+      ]
+    },
+    {
+      "providerId": 1007,
+      "name": "Lab trainings & stuff",
+      "overallCohort": 20,
+      "overallAchievementRate": 73.3,
+      "deliveryModes": [
+        {
+          "deliveryModeType": 0,
+          "distanceInMiles": 3.5
+        },
+        {
+          "deliveryModeType": 1,
+          "distanceInMiles": 5.5
+        },
+        {
+          "deliveryModeType": 2,
+          "distanceInMiles": 4.5
+        }
+      ]
+    },
+    {
+      "providerId": 1008,
+      "name": "Labs and lads",
+      "overallCohort": null,
+      "overallAchievementRate": null,
+      "deliveryModes": [
+        {
+          "deliveryModeType": 0,
+          "distanceInMiles": 3.5
+        },
+        {
+          "deliveryModeType": 1,
+          "distanceInMiles": 5.5
+        },
+        {
+          "deliveryModeType": 2,
+          "distanceInMiles": 4.5
+        }
+      ]
+    },
+    {
+      "providerId": 1009,
+      "name": "Labrador training",
+      "overallCohort": null,
+      "overallAchievementRate": null,
+      "deliveryModes": [
+        {
+          "deliveryModeType": 0,
+          "distanceInMiles": 3.5
+        },
+        {
+          "deliveryModeType": 1,
+          "distanceInMiles": 5.5
+        },
+        {
+          "deliveryModeType": 2,
+          "distanceInMiles": 4.5
+        }
+      ]
+    },
+    {
+      "providerId": 1010,
+      "name": "Lab coats",
+      "overallCohort": null,
+      "overallAchievementRate": null,
+      "deliveryModes": [
+        {
+          "deliveryModeType": 0,
+          "distanceInMiles": 3.5
+        },
+        {
+          "deliveryModeType": 1,
+          "distanceInMiles": 5.5
+        },
+        {
+          "deliveryModeType": 2,
+          "distanceInMiles": 4.5
+        }
+      ]
+    },
+    {
+      "providerId": 1011,
+      "name": "Lab door",
+      "overallCohort": null,
+      "overallAchievementRate": null,
+      "deliveryModes": [
+        {
+          "deliveryModeType": 0,
+          "distanceInMiles": 3.5
+        },
+        {
+          "deliveryModeType": 1,
+          "distanceInMiles": 5.5
+        },
+        {
+          "deliveryModeType": 2,
+          "distanceInMiles": 4.5
+        }
+      ]
+    },
+    {
+      "providerId": 1012,
+      "name": "Lab ra kadabra",
+      "overallCohort": null,
+      "overallAchievementRate": null,
+      "deliveryModes": [
+        {
+          "deliveryModeType": 0,
+          "distanceInMiles": 3.5
+        },
+        {
+          "deliveryModeType": 1,
+          "distanceInMiles": 5.5
+        },
+        {
+          "deliveryModeType": 2,
+          "distanceInMiles": 4.5
+        }
+      ]
+    }
   ],
   "total": 12
 }

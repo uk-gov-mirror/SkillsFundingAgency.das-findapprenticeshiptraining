@@ -1,4 +1,6 @@
-﻿@using SFA.DAS.FAT.Web.Infrastructure
+@using SFA.DAS.FAT.Web.Infrastructure
+@using SFA.DAS.FAT.Domain.Extensions
+@using SFA.DAS.FAT.Domain.Courses
 @model SFA.DAS.FAT.Web.Models.CourseProvidersViewModel
 @{
     ViewData["Title"] = "Available training providers";
@@ -23,10 +25,33 @@
         </div>
         <div class="govuk-grid-column-two-thirds">
             <h2 class="govuk-heading-m">@Model.TotalMessage</h2>
-            <p class="govuk-body govuk-!-margin-bottom-6">
-                Sorted by:
-                <span class="govuk-!-font-weight-bold">Name</span>
-            </p>
+            @if (Model.Total > 1 && Model.HasLocations)
+            {
+                @if (Model.SortOrder == ProviderSortBy.Name)
+                {
+                    <p class="govuk-body govuk-!-margin-bottom-6">
+                        Sorted by:
+                        <span class="govuk-!-font-weight-bold">Name</span>
+                        <a id="sort-by-distance" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Distance (nearest first)</a>
+                    </p>
+                }
+                else
+                {
+                    <p class="govuk-body govuk-!-margin-bottom-6">
+                        Sorted by:
+                        <a id="sort-by-name" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Name</a>
+                        <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>
+                    </p>
+                }
+            }
+            else if (Model.Total > 1)
+            {
+                <p class="govuk-body govuk-!-margin-bottom-6">
+                    Sorted by:
+                    <span class="govuk-!-font-weight-bold">Name</span>
+                </p>
+            }
+            
             <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3">
 
             <div data-list>
@@ -38,14 +63,36 @@
                         </a>
                     </h2>
                     <ul class="govuk-list">
+
+                        @if (Model.HasLocations)
+                        {
+                            <li>
+                                <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2">
+                                    @foreach (var mode in provider.DeliveryModes)
+                                    {
+                                        <li class="das-icon-list__list-item">
+                                            @if (mode.IsAvailable)
+                                            {
+                                                <span class="das-icon-list__icon das-icon-list__icon--tick">available</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
+                                            }
+                                            @mode.DeliveryModeType.GetDescription() @mode.FormattedDistanceInMiles
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
                         @if (provider.OverallCohort != null)
                         {
                             <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
-                                <span class="govuk-!-font-size-16">@provider.OverallAchievementRatePercentage pass rate</span> 
+                                <span class="govuk-!-font-size-16">@provider.OverallAchievementRatePercentage pass rate</span>
                                 <span class="das-text--muted">(out of @provider.OverallCohort apprentices)</span>
-                            </li>    
+                            </li>
                         }
-                        
+
                     </ul>
                     <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-2 govuk-!-margin-bottom-3">
                 }

@@ -44,6 +44,11 @@ namespace SFA.DAS.FAT.Web.Models
 
         private static IEnumerable<DeliveryModeViewModel> BuildDeliveryModes(List<DeliveryMode> source)
         {
+            if (source.Count == 0)
+            {
+                return new List<DeliveryModeViewModel>();
+            }
+            
             var dayRelease = source.SingleOrDefault(mode =>
                 mode.DeliveryModeType == Domain.Courses.DeliveryModeType.DayRelease);
             var blockRelease = source.SingleOrDefault(mode => 

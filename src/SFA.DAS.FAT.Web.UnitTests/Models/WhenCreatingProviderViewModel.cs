@@ -56,6 +56,16 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         // delivery modes
 
         [Test, AutoData]
+        public void Then_Has_Empty_List_Returned_If_No_DeliveryModes(Provider source)
+        {
+            source.DeliveryModes = new List<DeliveryMode>();
+
+            var actual = (ProviderViewModel) source;
+
+            actual.DeliveryModes.Should().BeEmpty();
+        }
+        
+        [Test, AutoData]
         public void Then_Has_3_DeliveryModes_In_Correct_Order(Provider source)
         {
             var actual = (ProviderViewModel) source;
@@ -68,9 +78,17 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         }
 
         [Test, AutoData]
-        public void And_No_Workplace_Delivery_Then_Blank_DeliveryMode(Provider source)
+        public void And_No_Workplace_Delivery_Then_Blank_DeliveryMode(Provider source,
+            decimal distanceInMiles)
         {
-            source.DeliveryModes = new List<DeliveryMode>();
+            source.DeliveryModes = new List<DeliveryMode>
+            {
+                new DeliveryMode
+                {
+                    DeliveryModeType = Domain.Courses.DeliveryModeType.BlockRelease,
+                    DistanceInMiles = distanceInMiles
+                }
+            };
 
             var actual = (ProviderViewModel)source;
 
@@ -104,9 +122,17 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         }
 
         [Test, AutoData]
-        public void And_No_DayRelease_Delivery_Then_Blank_DeliveryMode(Provider source)
+        public void And_No_DayRelease_Delivery_Then_Blank_DeliveryMode(Provider source,
+            decimal distanceInMiles)
         {
-            source.DeliveryModes = new List<DeliveryMode>();
+            source.DeliveryModes = new List<DeliveryMode>
+            {
+                new DeliveryMode
+                {
+                    DeliveryModeType = Domain.Courses.DeliveryModeType.BlockRelease,
+                    DistanceInMiles = distanceInMiles
+                }
+            };
 
             var actual = (ProviderViewModel)source;
 
@@ -140,9 +166,17 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         }
 
         [Test, AutoData]
-        public void And_No_BlockRelease_Delivery_Then_Blank_DeliveryMode(Provider source)
+        public void And_No_BlockRelease_Delivery_Then_Blank_DeliveryMode(Provider source,
+            decimal distanceInMiles)
         {
-            source.DeliveryModes = new List<DeliveryMode>();
+            source.DeliveryModes = new List<DeliveryMode>
+            {
+                new DeliveryMode
+                {
+                    DeliveryModeType = Domain.Courses.DeliveryModeType.DayRelease,
+                    DistanceInMiles = distanceInMiles
+                }
+            };
 
             var actual = (ProviderViewModel)source;
 

@@ -21,6 +21,9 @@
         <Content Include="course-provider.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <Content Include="course-providers-nolocation.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="course-providers.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>

@@ -12,7 +12,7 @@ if ($keywordsInput.length > 0) {
 
     $(container).empty();
 
-    function getSuggestions (query, updateResults) {
+    function getSuggestions(query, updateResults) {
         var results = [];
         $.ajax({
             url: apiUrl,
@@ -22,20 +22,21 @@ if ($keywordsInput.length > 0) {
 
         }).done(function (data) {
             results = data.locations.map(function (r) {
-                return r.locationName;
+                return r.name;
             });
-            
+
             updateResults(results);
         });
     }
 
     function onConfirm() {
-        var form = this.element.parentElement.parentElement;  
-        setTimeout(function(){
-          if (form.tagName.toLocaleLowerCase() === 'form') {
-            form.submit()
-      }
-    },200,form);}
+        var form = this.element.parentElement.parentElement;
+        setTimeout(function () {
+            if (form.tagName.toLocaleLowerCase() === 'form') {
+                form.submit()
+            }
+        }, 200, form);
+    }
 
     accessibleAutocomplete({
         element: container,

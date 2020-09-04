@@ -21,6 +21,9 @@ namespace SFA.DAS.FAT.Domain.Locations
 
             [JsonProperty("countyName")]
             public string CountyName { get; set; }
+
+            [JsonProperty("name")]
+            public string Name { get; set; }
         }
         
         public class LocationPoint

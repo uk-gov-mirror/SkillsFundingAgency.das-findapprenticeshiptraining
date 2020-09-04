@@ -38,7 +38,7 @@ namespace SFA.DAS.FAT.Web.Models
                 OverallAchievementRate = source.OverallAchievementRate,
                 OverallAchievementRatePercentage = source.OverallAchievementRate.HasValue ? $"{Math.Round(source.OverallAchievementRate.Value)/100:0%}" : "",
                 NationalOverallAchievementRatePercentage = source.NationalOverallAchievementRate.HasValue ? $"{Math.Round(source.NationalOverallAchievementRate.Value)/100:0%}" : "",
-                DeliveryModes = BuildDeliveryModes(source.DeliveryModes.ToList())
+                DeliveryModes = source.DeliveryModes!=null ? BuildDeliveryModes(source.DeliveryModes.ToList()) : new List<DeliveryModeViewModel>()
             };
         }
 

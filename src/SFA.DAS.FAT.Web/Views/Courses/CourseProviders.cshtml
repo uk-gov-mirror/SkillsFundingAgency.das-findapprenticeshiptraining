@@ -97,8 +97,16 @@
             <div data-list>
                 @foreach (var provider in Model.Providers)
                 {
+                    var routeData = new Dictionary<string, string>
+                    {
+                        {"location",Model.Location},
+                        {"id",Model.Course.Id.ToString()},
+                        {"providerId",provider.ProviderId.ToString()}
+                    };
+                    
+                    
                     <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-                        <a class="govuk-link govuk-link--no-visited-state" id="provider-@provider.ProviderId" asp-route-id="@Model.Course.Id" asp-route-providerId="@provider.ProviderId" asp-route="@RouteNames.CourseProviderDetails">
+                        <a class="govuk-link govuk-link--no-visited-state" id="provider-@provider.ProviderId" asp-all-route-data="@routeData"  asp-route="@RouteNames.CourseProviderDetails">
                             @provider.Name
                         </a>
                     </h2>

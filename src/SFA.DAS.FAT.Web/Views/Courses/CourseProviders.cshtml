@@ -48,6 +48,22 @@
             </div>
         </div>
         <div class="govuk-grid-column-two-thirds">
+            <div class="das-highlight govuk-!-margin-top-0 govuk-!-margin-bottom-5">
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
+                @if (Model.HasLocations)
+                {
+                    <p class="govuk-body govuk-!-margin-bottom-0">
+                        <span style="margin-right: 10px">@Model.Location</span>
+                        <a asp-route="@RouteNames.CourseProviders" asp-route-id="@Model.Course.Id" class="govuk-link govuk-link--no-visited-state">Remove&nbsp;location</a>
+                    </p>    
+                }
+                else
+                {
+                    <p class="govuk-body govuk-!-margin-bottom-2">Show only providers who offer this training for the apprenticeship location.</p>
+                    <p class="govuk-body govuk-!-margin-bottom-0"><a href="#search-location" class="govuk-link govuk-link--no-visited-state">Enter&nbsp;location</a></p>
+                }
+                
+            </div>
             <h2 class="govuk-heading-m">@Model.TotalMessage</h2>
             @if (Model.Total > 1 && Model.HasLocations)
             {

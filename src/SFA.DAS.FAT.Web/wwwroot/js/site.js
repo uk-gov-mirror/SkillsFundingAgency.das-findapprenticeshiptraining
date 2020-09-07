@@ -44,7 +44,7 @@ if ($keywordsInput.length > 0) {
         name: 'Locations',
         displayMenu: 'overlay',
         showNoOptionsFound: false,
-        minLength: 3,
+        minLength: 2,
         source: getSuggestions,
         placeholder: "",
         onConfirm: onConfirm

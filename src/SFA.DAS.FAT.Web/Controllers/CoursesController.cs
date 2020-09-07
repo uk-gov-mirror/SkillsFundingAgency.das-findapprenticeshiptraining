@@ -67,14 +67,14 @@ namespace SFA.DAS.FAT.Web.Controllers
         }
 
         [Route("{id}/providers", Name = RouteNames.CourseProviders)]
-        public async Task<IActionResult> CourseProviders(int id, string locations, ProviderSortBy sortOrder)
+        public async Task<IActionResult> CourseProviders(int id, string location, ProviderSortBy sortOrder)
         {
             try
             {
                 var result = await _mediator.Send(new GetCourseProvidersQuery
                 {
                     CourseId = id,
-                    Location = locations,
+                    Location = location,
                     SortOrder = sortOrder
                 });
 
@@ -83,7 +83,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                     Course = result.Course,
                     Providers = result.Providers.Select(c=>(ProviderViewModel)c), 
                     Total = result.Total,
-                    Location = locations,
+                    Location = location,
                     SortOrder = sortOrder
                 });
             }

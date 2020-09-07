@@ -6,5 +6,6 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetProvider
     {
         public int ProviderId { get; set; }
         public int CourseId { get ; set ; }
+        public string Location { get ; set ; }
     }
 }

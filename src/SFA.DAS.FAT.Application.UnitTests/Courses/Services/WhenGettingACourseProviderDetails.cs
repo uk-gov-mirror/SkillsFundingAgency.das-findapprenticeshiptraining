@@ -22,16 +22,17 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
         public async Task Then_The_Api_Client_Is_Called_With_The_Request(
             int providerId,
             int courseId,
+            string location,
             string baseUrl,
             [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
             [Frozen] Mock<IApiClient> apiClient,
             CourseService courseService)
         {
             //Arrange
-            var courseApiRequest = new GetCourseProviderDetailsApiRequest(config.Object.Value.BaseUrl, courseId, providerId);
+            var courseApiRequest = new GetCourseProviderDetailsApiRequest(config.Object.Value.BaseUrl, courseId, providerId, location);
 
             //Act
-            await courseService.GetCourseProviderDetails(providerId, courseId);
+            await courseService.GetCourseProviderDetails(providerId, courseId, location);
 
             //Assert
             apiClient.Verify(x => x.Get<TrainingCourseProviderDetails>(
@@ -42,6 +43,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
         public async Task Then_The_Response_Is_Returned_From_The_Api(
             int providerId,
             int courseId,
+            string location,
             string baseUrl,
             TrainingCourseProviderDetails apiResponse,
             [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
@@ -53,9 +55,10 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
                 It.Is<GetCourseProviderDetailsApiRequest>(request =>
                     request.GetUrl.Contains(courseId.ToString())
                     && request.GetUrl.Contains(providerId.ToString())
+                    && request.GetUrl.Contains(location)
                     ))).ReturnsAsync(apiResponse);
             //Act
-            var actual = await courseService.GetCourseProviderDetails(providerId, courseId);
+            var actual = await courseService.GetCourseProviderDetails(providerId, courseId, location);
             //Assert
             actual.Should().BeEquivalentTo(apiResponse);
         }

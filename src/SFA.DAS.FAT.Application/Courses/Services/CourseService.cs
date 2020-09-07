@@ -36,9 +36,9 @@ namespace SFA.DAS.FAT.Application.Courses.Services
 
             return response;
         }
-        public async Task<TrainingCourseProviderDetails> GetCourseProviderDetails(int providerId, int courseId)
+        public async Task<TrainingCourseProviderDetails> GetCourseProviderDetails(int providerId, int courseId, string location)
         {
-            var request = new GetCourseProviderDetailsApiRequest(_config.BaseUrl,courseId, providerId, "");
+            var request = new GetCourseProviderDetailsApiRequest(_config.BaseUrl,courseId, providerId, location);
             var response = await _apiClient.Get<TrainingCourseProviderDetails>(request);
             return response;
         }

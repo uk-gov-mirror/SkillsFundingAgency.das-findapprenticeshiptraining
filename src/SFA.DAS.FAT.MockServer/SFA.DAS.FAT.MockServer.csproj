@@ -18,6 +18,9 @@
         <Content Include="course-lastdatestarts.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <Content Include="course-provider-nolocation.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="course-provider.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>

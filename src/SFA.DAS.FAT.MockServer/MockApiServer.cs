@@ -26,7 +26,19 @@ namespace SFA.DAS.FAT.MockServer
             
             var server = StandAloneApp.Start(settings);
             
-            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s,"/trainingcourses/\\d+/providers/\\d+$"))
+            server.Given(Request.Create()
+                .WithPath(s => Regex.IsMatch(s,"/trainingcourses/\\d+/providers/\\d+$"))
+                
+                .UsingGet()
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("course-provider-nolocation.json"));
+            
+            server.Given(Request.Create()
+                .WithPath(s => Regex.IsMatch(s,"/trainingcourses/\\d+/providers/\\d+$"))
+                .WithParam(MatchLocationParam)
                 .UsingGet()
             ).RespondWith(
                 Response.Create()
@@ -47,7 +59,7 @@ namespace SFA.DAS.FAT.MockServer
             
             server.Given(Request.Create()
                 .WithPath(s => Regex.IsMatch(s,"/trainingcourses/\\d+/providers$"))
-                .WithParam(MatchParam)
+                .WithParam(MatchLocationParam)
                 .UsingGet()
             ).RespondWith(
                 Response.Create()
@@ -106,7 +118,7 @@ namespace SFA.DAS.FAT.MockServer
             return server;
         }
 
-        private static bool MatchParam(IDictionary<string, WireMockList<string>> arg)
+        private static bool MatchLocationParam(IDictionary<string, WireMockList<string>> arg)
         {
             return arg.ContainsKey("location") && arg["location"].Count !=0 && arg["location"].ToString().Length > 0;
         }

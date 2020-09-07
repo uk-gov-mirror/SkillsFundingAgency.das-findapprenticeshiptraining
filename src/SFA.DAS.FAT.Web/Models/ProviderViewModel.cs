@@ -76,6 +76,7 @@ namespace SFA.DAS.FAT.Web.Models
         public string Town { get; set; }
         public string Postcode { get; set; }
         public string County { get; set; }
+        public string AddressFormatted { get; set; }
 
         public DeliveryModeViewModel Map(DeliveryMode source, DeliveryModeType deliveryModeType)
         {
@@ -85,10 +86,39 @@ namespace SFA.DAS.FAT.Web.Models
             viewModel.FormattedDistanceInMiles = source != default && deliveryModeType != DeliveryModeType.Workplace
                 ? $"({source.DistanceInMiles:##.#} miles away)"
                 : null;
-
+            viewModel.AddressFormatted = source != default ? 
+                BuildFormattedAddress(source) 
+                : "";
             return viewModel;
         }
-        
+
+        private static string BuildFormattedAddress(DeliveryMode source)
+        {
+            var returnString = "";
+            if (!string.IsNullOrEmpty(source.Address1))
+            {
+                returnString += $"{source.Address1}, ";
+            }
+            if (!string.IsNullOrEmpty(source.Address2))
+            {
+                returnString += $"{source.Address2}, ";
+            }
+            if (!string.IsNullOrEmpty(source.Town))
+            {
+                returnString += $"{source.Town}, ";
+            }
+            if (!string.IsNullOrEmpty(source.County))
+            {
+                returnString += $"{source.County}, ";
+            }
+            if (!string.IsNullOrEmpty(source.Postcode))
+            {
+                returnString += $"{source.Postcode},";
+            }
+            
+            return returnString.TrimEnd().TrimEnd(',');
+        }
+
         public static implicit operator DeliveryModeViewModel(DeliveryMode source)
         {
             return new DeliveryModeViewModel

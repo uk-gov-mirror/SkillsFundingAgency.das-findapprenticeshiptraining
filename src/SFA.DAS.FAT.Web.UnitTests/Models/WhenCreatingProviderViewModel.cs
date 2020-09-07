@@ -65,6 +65,17 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         // delivery modes
 
         [Test, AutoData]
+        public void Then_Maps_Fields_From_Source(DeliveryMode source)
+        {
+            var actual = (DeliveryModeViewModel) source;
+            
+            actual.Should().BeEquivalentTo(source, options=>options
+                .Excluding(c=>c.DeliveryModeType)
+                .Excluding(c=>c.DistanceInMiles)
+            );
+        }
+
+        [Test, AutoData]
         public void Then_Has_Empty_List_Returned_If_No_DeliveryModes(Provider source)
         {
             source.DeliveryModes = new List<DeliveryMode>();

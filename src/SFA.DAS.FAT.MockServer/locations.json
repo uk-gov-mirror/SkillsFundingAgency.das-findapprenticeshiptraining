@@ -9,7 +9,8 @@
       },
       "localAuthorityName": "Rushmoor",
       "locationName": "Cove and Southwood",
-      "countyName": "Hampshire"
+      "countyName": "Hampshire",
+      "name": "Cove and Southwood, Hampshire"
     },
     {
       "location": {
@@ -20,7 +21,8 @@
       },
       "localAuthorityName": "South Staffordshire",
       "locationName": "Coven",
-      "countyName": "Staffordshire"
+      "countyName": "Staffordshire",
+      "name": "Cove and Southwood, Hampshire"
     },
     {
       "location": {
@@ -31,7 +33,8 @@
       },
       "localAuthorityName": "Nuneaton and Bedworth",
       "locationName": "Coventry",
-      "countyName": "Warwickshire"
+      "countyName": "Warwickshire",
+      "name": "M4 7EF"
     },
     {
       "location": {
@@ -42,7 +45,8 @@
       },
       "localAuthorityName": "Huntingdonshire",
       "locationName": "Covington",
-      "countyName": "Cambridgeshire"
+      "countyName": "Cambridgeshire",
+      "name": "NN6 0JD"
     }
   ]
 }

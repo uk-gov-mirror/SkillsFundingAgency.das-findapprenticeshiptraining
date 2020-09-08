@@ -58,16 +58,25 @@
                             var dayRelease = Model.Provider.DeliveryModes.SingleOrDefault(c => c.DeliveryModeType == DeliveryModeType.DayRelease);
                             var blockRelease = Model.Provider.DeliveryModes.SingleOrDefault(c => c.DeliveryModeType == DeliveryModeType.BlockRelease);
                         }
-                        @if (dayRelease != null && !string.IsNullOrEmpty(dayRelease.AddressFormatted))
+                        @if (dayRelease!= null && blockRelease!= null && dayRelease.AddressFormatted == blockRelease.AddressFormatted)
                         {
-                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day release address</p>
+                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day and block release address</p>
                             <p class="govuk-body">@dayRelease.AddressFormatted</p>    
                         }
-                        @if (blockRelease != null && !string.IsNullOrEmpty(blockRelease.AddressFormatted))
+                        else
                         {
-                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Block release address</p>
-                            <p class="govuk-body">@blockRelease.AddressFormatted</p>    
+                            if (dayRelease != null && !string.IsNullOrEmpty(dayRelease.AddressFormatted))
+                            {
+                                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day release address</p>
+                                <p class="govuk-body">@dayRelease.AddressFormatted</p>    
+                            }
+                            if (blockRelease != null && !string.IsNullOrEmpty(blockRelease.AddressFormatted))
+                            {
+                                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Block release address</p>
+                                <p class="govuk-body">@blockRelease.AddressFormatted</p>    
+                            }    
                         }
+                        
                         
                 </div>
                 }

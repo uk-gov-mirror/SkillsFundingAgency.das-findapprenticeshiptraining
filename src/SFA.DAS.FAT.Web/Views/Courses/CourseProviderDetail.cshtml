@@ -58,7 +58,7 @@
                             var dayRelease = Model.Provider.DeliveryModes.SingleOrDefault(c => c.DeliveryModeType == DeliveryModeType.DayRelease);
                             var blockRelease = Model.Provider.DeliveryModes.SingleOrDefault(c => c.DeliveryModeType == DeliveryModeType.BlockRelease);
                         }
-                        @if (dayRelease!= null && blockRelease!= null && dayRelease.AddressFormatted == blockRelease.AddressFormatted)
+                        @if (dayRelease!= null && blockRelease!= null && dayRelease.AddressFormatted == blockRelease.AddressFormatted && !string.IsNullOrEmpty(dayRelease.AddressFormatted))
                         {
                             <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day and block release address</p>
                             <p class="govuk-body">@dayRelease.AddressFormatted</p>    

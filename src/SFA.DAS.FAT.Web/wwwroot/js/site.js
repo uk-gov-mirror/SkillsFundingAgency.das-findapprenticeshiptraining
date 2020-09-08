@@ -38,6 +38,7 @@ if ($keywordsInput.length > 0) {
         minLength: 2,
         source: getSuggestions,
         placeholder: "",
-        onConfirm: onConfirm
+        onConfirm: onConfirm,
+        confirmOnBlur: false,
     });
 }

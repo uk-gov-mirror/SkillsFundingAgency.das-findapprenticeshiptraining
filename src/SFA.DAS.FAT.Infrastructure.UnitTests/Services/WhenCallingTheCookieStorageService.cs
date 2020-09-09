@@ -32,7 +32,9 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Services
             var responseMock = new FeatureCollection();
             responseMock.Set(featureMock.Object);
             var context = new DefaultHttpContext(responseMock);
-            var service = new CookieStorageService<string>(context,provider.Object );
+            var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+            mockHttpContextAccessor.Setup(_ => _.HttpContext).Returns(context);
+            var service = new CookieStorageService<string>(mockHttpContextAccessor.Object,provider.Object );
 
             //Act
             service.Create(testString,testCookieName, 1);
@@ -60,7 +62,9 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Services
             var responseMock = new FeatureCollection();
             responseMock.Set(featureMock.Object);
             var context = new DefaultHttpContext(responseMock);
-            var service = new CookieStorageService<string>(context,mockDataProtectionProvider.Object );
+            var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+            mockHttpContextAccessor.Setup(_ => _.HttpContext).Returns(context);
+            var service = new CookieStorageService<string>(mockHttpContextAccessor.Object,mockDataProtectionProvider.Object );
 
             //Act
             var actual = service.Get(testCookieName);
@@ -88,7 +92,9 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Services
             responseMock.Set(featureMock.Object);
             responseMock.Set(responseCookiesFeature.Object);
             var context = new DefaultHttpContext(responseMock);
-            var service = new CookieStorageService<string>(context,provider.Object );
+            var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+            mockHttpContextAccessor.Setup(_ => _.HttpContext).Returns(context);
+            var service = new CookieStorageService<string>(mockHttpContextAccessor.Object,provider.Object );
             
             //Act
             service.Delete(testCookieName);

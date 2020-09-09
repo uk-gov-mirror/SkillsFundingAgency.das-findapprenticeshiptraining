@@ -8,12 +8,12 @@ namespace SFA.DAS.FAT.Infrastructure.Services
 {
     public class CookieStorageService<T> : ICookieStorageService<T>
     {
-        private readonly HttpContext _httpContext;
+        private readonly IHttpContextAccessor _httpContext;
         private readonly IDataProtector _protector;
         private const string ProtectorPurpose = "CookieStorageService";
 
         public CookieStorageService(
-            HttpContext httpContext,
+            IHttpContextAccessor httpContext,
             IDataProtectionProvider provider)
         {
             _httpContext = httpContext;
@@ -35,12 +35,12 @@ namespace SFA.DAS.FAT.Infrastructure.Services
                 Expires = DateTimeOffset.Now.AddDays(expiryDays)
             };
 
-            _httpContext.Response.Cookies.Append(cookieName, encodedContent, options);
+            _httpContext.HttpContext.Response.Cookies.Append(cookieName, encodedContent, options);
         }
 
         public T Get(string cookieName)
         {
-            var cookie = _httpContext.Request.Cookies[cookieName];
+            var cookie = _httpContext.HttpContext.Request.Cookies[cookieName];
             if (cookie == null)
                 return default(T);
 
@@ -52,9 +52,9 @@ namespace SFA.DAS.FAT.Infrastructure.Services
 
         public void Delete(string cookieName)
         {
-            if (_httpContext.Request.Cookies[cookieName] != null)
+            if (_httpContext.HttpContext.Request.Cookies[cookieName] != null)
             {
-                _httpContext.Response.Cookies.Delete(cookieName);
+                _httpContext.HttpContext.Response.Cookies.Delete(cookieName);
             }
         }
 

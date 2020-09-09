@@ -93,10 +93,17 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
             
             //Act
-            await controller.CourseProviders(standardCode, "-1", sortOrder);
+            var actual = await controller.CourseProviders(standardCode, "-1", sortOrder) as ViewResult;
             
             //Assert
             cookieStorageService.Verify(x=>x.Delete(Constants.LocationCookieName));
+            //Assert
+            var actualModel = actual.Model as CourseProvidersViewModel;
+            actualModel.Providers.Should().BeEquivalentTo(response.Providers.Select(provider => (ProviderViewModel)provider));
+            actualModel.Course.Should().BeEquivalentTo((CourseViewModel)response.Course);
+            actualModel.Total.Should().Be(response.Total);
+            actualModel.Location.Should().BeEmpty();
+            actualModel.SortOrder.Should().Be(sortOrder);
         }
 
         [Test, MoqAutoData]

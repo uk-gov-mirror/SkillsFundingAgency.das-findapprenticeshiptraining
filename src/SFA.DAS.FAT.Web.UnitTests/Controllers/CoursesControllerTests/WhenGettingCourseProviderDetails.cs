@@ -88,10 +88,15 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
             
             //Act
-            await controller.CourseProviderDetail(courseId, providerId, "-1");
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "-1");
             
             //Assert
             cookieStorageService.Verify(x=>x.Delete(Constants.LocationCookieName));
+            Assert.IsNotNull(actual);
+            var actualResult = actual as ViewResult;
+            Assert.IsNotNull(actualResult);
+            var actualModel = actualResult.Model as CourseProviderViewModel;
+            Assert.IsNotNull(actualModel);
         }
 
         [Test, MoqAutoData]

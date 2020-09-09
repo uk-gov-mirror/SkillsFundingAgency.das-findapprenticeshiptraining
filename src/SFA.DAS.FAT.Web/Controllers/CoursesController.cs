@@ -6,7 +6,7 @@ using SFA.DAS.FAT.Application.Courses.Queries.GetCourses;
 using SFA.DAS.FAT.Web.Models;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Web.Infrastructure;
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
 using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
@@ -129,20 +129,19 @@ namespace SFA.DAS.FAT.Web.Controllers
 
         private string UpdateLocationCookie(string location)
         {
+            if (location == "-1")
+            {
+                _cookieStorageService.Delete(Constants.LocationCookieName);
+                return string.Empty;
+            }
+            
             if (string.IsNullOrEmpty(location))
             {
                 location = _cookieStorageService.Get(Constants.LocationCookieName);
-                _cookieStorageService.Update(Constants.LocationCookieName, location, 2);
             }
-            else if (location == "-1")
-            {
-                _cookieStorageService.Delete(Constants.LocationCookieName);
-            }
-            else if (!string.IsNullOrEmpty(location))
-            {
-                _cookieStorageService.Update(Constants.LocationCookieName, location, 2);
-            }
-
+            
+            _cookieStorageService.Update(Constants.LocationCookieName, location, 2);
+            
             return location;
         }
     }

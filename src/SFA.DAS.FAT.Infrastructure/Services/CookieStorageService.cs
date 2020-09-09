@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAT.Infrastructure.Services
 {
-    public class CookieStorageService<T> 
+    public class CookieStorageService<T> : ICookieStorageService<T>
     {
         private readonly HttpContext _httpContext;
         private readonly IDataProtector _protector;
@@ -30,6 +31,7 @@ namespace SFA.DAS.FAT.Infrastructure.Services
             {
                 IsEssential = true,
                 HttpOnly = true,
+                Secure = true,
                 Expires = DateTimeOffset.Now.AddDays(expiryDays)
             };
 

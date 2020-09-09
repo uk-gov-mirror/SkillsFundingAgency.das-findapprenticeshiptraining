@@ -14,7 +14,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         {
             var actual = (LocationViewModel) source;
 
-            actual.LocationName.Should().Be($"{source.LocationName}, {source.LocalAuthorityName}");
+            source.Should().BeEquivalentTo(actual);
         }
     }
 }

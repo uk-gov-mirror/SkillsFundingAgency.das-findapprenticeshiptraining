@@ -28,7 +28,16 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         }
 
         // achievement rate
-
+        [Test, AutoData]
+        public void Then_No_Delivery_Modes_Has_An_Empty_List(Provider source)
+        {
+            source.DeliveryModes = null;
+            
+            var actual = (ProviderViewModel) source;
+            
+            actual.DeliveryModes.Should().BeEmpty();
+        }
+        
         [Test, AutoData]
         public void Then_No_Achievement_Data_Shows_Empty_String(Provider source)
         {

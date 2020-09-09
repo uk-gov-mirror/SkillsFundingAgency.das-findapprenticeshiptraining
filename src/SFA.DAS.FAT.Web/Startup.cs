@@ -44,7 +44,7 @@ namespace SFA.DAS.FAT.Web
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.MinimumSameSitePolicy = SameSiteMode.Strict;
             });
 
             services.AddOptions();
@@ -62,7 +62,6 @@ namespace SFA.DAS.FAT.Web
             services.AddRouting(options =>
             {
                 options.LowercaseUrls = true;
-                options.LowercaseQueryStrings = true;
             });
 
             if (!_environment.IsDevelopment())

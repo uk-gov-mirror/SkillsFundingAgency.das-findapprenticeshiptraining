@@ -15,7 +15,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
 
             var link = model.BuildSortLink();
 
-            link.Should().Be($"?locations={model.Location}&sortorder={ProviderSortBy.Name}");
+            link.Should().Be($"?location={model.Location}&sortorder={ProviderSortBy.Name}");
         }
 
         [Test, AutoData]
@@ -25,7 +25,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
 
             var link = model.BuildSortLink();
 
-            link.Should().Be($"?locations={model.Location}&sortorder={ProviderSortBy.Distance}");
+            link.Should().Be($"?location={model.Location}&sortorder={ProviderSortBy.Distance}");
         }
     }
 }

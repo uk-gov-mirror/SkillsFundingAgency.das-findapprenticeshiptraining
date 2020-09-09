@@ -18,7 +18,7 @@ namespace SFA.DAS.FAT.Web.Models
             var newOrder = SortOrder == ProviderSortBy.Distance ? 
                 ProviderSortBy.Name : ProviderSortBy.Distance;
 
-            return $"?locations={Location}&sortorder={newOrder}";
+            return $"?location={Location}&sortorder={newOrder}";
         }
     }
 }

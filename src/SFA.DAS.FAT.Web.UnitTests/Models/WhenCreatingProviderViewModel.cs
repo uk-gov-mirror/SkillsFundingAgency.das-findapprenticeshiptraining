@@ -65,6 +65,38 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         // delivery modes
 
         [Test, AutoData]
+        public void Then_Maps_Fields_From_Source(DeliveryMode source)
+        {
+            var actual = new DeliveryModeViewModel().Map(source,DeliveryModeType.BlockRelease);
+            
+            actual.Should().BeEquivalentTo(source, options=>options
+                .Excluding(c=>c.DeliveryModeType)
+                .Excluding(c=>c.DistanceInMiles)
+            );
+            actual.AddressFormatted.Should()
+                .Be($"{source.Address1}, {source.Address2}, {source.Town}, {source.County}, {source.Postcode}");
+        }
+
+        [Test]
+        [InlineAutoData("Address1","Address2","Town","County","Postcode","Address1, Address2, Town, County, Postcode")]
+        [InlineAutoData("Address1","","Town","County","Postcode","Address1, Town, County, Postcode")]
+        [InlineAutoData("Address1","","","County","Postcode","Address1, County, Postcode")]
+        [InlineAutoData("","","","County","Postcode","County, Postcode")]
+        [InlineAutoData("","","","County","","County")]
+        public void Then_Builds_Address_Correctly(string address1, string address2, string town,string county, string postcode, string expected, DeliveryMode source)
+        {
+            source.Address1 = address1;
+            source.Address2 = address2;
+            source.County = county;
+            source.Postcode = postcode;
+            source.Town = town;
+            
+            var actual = new DeliveryModeViewModel().Map(source,DeliveryModeType.BlockRelease);
+
+            actual.AddressFormatted.Should().Be(expected);
+        }
+
+        [Test, AutoData]
         public void Then_Has_Empty_List_Returned_If_No_DeliveryModes(Provider source)
         {
             source.DeliveryModes = new List<DeliveryMode>();

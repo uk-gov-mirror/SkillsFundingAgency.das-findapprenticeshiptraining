@@ -2,6 +2,8 @@
 // for details on configuring this project to bundle and minify static web assets.
 // Write your Javascript code.
 var $keywordsInput = $('#search-location');
+var $submitOnConfirm = $('#search-location').data('submit-on-selection');
+var $defaultValue = $('#search-location').data('default-value');
 if ($keywordsInput.length > 0) {
     $keywordsInput.wrap('<div id="autocomplete-container" class="das-autocomplete-wrap"></div>');
     var container = document.querySelector('#autocomplete-container');
@@ -24,21 +26,22 @@ if ($keywordsInput.length > 0) {
     function onConfirm() {
         var form = this.element.parentElement.parentElement;
         setTimeout(function () {
-            if (form.tagName.toLocaleLowerCase() === 'form') {
+          if (form.tagName.toLocaleLowerCase() === 'form' && $submitOnConfirm) {
                 form.submit()
             }
         }, 200, form);
     }
     accessibleAutocomplete({
         element: container,
-        id: 'Locations',
-        name: 'Locations',
+        id: 'search-location',
+        name: 'Location',
         displayMenu: 'overlay',
         showNoOptionsFound: false,
         minLength: 2,
         source: getSuggestions,
         placeholder: "",
         onConfirm: onConfirm,
+        defaultValue: $defaultValue,
         confirmOnBlur: false,
     });
 }

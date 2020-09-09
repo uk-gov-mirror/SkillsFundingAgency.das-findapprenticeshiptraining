@@ -1,4 +1,6 @@
 @using SFA.DAS.FAT.Web.Infrastructure
+@using SFA.DAS.FAT.Domain.Extensions
+@using SFA.DAS.FAT.Web.Models
 @model SFA.DAS.FAT.Web.Models.CourseProviderViewModel
 @{
     ViewData["Title"] = "Training provider details";
@@ -23,20 +25,77 @@
                     <p class="govuk-body "><span>@Model.Provider.NationalOverallAchievementRatePercentage national average pass rate</span></p>    
                 }
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Apprenticeship location</h2>
-                <p class="govuk-body">Check @Model.Provider.Name's training options for the apprenticeship location.</p>
-                <form method="GET" class="das-search-form govuk-!-width-two-thirds">
-                    <label for="searchTerm" class="govuk-label">
-                        Enter location
-                    </label>
-                    <div class="das-search-form__group">
-                        <input id="searchTerm" name="searchTerm" title="Search" class="govuk-input das-search-form__input" type="text">
-                        <div class="das-search-form__button-wrap">
-                            <button class="govuk-button das-search-form__button" type="submit">
-                                Search
-                            </button>
+                @if (Model.Provider.DeliveryModes.Any())
+                {
+                    <p class="govuk-body govuk-!-margin-bottom-"><span style="margin-right: 10px">@Model.Location</span> 
+                        <a asp-route-id="@Model.Course.Id" asp-route-providerId="@Model.Provider.ProviderId" asp-route="@RouteNames.CourseProviderDetails" class="govuk-link govuk-link--no-visited-state">Remove&nbsp;location</a></p>
+                    <div class="govuk-!-margin-bottom-6">
+                    <h2 class="govuk-heading-s govuk-!-margin-bottom-3 govuk-!-margin-top-6">@Model.Provider.Name’s training options</h2>
+                    
+                    <ul class="govuk-list govuk-!-margin-bottom-4">
+                        <li>
+                            <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2">
+                                @foreach (var mode in Model.Provider.DeliveryModes)
+                                {
+                                    <li class="das-icon-list__list-item">
+                                        @if (mode.IsAvailable)
+                                        {
+                                            <span class="das-icon-list__icon das-icon-list__icon--tick">available</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
+                                        }
+                                        @mode.DeliveryModeType.GetDescription() @mode.FormattedDistanceInMiles
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                         
+                    </ul>
+
+                        @{
+                            var dayRelease = Model.Provider.DeliveryModes.SingleOrDefault(c => c.DeliveryModeType == DeliveryModeType.DayRelease);
+                            var blockRelease = Model.Provider.DeliveryModes.SingleOrDefault(c => c.DeliveryModeType == DeliveryModeType.BlockRelease);
+                        }
+                        @if (dayRelease!= null && blockRelease!= null && dayRelease.AddressFormatted == blockRelease.AddressFormatted && !string.IsNullOrEmpty(dayRelease.AddressFormatted))
+                        {
+                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day and block release address</p>
+                            <p class="govuk-body">@dayRelease.AddressFormatted</p>    
+                        }
+                        else
+                        {
+                            if (dayRelease != null && !string.IsNullOrEmpty(dayRelease.AddressFormatted))
+                            {
+                                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day release address</p>
+                                <p class="govuk-body">@dayRelease.AddressFormatted</p>    
+                            }
+                            if (blockRelease != null && !string.IsNullOrEmpty(blockRelease.AddressFormatted))
+                            {
+                                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Block release address</p>
+                                <p class="govuk-body">@blockRelease.AddressFormatted</p>    
+                            }    
+                        }
+                        
+                        
+                </div>
+                }
+                else
+                {
+                    <p class="govuk-body">Check @Model.Provider.Name's training options for the apprenticeship location.</p>
+                    <form method="GET" class="das-search-form govuk-!-width-two-thirds" sp-route-id="@Model.Course.Id" asp-route-providerId="@Model.Provider.ProviderId" asp-route="@RouteNames.CourseProviderDetails">
+                        <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
+                            <label for="search-location" class="govuk-label">Enter location</label>
+                            <div class="das-search-form__group">
+                                <input type="search" id="search-location" name="location" title="Search" class="govuk-input govuk-!-width-three-quarters" data-submit-on-selection="true">
+                                <div class="das-search-form__button-wrap">
+                                    <button class="govuk-button das-search-form__button" type="submit">Search</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                }
+               
             </div>
             <div class="das-highlight govuk-!-margin-bottom-5">
                 <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Contact this provider about this course</h3>
@@ -83,12 +142,17 @@
                             <tbody class="govuk-table__body">
                                 @foreach (var course in Model.AdditionalCourses.Courses)
                                 {
+                                    var routeData = new Dictionary<string, string>
+                                    {
+                                        {"location",Model.Location},
+                                        {"id",course.Id.ToString()},
+                                        {"providerId",Model.Provider.ProviderId.ToString()}
+                                    };
                                     <tr class="govuk-table__row">
                                         <td class="govuk-table__cell">
                                             <a class="govuk-link govuk-link--no-visited-state"
                                                asp-route="@RouteNames.CourseProviderDetails"
-                                               asp-route-id="@course.Id"
-                                               asp-route-providerId="@Model.Provider.ProviderId">@course.TitleAndLevel</a>
+                                               asp-all-route-data="@routeData">@course.TitleAndLevel</a>
                                         </td>
                                     </tr>
                                 }

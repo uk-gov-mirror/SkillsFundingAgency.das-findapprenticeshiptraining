@@ -53,27 +53,16 @@ namespace SFA.DAS.FAT.Web.Models
                 mode.DeliveryModeType == Domain.Courses.DeliveryModeType.DayRelease);
             var blockRelease = source.SingleOrDefault(mode => 
                 mode.DeliveryModeType == Domain.Courses.DeliveryModeType.BlockRelease);
-
-            return new List<DeliveryModeViewModel>
+            var workPlace =
+                source.SingleOrDefault(mode => mode.DeliveryModeType == Domain.Courses.DeliveryModeType.Workplace);
+            var returnList = new List<DeliveryModeViewModel>
             {
-                new DeliveryModeViewModel
-                {
-                    DeliveryModeType = DeliveryModeType.Workplace,
-                    IsAvailable = source.Any(mode => mode.DeliveryModeType == Domain.Courses.DeliveryModeType.Workplace)
-                },
-                new DeliveryModeViewModel
-                {
-                    DeliveryModeType = DeliveryModeType.DayRelease,
-                    IsAvailable = dayRelease != default,
-                    FormattedDistanceInMiles = dayRelease != default ? $"({dayRelease.DistanceInMiles:##.#} miles away)" : null
-                },
-                new DeliveryModeViewModel
-                {
-                    DeliveryModeType = DeliveryModeType.BlockRelease,
-                    IsAvailable = blockRelease != default,
-                    FormattedDistanceInMiles = blockRelease != default ? $"({blockRelease.DistanceInMiles:##.#} miles away)" : null
-                },
+                new DeliveryModeViewModel().Map(workPlace, DeliveryModeType.Workplace),
+                new DeliveryModeViewModel().Map(dayRelease, DeliveryModeType.DayRelease),
+                new DeliveryModeViewModel().Map(blockRelease, DeliveryModeType.BlockRelease)
             };
+            
+            return returnList;
         }
     }
 
@@ -82,6 +71,65 @@ namespace SFA.DAS.FAT.Web.Models
         public DeliveryModeType DeliveryModeType { get; set; }
         public string FormattedDistanceInMiles { get; set; }
         public bool IsAvailable { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+        public string Town { get; set; }
+        public string Postcode { get; set; }
+        public string County { get; set; }
+        public string AddressFormatted { get; set; }
+
+        public DeliveryModeViewModel Map(DeliveryMode source, DeliveryModeType deliveryModeType)
+        {
+            var viewModel = source ?? new DeliveryModeViewModel();
+            viewModel.DeliveryModeType = deliveryModeType;
+            viewModel.IsAvailable = source != default;
+            viewModel.FormattedDistanceInMiles = source != default && deliveryModeType != DeliveryModeType.Workplace
+                ? $"({source.DistanceInMiles:##.#} miles away)"
+                : null;
+            viewModel.AddressFormatted = source != default ? 
+                BuildFormattedAddress(source) 
+                : "";
+            return viewModel;
+        }
+
+        private static string BuildFormattedAddress(DeliveryMode source)
+        {
+            var returnString = "";
+            if (!string.IsNullOrEmpty(source.Address1))
+            {
+                returnString += $"{source.Address1}, ";
+            }
+            if (!string.IsNullOrEmpty(source.Address2))
+            {
+                returnString += $"{source.Address2}, ";
+            }
+            if (!string.IsNullOrEmpty(source.Town))
+            {
+                returnString += $"{source.Town}, ";
+            }
+            if (!string.IsNullOrEmpty(source.County))
+            {
+                returnString += $"{source.County}, ";
+            }
+            if (!string.IsNullOrEmpty(source.Postcode))
+            {
+                returnString += $"{source.Postcode},";
+            }
+            
+            return returnString.TrimEnd().TrimEnd(',');
+        }
+
+        public static implicit operator DeliveryModeViewModel(DeliveryMode source)
+        {
+            return new DeliveryModeViewModel
+            {
+                Address1 = source.Address1,
+                Address2 = source.Address2,
+                Town = source.Town,
+                County = source.County,
+                Postcode = source.Postcode
+            };
+        }
     }
 
     public enum DeliveryModeType

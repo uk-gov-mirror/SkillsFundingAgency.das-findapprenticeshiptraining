@@ -24,6 +24,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         public async Task Then_The_Query_Is_Sent_And_Provider_Detail_Retrieved_And_Shown(
             int providerId,
             int courseId,
+            string location,
             GetCourseProviderResult response,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] CoursesController controller
@@ -31,11 +32,11 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         {
             //Arrange
             mediator.Setup(x => x.Send(It.Is<GetCourseProviderQuery>(c =>
-                c.ProviderId.Equals(providerId) && c.CourseId.Equals(courseId)), It.IsAny<CancellationToken>()))
+                c.ProviderId.Equals(providerId) && c.CourseId.Equals(courseId) && c.Location.Equals(location)), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
 
             //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId);
+            var actual = await controller.CourseProviderDetail(courseId, providerId, location);
 
             //Assert
             Assert.IsNotNull(actual);
@@ -51,6 +52,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         public async Task And_Error_Then_Redirect_To_Error_Route(
             int providerId,
             int courseId,
+            string location,
             Exception exception,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] CoursesController controller
@@ -63,7 +65,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ThrowsAsync(exception);
 
             // Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId) as RedirectToRouteResult;
+            var actual = await controller.CourseProviderDetail(courseId, providerId, location) as RedirectToRouteResult;
 
             // Assert
             actual.RouteName.Should().Be(RouteNames.Error500);

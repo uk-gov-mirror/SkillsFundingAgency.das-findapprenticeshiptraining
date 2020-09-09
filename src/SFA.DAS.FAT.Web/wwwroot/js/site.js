@@ -24,13 +24,17 @@ if ($keywordsInput.length > 0) {
         });
     }
     function onConfirm() {
-        var form = this.element.parentElement.parentElement;
-        setTimeout(function () {
-          if (form.tagName.toLocaleLowerCase() === 'form' && $submitOnConfirm) {
+        var form = this.element.parentElement.parentElement;  
+        var form2 = this.element.parentElement.parentElement.parentElement;
+        setTimeout(function(){
+            if (form.tagName.toLocaleLowerCase() === 'form' && $submitOnConfirm) {
                 form.submit()
             }
-        }, 200, form);
-    }
+            if (form2.tagName.toLocaleLowerCase() === 'form' && $submitOnConfirm) {
+                form2.submit()
+            }
+    },200,form);}
+
     accessibleAutocomplete({
         element: container,
         id: 'search-location',

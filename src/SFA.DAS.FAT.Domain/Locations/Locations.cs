@@ -13,15 +13,6 @@ namespace SFA.DAS.FAT.Domain.Locations
             [JsonProperty("location")]
             public LocationPoint LocationPoint { get; set; }
 
-            [JsonProperty("localAuthorityName")]
-            public string LocalAuthorityName { get; set; }
-
-            [JsonProperty("locationName")]
-            public string LocationName { get; set; }
-
-            [JsonProperty("countyName")]
-            public string CountyName { get; set; }
-
             [JsonProperty("name")]
             public string Name { get; set; }
         }

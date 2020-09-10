@@ -35,7 +35,7 @@
                         <div class="das-filter__selected-filters">
                             <div class="das-filter__selected-header">
                                 <h3 class="das-filter__selected-heading">Selected filters</h3>
-                                <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.CourseProviders">Clear</a>
+                                <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-all-route-data="routeData" asp-route="@RouteNames.CourseProviders">Clear</a>
                             </div>
                             <h4 class="das-filter__selected-sub-heading">Apprenticeship location</h4>
                             <a asp-route="@RouteNames.CourseProviders" asp-all-route-data="routeData" title="Clear this filter '@Model.Location'" class="das-filter__tag">&lsquo;@Model.Location&rsquo;</a>

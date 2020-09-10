@@ -53,6 +53,7 @@ if ($keywordsInput.length > 0) {
         source: getSuggestions,
         placeholder: "",
         onConfirm: onConfirm,
-        defaultValue: $defaultValue
+        defaultValue: $defaultValue,
+        confirmOnBlur: false,
     });
 }

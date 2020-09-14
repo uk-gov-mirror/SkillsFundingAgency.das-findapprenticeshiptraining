@@ -58,9 +58,14 @@
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
                 @if (Model.HasLocations)
                 {
+                    var routeData = new Dictionary<string, string>
+                    {
+                        {"location","-1"},
+                        {"id",Model.Course.Id.ToString()}
+                    };
                     <p class="govuk-body govuk-!-margin-bottom-0">
                         <span style="margin-right: 10px">@Model.Location</span>
-                        <a asp-route="@RouteNames.CourseProviders" asp-route-id="@Model.Course.Id" class="govuk-link govuk-link--no-visited-state">Remove&nbsp;location</a>
+                        <a asp-route="@RouteNames.CourseProviders" asp-all-route-data="@routeData" class="govuk-link govuk-link--no-visited-state">Remove&nbsp;location</a>
                     </p>    
                 }
                 else

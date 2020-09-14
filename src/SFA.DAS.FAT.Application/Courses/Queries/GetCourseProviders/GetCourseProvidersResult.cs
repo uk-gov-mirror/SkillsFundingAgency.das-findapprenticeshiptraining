@@ -8,5 +8,6 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders
         public Course Course { get; set; }
         public IEnumerable<Provider> Providers { get; set; }
         public int Total { get; set; }
+        public string Location { get; set; }
     }
 }

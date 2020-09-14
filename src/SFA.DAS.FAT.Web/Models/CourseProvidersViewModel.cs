@@ -12,7 +12,7 @@ namespace SFA.DAS.FAT.Web.Models
         public string TotalMessage => Total == 1 ? $"{Total} result" : $"{Total} results";
         public string Location { get; set; }
         public ProviderSortBy SortOrder { get; set; }
-        public bool HasLocations => Providers.Sum(c => c.DeliveryModes.ToList().Count) > 0;
+        public bool HasLocations { get; set; }
         public string BuildSortLink()
         {
             var newOrder = SortOrder == ProviderSortBy.Distance ? 

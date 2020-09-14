@@ -91,7 +91,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                     Providers = result.Providers.Select(c=>(ProviderViewModel)c), 
                     Total = result.Total,
                     Location = location,
-                    SortOrder = sortOrder
+                    SortOrder = sortOrder,
+                    HasLocations = !string.IsNullOrEmpty(location)
                 });
             }
             catch (Exception e)

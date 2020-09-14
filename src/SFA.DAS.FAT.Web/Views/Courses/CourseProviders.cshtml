@@ -97,7 +97,11 @@
                     <span class="govuk-!-font-weight-bold">Name</span>
                 </p>
             }
-            
+            else if (Model.Total == 0)
+            {
+                <p class="govuk-body govuk-!-margin-bottom-6">No training providers for the selected filters.</p>
+            }
+
             <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3">
 
             <div data-list>

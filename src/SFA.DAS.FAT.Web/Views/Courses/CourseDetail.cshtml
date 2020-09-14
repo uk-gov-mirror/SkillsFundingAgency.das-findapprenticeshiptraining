@@ -106,7 +106,7 @@
                             <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Regulated occupation</h3>
                             <p class="govuk-body">@Model.TitleAndLevel needs a training provider who is approved by the appropriate regulatory body.</p>
                         }
-                        <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h3>
+                    <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship Location</h3>
                         <p class="govuk-body">Check if a provider can offer this training for the apprenticeship location.</p>
                         <form method="GET" asp-route="@RouteNames.CourseProviders" asp-route-id="@Model.Id">
                             <input type="hidden" name="sortOrder" value="@ProviderSortBy.Name">

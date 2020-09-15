@@ -3,6 +3,7 @@ using SFA.DAS.FAT.Application.Courses.Services;
 using SFA.DAS.FAT.Application.Locations.Services;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.FAT.Infrastructure.Api;
+using SFA.DAS.FAT.Infrastructure.Services;
 
 namespace SFA.DAS.FAT.Web.AppStart
 {
@@ -13,6 +14,8 @@ namespace SFA.DAS.FAT.Web.AppStart
             services.AddHttpClient<IApiClient, ApiClient>();
             services.AddTransient<ICourseService, CourseService>();
             services.AddTransient<ILocationService, LocationService>();
+            services.AddHttpContextAccessor();
+            services.AddSingleton(typeof(ICookieStorageService<>), typeof(CookieStorageService<>));
         }
     }
 }

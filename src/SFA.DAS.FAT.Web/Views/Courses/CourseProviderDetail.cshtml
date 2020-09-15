@@ -28,7 +28,15 @@
                 @if (Model.Provider.DeliveryModes.Any())
                 {
                     <p class="govuk-body govuk-!-margin-bottom-"><span style="margin-right: 10px">@Model.Location</span> 
-                        <a asp-route-id="@Model.Course.Id" asp-route-providerId="@Model.Provider.ProviderId" asp-route="@RouteNames.CourseProviderDetails" class="govuk-link govuk-link--no-visited-state">Remove&nbsp;location</a></p>
+                        @{
+                            var routeData = new Dictionary<string, string>
+                            {
+                                {"location","-1"},
+                                {"id",Model.Course.Id.ToString()},
+                                {"providerId",Model.Provider.ProviderId.ToString()}
+                            };
+                        }
+                        <a asp-all-route-data="@routeData" asp-route="@RouteNames.CourseProviderDetails" class="govuk-link govuk-link--no-visited-state">Remove&nbsp;location</a></p>
                     <div class="govuk-!-margin-bottom-6">
                     <h2 class="govuk-heading-s govuk-!-margin-bottom-3 govuk-!-margin-top-6">@Model.Provider.Name’s training options</h2>
                     

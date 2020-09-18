@@ -38,13 +38,6 @@
                         }
                         <a asp-all-route-data="@routeData" asp-route="@RouteNames.CourseProviderDetails" class="govuk-link govuk-link--no-visited-state">Remove&nbsp;location</a></p>
                     <div class="govuk-!-margin-bottom-6">
-                        @{ 
-                            var notFound = Model.Provider.DeliveryModes.SingleOrDefault(c => c.DeliveryModeType == DeliveryModeType.NotFound);
-                            if (notFound != null)
-                            {
-                                <p>Not Found works</p>
-                            }
-                        }
                     <h2 class="govuk-heading-s govuk-!-margin-bottom-3 govuk-!-margin-top-6">@Model.Provider.Name’s training options</h2>
                     
                     <ul class="govuk-list govuk-!-margin-bottom-4">

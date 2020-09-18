@@ -249,5 +249,39 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             blockReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($"({distanceInMiles:##.#} miles away)");
             blockReleaseDeliveryMode.IsAvailable.Should().BeTrue();
         }
+
+        [Test, AutoData]
+        public void And_Has_No_Result_For_Location_And_Delivery_Mode_Is_Not_Found(Provider source)
+        {
+            // Arrange
+            source.DeliveryModes = new List<DeliveryMode>
+            {
+                new DeliveryMode
+                {
+                    DeliveryModeType = Domain.Courses.DeliveryModeType.NotFound
+                }
+            };
+
+            // Act
+            var actual = (ProviderViewModel)source;
+
+            // Assert
+
+            var notFoundDEliveryMode = actual.DeliveryModes.Single(model => model.DeliveryModeType == DeliveryModeType.NotFound);
+            notFoundDEliveryMode.DeliveryModeType.Equals(DeliveryModeType.NotFound);
+
+            var blockReleaseDeliveryMode = actual.DeliveryModes.Single(model =>
+                model.DeliveryModeType == DeliveryModeType.BlockRelease);
+            blockReleaseDeliveryMode.IsAvailable.Should().BeFalse();
+
+            var dayReleaseDeliveryMode = actual.DeliveryModes.Single(model =>
+                model.DeliveryModeType == DeliveryModeType.DayRelease);
+            dayReleaseDeliveryMode.IsAvailable.Should().BeFalse();
+
+            var workplaceDeliveryMode = actual.DeliveryModes.Single(model =>
+                model.DeliveryModeType == DeliveryModeType.DayRelease);
+            workplaceDeliveryMode.IsAvailable.Should().BeFalse();
+        }
+
     }
 }

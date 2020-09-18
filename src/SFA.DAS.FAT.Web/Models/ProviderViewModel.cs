@@ -48,14 +48,15 @@ namespace SFA.DAS.FAT.Web.Models
             {
                 return new List<DeliveryModeViewModel>();
             }
-            
+
+            var notFound = source.SingleOrDefault(mode => 
+                mode.DeliveryModeType == Domain.Courses.DeliveryModeType.NotFound);
             var dayRelease = source.SingleOrDefault(mode =>
                 mode.DeliveryModeType == Domain.Courses.DeliveryModeType.DayRelease);
             var blockRelease = source.SingleOrDefault(mode => 
                 mode.DeliveryModeType == Domain.Courses.DeliveryModeType.BlockRelease);
             var workPlace =
                 source.SingleOrDefault(mode => mode.DeliveryModeType == Domain.Courses.DeliveryModeType.Workplace);
-            var notFound = source.SingleOrDefault(mode => mode.DeliveryModeType == Domain.Courses.DeliveryModeType.NotFound);
             var returnList = new List<DeliveryModeViewModel>
             {
                 new DeliveryModeViewModel().Map(workPlace, DeliveryModeType.Workplace),
@@ -84,7 +85,7 @@ namespace SFA.DAS.FAT.Web.Models
         {
             var viewModel = source ?? new DeliveryModeViewModel();
             viewModel.DeliveryModeType = deliveryModeType;
-            viewModel.IsAvailable = source != default;
+            viewModel.IsAvailable =  source != default;
             viewModel.FormattedDistanceInMiles = source != default && deliveryModeType != DeliveryModeType.Workplace
                 ? $"({source.DistanceInMiles:##.#} miles away)"
                 : null;

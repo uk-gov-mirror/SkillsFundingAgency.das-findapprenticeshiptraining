@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
 using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Domain.Interfaces;
+using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType;
 
 namespace SFA.DAS.FAT.Web.Controllers
 {
@@ -90,9 +92,9 @@ namespace SFA.DAS.FAT.Web.Controllers
                     Course = result.Course,
                     Providers = result.Providers.Select(c=>(ProviderViewModel)c), 
                     Total = result.Total,
-                    Location = result.Location,
+                    Location = location,
                     SortOrder = sortOrder,
-                    HasLocations = !string.IsNullOrEmpty(location)
+                    DeliveryModes = new List<DeliveryModeOptionViewModel>{ new DeliveryModeOptionViewModel{DeliveryModeType = DeliveryModeType.BlockRelease, Description = "blah", Selected = true}}
                 });
             }
             catch (Exception e)

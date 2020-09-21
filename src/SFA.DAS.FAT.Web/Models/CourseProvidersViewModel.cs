@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using SFA.DAS.FAT.Domain.Courses;
 
 namespace SFA.DAS.FAT.Web.Models
@@ -12,7 +11,7 @@ namespace SFA.DAS.FAT.Web.Models
         public string TotalMessage => Total == 1 ? $"{Total} result" : $"{Total} results";
         public string Location { get; set; }
         public ProviderSortBy SortOrder { get; set; }
-        public bool HasLocations { get; set; }
+        public bool HasLocations => !string.IsNullOrWhiteSpace(Location);
         public string BuildSortLink()
         {
             var newOrder = SortOrder == ProviderSortBy.Distance ? 
@@ -20,5 +19,7 @@ namespace SFA.DAS.FAT.Web.Models
 
             return $"?location={Location}&sortorder={newOrder}";
         }
+
+        public IEnumerable<DeliveryModeOptionViewModel> DeliveryModes { get; set; }
     }
 }

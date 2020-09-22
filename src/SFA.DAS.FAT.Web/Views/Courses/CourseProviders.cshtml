@@ -65,13 +65,13 @@
                     };
                     <p class="govuk-body govuk-!-margin-bottom-0">
                         <span style="margin-right: 10px">@Model.Location</span>
-                        <a asp-route="@RouteNames.CourseProviders" asp-all-route-data="@routeData" class="govuk-link govuk-link--no-visited-state">Remove&nbsp;location</a>
+                        <a asp-route="@RouteNames.CourseProviders" asp-all-route-data="@routeData" class="govuk-link govuk-link--no-visited-state" id="lnk-remove-location">Remove&nbsp;location</a>
                     </p>    
                 }
                 else
                 {
                     <p class="govuk-body govuk-!-margin-bottom-2">Show only providers who offer this training for the apprenticeship location.</p>
-                    <p class="govuk-body govuk-!-margin-bottom-0"><a href="#search-location" class="govuk-link govuk-link--no-visited-state">Enter&nbsp;location</a></p>
+                    <p class="govuk-body govuk-!-margin-bottom-0"><a href="#search-location" class="govuk-link govuk-link--no-visited-state" id="lnk-enter-location">Enter&nbsp;location</a></p>
                 }
                 
             </div>
@@ -134,7 +134,7 @@
                                     <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2">
                                         @foreach (var mode in provider.DeliveryModes)
                                         {
-                                            <li class="das-icon-list__list-item">
+                                            <li class="das-icon-list__list-item" id="@provider.ProviderId-@mode.DeliveryModeType">
                                                 @if (mode.IsAvailable)
                                                 {
                                                     <span class="das-icon-list__icon das-icon-list__icon--tick">available</span>
@@ -172,6 +172,7 @@
                                 
                                 <span class="das-text--muted">@provider.TotalFeedbackRatingText</span>
                                                                 
+                                        
                             </li>
 
                         </ul>

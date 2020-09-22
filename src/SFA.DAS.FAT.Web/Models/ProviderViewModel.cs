@@ -48,9 +48,16 @@ namespace SFA.DAS.FAT.Web.Models
             {
                 return new List<DeliveryModeViewModel>();
             }
-
             var notFound = source.SingleOrDefault(mode => 
                 mode.DeliveryModeType == Domain.Courses.DeliveryModeType.NotFound);
+            if (source.Count == 1 && notFound != null)
+            {
+                return new List<DeliveryModeViewModel>
+                {
+                    new DeliveryModeViewModel().Map(notFound, DeliveryModeType.NotFound)
+                };
+            }
+            
             var dayRelease = source.SingleOrDefault(mode =>
                 mode.DeliveryModeType == Domain.Courses.DeliveryModeType.DayRelease);
             var blockRelease = source.SingleOrDefault(mode => 
@@ -62,7 +69,7 @@ namespace SFA.DAS.FAT.Web.Models
                 new DeliveryModeViewModel().Map(workPlace, DeliveryModeType.Workplace),
                 new DeliveryModeViewModel().Map(dayRelease, DeliveryModeType.DayRelease),
                 new DeliveryModeViewModel().Map(blockRelease, DeliveryModeType.BlockRelease),
-                new DeliveryModeViewModel().Map(notFound, DeliveryModeType.NotFound)
+                
             };
             
             return returnList;

@@ -38,55 +38,62 @@
                         }
                         <a asp-all-route-data="@routeData" asp-route="@RouteNames.CourseProviderDetails" class="govuk-link govuk-link--no-visited-state">Remove&nbsp;location</a></p>
                     <div class="govuk-!-margin-bottom-6">
-                    <h2 class="govuk-heading-s govuk-!-margin-bottom-3 govuk-!-margin-top-6">@Model.Provider.Name’s training options</h2>
-                    
-                    <ul class="govuk-list govuk-!-margin-bottom-4">
-                        <li>
-                            <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2">
-                                @foreach (var mode in Model.Provider.DeliveryModes)
-                                {
-                                    <li class="das-icon-list__list-item">
-                                        @if (mode.IsAvailable)
-                                        {
-                                            <span class="das-icon-list__icon das-icon-list__icon--tick">available</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
-                                        }
-                                        @mode.DeliveryModeType.GetDescription() @mode.FormattedDistanceInMiles
-                                    </li>
-                                }
-                            </ul>
-                        </li>
-                         
-                    </ul>
-
-                        @{
-                            var dayRelease = Model.Provider.DeliveryModes.SingleOrDefault(c => c.DeliveryModeType == DeliveryModeType.DayRelease);
-                            var blockRelease = Model.Provider.DeliveryModes.SingleOrDefault(c => c.DeliveryModeType == DeliveryModeType.BlockRelease);
-                        }
-                        @if (dayRelease!= null && blockRelease!= null && dayRelease.AddressFormatted == blockRelease.AddressFormatted && !string.IsNullOrEmpty(dayRelease.AddressFormatted))
-                        {
-                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day and block release address</p>
-                            <p class="govuk-body">@dayRelease.AddressFormatted</p>    
-                        }
-                        else
-                        {
-                            if (dayRelease != null && !string.IsNullOrEmpty(dayRelease.AddressFormatted))
+                   
+                    @if (Model.Provider.DeliveryModes.FirstOrDefault(c => c.DeliveryModeType == DeliveryModeType.NotFound) != null)
+                    {
+                        <p class="govuk-body">This training provider does not offer this course at the apprenticeship location</p>
+                    }
+                    else
+                    {
+                        
+                        <h2 class="govuk-heading-s govuk-!-margin-bottom-3 govuk-!-margin-top-6">@Model.Provider.Name’s training options</h2>
+                        <ul class="govuk-list govuk-!-margin-bottom-4">
+                            <li>
+                                <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2">
+                                    @foreach (var mode in Model.Provider.DeliveryModes)
+                                    {
+                                        <li class="das-icon-list__list-item">
+                                            @if (mode.IsAvailable)
+                                            {
+                                                <span class="das-icon-list__icon das-icon-list__icon--tick">available</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
+                                            }
+                                            @mode.DeliveryModeType.GetDescription() @mode.FormattedDistanceInMiles
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                             
+                        </ul>
+                        <div>
+                            @{
+                                var dayRelease = Model.Provider.DeliveryModes.SingleOrDefault(c => c.DeliveryModeType == DeliveryModeType.DayRelease);
+                                var blockRelease = Model.Provider.DeliveryModes.SingleOrDefault(c => c.DeliveryModeType == DeliveryModeType.BlockRelease);
+                            }
+                            @if (dayRelease!= null && blockRelease!= null && dayRelease.AddressFormatted == blockRelease.AddressFormatted && !string.IsNullOrEmpty(dayRelease.AddressFormatted))
                             {
-                                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day release address</p>
+                                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day and block release address</p>
                                 <p class="govuk-body">@dayRelease.AddressFormatted</p>    
                             }
-                            if (blockRelease != null && !string.IsNullOrEmpty(blockRelease.AddressFormatted))
+                            else
                             {
-                                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Block release address</p>
-                                <p class="govuk-body">@blockRelease.AddressFormatted</p>    
-                            }    
-                        }
-                        
-                        
-                </div>
+                                if (dayRelease != null && !string.IsNullOrEmpty(dayRelease.AddressFormatted))
+                                {
+                                    <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day release address</p>
+                                    <p class="govuk-body">@dayRelease.AddressFormatted</p>    
+                                }
+                                if (blockRelease != null && !string.IsNullOrEmpty(blockRelease.AddressFormatted))
+                                {
+                                    <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Block release address</p>
+                                    <p class="govuk-body">@blockRelease.AddressFormatted</p>    
+                                }    
+                            }
+                        </div>
+                    }
+                    </div>    
                 }
                 else
                 {

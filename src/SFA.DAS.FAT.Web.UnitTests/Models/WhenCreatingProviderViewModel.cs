@@ -251,7 +251,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         }
 
         [Test, AutoData]
-        public void And_Has_No_Result_For_Location_And_Delivery_Mode_Is_Not_Found(Provider source)
+        public void And_Has_NotFound_Then_Only_NotFound_Added_To_Delivery_Mode(Provider source)
         {
             // Arrange
             source.DeliveryModes = new List<DeliveryMode>
@@ -266,22 +266,27 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             var actual = (ProviderViewModel)source;
 
             // Assert
-
-            var notFoundDEliveryMode = actual.DeliveryModes.Single(model => model.DeliveryModeType == DeliveryModeType.NotFound);
-            notFoundDEliveryMode.DeliveryModeType.Equals(DeliveryModeType.NotFound);
-
-            var blockReleaseDeliveryMode = actual.DeliveryModes.Single(model =>
-                model.DeliveryModeType == DeliveryModeType.BlockRelease);
-            blockReleaseDeliveryMode.IsAvailable.Should().BeFalse();
-
-            var dayReleaseDeliveryMode = actual.DeliveryModes.Single(model =>
-                model.DeliveryModeType == DeliveryModeType.DayRelease);
-            dayReleaseDeliveryMode.IsAvailable.Should().BeFalse();
-
-            var workplaceDeliveryMode = actual.DeliveryModes.Single(model =>
-                model.DeliveryModeType == DeliveryModeType.DayRelease);
-            workplaceDeliveryMode.IsAvailable.Should().BeFalse();
+            actual.DeliveryModes.Count().Should().Be(1);
+            actual.DeliveryModes.ToList().TrueForAll(x => x.DeliveryModeType == DeliveryModeType.NotFound).Should().BeTrue();
         }
 
+        [Test, AutoData]
+        public void Then_Only_Three_Delivery_Modes_Are_Added_If_There_Is_No_NotFound(Provider source,
+            decimal distanceInMiles)
+        {
+            distanceInMiles += 0.324m;
+            source.DeliveryModes = new List<DeliveryMode>
+            {
+                new DeliveryMode
+                {
+                    DeliveryModeType = Domain.Courses.DeliveryModeType.BlockRelease,
+                    DistanceInMiles = distanceInMiles
+                }
+            };
+
+            var actual = (ProviderViewModel) source;
+            actual.DeliveryModes.Count().Should().Be(3);
+            actual.DeliveryModes.ToList().TrueForAll(x => x.DeliveryModeType == DeliveryModeType.NotFound).Should().BeFalse();
+        }
     }
 }

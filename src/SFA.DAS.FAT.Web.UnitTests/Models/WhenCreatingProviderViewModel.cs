@@ -21,11 +21,30 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
                 .Excluding(c=>c.OverallAchievementRate)
                 .Excluding(c=>c.NationalOverallAchievementRate)
                 .Excluding(c=>c.NationalOverallCohort)
-                .Excluding(c => c.DeliveryModes));
+                .Excluding(c => c.DeliveryModes)
+                .Excluding(c=>c.Feedback)
+            );
 
             actual.OverallAchievementRatePercentage.Should().Be($"{(Math.Round(source.OverallAchievementRate.Value)/100):0%}");
             actual.NationalOverallAchievementRatePercentage.Should().Be($"{(Math.Round(source.NationalOverallAchievementRate.Value)/100):0%}");
+            actual.TotalEmployerResponses.Should().Be(source.Feedback.TotalEmployerResponses);
+            actual.TotalFeedbackRating.Should().Be(source.Feedback.TotalFeedbackRating);
         }
+
+        //Feedback
+        [Test]
+        [InlineAutoData(50, "(50 employer reviews)")]
+        [InlineAutoData(51, "(50+ employer reviews)")]
+        [InlineAutoData(1, "(1 employer review)")]
+        [InlineAutoData(0, "Not yet reviewed (employer reviews)")]
+        public void Then_The_Feedback_Text_Is_Formatted_Correctly(int numberOfReviews, string expectedText, Provider source)
+        {
+            source.Feedback.TotalEmployerResponses = numberOfReviews;
+            var actual = (ProviderViewModel) source;    
+
+            actual.TotalFeedbackRatingText.Should().Be(expectedText);
+        }
+
 
         // achievement rate
         [Test, AutoData]

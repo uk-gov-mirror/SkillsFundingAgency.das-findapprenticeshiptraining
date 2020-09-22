@@ -59,8 +59,8 @@
                                             @foreach (var mode in Model.DeliveryModes)
                                             {
                                                 <div class="govuk-checkboxes__item">
-                                                    <input @(mode.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="level-@mode.DeliveryModeType" name="levels" type="checkbox" value="@mode.DeliveryModeType"/>
-                                                    <label class="govuk-label govuk-checkboxes__label" for="level-@mode.DeliveryModeType">
+                                                    <input @(mode.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="deliveryModeType-@mode.DeliveryModeType" name="deliveryModeTypes" type="checkbox" value="@mode.DeliveryModeType"/>
+                                                    <label class="govuk-label govuk-checkboxes__label" for="deliveryModeType-@mode.DeliveryModeType">
                                                         @mode.Description
                                                     </label>
                                                 </div>

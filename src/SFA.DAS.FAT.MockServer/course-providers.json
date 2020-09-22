@@ -22,7 +22,7 @@
       "name": "Lab trainings r us",
       "overallCohort": 10,
       "overallAchievementRate": 93.3,
-      "feedbackResponse": {
+      "feedback": {
         "totalEmployerResponses": 48,
         "totalFeedbackRating": 3
       },
@@ -42,7 +42,7 @@
       "name": "Lab trainings 4 u",
       "overallCohort": null,
       "overallAchievementRate": null,
-      "feedbackResponse": {
+      "feedback": {
         "totalEmployerResponses": 15,
         "totalFeedbackRating": 1
       },
@@ -62,7 +62,7 @@
       "name": "Lab trainings 4 all",
       "overallCohort": null,
       "overallAchievementRate": null,
-      "feedbackResponse": {
+      "feedback": {
         "totalEmployerResponses": 2,
         "totalFeedbackRating": 4
       },
@@ -86,7 +86,7 @@
       "name": "Lab trainings 4 some",
       "overallCohort": 15,
       "overallAchievementRate": 63.3,
-      "feedbackResponse": {
+      "feedback": {
         "totalEmployerResponses": 2000,
         "totalFeedbackRating": 2
       },
@@ -110,7 +110,7 @@
       "name": "Lab trainings 4 none",
       "overallCohort": null,
       "overallAchievementRate": null,
-      "feedbackResponse": {
+      "feedback": {
         "totalEmployerResponses": 0,
         "totalFeedbackRating": 0
       },
@@ -134,7 +134,7 @@
       "name": "Lab trainings et al",
       "overallCohort": null,
       "overallAchievementRate": null,
-      "feedbackResponse": {
+      "feedback": {
         "totalEmployerResponses": 0,
         "totalFeedbackRating": 0
       },
@@ -158,7 +158,7 @@
       "name": "Lab trainings & stuff",
       "overallCohort": 20,
       "overallAchievementRate": 73.3,
-      "feedbackResponse": {
+      "feedback": {
         "totalEmployerResponses": 0,
         "totalFeedbackRating": 0
       },
@@ -182,7 +182,7 @@
       "name": "Labs and lads",
       "overallCohort": null,
       "overallAchievementRate": null,
-      "feedbackResponse": {
+      "feedback": {
         "totalEmployerResponses": 0,
         "totalFeedbackRating": 0
       },
@@ -206,7 +206,7 @@
       "name": "Labrador training",
       "overallCohort": null,
       "overallAchievementRate": null,
-      "feedbackResponse": {
+      "feedback": {
         "totalEmployerResponses": 0,
         "totalFeedbackRating": 0
       },
@@ -230,7 +230,7 @@
       "name": "Lab coats",
       "overallCohort": null,
       "overallAchievementRate": null,
-      "feedbackResponse": {
+      "feedback": {
         "totalEmployerResponses": 0,
         "totalFeedbackRating": 0
       },
@@ -254,7 +254,7 @@
       "name": "Lab door",
       "overallCohort": null,
       "overallAchievementRate": null,
-      "feedbackResponse": {
+      "feedback": {
         "totalEmployerResponses": 10,
         "totalFeedbackRating": 2
       },
@@ -278,7 +278,7 @@
       "name": "Lab ra kadabra",
       "overallCohort": null,
       "overallAchievementRate": null,
-      "feedbackResponse": {
+      "feedback": {
         "totalEmployerResponses": 54,
         "totalFeedbackRating": 3
       },

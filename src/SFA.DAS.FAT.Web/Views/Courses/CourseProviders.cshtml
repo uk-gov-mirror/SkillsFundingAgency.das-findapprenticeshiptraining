@@ -167,7 +167,7 @@
                                         <span aria-hidden="true" class="das-rating__icon-star@(provider.TotalFeedbackRating < 3 ? "--empty" : "")"></span>
                                         <span aria-hidden="true" class="das-rating__icon-star@(provider.TotalFeedbackRating < 4 ? "--empty" : "")"></span>
                                     </span>    
-                                    <span class="das-rating__label--@(provider.TotalFeedbackRating > 2 ? "good" : "poor")">RATING</span>
+                                    <span class="das-rating__label--@(provider.TotalFeedbackRating > 2 ? "good" : "poor")">@provider.TotalFeedbackText.GetDescription()</span>
                                 }
                                 
                                 <span class="das-text--muted">@provider.TotalFeedbackRatingText</span>

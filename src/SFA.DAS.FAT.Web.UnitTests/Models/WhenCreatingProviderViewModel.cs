@@ -5,6 +5,7 @@ using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAT.Domain.Courses;
+using SFA.DAS.FAT.Domain.Extensions;
 using SFA.DAS.FAT.Web.Models;
 using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType;
 
@@ -43,6 +44,20 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             var actual = (ProviderViewModel) source;    
 
             actual.TotalFeedbackRatingText.Should().Be(expectedText);
+        }
+
+        [Test]
+        [InlineAutoData(1,"Very poor")]
+        [InlineAutoData(2, "Poor")]
+        [InlineAutoData(3, "Good")]
+        [InlineAutoData(4, "Excellent")]
+        public void Then_The_Feedback_Rating_Is_Mapped_To_The_Description(int feedbackRating,string expected, Provider source)
+        {
+            source.Feedback.TotalFeedbackRating = feedbackRating;
+            
+            var actual = (ProviderViewModel) source;
+
+            actual.TotalFeedbackText.GetDescription().Should().Be(expected);
         }
 
 

@@ -30,6 +30,8 @@ namespace SFA.DAS.FAT.Web.Models
         public int TotalFeedbackRating { get ; set ; }
         public string TotalFeedbackRatingText { get ; set ; }
 
+        public ProviderRating TotalFeedbackText { get ; set ; }
+
         public static implicit operator ProviderViewModel(Provider source)
         {
             return new ProviderViewModel
@@ -46,8 +48,8 @@ namespace SFA.DAS.FAT.Web.Models
                 DeliveryModes = source.DeliveryModes!=null ? BuildDeliveryModes(source.DeliveryModes.ToList()) : new List<DeliveryModeViewModel>(),
                 TotalFeedbackRating = source.Feedback.TotalFeedbackRating,
                 TotalEmployerResponses = source.Feedback.TotalEmployerResponses,
-                TotalFeedbackRatingText = GetFeedbackRatingText(source)
-                
+                TotalFeedbackRatingText = GetFeedbackRatingText(source),
+                TotalFeedbackText = (ProviderRating)source.Feedback.TotalFeedbackRating
             };
         }
 
@@ -163,5 +165,17 @@ namespace SFA.DAS.FAT.Web.Models
         DayRelease = 1,
         [Description("Block release")]
         BlockRelease = 2
+    }
+
+    public enum ProviderRating
+    {
+        [Description("Very poor")]
+        VeryPoor = 1,
+        [Description("Poor")]
+        Poor = 2,
+        [Description("Good")]
+        Good = 3,
+        [Description("Excellent")]
+        Excellent = 4
     }
 }

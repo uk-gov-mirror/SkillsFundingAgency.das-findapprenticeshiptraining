@@ -17,8 +17,11 @@ namespace SFA.DAS.FAT.Web.Models
         {
             var newOrder = SortOrder == ProviderSortBy.Distance ? 
                 ProviderSortBy.Name : ProviderSortBy.Distance;
+            var selectedDeliveryModes = DeliveryModes
+                .Where(viewModel => viewModel.Selected)
+                .Select(viewModel => viewModel.DeliveryModeType);
 
-            return $"?location={Location}&deliveryModes={string.Join("&deliveryModes=", DeliveryModes)}&sortorder={newOrder}";
+            return $"?location={Location}&deliveryModes={string.Join("&deliveryModes=", selectedDeliveryModes)}&sortorder={newOrder}";
         }
 
         public IEnumerable<DeliveryModeOptionViewModel> DeliveryModes { get; set; }

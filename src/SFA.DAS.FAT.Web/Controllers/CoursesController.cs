@@ -75,7 +75,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         }
 
         [Route("{id}/providers", Name = RouteNames.CourseProviders)]
-        public async Task<IActionResult> CourseProviders(int id, string location, IEnumerable<DeliveryModeType> deliveryModes, ProviderSortBy sortOrder)
+        public async Task<IActionResult> CourseProviders(int id, string location, IReadOnlyList<DeliveryModeType> deliveryModes, ProviderSortBy sortOrder)
         {
             try
             {
@@ -89,17 +89,6 @@ namespace SFA.DAS.FAT.Web.Controllers
                     SortOrder = sortOrder
                 });
 
-                var deliveryModeOptionViewModels = new List<DeliveryModeOptionViewModel>();
-                foreach (DeliveryModeType deliveryModeType in Enum.GetValues(typeof(DeliveryModeType)))
-                {
-                    deliveryModeOptionViewModels.Add(new DeliveryModeOptionViewModel
-                    {
-                        DeliveryModeType = deliveryModeType,
-                        Description = deliveryModeType.GetDescription(),
-                        Selected = deliveryModes.Any(type => type == deliveryModeType)
-                    });
-                }
-                
                 return View(new CourseProvidersViewModel
                 {
                     Course = result.Course,
@@ -107,7 +96,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                     Total = result.Total,
                     Location = location,
                     SortOrder = sortOrder,
-                    DeliveryModes = deliveryModeOptionViewModels
+                    DeliveryModes = BuildDeliveryModeOptionViewModel(deliveryModes)
                 });
             }
             catch (Exception e)
@@ -159,6 +148,23 @@ namespace SFA.DAS.FAT.Web.Controllers
             _cookieStorageService.Update(Constants.LocationCookieName, location, 2);
             
             return location;
+        }
+
+        private static IEnumerable<DeliveryModeOptionViewModel> BuildDeliveryModeOptionViewModel(IReadOnlyList<DeliveryModeType> selectedDeliveryModeTypes)
+        {
+            var deliveryModeOptionViewModels = new List<DeliveryModeOptionViewModel>();
+
+            foreach (DeliveryModeType deliveryModeType in Enum.GetValues(typeof(DeliveryModeType)))
+            {
+                deliveryModeOptionViewModels.Add(new DeliveryModeOptionViewModel
+                {
+                    DeliveryModeType = deliveryModeType,
+                    Description = deliveryModeType.GetDescription(),
+                    Selected = selectedDeliveryModeTypes.Any(type => type == deliveryModeType)
+                });
+            }
+
+            return deliveryModeOptionViewModels;
         }
     }
 }

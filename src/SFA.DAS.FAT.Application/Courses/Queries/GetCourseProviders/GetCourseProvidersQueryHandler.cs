@@ -23,6 +23,7 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders
                 Course = courseProviders.Course,
                 Providers = courseProviders.CourseProviders,
                 Total = courseProviders.Total,
+                TotalFiltered = courseProviders.TotalFiltered,
                 Location = courseProviders.Location,
             };
         }

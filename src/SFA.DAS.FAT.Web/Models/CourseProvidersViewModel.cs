@@ -9,7 +9,8 @@ namespace SFA.DAS.FAT.Web.Models
         public IEnumerable<ProviderViewModel> Providers { get; set; }
         public CourseViewModel Course { get; set; }
         public int Total { get; set; }
-        public string TotalMessage => Total == 1 ? $"{Total} result" : $"{Total} results";
+        public int TotalFiltered { get; set; }
+        public string TotalMessage => GetTotalMessage();
         public string Location { get; set; }
         public ProviderSortBy SortOrder { get; set; }
         public bool HasLocations => !string.IsNullOrWhiteSpace(Location);
@@ -43,6 +44,15 @@ namespace SFA.DAS.FAT.Web.Models
             }
 
             return links;
+        }
+
+        private string GetTotalMessage()
+        {
+            var totalToUse = DeliveryModes == null || DeliveryModes.All(model => !model.Selected)
+                ? Total 
+                : TotalFiltered;
+
+            return $"{totalToUse} result{(totalToUse!=1 ? "s": "")}";
         }
     }
 }

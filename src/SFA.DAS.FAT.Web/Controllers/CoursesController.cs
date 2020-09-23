@@ -94,6 +94,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                     Course = result.Course,
                     Providers = result.Providers.Select(c=>(ProviderViewModel)c), 
                     Total = result.Total,
+                    TotalFiltered = result.TotalFiltered,
                     Location = location,
                     SortOrder = sortOrder,
                     DeliveryModes = BuildDeliveryModeOptionViewModel(deliveryModes)

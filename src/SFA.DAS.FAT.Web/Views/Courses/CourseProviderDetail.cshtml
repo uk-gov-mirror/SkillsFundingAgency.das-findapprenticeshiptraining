@@ -21,7 +21,7 @@
                 </p>
                 @if (!string.IsNullOrEmpty(Model.Provider.OverallAchievementRatePercentage))
                 {
-                    <p class="govuk-body govuk-!-margin-bottom-1"><span class=" govuk-!-font-weight-bold">@Model.Provider.OverallAchievementRatePercentage pass rate</span> <span>(out of @Model.Provider.OverallCohort apprentices)</span></p>
+                    <p class="govuk-body govuk-!-margin-bottom-1"><span class=" govuk-!-font-weight-bold">@Model.Provider.OverallAchievementRatePercentage pass rate</span></p>
                     <p class="govuk-body "><span>@Model.Provider.NationalOverallAchievementRatePercentage national average pass rate</span></p>    
                 }
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Apprenticeship location</h2>
@@ -42,6 +42,7 @@
                     @if (Model.Provider.DeliveryModes.FirstOrDefault(c => c.DeliveryModeType == DeliveryModeType.NotFound) != null)
                     {
                         <p class="govuk-body">This training provider does not offer this course at the apprenticeship location</p>
+                        <p class="govuk-body">There are 0 training providers for @Model.Course.TitleAndLevel in the apprenticeship location.</p>
                     }
                     else
                     {

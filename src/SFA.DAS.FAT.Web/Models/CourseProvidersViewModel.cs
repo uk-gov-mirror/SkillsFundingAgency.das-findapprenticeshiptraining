@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using SFA.DAS.FAT.Domain.Courses;
 
 namespace SFA.DAS.FAT.Web.Models
@@ -17,9 +18,28 @@ namespace SFA.DAS.FAT.Web.Models
             var newOrder = SortOrder == ProviderSortBy.Distance ? 
                 ProviderSortBy.Name : ProviderSortBy.Distance;
 
-            return $"?location={Location}&sortorder={newOrder}";
+            return $"?location={Location}&deliveryModes={string.Join("&deliveryModes=", DeliveryModes)}&sortorder={newOrder}";
         }
 
         public IEnumerable<DeliveryModeOptionViewModel> DeliveryModes { get; set; }
+
+        public Dictionary<string, string> BuildClearDeliveryModeLinks()
+        {
+            var links = new Dictionary<string, string>();
+
+            foreach (var deliveryMode in DeliveryModes.Where(model => model.Selected))
+            {
+                var otherSelected = DeliveryModes
+                    .Where(viewModel =>
+                        viewModel.Selected &&
+                        viewModel.DeliveryModeType != deliveryMode.DeliveryModeType)
+                    .Select(viewModel => viewModel.DeliveryModeType);
+                var link = $"?location={Location}&deliveryModes={string.Join("&deliveryModes=", otherSelected)}&sortorder={SortOrder}";
+
+                links.Add(deliveryMode.Description, link);
+            }
+
+            return links;
+        }
     }
 }

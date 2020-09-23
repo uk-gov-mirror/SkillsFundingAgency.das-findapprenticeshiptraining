@@ -75,7 +75,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         }
 
         [Route("{id}/providers", Name = RouteNames.CourseProviders)]
-        public async Task<IActionResult> CourseProviders(int id, string location, IEnumerable<DeliveryModeType> deliveryModeTypes, ProviderSortBy sortOrder)
+        public async Task<IActionResult> CourseProviders(int id, string location, IEnumerable<DeliveryModeType> deliveryModes, ProviderSortBy sortOrder)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                 {
                     CourseId = id,
                     Location = location,
-                    DeliveryModes = deliveryModeTypes.Select(type => (Domain.Courses.DeliveryModeType)type),
+                    DeliveryModes = deliveryModes.Select(type => (Domain.Courses.DeliveryModeType)type),
                     SortOrder = sortOrder
                 });
 
@@ -96,7 +96,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                     {
                         DeliveryModeType = deliveryModeType,
                         Description = deliveryModeType.GetDescription(),
-                        Selected = deliveryModeTypes.Any(type => type == deliveryModeType)
+                        Selected = deliveryModes.Any(type => type == deliveryModeType)
                     });
                 }
                 

@@ -21,6 +21,26 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
         }
 
         [Test, AutoData]
+        public void Then_If_No_DelvieryModes_Its_Not_Added_To_Url(string baseUrl, int id, string location,  int sortOrder)
+        {
+            //Arrange Act
+            var actual = new GetCourseProvidersApiRequest(baseUrl, id, location, new List<DeliveryModeType>(), sortOrder);
+            
+            //Assert
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{id}/providers?location={location}&sortOrder={sortOrder}");
+        }
+
+        [Test, AutoData]
+        public void Then_If_No_DelvieryModes_Is_Null_Its_Not_Added_To_Url(string baseUrl, int id, string location,  int sortOrder)
+        {
+            //Arrange Act
+            var actual = new GetCourseProvidersApiRequest(baseUrl, id, location, null, sortOrder);
+            
+            //Assert
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{id}/providers?location={location}&sortOrder={sortOrder}");
+        }
+        
+        [Test, AutoData]
         public void Then_The_Location_Is_Url_Encoded(string baseUrl, int id, string location, List<DeliveryModeType> deliveryModeTypes, int sortOrder)
         {
             //Arrange Act

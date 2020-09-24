@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using SFA.DAS.FAT.Domain.Interfaces;
 
@@ -21,6 +22,17 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
         }
 
         public string BaseUrl { get; }
-        public string GetUrl => $"{BaseUrl}trainingcourses/{_id}/providers?location={HttpUtility.UrlEncode(_location)}&deliveryModes={string.Join("&deliveryModes=", _deliveryModeTypes)}&sortOrder={_sortOrder}";
+        public string GetUrl => BuildUrl();
+
+        private string BuildUrl()
+        {
+            var buildUrl = $"{BaseUrl}trainingcourses/{_id}/providers?location={HttpUtility.UrlEncode(_location)}&sortOrder={_sortOrder}";
+            if (_deliveryModeTypes!= null && _deliveryModeTypes.Any())
+            {
+                buildUrl += $"&deliveryModes={string.Join(" & deliveryModes = ", _deliveryModeTypes)}";
+            }
+            
+            return buildUrl;
+        }
     }
 }

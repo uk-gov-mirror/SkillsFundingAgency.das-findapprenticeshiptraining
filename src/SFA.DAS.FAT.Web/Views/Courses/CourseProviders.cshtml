@@ -82,16 +82,16 @@
                 {
                     <p class="govuk-body govuk-!-margin-bottom-6">
                         Sorted by:
-                        <span class="govuk-!-font-weight-bold">Name,</span>
-                        <a id="sort-by-distance" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Distance (nearest first)</a>
+                        <a id="sort-by-distance" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Distance (nearest first)</a>,
+                        <span class="govuk-!-font-weight-bold">Name</span>
                     </p>
                 }
                 else
                 {
                     <p class="govuk-body govuk-!-margin-bottom-6">
                         Sorted by:
-                        <a id="sort-by-name" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Name</a>,
-                        <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>
+                        <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>,
+                        <a id="sort-by-name" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Name</a>
                     </p>
                 }
             }

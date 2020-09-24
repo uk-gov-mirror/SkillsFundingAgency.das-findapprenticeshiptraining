@@ -95,7 +95,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                     Providers = result.Providers.Select(c=>(ProviderViewModel)c), 
                     Total = result.Total,
                     TotalFiltered = result.TotalFiltered,
-                    Location = location,
+                    Location = result.Location,
                     SortOrder = sortOrder,
                     DeliveryModes = BuildDeliveryModeOptionViewModel(deliveryModes)
                 });

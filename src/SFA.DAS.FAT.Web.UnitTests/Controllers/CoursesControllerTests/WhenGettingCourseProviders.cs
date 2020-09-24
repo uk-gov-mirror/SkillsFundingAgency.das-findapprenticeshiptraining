@@ -52,7 +52,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             actualModel.Course.Should().BeEquivalentTo((CourseViewModel)response.Course);
             actualModel.Total.Should().Be(response.Total);
             actualModel.TotalFiltered.Should().Be(response.TotalFiltered);
-            actualModel.Location.Should().Be(location);
+            actualModel.Location.Should().Be(response.Location);
             actualModel.SortOrder.Should().Be(sortOrder);
             actualModel.HasLocations.Should().BeTrue();
         }
@@ -128,6 +128,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             [Greedy] CoursesController controller)
         {
             //Arrange
+            response.Location = null;
             var sortOrder = ProviderSortBy.Name;
             mediator.Setup(x => x.Send(
                     It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(standardCode) 

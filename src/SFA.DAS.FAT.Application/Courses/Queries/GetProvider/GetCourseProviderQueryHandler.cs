@@ -35,7 +35,9 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetProvider
             {
                 Provider = response?.CourseProviderDetails,
                 Course = response?.TrainingCourse,
-                AdditionalCourses = response?.AdditionalCourses
+                AdditionalCourses = response?.AdditionalCourses,
+                Location = response?.Location?.Name,
+                LocationGeoPoint = response?.Location?.LocationPoint?.GeoPoint
             };
         }
     }

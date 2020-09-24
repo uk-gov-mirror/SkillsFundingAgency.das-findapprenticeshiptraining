@@ -251,5 +251,7 @@
     }
   ],
   "total": 12,
-  "location": "Camden, Camden"
+  "location": {
+    "name":"Camden, Camden"
+  }
 }

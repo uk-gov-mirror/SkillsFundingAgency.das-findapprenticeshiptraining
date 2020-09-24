@@ -15,6 +15,8 @@ namespace SFA.DAS.FAT.Domain.Courses
 
         [JsonProperty("additionalCourses")]
         public AdditionalCourses AdditionalCourses { get; set; }
+        [JsonProperty("location")]
+        public Locations.Locations.LocationItem Location { get; set; }
     }
 
     public class AdditionalCourses

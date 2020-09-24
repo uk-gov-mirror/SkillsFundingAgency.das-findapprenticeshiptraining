@@ -5,7 +5,7 @@ using SFA.DAS.FAT.Web.Models;
 
 namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
 {
-    public class WhenGettingHasLocations
+    public class WhenGettingHasLocation
     {
         [Test, AutoData]
         public void And_Location_Null_Then_False(
@@ -13,7 +13,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
         {
             model.Location = null;
 
-            model.HasLocations.Should().BeFalse();
+            model.HasLocation.Should().BeFalse();
         }
 
         [Test, AutoData]
@@ -22,14 +22,14 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
         {
             model.Location = " ";
 
-            model.HasLocations.Should().BeFalse();
+            model.HasLocation.Should().BeFalse();
         }
 
         [Test, AutoData]
         public void And_Location_Not_Null_Then_True(
             CourseProvidersViewModel model)
         {
-            model.HasLocations.Should().BeTrue();
+            model.HasLocation.Should().BeTrue();
         }
     }
 }

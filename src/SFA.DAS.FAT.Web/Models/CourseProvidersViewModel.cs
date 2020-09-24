@@ -13,7 +13,7 @@ namespace SFA.DAS.FAT.Web.Models
         public string TotalMessage => GetTotalMessage();
         public string Location { get; set; }
         public ProviderSortBy SortOrder { get; set; }
-        public bool HasLocations => !string.IsNullOrWhiteSpace(Location);
+        public bool HasLocation => !string.IsNullOrWhiteSpace(Location);
         public string BuildSortLink()
         {
             var newOrder = SortOrder == ProviderSortBy.Distance ? 

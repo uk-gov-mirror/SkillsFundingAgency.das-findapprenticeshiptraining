@@ -50,7 +50,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             actualModel.TotalFiltered.Should().Be(response.TotalFiltered);
             actualModel.Location.Should().Be(response.Location);
             actualModel.SortOrder.Should().Be(request.SortOrder);
-            actualModel.HasLocations.Should().BeTrue();
+            actualModel.HasLocation.Should().BeTrue();
         }
 
         [Test, MoqAutoData]
@@ -106,7 +106,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             
             //Assert
             cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,request.Location,2));
-            actualModel.HasLocations.Should().BeTrue();
+            actualModel.HasLocation.Should().BeTrue();
         }
 
         [Test, MoqAutoData]
@@ -137,7 +137,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             actualModel.Total.Should().Be(response.Total);
             actualModel.TotalFiltered.Should().Be(response.TotalFiltered);
             actualModel.SortOrder.Should().Be(request.SortOrder);
-            actualModel.HasLocations.Should().BeFalse();
+            actualModel.HasLocation.Should().BeFalse();
             cookieStorageService.Verify(x=>x.Delete(Constants.LocationCookieName));
         }
 
@@ -168,7 +168,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             //Assert
             var actualModel = actual.Model as CourseProvidersViewModel;
             actualModel.Providers.Should().BeEquivalentTo(response.Providers.Select(provider => (ProviderViewModel)provider));
-            actualModel.HasLocations.Should().BeTrue();
+            actualModel.HasLocation.Should().BeTrue();
             cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,request.Location,2));
         }
 

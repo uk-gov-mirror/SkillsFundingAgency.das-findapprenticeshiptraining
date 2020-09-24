@@ -24,7 +24,7 @@
                     <div class="das-filter__header">
                         <h2 class="das-filter__heading">Filter</h2>
                     </div>
-                    @if (Model.HasLocations)
+                    @if (Model.HasLocation)
                     {
                         var routeData = new Dictionary<string, string>
                         {
@@ -56,7 +56,7 @@
                                 <label for="search-location" class="govuk-label"><span class="govuk-!-font-weight-bold govuk-!-font-size-24">Apprenticeship location</span></label>
                                 <input type="search" id="search-location" name="location" title="Search" class="govuk-input govuk-!-width-three-quarters" data-submit-on-selection="false" data-default-value="@Model.Location">
                             </div>
-                            @if (Model.HasLocations)
+                            @if (Model.HasLocation)
                             {
                                 <div class="govuk-form-group">
                                     <fieldset class="govuk-fieldset">
@@ -85,7 +85,7 @@
         <div class="govuk-grid-column-two-thirds">
             <div class="das-highlight govuk-!-margin-top-0 govuk-!-margin-bottom-5">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
-                @if (Model.HasLocations)
+                @if (Model.HasLocation)
                 {
                     var routeData = new Dictionary<string, string>
                     {
@@ -105,7 +105,7 @@
                 
             </div>
             <h2 class="govuk-heading-m">@Model.TotalMessage</h2>
-            @if (Model.Total > 1 && Model.HasLocations)
+            @if (Model.Total > 1 && Model.HasLocation)
             {
                 @if (Model.SortOrder == ProviderSortBy.Name)
                 {
@@ -156,7 +156,7 @@
                     </h2>
                     <ul class="govuk-list">
 
-                        @if (Model.HasLocations)
+                        @if (Model.HasLocation)
                         {
                             <li>
                                 <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2">

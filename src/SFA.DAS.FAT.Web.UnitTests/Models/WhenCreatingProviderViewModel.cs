@@ -5,6 +5,7 @@ using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAT.Domain.Courses;
+using SFA.DAS.FAT.Domain.Extensions;
 using SFA.DAS.FAT.Web.Models;
 using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType;
 
@@ -21,11 +22,44 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
                 .Excluding(c=>c.OverallAchievementRate)
                 .Excluding(c=>c.NationalOverallAchievementRate)
                 .Excluding(c=>c.NationalOverallCohort)
-                .Excluding(c => c.DeliveryModes));
+                .Excluding(c => c.DeliveryModes)
+                .Excluding(c=>c.Feedback)
+            );
 
             actual.OverallAchievementRatePercentage.Should().Be($"{(Math.Round(source.OverallAchievementRate.Value)/100):0%}");
             actual.NationalOverallAchievementRatePercentage.Should().Be($"{(Math.Round(source.NationalOverallAchievementRate.Value)/100):0%}");
+            actual.TotalEmployerResponses.Should().Be(source.Feedback.TotalEmployerResponses);
+            actual.TotalFeedbackRating.Should().Be(source.Feedback.TotalFeedbackRating);
         }
+
+        //Feedback
+        [Test]
+        [InlineAutoData(50, "(50 employer reviews)")]
+        [InlineAutoData(51, "(50+ employer reviews)")]
+        [InlineAutoData(1, "(1 employer review)")]
+        [InlineAutoData(0, "Not yet reviewed (employer reviews)")]
+        public void Then_The_Feedback_Text_Is_Formatted_Correctly(int numberOfReviews, string expectedText, Provider source)
+        {
+            source.Feedback.TotalEmployerResponses = numberOfReviews;
+            var actual = (ProviderViewModel) source;    
+
+            actual.TotalFeedbackRatingText.Should().Be(expectedText);
+        }
+
+        [Test]
+        [InlineAutoData(1,"Very poor")]
+        [InlineAutoData(2, "Poor")]
+        [InlineAutoData(3, "Good")]
+        [InlineAutoData(4, "Excellent")]
+        public void Then_The_Feedback_Rating_Is_Mapped_To_The_Description(int feedbackRating,string expected, Provider source)
+        {
+            source.Feedback.TotalFeedbackRating = feedbackRating;
+            
+            var actual = (ProviderViewModel) source;
+
+            actual.TotalFeedbackText.GetDescription().Should().Be(expected);
+        }
+
 
         // achievement rate
         [Test, AutoData]

@@ -25,6 +25,13 @@ namespace SFA.DAS.FAT.Web.Models
         public string NationalOverallAchievementRatePercentage { get ; set ; }
         public IEnumerable<DeliveryModeViewModel> DeliveryModes { get; set; }
 
+        public int TotalEmployerResponses { get ; set ; }
+
+        public int TotalFeedbackRating { get ; set ; }
+        public string TotalFeedbackRatingText { get ; set ; }
+
+        public ProviderRating TotalFeedbackText { get ; set ; }
+
         public static implicit operator ProviderViewModel(Provider source)
         {
             return new ProviderViewModel
@@ -38,8 +45,26 @@ namespace SFA.DAS.FAT.Web.Models
                 OverallAchievementRate = source.OverallAchievementRate,
                 OverallAchievementRatePercentage = source.OverallAchievementRate.HasValue ? $"{Math.Round(source.OverallAchievementRate.Value)/100:0%}" : "",
                 NationalOverallAchievementRatePercentage = source.NationalOverallAchievementRate.HasValue ? $"{Math.Round(source.NationalOverallAchievementRate.Value)/100:0%}" : "",
-                DeliveryModes = source.DeliveryModes!=null ? BuildDeliveryModes(source.DeliveryModes.ToList()) : new List<DeliveryModeViewModel>()
+                DeliveryModes = source.DeliveryModes!=null ? BuildDeliveryModes(source.DeliveryModes.ToList()) : new List<DeliveryModeViewModel>(),
+                TotalFeedbackRating = source.Feedback.TotalFeedbackRating,
+                TotalEmployerResponses = source.Feedback.TotalEmployerResponses,
+                TotalFeedbackRatingText = GetFeedbackRatingText(source),
+                TotalFeedbackText = (ProviderRating)source.Feedback.TotalFeedbackRating
             };
+        }
+
+        private static string GetFeedbackRatingText(Provider source)
+        {
+            switch (source.Feedback.TotalEmployerResponses)
+            {
+                case 0:
+                    return "Not yet reviewed (employer reviews)";
+                case 1:
+                    return "(1 employer review)";
+            }
+
+            return source.Feedback.TotalEmployerResponses > 50 ? "(50+ employer reviews)" 
+                : $"({source.Feedback.TotalEmployerResponses} employer reviews)";
         }
 
         private static IEnumerable<DeliveryModeViewModel> BuildDeliveryModes(List<DeliveryMode> source)
@@ -140,5 +165,17 @@ namespace SFA.DAS.FAT.Web.Models
         DayRelease = 1,
         [Description("Block release")]
         BlockRelease = 2
+    }
+
+    public enum ProviderRating
+    {
+        [Description("Very poor")]
+        VeryPoor = 1,
+        [Description("Poor")]
+        Poor = 2,
+        [Description("Good")]
+        Good = 3,
+        [Description("Excellent")]
+        Excellent = 4
     }
 }

@@ -36,6 +36,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CourseProvider.feature.cs</LastGenOutput>
     </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Features\CourseProviderDetail.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CourseProviderDetail.feature.cs</LastGenOutput>
+    </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Features\Courses.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Courses.feature.cs</LastGenOutput>

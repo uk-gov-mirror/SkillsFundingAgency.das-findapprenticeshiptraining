@@ -12,7 +12,6 @@ using Microsoft.Extensions.Logging;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
 using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
 using SFA.DAS.FAT.Domain.Configuration;
-using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Domain.Extensions;
 using SFA.DAS.FAT.Domain.Interfaces;
 using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType;
@@ -75,18 +74,18 @@ namespace SFA.DAS.FAT.Web.Controllers
         }
 
         [Route("{id}/providers", Name = RouteNames.CourseProviders)]
-        public async Task<IActionResult> CourseProviders(int id, string location, IReadOnlyList<DeliveryModeType> deliveryModes, ProviderSortBy sortOrder)
+        public async Task<IActionResult> CourseProviders(GetCourseProvidersRequest request)
         {
             try
             {
-                location = UpdateLocationCookie(location);
+                var location = UpdateLocationCookie(request.Location);
                 
                 var result = await _mediator.Send(new GetCourseProvidersQuery
                 {
-                    CourseId = id,
+                    CourseId = request.Id,
                     Location = location,
-                    DeliveryModes = deliveryModes.Select(type => (Domain.Courses.DeliveryModeType)type),
-                    SortOrder = sortOrder
+                    DeliveryModes = request.DeliveryModes.Select(type => (Domain.Courses.DeliveryModeType)type),
+                    SortOrder = request.SortOrder
                 });
 
                 return View(new CourseProvidersViewModel
@@ -96,8 +95,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                     Total = result.Total,
                     TotalFiltered = result.TotalFiltered,
                     Location = result.Location,
-                    SortOrder = sortOrder,
-                    DeliveryModes = BuildDeliveryModeOptionViewModel(deliveryModes)
+                    SortOrder = request.SortOrder,
+                    DeliveryModes = BuildDeliveryModeOptionViewModel(request.DeliveryModes)
                 });
             }
             catch (Exception e)

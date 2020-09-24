@@ -17,7 +17,7 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
             var actual = new GetCourseProvidersApiRequest(baseUrl, id, location, deliveryModeTypes, sortOrder);
             
             //Assert
-            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{id}/providers?location={location}&deliveryModes={string.Join("&deliveryModes=", deliveryModeTypes)}&sortOrder={sortOrder}");
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{id}/providers?location={location}&sortOrder={sortOrder}&deliveryModes={string.Join("&deliveryModes=", deliveryModeTypes)}");
         }
 
         [Test, AutoData]
@@ -47,7 +47,7 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
             var actual = new GetCourseProvidersApiRequest(baseUrl, id, $"{location} & {location}", deliveryModeTypes, sortOrder);
             
             //Assert
-            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{id}/providers?location={HttpUtility.UrlEncode($"{location} & {location}")}&deliveryModes={string.Join("&deliveryModes=", deliveryModeTypes)}&sortOrder={sortOrder}");
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{id}/providers?location={HttpUtility.UrlEncode($"{location} & {location}")}&sortOrder={sortOrder}&deliveryModes={string.Join("&deliveryModes=", deliveryModeTypes)}");
         }
     }
 }

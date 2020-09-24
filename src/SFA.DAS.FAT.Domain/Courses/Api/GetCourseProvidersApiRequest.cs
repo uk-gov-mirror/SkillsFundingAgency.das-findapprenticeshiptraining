@@ -29,7 +29,7 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
             var buildUrl = $"{BaseUrl}trainingcourses/{_id}/providers?location={HttpUtility.UrlEncode(_location)}&sortOrder={_sortOrder}";
             if (_deliveryModeTypes!= null && _deliveryModeTypes.Any())
             {
-                buildUrl += $"&deliveryModes={string.Join(" & deliveryModes = ", _deliveryModeTypes)}";
+                buildUrl += $"&deliveryModes={string.Join("&deliveryModes=", _deliveryModeTypes)}";
             }
             
             return buildUrl;

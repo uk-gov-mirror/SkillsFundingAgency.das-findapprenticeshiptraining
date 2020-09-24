@@ -15,5 +15,8 @@
     "integratedDegree": "",
     "otherBodyApprovalRequired": true
   },
-  "providersCount": 10
+  "providersCount": {
+      "providersAtLocation": 1,
+      "totalProviders": 3
+  }
 }

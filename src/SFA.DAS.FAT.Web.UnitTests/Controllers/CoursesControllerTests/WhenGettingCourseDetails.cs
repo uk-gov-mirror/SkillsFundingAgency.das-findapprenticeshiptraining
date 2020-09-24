@@ -1,6 +1,7 @@
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
+using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -36,7 +37,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             Assert.IsNotNull(actualResult);
             var actualModel = actualResult.Model as CourseViewModel;
             Assert.IsNotNull(actualModel);
+            actualModel.ProvidersCount.Should().Be(response.ProvidersCount.TotalProviders);
         }
-
     }
 }

@@ -66,7 +66,6 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourse
         [Test, MoqAutoData]
         public async Task Then_If_There_Is_No_Course_Returns_Null(
             GetCourseQuery request,
-            Course courseResponse,
             [Frozen] Mock<IValidator<GetCourseQuery>> mockValidator,
             [Frozen] ValidationResult validationResult,
             [Frozen] Mock<ICourseService> mockService,
@@ -75,7 +74,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourse
             //Arrange
             validationResult.ValidationDictionary.Clear();
             mockValidator.Setup(x => x.ValidateAsync(request)).ReturnsAsync(validationResult);
-            mockService.Setup(x => x.GetCourse(request.CourseId)).ReturnsAsync(new TrainingCourse{ProvidersCount = 0});
+            mockService.Setup(x => x.GetCourse(request.CourseId)).ReturnsAsync(new TrainingCourse());
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);

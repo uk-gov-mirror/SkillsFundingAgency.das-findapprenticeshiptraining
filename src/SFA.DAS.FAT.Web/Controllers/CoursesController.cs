@@ -66,7 +66,7 @@ namespace SFA.DAS.FAT.Web.Controllers
             var result = await _mediator.Send(new GetCourseQuery {CourseId = id});
             
             var viewModel = (CourseViewModel)result.Course;
-            viewModel.ProvidersCount = result.ProvidersCount;
+            viewModel.ProvidersCount = result.ProvidersCount?.TotalProviders;
             
             return View(viewModel);
         }

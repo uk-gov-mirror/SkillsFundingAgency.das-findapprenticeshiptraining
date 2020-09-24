@@ -19,5 +19,8 @@
       "effectiveFrom": "2020-01-01"
     }    
   },
-  "providersCount": 10
+  "providersCount": {
+    "providersAtLocation": 1,
+    "totalProviders": 3 
+  }
 }

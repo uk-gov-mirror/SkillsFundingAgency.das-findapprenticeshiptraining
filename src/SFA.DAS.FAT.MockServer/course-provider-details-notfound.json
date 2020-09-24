@@ -1,0 +1,33 @@
+{
+    "trainingCourse": {
+        "id": 2,
+        "title": "Software developer",
+        "level": 4,
+        "version": 1,
+        "maxFunding": 18000,
+        "overviewOfRole": "Building and testing simple, high-quality code for software.",
+        "keywords": "coding|technology",
+        "typicalDuration": 24,
+        "route": "Digital",
+        "typicalJobTitles": "Web Developer|Application Developer",
+        "coreSkillsCount": null,
+        "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/software-developer/",
+        "integratedDegree": ""
+    },
+    "trainingCourseProvider": {
+        "providerId": 1001,
+        "name": "Lab trainings r us",
+        "email": "test@test.com",
+        "phone": "555 555 555",
+        "website": "test@test.com",
+        "overallCohort": 50,
+        "nationalOverallCohort": 7850,
+        "overallAchievementRate": 64.2,
+        "nationalOverallAchievementRate": 66.8,
+        "deliveryModes": [
+            {
+                "deliveryModeType": 3
+            }
+        ]
+    }
+}

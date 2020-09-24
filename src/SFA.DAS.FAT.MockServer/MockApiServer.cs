@@ -28,14 +28,26 @@ namespace SFA.DAS.FAT.MockServer
             
             server.Given(Request.Create()
                 .WithPath(s => Regex.IsMatch(s,"/trainingcourses/\\d+/providers/\\d+$"))
-                
                 .UsingGet()
             ).RespondWith(
                 Response.Create()
                     .WithStatusCode(200)
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("course-provider-nolocation.json"));
-            
+
+            /*******************/
+            server.Given(Request.Create()
+                .WithPath(s => Regex.IsMatch(s, "/trainingcourses/\\d+/providers/\\d+$"))
+                .WithParam(MatchLocationParamCoventry)
+                .UsingGet()
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("course-provider-details-notfound.json"));
+            /*******************/
+
+
             server.Given(Request.Create()
                 .WithPath(s => Regex.IsMatch(s,"/trainingcourses/\\d+/providers/\\d+$"))
                 .WithParam(MatchLocationParam)
@@ -46,8 +58,6 @@ namespace SFA.DAS.FAT.MockServer
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("course-provider.json"));
 
-            
-            
             server.Given(Request.Create()
                 .WithPath(s => Regex.IsMatch(s,"/trainingcourses/\\d+/providers$"))
                 .UsingGet()
@@ -121,6 +131,11 @@ namespace SFA.DAS.FAT.MockServer
         private static bool MatchLocationParam(IDictionary<string, WireMockList<string>> arg)
         {
             return arg.ContainsKey("location") && arg["location"].Count !=0 && arg["location"].ToString().Length > 0;
+        }
+
+        private static bool MatchLocationParamCoventry(IDictionary<string, WireMockList<string>> arg)
+        {
+            return arg.ContainsKey("location") && arg["location"].Count != 0 && arg["location"].ToString().Equals("Coventry", StringComparison.CurrentCultureIgnoreCase);        
         }
 
         private static bool IsLocation(string arg)

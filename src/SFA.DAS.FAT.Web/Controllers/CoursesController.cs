@@ -92,7 +92,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                     Total = result.Total,
                     Location = result.Location,
                     SortOrder = sortOrder,
-                    HasLocations = !string.IsNullOrEmpty(location)
+                    HasLocations = !string.IsNullOrEmpty(location) && result.Location != null ? true : false
                 });
             }
             catch (Exception e)

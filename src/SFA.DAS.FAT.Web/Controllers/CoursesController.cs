@@ -143,7 +143,7 @@ namespace SFA.DAS.FAT.Web.Controllers
             }
         }
 
-        public string CheckLocation(string location)
+        private string CheckLocation(string location)
         {
             if (location == "-1")
             {

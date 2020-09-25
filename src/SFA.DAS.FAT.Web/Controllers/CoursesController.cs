@@ -88,8 +88,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                 var cookieResult =new LocationCookieItem
                 {
                     Name = result.Location,
-                    Lat = result.LocationGeoPoint.FirstOrDefault(),
-                    Lon = result.LocationGeoPoint.LastOrDefault()
+                    Lat = result.LocationGeoPoint?.FirstOrDefault() ??0,
+                    Lon = result.LocationGeoPoint?.LastOrDefault() ??0
                 }; 
                 UpdateLocationCookie(cookieResult);
                 
@@ -126,8 +126,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                 var cookieResult =new LocationCookieItem
                 {
                     Name = result.Location,
-                    Lat = result.LocationGeoPoint.FirstOrDefault(),
-                    Lon = result.LocationGeoPoint.LastOrDefault()
+                    Lat = result.LocationGeoPoint?.FirstOrDefault() ?? 0,
+                    Lon = result.LocationGeoPoint?.LastOrDefault() ?? 0
                 }; 
                 UpdateLocationCookie(cookieResult);
                 
@@ -159,7 +159,10 @@ namespace SFA.DAS.FAT.Web.Controllers
         }
         private void UpdateLocationCookie(LocationCookieItem location)
         {
-            _cookieStorageService.Update(Constants.LocationCookieName, location, 2);
+            if (!string.IsNullOrEmpty(location.Name) && location.Lat != 0 && location.Lon != 0)
+            {
+                _cookieStorageService.Update(Constants.LocationCookieName, location, 2);    
+            }
         }
     }
 }

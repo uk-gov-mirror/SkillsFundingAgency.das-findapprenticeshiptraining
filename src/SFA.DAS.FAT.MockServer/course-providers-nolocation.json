@@ -16,6 +16,11 @@
     "sectorSubjectAreaTier2Description": "Engineering",
     "sectorSubjectAreaTier2": 4.1
   },
+  "location": {
+    "name":null,
+    "location": {
+      "geoPoint": null}
+  },
   "trainingCourseProviders": [
     {
       "providerId": 1001,

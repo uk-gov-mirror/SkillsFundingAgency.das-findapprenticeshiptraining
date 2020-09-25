@@ -252,6 +252,11 @@
   ],
   "total": 12,
   "location": {
-    "name":"Camden, Camden"
+    "name":"Camden, Camden",
+    "location": {
+      "geoPoint": [
+        51.289916,
+        -0.773876
+      ]}
   }
 }

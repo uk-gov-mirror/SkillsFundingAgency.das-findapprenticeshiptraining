@@ -17,6 +17,10 @@
     "sectorSubjectAreaTier2": 4.1
     
   },
+  "providersCount": {
+    "providersAtLocation": 3,
+    "totalProviders": 3
+  },
   "location": {
     "name":"Camden, Camden",
     "location": {

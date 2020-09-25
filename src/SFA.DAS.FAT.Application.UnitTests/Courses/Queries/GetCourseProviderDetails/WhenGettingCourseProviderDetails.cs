@@ -68,6 +68,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviderDet
             actual.AdditionalCourses.Should().BeEquivalentTo(courseProviderResponse.AdditionalCourses);
             actual.Location.Should().Be(courseProviderResponse.Location.Name);
             actual.LocationGeoPoint.Should().BeEquivalentTo(courseProviderResponse.Location.LocationPoint.GeoPoint);
+            actual.TotalProviders.Should().Be(courseProviderResponse.ProvidersCount.TotalProviders);
         }
 
         [Test, MoqAutoData]

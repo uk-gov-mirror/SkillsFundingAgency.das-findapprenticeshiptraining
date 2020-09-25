@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoFixture.DataAnnotations;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using Moq;
@@ -52,13 +53,13 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourse
             //Arrange
             validationResult.ValidationDictionary.Clear();
             mockValidator.Setup(x => x.ValidateAsync(request)).ReturnsAsync(validationResult);
-            mockService.Setup(x => x.GetCourse(request.CourseId)).ReturnsAsync(courseResponse);
+            mockService.Setup(x => x.GetCourse(request.CourseId, request.Lat, request.Lon)).ReturnsAsync(courseResponse);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
             
             //Assert
-            mockService.Verify(x=>x.GetCourse(request.CourseId), Times.Once);
+            mockService.Verify(x=>x.GetCourse(request.CourseId, request.Lat, request.Lon), Times.Once);
             Assert.IsNotNull(actual);
             actual.Course.Should().BeEquivalentTo(courseResponse.Course);
         }
@@ -74,13 +75,13 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourse
             //Arrange
             validationResult.ValidationDictionary.Clear();
             mockValidator.Setup(x => x.ValidateAsync(request)).ReturnsAsync(validationResult);
-            mockService.Setup(x => x.GetCourse(request.CourseId)).ReturnsAsync(new TrainingCourse());
+            mockService.Setup(x => x.GetCourse(request.CourseId, request.Lat, request.Lon)).ReturnsAsync(new TrainingCourse());
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
             
             //Assert
-            mockService.Verify(x=>x.GetCourse(request.CourseId), Times.Once);
+            mockService.Verify(x=>x.GetCourse(request.CourseId, request.Lat, request.Lon), Times.Once);
             Assert.IsNull(actual.Course);
         }
     }

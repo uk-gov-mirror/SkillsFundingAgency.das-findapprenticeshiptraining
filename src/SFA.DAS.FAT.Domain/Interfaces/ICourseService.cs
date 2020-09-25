@@ -7,7 +7,7 @@ namespace SFA.DAS.FAT.Domain.Interfaces
 {
     public interface ICourseService
     {
-        Task<TrainingCourse> GetCourse(int courseId);
+        Task<TrainingCourse> GetCourse(int courseId, double lat, double lon);
         Task<TrainingCourses> GetCourses(string keyword, List<Guid> requestRouteIds, List<int> requestLevels, OrderBy orderBy);
         Task<TrainingCourseProviders> GetCourseProviders(int courseId, string queryLocation, ProviderSortBy sortBy);
         Task<TrainingCourseProviderDetails> GetCourseProviderDetails(int providerId, int standardId, string location);

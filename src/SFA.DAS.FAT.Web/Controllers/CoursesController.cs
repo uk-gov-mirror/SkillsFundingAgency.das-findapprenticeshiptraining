@@ -63,7 +63,13 @@ namespace SFA.DAS.FAT.Web.Controllers
         [Route("{id}", Name = RouteNames.CourseDetails)]
         public async Task<IActionResult> CourseDetail(int id)
         {
-            var result = await _mediator.Send(new GetCourseQuery {CourseId = id});
+            var location = _cookieStorageService.Get(Constants.LocationCookieName);
+            var result = await _mediator.Send(new GetCourseQuery
+            {
+                CourseId = id,
+                Lat = location?.Lat ?? 0,
+                Lon = location?.Lon ?? 0
+            });
             
             var viewModel = (CourseViewModel)result.Course;
             viewModel.ProvidersCount = result.ProvidersCount?.TotalProviders;

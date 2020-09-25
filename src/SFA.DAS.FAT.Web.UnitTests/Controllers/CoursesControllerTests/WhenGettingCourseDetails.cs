@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
+using SFA.DAS.FAT.Domain.Configuration;
+using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.FAT.Web.Controllers;
 using SFA.DAS.FAT.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
@@ -38,6 +40,37 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             var actualModel = actualResult.Model as CourseViewModel;
             Assert.IsNotNull(actualModel);
             actualModel.ProvidersCount.Should().Be(response.ProvidersCount.TotalProviders);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_There_Is_A_Location_Cookie_The_Lat_Lon_Are_Passed_To_The_Query(
+            int standardCode,
+            GetCourseResult response,
+            LocationCookieItem locationCookieItem,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService, 
+            [Greedy]CoursesController controller)
+        {
+            //Arrange
+            cookieStorageService.Setup(x => x.Get(Constants.LocationCookieName))
+                .Returns(locationCookieItem);
+            mediator.Setup(x => 
+                    x.Send(It.Is<GetCourseQuery>(c => 
+                        c.CourseId.Equals(standardCode)
+                        && c.Lat.Equals(locationCookieItem.Lat)
+                        && c.Lon.Equals(locationCookieItem.Lon)
+                        ),It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+            
+            //Act
+            var actual = await controller.CourseDetail(standardCode);
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            var actualResult = actual as ViewResult;
+            Assert.IsNotNull(actualResult);
+            var actualModel = actualResult.Model as CourseViewModel;
+            Assert.IsNotNull(actualModel);
         }
     }
 }

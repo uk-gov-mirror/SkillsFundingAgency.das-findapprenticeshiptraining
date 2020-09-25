@@ -17,6 +17,8 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
         [Test, MoqAutoData]
         public async Task Then_The_Api_Client_Is_Called_With_The_Request(
             int courseId,
+            double lat,
+            double lon,
             string baseUrl,
             [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
             [Frozen] Mock<IApiClient> apiClient,
@@ -27,7 +29,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             var courseApiRequest = new GetCourseApiRequest(config.Object.Value.BaseUrl, courseId);
             
             //Act
-            await courseService.GetCourse(courseId);
+            await courseService.GetCourse(courseId, lat, lon);
             
             //Assert
             apiClient.Verify(x=>x.Get<TrainingCourse>(

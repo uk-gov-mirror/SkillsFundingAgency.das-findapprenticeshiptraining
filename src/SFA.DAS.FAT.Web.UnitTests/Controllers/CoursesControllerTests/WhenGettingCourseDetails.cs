@@ -21,11 +21,17 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         public async Task Then_The_Query_Is_Sent_And_Data_Retrieved_And_View_Shown(
             int standardCode,
             GetCourseResult response,
+            LocationCookieItem locationCookieItem,
             [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService, 
             [Greedy]CoursesController controller)
         {
             //Arrange
-            mediator.Setup(x => 
+            cookieStorageService
+                .Setup(x => x.Get(Constants.LocationCookieName))
+                .Returns(locationCookieItem);
+            mediator
+                .Setup(x => 
                     x.Send(It.Is<GetCourseQuery>(c => 
                         c.CourseId.Equals(standardCode)),It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
@@ -41,6 +47,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             Assert.IsNotNull(actualModel);
             actualModel.TotalProvidersCount.Should().Be(response.ProvidersCount.TotalProviders);
             actualModel.ProvidersAtLocationCount.Should().Be(response.ProvidersCount.ProvidersAtLocation);
+            actualModel.LocationName.Should().Be(locationCookieItem.Name);
         }
 
         [Test, MoqAutoData]

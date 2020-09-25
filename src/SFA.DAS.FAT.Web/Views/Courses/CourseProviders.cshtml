@@ -1,4 +1,4 @@
-@using SFA.DAS.FAT.Web.Infrastructure
+﻿@using SFA.DAS.FAT.Web.Infrastructure
 @using SFA.DAS.FAT.Domain.Extensions
 @using SFA.DAS.FAT.Domain.Courses
 @model SFA.DAS.FAT.Web.Models.CourseProvidersViewModel
@@ -65,13 +65,13 @@
                     };
                     <p class="govuk-body govuk-!-margin-bottom-0">
                         <span style="margin-right: 10px">@Model.Location</span>
-                        <a asp-route="@RouteNames.CourseProviders" asp-all-route-data="@routeData" class="govuk-link govuk-link--no-visited-state">Remove&nbsp;location</a>
+                        <a asp-route="@RouteNames.CourseProviders" asp-all-route-data="@routeData" class="govuk-link govuk-link--no-visited-state" id="lnk-remove-location">Remove&nbsp;location</a>
                     </p>    
                 }
                 else
                 {
                     <p class="govuk-body govuk-!-margin-bottom-2">Show only providers who offer this training for the apprenticeship location.</p>
-                    <p class="govuk-body govuk-!-margin-bottom-0"><a href="#search-location" class="govuk-link govuk-link--no-visited-state">Enter&nbsp;location</a></p>
+                    <p class="govuk-body govuk-!-margin-bottom-0"><a href="#search-location" class="govuk-link govuk-link--no-visited-state" id="lnk-enter-location">Enter&nbsp;location</a></p>
                 }
                 
             </div>
@@ -109,7 +109,9 @@
 
             <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3">
 
-            <div data-list>
+            <div class="das-search-results">
+                <ol class="das-search-results__list">
+
                 @foreach (var provider in Model.Providers)
                 {
                     var routeData = new Dictionary<string, string>
@@ -119,46 +121,64 @@
                         {"providerId",provider.ProviderId.ToString()}
                     };
                     
-                    
-                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-                        <a class="govuk-link govuk-link--no-visited-state" id="provider-@provider.ProviderId" asp-all-route-data="@routeData"  asp-route="@RouteNames.CourseProviderDetails">
-                            @provider.Name
-                        </a>
-                    </h2>
-                    <ul class="govuk-list">
-
-                        @if (Model.HasLocations)
-                        {
-                            <li>
-                                <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2">
-                                    @foreach (var mode in provider.DeliveryModes)
-                                    {
-                                        <li class="das-icon-list__list-item">
-                                            @if (mode.IsAvailable)
-                                            {
-                                                <span class="das-icon-list__icon das-icon-list__icon--tick">available</span>
-                                            }
-                                            else
-                                            {
-                                                <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
-                                            }
-                                            @mode.DeliveryModeType.GetDescription() @mode.FormattedDistanceInMiles
-                                        </li>
-                                    }
-                                </ul>
-                            </li>
-                        }
-                        @if (provider.OverallCohort != null)
-                        {
+                    <li class="das-search-results__list-item">
+                        <h2 class="govuk-heading-m das-search-results__heading">
+                            <a class="das-search-results__link" id="provider-@provider.ProviderId" asp-all-route-data="@routeData"  asp-route="@RouteNames.CourseProviderDetails">
+                                @provider.Name
+                            </a>
+                        </h2>
+                        <ul class="govuk-list">
+                            @if (Model.HasLocations)
+                            {
+                                <li>
+                                    <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2">
+                                        @foreach (var mode in provider.DeliveryModes)
+                                        {
+                                            <li class="das-icon-list__list-item" id="@provider.ProviderId-@mode.DeliveryModeType">
+                                                @if (mode.IsAvailable)
+                                                {
+                                                    <span class="das-icon-list__icon das-icon-list__icon--tick">available</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
+                                                }
+                                                @mode.DeliveryModeType.GetDescription() @mode.FormattedDistanceInMiles
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                            @if (provider.OverallCohort != null)
+                            {
+                                <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
+                                    <span class="govuk-!-font-size-16">@provider.OverallAchievementRatePercentage pass rate</span>
+                                    <span class="das-text--muted">(out of @provider.OverallCohort apprentices)</span>
+                                </li>
+                            }
                             <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
-                                <span class="govuk-!-font-size-16">@provider.OverallAchievementRatePercentage pass rate</span>
-                                <span class="das-text--muted">(out of @provider.OverallCohort apprentices)</span>
-                            </li>
-                        }
 
-                    </ul>
-                    <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-2 govuk-!-margin-bottom-3">
+
+                                @if (provider.TotalFeedbackRating != 0)
+                                {
+                                    <span class="das-rating das-rating--@(provider.TotalFeedbackRating > 2 ? "good" : "poor")" role="img" aria-label="Rating: @provider.TotalFeedbackRating out of 4 stars">
+                                        <span aria-hidden="true" class="das-rating__icon-star"></span>
+                                        <span aria-hidden="true" class="das-rating__icon-star@(provider.TotalFeedbackRating < 2 ? "--empty" : "")"></span>
+                                        <span aria-hidden="true" class="das-rating__icon-star@(provider.TotalFeedbackRating < 3 ? "--empty" : "")"></span>
+                                        <span aria-hidden="true" class="das-rating__icon-star@(provider.TotalFeedbackRating < 4 ? "--empty" : "")"></span>
+                                    </span>    
+                                    <span class="das-rating__label--@(provider.TotalFeedbackRating > 2 ? "good" : "poor")">@provider.TotalFeedbackText.GetDescription()</span>
+                                }
+                                
+                                <span class="das-text--muted">@provider.TotalFeedbackRatingText</span>
+                                                                
+                                        
+                            </li>
+
+                        </ul>
+                    </li>
                 }
+                </ol>
             </div>
 
         </div>

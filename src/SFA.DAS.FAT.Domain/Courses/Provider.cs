@@ -14,6 +14,7 @@ namespace SFA.DAS.FAT.Domain.Courses
         public int? NationalOverallCohort { get; set; }
         public decimal? NationalOverallAchievementRate { get; set; }
         public IEnumerable<DeliveryMode> DeliveryModes { get; set; }
+        public Feedback Feedback { get; set; }
     }
 
     public class DeliveryMode
@@ -33,5 +34,11 @@ namespace SFA.DAS.FAT.Domain.Courses
         DayRelease = 1,
         BlockRelease = 2,
         NotFound = 3
+    }
+
+    public class Feedback
+    {
+        public int TotalEmployerResponses { get; set; }
+        public int TotalFeedbackRating { get; set; }
     }
 }

@@ -26,7 +26,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
         {
             //Arrange
             
-            var courseApiRequest = new GetCourseApiRequest(config.Object.Value.BaseUrl, courseId);
+            var courseApiRequest = new GetCourseApiRequest(config.Object.Value.BaseUrl, courseId, lat, lon);
             
             //Act
             await courseService.GetCourse(courseId, lat, lon);

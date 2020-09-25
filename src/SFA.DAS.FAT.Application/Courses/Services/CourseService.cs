@@ -21,7 +21,7 @@ namespace SFA.DAS.FAT.Application.Courses.Services
         }
         public async Task<TrainingCourse> GetCourse(int courseId, double lat, double lon)
         {
-            var request = new GetCourseApiRequest(_config.BaseUrl, courseId);
+            var request = new GetCourseApiRequest(_config.BaseUrl, courseId, lat, lon);
 
             var response = await _apiClient.Get<TrainingCourse>(request);
 

@@ -72,7 +72,8 @@ namespace SFA.DAS.FAT.Web.Controllers
             });
             
             var viewModel = (CourseViewModel)result.Course;
-            viewModel.ProvidersCount = result.ProvidersCount?.TotalProviders;
+            viewModel.TotalProvidersCount = result.ProvidersCount?.TotalProviders;
+            viewModel.ProvidersAtLocationCount = result.ProvidersCount?.ProvidersAtLocation;
             
             return View(viewModel);
         }

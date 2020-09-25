@@ -20,7 +20,8 @@ namespace SFA.DAS.FAT.Web.Models
         public int TypicalDuration { get ; private set ; }
         public int Level { get ; private set ; }
         public string MaximumFunding { get ; set ; }
-        public int? ProvidersCount { get; set; }
+        public int? TotalProvidersCount { get; set; }
+        public int? ProvidersAtLocationCount { get; set; }
         public bool OtherBodyApprovalRequired { get; set; }
         public DateTime? LastDateStarts { get; set; }
         public bool AfterLastStartDate { get; set; }

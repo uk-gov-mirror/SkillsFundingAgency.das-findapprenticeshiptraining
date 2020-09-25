@@ -39,7 +39,8 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             Assert.IsNotNull(actualResult);
             var actualModel = actualResult.Model as CourseViewModel;
             Assert.IsNotNull(actualModel);
-            actualModel.ProvidersCount.Should().Be(response.ProvidersCount.TotalProviders);
+            actualModel.TotalProvidersCount.Should().Be(response.ProvidersCount.TotalProviders);
+            actualModel.ProvidersAtLocationCount.Should().Be(response.ProvidersCount.ProvidersAtLocation);
         }
 
         [Test, MoqAutoData]

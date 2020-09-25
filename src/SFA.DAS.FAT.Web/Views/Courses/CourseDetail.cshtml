@@ -109,7 +109,15 @@
                         <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship Location</h3>
                         <p class="govuk-body"><span class="govuk-!-margin-right-2">@Model.LocationName</span> <a class="govuk-link" asp-route="@RouteNames.CourseDetails" asp-route-id="@Model.Id" asp-route-location="-1" >Remove location</a></p>
                         <p class="govuk-body das-text--error das-text--error-icon">@Model.ProvidersAtLocationCount providers available for this apprenticeship location</p>
-                        <p class="govuk-body">@Model.TotalProvidersCount providers available at other locations</p>
+                        @if (Model.TotalProvidersCount == 1)
+                        {
+                            <p class="govuk-body">One provider available for this apprenticeship location</p>
+                        }
+                        else
+                        {
+                            <p class="govuk-body">@Model.TotalProvidersCount providers available for this apprenticeship location</p>    
+                        }
+                        
                         <p class="govuk-body govuk-!-margin-bottom-0"><a class="govuk-button govuk-!-margin-bottom-0" asp-route="@RouteNames.CourseProviders" asp-route-id="@Model.Id" asp-route-location="-1">View all providers for this course</a></p>
                     </div>
                 }

@@ -34,7 +34,7 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Steps
             var json = DataFileManager.GetFile("course-provider-details-notfound.json");
             var expectedApiResponse = JsonConvert.DeserializeObject<TrainingCourseProviderDetails>(json);
 
-            actualContent.Should().Be(HttpUtility.HtmlEncode(expectedApiResponse.CourseProviderDetails.DeliveryModes.Count() == 1));
+            actualContent.Should().Be(HttpUtility.HtmlEncode(expectedApiResponse.CourseProviderDetails.DeliveryModes.Count() == 1));//????
         }
 
     }

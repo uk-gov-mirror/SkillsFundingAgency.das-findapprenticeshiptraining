@@ -107,22 +107,19 @@
             <h2 class="govuk-heading-m">@Model.TotalMessage</h2>
             @if (Model.Total > 1 && Model.HasLocation)
             {
+                <p class="govuk-body govuk-!-margin-bottom-6">
+                Sort by:
                 @if (Model.SortOrder == ProviderSortBy.Name)
                 {
-                    <p class="govuk-body govuk-!-margin-bottom-6">
-                        Sorted by:
-                        <span class="govuk-!-font-weight-bold">Name,</span>
-                        <a id="sort-by-distance" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Distance (nearest first)</a>
-                    </p>
+                    <a id="sort-by-distance" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Distance (nearest first)</a>
+                    @:,<span class="govuk-!-font-weight-bold">Name</span>
                 }
                 else
                 {
-                    <p class="govuk-body govuk-!-margin-bottom-6">
-                        Sorted by:
-                        <a id="sort-by-name" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Name</a>,
-                        <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>
-                    </p>
+                    @:<span class="govuk-!-font-weight-bold">Distance (nearest first)</span>,
+                    <a id="sort-by-name" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Name</a>
                 }
+                </p>
             }
             else if (Model.Total > 1)
             {

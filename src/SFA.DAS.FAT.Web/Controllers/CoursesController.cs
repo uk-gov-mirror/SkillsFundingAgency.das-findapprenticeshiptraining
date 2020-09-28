@@ -105,16 +105,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                 }; 
                 UpdateLocationCookie(cookieResult);
                 
-                return View(new CourseProvidersViewModel
-                {
-                    Course = result.Course,
-                    Providers = result.Providers.Select(c=>(ProviderViewModel)c), 
-                    Total = result.Total,
-                    TotalFiltered = result.TotalFiltered,
-                    Location = result.Location,
-                    SortOrder = request.SortOrder,
-                    DeliveryModes = BuildDeliveryModeOptionViewModel(request.DeliveryModes)
-                });
+                return View(new CourseProvidersViewModel(request, result));
             }
             catch (Exception e)
             {
@@ -176,23 +167,6 @@ namespace SFA.DAS.FAT.Web.Controllers
             {
                 _cookieStorageService.Update(Constants.LocationCookieName, location, 2);    
             }
-        }
-
-        private static IEnumerable<DeliveryModeOptionViewModel> BuildDeliveryModeOptionViewModel(IReadOnlyList<DeliveryModeType> selectedDeliveryModeTypes)
-        {
-            var deliveryModeOptionViewModels = new List<DeliveryModeOptionViewModel>();
-
-            foreach (DeliveryModeType deliveryModeType in Enum.GetValues(typeof(DeliveryModeType)))
-            {
-                deliveryModeOptionViewModels.Add(new DeliveryModeOptionViewModel
-                {
-                    DeliveryModeType = deliveryModeType,
-                    Description = deliveryModeType.GetDescription(),
-                    Selected = selectedDeliveryModeTypes.Any(type => type == deliveryModeType)
-                });
-            }
-
-            return deliveryModeOptionViewModels;
         }
     }
 }

@@ -42,6 +42,7 @@
                     @if (Model.Provider.DeliveryModes.FirstOrDefault(c => c.DeliveryModeType == DeliveryModeType.NotFound) != null)
                     {
                         <p class="govuk-body das-text--error das-text--error-icon">This training provider does not offer this course at the apprenticeship location</p>
+
                         if(Model.TotalProviders == 1)
                         {
                             <p class="govuk-body">There is one training provider for @Model.Course.TitleAndLevel in the apprenticeship location.</p>
@@ -51,6 +52,7 @@
                             <p class="govuk-body">There are @Model.TotalProviders training providers for @Model.Course.TitleAndLevel in the apprenticeship location.</p>
                         }
                         
+
                     }
                     else
                     {

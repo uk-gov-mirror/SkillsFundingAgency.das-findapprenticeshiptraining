@@ -26,7 +26,7 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Steps
         }
 
         [Then("there is a row for each course provider")]
-        public async Task ThenThePageContentIncludesTheFollowing()
+        public async Task ThenThereIsARowForEachCourseProvider()
         {
             var response = _context.Get<HttpResponseMessage>(ContextKeys.HttpResponse);
 
@@ -60,7 +60,7 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Steps
 
                 if (not == string.Empty)
                 {
-                    actualContent.Should().Contain(modeName, Exactly.Times(expectedApiResponse.Total));
+                    actualContent.Should().Contain(modeName, Exactly.Times(expectedApiResponse.Total + 1));// additional time in the filter ui
                 }
                 else
                 {

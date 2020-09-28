@@ -24,7 +24,7 @@
                     <div class="das-filter__header">
                         <h2 class="das-filter__heading">Filter</h2>
                     </div>
-                    @if (!string.IsNullOrEmpty(Model.Location))
+                    @if (Model.HasLocation)
                     {
                         var routeData = new Dictionary<string, string>
                         {
@@ -39,15 +39,44 @@
                             </div>
                             <h4 class="das-filter__selected-sub-heading">Apprenticeship location</h4>
                             <a asp-route="@RouteNames.CourseProviders" asp-all-route-data="routeData" title="Clear this filter '@Model.Location'" class="das-filter__tag">&lsquo;@Model.Location&rsquo;</a>
-                        </div>    
+                            @if (Model.BuildClearDeliveryModeLinks().Any())
+                            {
+                                <h4 class="das-filter__selected-sub-heading">Training options</h4>
+                                @foreach (var deliveryModeLink in Model.BuildClearDeliveryModeLinks())
+                                {
+                                    <a class="das-filter__tag" asp-querystring="@deliveryModeLink.Value" title="Clear this level filter @deliveryModeLink.Key">@deliveryModeLink.Key</a>
+                                }
+                            }
+                        </div>
                     }
                     <div class="das-filter__body das-!-show--from-tablet" id="fat-filter-options">
                         <form method="GET" asp-route="@RouteNames.CourseProviders" asp-route-id="@Model.Course.Id">
                             <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
+                            <div class="govuk-form-group">
+                                <label for="search-location" class="govuk-label"><span class="govuk-!-font-weight-bold govuk-!-font-size-24">Apprenticeship location</span></label>
+                                <input type="search" id="search-location" name="location" title="Search" class="govuk-input govuk-!-width-three-quarters" data-submit-on-selection="false" data-default-value="@Model.Location">
+                            </div>
+                            @if (Model.HasLocation)
+                            {
                                 <div class="govuk-form-group">
-                                    <label for="search-location" class="govuk-label"><span class="govuk-!-font-weight-bold govuk-!-font-size-24">Apprenticeship location</span></label>
-                                    <input type="search" id="search-location" name="location" title="Search" class="govuk-input govuk-!-width-three-quarters" data-submit-on-selection="false" data-default-value="@Model.Location">
+                                    <fieldset class="govuk-fieldset">
+                                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                            Training options
+                                        </legend>
+                                        <div class="govuk-checkboxes govuk-checkboxes--small">
+                                            @foreach (var mode in Model.DeliveryModes)
+                                            {
+                                                <div class="govuk-checkboxes__item">
+                                                    <input @(mode.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="deliveryMode-@mode.DeliveryModeType" name="deliveryModes" type="checkbox" value="@mode.DeliveryModeType"/>
+                                                    <label class="govuk-label govuk-checkboxes__label" for="deliveryMode-@mode.DeliveryModeType">
+                                                        @mode.Description
+                                                    </label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </fieldset>
                                 </div>
+                            }
                         </form>
                     </div>
                 </div>
@@ -56,7 +85,7 @@
         <div class="govuk-grid-column-two-thirds">
             <div class="das-highlight govuk-!-margin-top-0 govuk-!-margin-bottom-5">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
-                @if (Model.HasLocations)
+                @if (Model.HasLocation)
                 {
                     var routeData = new Dictionary<string, string>
                     {
@@ -76,7 +105,7 @@
                 
             </div>
             <h2 class="govuk-heading-m">@Model.TotalMessage</h2>
-            @if (Model.Total > 1 && Model.HasLocations)
+            @if (Model.Total > 1 && Model.HasLocation)
             {
                 @if (Model.SortOrder == ProviderSortBy.Name)
                 {
@@ -128,7 +157,7 @@
                             </a>
                         </h2>
                         <ul class="govuk-list">
-                            @if (Model.HasLocations)
+                            @if (Model.HasLocation)
                             {
                                 <li>
                                     <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2">

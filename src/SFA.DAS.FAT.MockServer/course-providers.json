@@ -299,6 +299,7 @@
     }
   ],
   "total": 12,
+  "totalFiltered": 10,
   "location": {
     "name":"Camden, Camden",
     "location": {
@@ -307,4 +308,5 @@
         -0.773876
       ]}
   }
+  
 }

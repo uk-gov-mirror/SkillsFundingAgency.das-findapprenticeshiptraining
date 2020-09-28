@@ -45,5 +45,9 @@
         <Content Include="locations.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        
+        <Content Include="course-provider-details-notfound.json" >
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 </Project>

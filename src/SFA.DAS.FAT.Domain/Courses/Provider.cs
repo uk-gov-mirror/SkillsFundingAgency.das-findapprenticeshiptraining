@@ -32,7 +32,8 @@ namespace SFA.DAS.FAT.Domain.Courses
     {
         Workplace = 0,
         DayRelease = 1,
-        BlockRelease = 2
+        BlockRelease = 2,
+        NotFound = 3
     }
 
     public class Feedback

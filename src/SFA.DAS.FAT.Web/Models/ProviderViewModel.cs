@@ -73,6 +73,15 @@ namespace SFA.DAS.FAT.Web.Models
             {
                 return new List<DeliveryModeViewModel>();
             }
+            var notFound = source.SingleOrDefault(mode => 
+                mode.DeliveryModeType == Domain.Courses.DeliveryModeType.NotFound);
+            if (source.Count == 1 && notFound != null)
+            {
+                return new List<DeliveryModeViewModel>
+                {
+                    new DeliveryModeViewModel().Map(notFound, DeliveryModeType.NotFound)
+                };
+            }
             
             var dayRelease = source.SingleOrDefault(mode =>
                 mode.DeliveryModeType == Domain.Courses.DeliveryModeType.DayRelease);
@@ -84,7 +93,8 @@ namespace SFA.DAS.FAT.Web.Models
             {
                 new DeliveryModeViewModel().Map(workPlace, DeliveryModeType.Workplace),
                 new DeliveryModeViewModel().Map(dayRelease, DeliveryModeType.DayRelease),
-                new DeliveryModeViewModel().Map(blockRelease, DeliveryModeType.BlockRelease)
+                new DeliveryModeViewModel().Map(blockRelease, DeliveryModeType.BlockRelease),
+                
             };
             
             return returnList;
@@ -107,7 +117,7 @@ namespace SFA.DAS.FAT.Web.Models
         {
             var viewModel = source ?? new DeliveryModeViewModel();
             viewModel.DeliveryModeType = deliveryModeType;
-            viewModel.IsAvailable = source != default;
+            viewModel.IsAvailable =  source != default;
             viewModel.FormattedDistanceInMiles = source != default && deliveryModeType != DeliveryModeType.Workplace
                 ? $"({source.DistanceInMiles:##.#} miles away)"
                 : null;
@@ -164,7 +174,9 @@ namespace SFA.DAS.FAT.Web.Models
         [Description("Day release")]
         DayRelease = 1,
         [Description("Block release")]
-        BlockRelease = 2
+        BlockRelease = 2,
+        [Description("Not Found")]
+        NotFound = 3
     }
 
     public enum ProviderRating

@@ -52,6 +52,10 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Steps
 
             foreach (var mode in Enum.GetValues(typeof(DeliveryModeType)).Cast<DeliveryModeType>())
             {
+                if (mode == DeliveryModeType.NotFound)
+                {
+                    continue;
+                }
                 var modeName = mode.GetDescription().Replace("’", "&#x2019;");// for some reason HtmlEncode doesn't encode '’'
 
                 if (not == string.Empty)

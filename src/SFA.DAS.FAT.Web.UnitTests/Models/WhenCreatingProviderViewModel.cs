@@ -283,5 +283,44 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             blockReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($"({distanceInMiles:##.#} miles away)");
             blockReleaseDeliveryMode.IsAvailable.Should().BeTrue();
         }
+
+        [Test, AutoData]
+        public void And_Has_NotFound_Then_Only_NotFound_Added_To_Delivery_Mode(Provider source)
+        {
+            // Arrange
+            source.DeliveryModes = new List<DeliveryMode>
+            {
+                new DeliveryMode
+                {
+                    DeliveryModeType = Domain.Courses.DeliveryModeType.NotFound
+                }
+            };
+
+            // Act
+            var actual = (ProviderViewModel)source;
+
+            // Assert
+            actual.DeliveryModes.Count().Should().Be(1);
+            actual.DeliveryModes.ToList().TrueForAll(x => x.DeliveryModeType == DeliveryModeType.NotFound).Should().BeTrue();
+        }
+
+        [Test, AutoData]
+        public void Then_Only_Three_Delivery_Modes_Are_Added_If_There_Is_No_NotFound(Provider source,
+            decimal distanceInMiles)
+        {
+            distanceInMiles += 0.324m;
+            source.DeliveryModes = new List<DeliveryMode>
+            {
+                new DeliveryMode
+                {
+                    DeliveryModeType = Domain.Courses.DeliveryModeType.BlockRelease,
+                    DistanceInMiles = distanceInMiles
+                }
+            };
+
+            var actual = (ProviderViewModel) source;
+            actual.DeliveryModes.Count().Should().Be(3);
+            actual.DeliveryModes.ToList().TrueForAll(x => x.DeliveryModeType == DeliveryModeType.NotFound).Should().BeFalse();
+        }
     }
 }

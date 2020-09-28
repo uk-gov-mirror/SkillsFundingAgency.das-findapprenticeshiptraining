@@ -44,7 +44,7 @@
                                 <h4 class="das-filter__selected-sub-heading">Training options</h4>
                                 @foreach (var deliveryModeLink in Model.BuildClearDeliveryModeLinks())
                                 {
-                                    <a class="das-filter__tag" asp-querystring="@deliveryModeLink.Value" title="Clear this level filter @deliveryModeLink.Key">@deliveryModeLink.Key</a>
+                                    <a class="das-filter__tag" asp-querystring="@deliveryModeLink.Value" title="Clear this training option filter @deliveryModeLink.Key">@deliveryModeLink.Key</a>
                                 }
                             }
                         </div>
@@ -80,6 +80,7 @@
                         </form>
                     </div>
                 </div>
+                <button class="govuk-button das-filter__toggle das-show-hide__button das-!-show--mobile" data-aria-controls="fat-filter@(Model.HasLocation ? "-options" : "")" data-button-string="filter @(Model.HasLocation ? " options" : "")" data-focus-id="Keyword">Show/hide</button>
             </div>
         </div>
         <div class="govuk-grid-column-two-thirds">

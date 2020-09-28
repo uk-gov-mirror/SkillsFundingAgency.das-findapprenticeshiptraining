@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +12,9 @@ using Microsoft.Extensions.Logging;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
 using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
 using SFA.DAS.FAT.Domain.Configuration;
-using SFA.DAS.FAT.Domain.Courses;
+using SFA.DAS.FAT.Domain.Extensions;
 using SFA.DAS.FAT.Domain.Interfaces;
+using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType;
 
 namespace SFA.DAS.FAT.Web.Controllers
 {
@@ -72,27 +74,29 @@ namespace SFA.DAS.FAT.Web.Controllers
         }
 
         [Route("{id}/providers", Name = RouteNames.CourseProviders)]
-        public async Task<IActionResult> CourseProviders(int id, string location, ProviderSortBy sortOrder)
+        public async Task<IActionResult> CourseProviders(GetCourseProvidersRequest request)
         {
             try
             {
-                location = UpdateLocationCookie(location);
+                var location = UpdateLocationCookie(request.Location);
                 
                 var result = await _mediator.Send(new GetCourseProvidersQuery
                 {
-                    CourseId = id,
+                    CourseId = request.Id,
                     Location = location,
-                    SortOrder = sortOrder
+                    DeliveryModes = request.DeliveryModes.Select(type => (Domain.Courses.DeliveryModeType)type),
+                    SortOrder = request.SortOrder
                 });
-                
+
                 return View(new CourseProvidersViewModel
                 {
                     Course = result.Course,
                     Providers = result.Providers.Select(c=>(ProviderViewModel)c), 
                     Total = result.Total,
+                    TotalFiltered = result.TotalFiltered,
                     Location = result.Location,
-                    SortOrder = sortOrder,
-                    HasLocations = !string.IsNullOrEmpty(location)
+                    SortOrder = request.SortOrder,
+                    DeliveryModes = BuildDeliveryModeOptionViewModel(request.DeliveryModes)
                 });
             }
             catch (Exception e)
@@ -144,6 +148,23 @@ namespace SFA.DAS.FAT.Web.Controllers
             _cookieStorageService.Update(Constants.LocationCookieName, location, 2);
             
             return location;
+        }
+
+        private static IEnumerable<DeliveryModeOptionViewModel> BuildDeliveryModeOptionViewModel(IReadOnlyList<DeliveryModeType> selectedDeliveryModeTypes)
+        {
+            var deliveryModeOptionViewModels = new List<DeliveryModeOptionViewModel>();
+
+            foreach (DeliveryModeType deliveryModeType in Enum.GetValues(typeof(DeliveryModeType)))
+            {
+                deliveryModeOptionViewModels.Add(new DeliveryModeOptionViewModel
+                {
+                    DeliveryModeType = deliveryModeType,
+                    Description = deliveryModeType.GetDescription(),
+                    Selected = selectedDeliveryModeTypes.Any(type => type == deliveryModeType)
+                });
+            }
+
+            return deliveryModeOptionViewModels;
         }
     }
 }

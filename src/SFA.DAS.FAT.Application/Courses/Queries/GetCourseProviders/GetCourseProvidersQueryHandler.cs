@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -24,7 +25,8 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders
                 Providers = courseProviders.CourseProviders,
                 Total = courseProviders.Total,
                 TotalFiltered = courseProviders.TotalFiltered,
-                Location = courseProviders.Location,
+                Location = courseProviders.Location?.Name,
+                LocationGeoPoint = courseProviders.Location?.LocationPoint?.GeoPoint
             };
         }
     }

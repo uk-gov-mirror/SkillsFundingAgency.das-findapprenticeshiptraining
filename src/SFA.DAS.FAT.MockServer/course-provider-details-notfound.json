@@ -14,6 +14,10 @@
         "standardPageUrl": "https://www.instituteforapprenticeships.org/apprenticeship-standards/software-developer/",
         "integratedDegree": ""
     },
+    "providersCount": {
+        "providersAtLocation": 4,
+        "totalProviders": 3
+    },
     "trainingCourseProvider": {
         "providerId": 1001,
         "name": "Lab trainings r us",
@@ -24,6 +28,10 @@
         "nationalOverallCohort": 7850,
         "overallAchievementRate": 64.2,
         "nationalOverallAchievementRate": 66.8,
+        "feedback": {
+          "totalEmployerResponses": 1,
+          "totalFeedbackRating": 1
+        },
         "deliveryModes": [
             {
                 "deliveryModeType": 3

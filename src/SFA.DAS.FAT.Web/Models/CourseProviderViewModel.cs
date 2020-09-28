@@ -8,6 +8,7 @@ namespace SFA.DAS.FAT.Web.Models
         public ProviderViewModel Provider { get; set; }
         public ProviderCoursesViewModel AdditionalCourses { get; set; }
         public string Location { get ; set ; }
+        public int TotalProviders { get ; set ; }
 
         public static implicit operator CourseProviderViewModel(GetCourseProviderResult provider)
         {
@@ -16,6 +17,7 @@ namespace SFA.DAS.FAT.Web.Models
                 Provider = provider.Provider,
                 Course = provider.Course,
                 AdditionalCourses = provider.AdditionalCourses,
+                TotalProviders = provider.ProvidersAtLocation
             };
         }
     }

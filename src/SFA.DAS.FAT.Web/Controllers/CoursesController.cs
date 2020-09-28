@@ -23,12 +23,12 @@ namespace SFA.DAS.FAT.Web.Controllers
     {
         private readonly ILogger<CoursesController> _logger;
         private readonly IMediator _mediator;
-        private readonly ICookieStorageService<string> _cookieStorageService;
+        private readonly ICookieStorageService<LocationCookieItem> _cookieStorageService;
 
         public CoursesController (
             ILogger<CoursesController> logger,
             IMediator mediator,
-            ICookieStorageService<string> cookieStorageService)
+            ICookieStorageService<LocationCookieItem> cookieStorageService)
         {
             _logger = logger;
             _mediator = mediator;
@@ -63,12 +63,21 @@ namespace SFA.DAS.FAT.Web.Controllers
         }
 
         [Route("{id}", Name = RouteNames.CourseDetails)]
-        public async Task<IActionResult> CourseDetail(int id)
+        public async Task<IActionResult> CourseDetail(int id, [FromQuery(Name="location")]string locationName)
         {
-            var result = await _mediator.Send(new GetCourseQuery {CourseId = id});
+            CheckLocation(locationName);
+            var location = _cookieStorageService.Get(Constants.LocationCookieName);
+            var result = await _mediator.Send(new GetCourseQuery
+            {
+                CourseId = id,
+                Lat = location?.Lat ?? 0,
+                Lon = location?.Lon ?? 0
+            });
             
             var viewModel = (CourseViewModel)result.Course;
-            viewModel.ProvidersCount = result.ProvidersCount;
+            viewModel.LocationName = location?.Name;
+            viewModel.TotalProvidersCount = result.ProvidersCount?.TotalProviders;
+            viewModel.ProvidersAtLocationCount = result.ProvidersCount?.ProvidersAtLocation;
             
             return View(viewModel);
         }
@@ -78,7 +87,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         {
             try
             {
-                var location = UpdateLocationCookie(request.Location);
+                var location = CheckLocation(request.Location);
                 
                 var result = await _mediator.Send(new GetCourseProvidersQuery
                 {
@@ -87,17 +96,16 @@ namespace SFA.DAS.FAT.Web.Controllers
                     DeliveryModes = request.DeliveryModes.Select(type => (Domain.Courses.DeliveryModeType)type),
                     SortOrder = request.SortOrder
                 });
-
-                return View(new CourseProvidersViewModel
+                
+                var cookieResult =new LocationCookieItem
                 {
-                    Course = result.Course,
-                    Providers = result.Providers.Select(c=>(ProviderViewModel)c), 
-                    Total = result.Total,
-                    TotalFiltered = result.TotalFiltered,
-                    Location = result.Location,
-                    SortOrder = request.SortOrder,
-                    DeliveryModes = BuildDeliveryModeOptionViewModel(request.DeliveryModes)
-                });
+                    Name = result.Location,
+                    Lat = result.LocationGeoPoint?.FirstOrDefault() ??0,
+                    Lon = result.LocationGeoPoint?.LastOrDefault() ??0
+                }; 
+                UpdateLocationCookie(cookieResult);
+                
+                return View(new CourseProvidersViewModel(request, result));
             }
             catch (Exception e)
             {
@@ -111,8 +119,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         {
             try
             {
-                location = UpdateLocationCookie(location);
-                
+                location = CheckLocation(location);
                 var result = await _mediator.Send(new GetCourseProviderQuery
                 {
                     ProviderId = providerId ,
@@ -120,9 +127,17 @@ namespace SFA.DAS.FAT.Web.Controllers
                     Location = location
                 });
 
+                var cookieResult =new LocationCookieItem
+                {
+                    Name = result.Location,
+                    Lat = result.LocationGeoPoint?.FirstOrDefault() ?? 0,
+                    Lon = result.LocationGeoPoint?.LastOrDefault() ?? 0
+                }; 
+                UpdateLocationCookie(cookieResult);
+                
                 var viewModel = (CourseProviderViewModel)result;
 
-                viewModel.Location = location;
+                viewModel.Location = cookieResult.Name;
                 return View(viewModel);
             }
             catch (Exception e)
@@ -132,39 +147,26 @@ namespace SFA.DAS.FAT.Web.Controllers
             }
         }
 
-        private string UpdateLocationCookie(string location)
+        private string CheckLocation(string location)
         {
             if (location == "-1")
             {
                 _cookieStorageService.Delete(Constants.LocationCookieName);
-                return string.Empty;
+                return "";
             }
-            
             if (string.IsNullOrEmpty(location))
             {
-                location = _cookieStorageService.Get(Constants.LocationCookieName);
+                location = _cookieStorageService.Get(Constants.LocationCookieName)?.Name;
             }
-            
-            _cookieStorageService.Update(Constants.LocationCookieName, location, 2);
-            
+
             return location;
         }
-
-        private static IEnumerable<DeliveryModeOptionViewModel> BuildDeliveryModeOptionViewModel(IReadOnlyList<DeliveryModeType> selectedDeliveryModeTypes)
+        private void UpdateLocationCookie(LocationCookieItem location)
         {
-            var deliveryModeOptionViewModels = new List<DeliveryModeOptionViewModel>();
-
-            foreach (DeliveryModeType deliveryModeType in Enum.GetValues(typeof(DeliveryModeType)))
+            if (!string.IsNullOrEmpty(location.Name) && location.Lat != 0 && location.Lon != 0)
             {
-                deliveryModeOptionViewModels.Add(new DeliveryModeOptionViewModel
-                {
-                    DeliveryModeType = deliveryModeType,
-                    Description = deliveryModeType.GetDescription(),
-                    Selected = selectedDeliveryModeTypes.Any(type => type == deliveryModeType)
-                });
+                _cookieStorageService.Update(Constants.LocationCookieName, location, 2);    
             }
-
-            return deliveryModeOptionViewModels;
         }
     }
 }

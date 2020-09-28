@@ -2,6 +2,6 @@
 {
     public class Constants
     {
-        public static string LocationCookieName => "SFA.DAS.FindApprenticeshipTraining.Location";
+        public static string LocationCookieName => "SFA.DAS.FindApprenticeshipTraining.SearchLocation";
     }
 }

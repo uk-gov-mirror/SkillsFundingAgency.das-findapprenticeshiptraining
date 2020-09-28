@@ -300,5 +300,13 @@
   ],
   "total": 12,
   "totalFiltered": 10,
-  "location": "Camden, Camden"
+  "location": {
+    "name":"Camden, Camden",
+    "location": {
+      "geoPoint": [
+        51.289916,
+        -0.773876
+      ]}
+  }
+  
 }

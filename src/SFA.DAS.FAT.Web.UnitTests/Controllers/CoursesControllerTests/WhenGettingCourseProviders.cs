@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,13 +10,11 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
 using SFA.DAS.FAT.Domain.Configuration;
-using SFA.DAS.FAT.Domain.Extensions;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.FAT.Web.Controllers;
 using SFA.DAS.FAT.Web.Infrastructure;
 using SFA.DAS.FAT.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
-using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType;
 
 namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
 {
@@ -44,44 +41,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             
             //Assert
             var actualModel = actual.Model as CourseProvidersViewModel;
-            actualModel.Providers.Should().BeEquivalentTo(response.Providers.Select(provider => (ProviderViewModel)provider));
-            actualModel.Course.Should().BeEquivalentTo((CourseViewModel)response.Course);
-            actualModel.Total.Should().Be(response.Total);
-            actualModel.TotalFiltered.Should().Be(response.TotalFiltered);
-            actualModel.Location.Should().Be(response.Location);
-            actualModel.SortOrder.Should().Be(request.SortOrder);
-            actualModel.HasLocation.Should().BeTrue();
-        }
-
-        [Test, MoqAutoData]
-        public async Task Then_Sets_DeliveryModes(
-            GetCourseProvidersRequest request,
-            GetCourseProvidersResult response,
-            [Frozen] Mock<IMediator> mediator,
-            [Greedy] CoursesController controller)
-        {
-            //Arrange
-            var expectedDeliveryModes = new List<DeliveryModeOptionViewModel>();
-            foreach (DeliveryModeType deliveryModeType in Enum.GetValues(typeof(DeliveryModeType)))
-            {
-                expectedDeliveryModes.Add(new DeliveryModeOptionViewModel
-                {
-                    DeliveryModeType = deliveryModeType,
-                    Description = deliveryModeType.GetDescription(),
-                    Selected = request.DeliveryModes.Any(type => type == deliveryModeType)
-                });
-            }
-            mediator.Setup(x => x.Send(
-                    It.IsAny<GetCourseProvidersQuery>(),
-                    It.IsAny<CancellationToken>()))
-                .ReturnsAsync(response);
-            
-            //Act
-            var actual = await controller.CourseProviders(request) as ViewResult;
-            
-            //Assert
-            var actualModel = actual.Model as CourseProvidersViewModel;
-            actualModel.DeliveryModes.Should().BeEquivalentTo(expectedDeliveryModes);
+            actualModel.Should().BeEquivalentTo(new CourseProvidersViewModel(request, response));
         }
 
         [Test, MoqAutoData]
@@ -89,7 +49,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             GetCourseProvidersRequest request,
             GetCourseProvidersResult response,
             [Frozen] Mock<IMediator> mediator,
-            [Frozen] Mock<ICookieStorageService<string>> cookieStorageService,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
             [Greedy] CoursesController controller)
         {
             //Arrange
@@ -105,7 +65,10 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             var actualModel = actual.Model as CourseProvidersViewModel;
             
             //Assert
-            cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,request.Location,2));
+            cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,
+                It.Is<LocationCookieItem>(c=>c.Name.Equals(response.Location)
+                                          && c.Lat.Equals(response.LocationGeoPoint.FirstOrDefault())
+                                          && c.Lon.Equals(response.LocationGeoPoint.LastOrDefault())),2));
             actualModel.HasLocation.Should().BeTrue();
         }
 
@@ -114,10 +77,11 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             GetCourseProvidersRequest request,
             GetCourseProvidersResult response,
             [Frozen] Mock<IMediator> mediator,
-            [Frozen] Mock<ICookieStorageService<string>> cookieStorageService,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
             [Greedy] CoursesController controller)
         {
             //Arrange
+            response.Location = string.Empty;
             request.Location = "-1";
             response.Location = null;
             mediator.Setup(x => x.Send(
@@ -132,11 +96,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             
             //Assert
             var actualModel = actual.Model as CourseProvidersViewModel;
-            actualModel.Providers.Should().BeEquivalentTo(response.Providers.Select(provider => (ProviderViewModel)provider));
-            actualModel.Course.Should().BeEquivalentTo((CourseViewModel)response.Course);
-            actualModel.Total.Should().Be(response.Total);
-            actualModel.TotalFiltered.Should().Be(response.TotalFiltered);
-            actualModel.SortOrder.Should().Be(request.SortOrder);
             actualModel.HasLocation.Should().BeFalse();
             cookieStorageService.Verify(x=>x.Delete(Constants.LocationCookieName));
         }
@@ -144,16 +103,16 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         [Test, MoqAutoData]
         public async Task Then_If_There_Is_Location_Stored_In_Cookie_It_Is_Used_For_Results_And_Cookie_Updated(
             GetCourseProvidersRequest request,
-            string locationFromCookie,
+            LocationCookieItem location,
             GetCourseProvidersResult response,
             [Frozen] Mock<IMediator> mediator,
-            [Frozen] Mock<ICookieStorageService<string>> cookieStorageService,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
             [Greedy] CoursesController controller)
         {
             //Arrange
             cookieStorageService
                 .Setup(x => x.Get(Constants.LocationCookieName))
-                .Returns(locationFromCookie);
+                .Returns(location);
             mediator
                 .Setup(x => x.Send(
                     It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id)
@@ -169,7 +128,13 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             var actualModel = actual.Model as CourseProvidersViewModel;
             actualModel.Providers.Should().BeEquivalentTo(response.Providers.Select(provider => (ProviderViewModel)provider));
             actualModel.HasLocation.Should().BeTrue();
-            cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,request.Location,2));
+            cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,
+                It.Is<LocationCookieItem>(c=>
+                    c.Name.Equals(response.Location)
+                    && c.Lat.Equals(response.LocationGeoPoint.FirstOrDefault())
+                    && c.Lon.Equals(response.LocationGeoPoint.LastOrDefault())
+                    )
+                ,2));
         }
 
         [Test, MoqAutoData]

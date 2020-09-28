@@ -34,7 +34,10 @@
           "totalFeedbackRating": 1
         }
       },
-  
+  "providersCount": {
+    "providersAtLocation": 3,
+    "totalProviders": 3
+  },
   "additionalCourses": {
     "total": 10,
     "courses": [

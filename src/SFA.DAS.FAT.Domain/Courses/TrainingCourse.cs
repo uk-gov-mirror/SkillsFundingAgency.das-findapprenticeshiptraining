@@ -8,6 +8,6 @@ namespace SFA.DAS.FAT.Domain.Courses
         public Course Course { get; set; }
 
         [JsonProperty("providersCount")] 
-        public int ProvidersCount { get; set; }
+        public ProvidersCount ProvidersCount { get; set; }
     }
 }

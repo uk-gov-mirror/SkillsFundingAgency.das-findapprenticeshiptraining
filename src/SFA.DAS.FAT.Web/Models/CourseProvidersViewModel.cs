@@ -1,11 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
 using SFA.DAS.FAT.Domain.Courses;
+using SFA.DAS.FAT.Domain.Extensions;
 
 namespace SFA.DAS.FAT.Web.Models
 {
     public class CourseProvidersViewModel
     {
+        public CourseProvidersViewModel(GetCourseProvidersRequest request, GetCourseProvidersResult result)
+        {
+            Course = result.Course;
+            Providers = result.Providers.Select(c => (ProviderViewModel)c);
+            Total = result.Total;
+            TotalFiltered = result.TotalFiltered;
+            Location = result.Location;
+            SortOrder = request.SortOrder;
+            DeliveryModes = BuildDeliveryModeOptionViewModel(request.DeliveryModes);
+        }
+
         public IEnumerable<ProviderViewModel> Providers { get; set; }
         public CourseViewModel Course { get; set; }
         public int Total { get; set; }
@@ -26,7 +40,7 @@ namespace SFA.DAS.FAT.Web.Models
         }
 
         public IEnumerable<DeliveryModeOptionViewModel> DeliveryModes { get; set; }
-
+        
         public Dictionary<string, string> BuildClearDeliveryModeLinks()
         {
             var links = new Dictionary<string, string>();
@@ -53,6 +67,23 @@ namespace SFA.DAS.FAT.Web.Models
                 : TotalFiltered;
 
             return $"{totalToUse} result{(totalToUse!=1 ? "s": "")}";
+        }
+
+        private static IEnumerable<DeliveryModeOptionViewModel> BuildDeliveryModeOptionViewModel(IReadOnlyList<DeliveryModeType> selectedDeliveryModeTypes)
+        {
+            var deliveryModeOptionViewModels = new List<DeliveryModeOptionViewModel>();
+
+            foreach (DeliveryModeType deliveryModeType in Enum.GetValues(typeof(DeliveryModeType)))
+            {
+                deliveryModeOptionViewModels.Add(new DeliveryModeOptionViewModel
+                {
+                    DeliveryModeType = deliveryModeType,
+                    Description = deliveryModeType.GetDescription(),
+                    Selected = selectedDeliveryModeTypes.Any(type => type == deliveryModeType)
+                });
+            }
+
+            return deliveryModeOptionViewModels;
         }
     }
 }

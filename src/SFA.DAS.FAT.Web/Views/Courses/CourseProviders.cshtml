@@ -80,7 +80,7 @@
                         </form>
                     </div>
                 </div>
-                <button class="govuk-button das-filter__toggle das-show-hide__button das-!-show--mobile" data-aria-controls="fat-filter@(Model.HasLocation ? "-options" : "")" data-button-string="filter @(Model.HasLocation ? " options" : "")" data-focus-id="Keyword">Show/hide</button>
+                <button class="govuk-button das-filter__toggle das-show-hide__button das-!-show--mobile" data-aria-controls="fat-filter@(Model.HasLocation ? "-options" : "")" data-button-string="filter @(Model.HasLocation ? " options" : "")" data-focus-id="search-location">Show/hide</button>
             </div>
         </div>
         <div class="govuk-grid-column-two-thirds">
@@ -101,7 +101,7 @@
                 else
                 {
                     <p class="govuk-body govuk-!-margin-bottom-2">Show only providers who offer this training for the apprenticeship location.</p>
-                    <p class="govuk-body govuk-!-margin-bottom-0"><a href="#search-location" class="govuk-link govuk-link--no-visited-state" id="lnk-enter-location">Enter&nbsp;location</a></p>
+                    <p class="govuk-body govuk-!-margin-bottom-0" data-module="das-show-hide"><a href="#search-location" class="govuk-link govuk-link--no-visited-state das-show-hide__button" data-aria-controls="fat-filter" id="lnk-enter-location">Enter&nbsp;location</a></p>
                 }
                 
             </div>

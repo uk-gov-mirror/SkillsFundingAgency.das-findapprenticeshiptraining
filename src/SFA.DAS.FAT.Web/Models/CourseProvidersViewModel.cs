@@ -18,6 +18,7 @@ namespace SFA.DAS.FAT.Web.Models
             Location = result.Location;
             SortOrder = request.SortOrder;
             DeliveryModes = BuildDeliveryModeOptionViewModel(request.DeliveryModes);
+            ProviderRatings = BuildProviderRatingOptionViewModel(request.ProviderRatings);
         }
 
         public IEnumerable<ProviderViewModel> Providers { get; set; }
@@ -61,6 +62,25 @@ namespace SFA.DAS.FAT.Web.Models
             return links;
         }
 
+        public Dictionary<string, string> BuildClearProviderRatingLinks()
+        {
+            var links = new Dictionary<string, string>();
+
+            foreach (var providerRating in ProviderRatings.Where(model => model.Selected))
+            {
+                var otherSelected = ProviderRatings
+                    .Where(viewModel =>
+                        viewModel.Selected &&
+                        viewModel.ProviderRatingType != providerRating.ProviderRatingType)
+                    .Select(viewModel => viewModel.ProviderRatingType);
+                var link = $"?location={Location}&providerRatings={string.Join("&providerRatings=", otherSelected)}&sortorder={SortOrder}";
+
+                links.Add(providerRating.Description, link);
+            }
+
+            return links;
+        }
+
         private string GetTotalMessage()
         {
             var totalToUse = DeliveryModes == null || DeliveryModes.All(model => !model.Selected)
@@ -85,6 +105,23 @@ namespace SFA.DAS.FAT.Web.Models
             }
 
             return deliveryModeOptionViewModels;
+        }
+
+        private static IEnumerable<ProviderRatingOptionViewModel> BuildProviderRatingOptionViewModel(IReadOnlyList<ProviderRating> selectedProviderRatingTypes)
+        {
+            var providerRatingOptionViewModel = new List<ProviderRatingOptionViewModel>();
+
+            foreach (ProviderRating providerRatingType in Enum.GetValues(typeof(ProviderRating)))
+            {
+                providerRatingOptionViewModel.Add(new ProviderRatingOptionViewModel
+                {
+                    ProviderRatingType = providerRatingType,
+                    Description = providerRatingType.GetDescription(),
+                    Selected = selectedProviderRatingTypes.Any(type => type == providerRatingType)
+                });
+            }
+
+            return providerRatingOptionViewModel;
         }
     }
 }

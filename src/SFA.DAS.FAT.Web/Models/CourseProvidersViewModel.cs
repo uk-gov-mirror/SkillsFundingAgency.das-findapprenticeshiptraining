@@ -40,7 +40,8 @@ namespace SFA.DAS.FAT.Web.Models
         }
 
         public IEnumerable<DeliveryModeOptionViewModel> DeliveryModes { get; set; }
-        
+        public IEnumerable<ProviderRatingOptionViewModel> ProviderRatings { get; set; }
+
         public Dictionary<string, string> BuildClearDeliveryModeLinks()
         {
             var links = new Dictionary<string, string>();

@@ -66,26 +66,26 @@
                                 <label for="search-location" class="govuk-label"><span class="govuk-!-font-weight-bold govuk-!-font-size-24">Apprenticeship location</span></label>
                                 <input type="search" id="search-location" name="location" title="Search" class="govuk-input govuk-!-width-three-quarters" data-submit-on-selection="false" data-default-value="@Model.Location">
                             </div>
-                            <div class="govuk-form-group">
-                                <fieldset class="govuk-fieldset">
-                                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                        Average Employer Review
-                                    </legend>
-                                    <div class="govuk-checkboxes govuk-checkboxes--small">
-                                        @foreach (var mode in Model.ProviderRatings )
-                                        {
-                                            <div class="govuk-checkboxes__item">
-                                                <input @(mode.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="providerRating-@mode.ProviderRatingType" name="providerRating" type="checkbox" value="@mode.ProviderRatingType" />
-                                                <label class="govuk-label govuk-checkboxes__label" for="providerRating-@mode.ProviderRatingType">
-                                                    @mode.Description
-                                                </label>
-                                            </div>
-                                        }
-                                    </div>
-                                </fieldset>
-                            </div>
                             @if (Model.HasLocation)
                             {
+                                <div class="govuk-form-group">
+                                    <fieldset class="govuk-fieldset">
+                                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                            Average Employer Review
+                                        </legend>
+                                        <div class="govuk-checkboxes govuk-checkboxes--small">
+                                            @foreach (var mode in Model.ProviderRatings )
+                                            {
+                                                <div class="govuk-checkboxes__item">
+                                                    <input @(mode.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="providerRating-@mode.ProviderRatingType" name="providerRating" type="checkbox" value="@mode.ProviderRatingType" />
+                                                    <label class="govuk-label govuk-checkboxes__label" for="providerRating-@mode.ProviderRatingType ">
+                                                        @mode.Description
+                                                    </label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </fieldset>
+                                </div>
                                 <div class="govuk-form-group">
                                     <fieldset class="govuk-fieldset">
                                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">

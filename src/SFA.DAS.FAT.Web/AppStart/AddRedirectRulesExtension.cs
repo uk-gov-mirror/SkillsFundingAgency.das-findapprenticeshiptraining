@@ -12,7 +12,7 @@ namespace SFA.DAS.FAT.Web.AppStart
         {
             var options = new RewriteOptions();
             //Courses
-            options.Add(new PathWithQueryRule("(?i)apprenticeship/searchresults\\b", "/courses?Keyword=$0&Levels=$1", new List<string>{"keywords","SelectedLevels"}));//TODO SelectedLevels
+            options.Add(new PathWithQueryRule("(?i)apprenticeship/searchresults\\b", "/courses?Keyword=$0&Levels=$1", new List<string>{"keywords","SelectedLevels"}));
             options.AddRedirect("(?i)apprenticeship/search\\b", "courses", (int)HttpStatusCode.PermanentRedirect);
             options.AddRedirect("(?i)provider/frameworkresults", "courses", (int)HttpStatusCode.PermanentRedirect);
             options.AddRedirect("(?i)apprenticeship/searchforframeworkproviders", "courses", (int)HttpStatusCode.PermanentRedirect);
@@ -22,7 +22,7 @@ namespace SFA.DAS.FAT.Web.AppStart
             options.Add(new PathWithQueryRule("(?i)provider/detail\\b", "/courses/$0/providers/$1?location=$2", new List<string>{"standardCode", "ukprn","postcode"}));
             
             //Course Providers
-            options.Add(new PathWithQueryRule("(?i)provider/standardresults\\b", "/courses/$0/providers?location={1}", new List<string>{"apprenticeshipid","postcode"}));//TODO DeliveryModes
+            options.Add(new PathWithQueryRule("(?i)provider/standardresults\\b", "/courses/$0/providers?location={1}", new List<string>{"apprenticeshipid","postcode"}));
             options.Add(new PathWithQueryRule("(?i)Apprenticeship/SearchForStandardProviders\\b", "/courses/$0/providers", new List<string>{"standardId"}));
             
             //Home

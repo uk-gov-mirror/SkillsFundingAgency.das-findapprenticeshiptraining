@@ -1,6 +1,7 @@
 ﻿@using SFA.DAS.FAT.Web.Infrastructure
 @using SFA.DAS.FAT.Domain.Extensions
 @using SFA.DAS.FAT.Domain.Courses
+@using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType
 @model SFA.DAS.FAT.Web.Models.CourseProvidersViewModel
 @{
     ViewData["Title"] = "Available training providers";
@@ -64,7 +65,7 @@
                                             Training options
                                         </legend>
                                         <div class="govuk-checkboxes govuk-checkboxes--small">
-                                            @foreach (var mode in Model.DeliveryModes)
+                                            @foreach (var mode in Model.DeliveryModes.Where(c=>c.DeliveryModeType!=DeliveryModeType.NotFound))
                                             {
                                                 <div class="govuk-checkboxes__item">
                                                     <input @(mode.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="deliveryMode-@mode.DeliveryModeType" name="deliveryModes" type="checkbox" value="@mode.DeliveryModeType"/>

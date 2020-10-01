@@ -39,8 +39,8 @@ namespace SFA.DAS.FAT.Web.Models
             var selectedProviderRatings = ProviderRatings
                 .Where(viewModel => viewModel.Selected)
                 .Select(viewModel => viewModel.ProviderRatingType);
-
-            return $"?location={Location}" +"&deliveryModes="+$"{string.Join("&deliveryModes=", selectedDeliveryModes)}"+$"&sortorder={newOrder}" +"&providerRatings="+$"{string.Join("&providerRatings=", selectedProviderRatings)}";
+             
+            return $"?location={Location}" + "&deliveryModes=" + $"{string.Join("&deliveryModes=", selectedDeliveryModes)}" + "&providerRatings=" + $"{string.Join("&providerRatings=", selectedProviderRatings)}" + $"&sortorder={newOrder}";
         }
 
         public IEnumerable<DeliveryModeOptionViewModel> DeliveryModes { get; set; }

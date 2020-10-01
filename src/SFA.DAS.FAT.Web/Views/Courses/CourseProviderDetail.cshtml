@@ -143,10 +143,14 @@
                 </dl>
 
             </div>
-            <div>
-                <p class="govuk-body">@Model.Provider.Name is 1 of @Model.TotalProviders training providers for @Model.Course.TitleAndLevel in the apprenticeship location.</p>
-                <p><a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.CourseProviders" asp-route-id="@Model.Course.Id">View other training providers</a></p>
-            </div>
+            @if (Model.TotalProviders != 0)
+            {
+                <div>
+                    <p class="govuk-body">@Model.Provider.Name is 1 of @Model.TotalProviders training providers for @Model.Course.TitleAndLevel in the apprenticeship location.</p>
+                    <p><a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.CourseProviders" asp-route-id="@Model.Course.Id">View other training providers</a></p>
+                </div>    
+            }
+            
             @if (Model.AdditionalCourses.Total > 0)
             {
                 <details class="govuk-details govuk-!-margin-top-7" data-module="govuk-details">

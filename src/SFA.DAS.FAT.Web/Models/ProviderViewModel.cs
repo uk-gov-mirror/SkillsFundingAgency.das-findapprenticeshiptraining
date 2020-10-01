@@ -30,7 +30,9 @@ namespace SFA.DAS.FAT.Web.Models
         public int TotalFeedbackRating { get ; set ; }
         public string TotalFeedbackRatingText { get ; set ; }
 
+        public string TotalFeedbackRatingTextProviderDetail { get ; set ; }
         public ProviderRating TotalFeedbackText { get ; set ; }
+
 
         public static implicit operator ProviderViewModel(Provider source)
         {
@@ -49,6 +51,7 @@ namespace SFA.DAS.FAT.Web.Models
                 TotalFeedbackRating = source.Feedback.TotalFeedbackRating,
                 TotalEmployerResponses = source.Feedback.TotalEmployerResponses,
                 TotalFeedbackRatingText = GetFeedbackRatingText(source),
+                TotalFeedbackRatingTextProviderDetail = GetFeedbackRatingText(source).Replace("employer ",""),
                 TotalFeedbackText = (ProviderRating)source.Feedback.TotalFeedbackRating
             };
         }

@@ -60,6 +60,12 @@ namespace SFA.DAS.FAT.Web.Infrastructure
                     location = location.Replace($"{subStringVal}${i}", newQueryListParam);
                 }
             }
+
+            while (location.Contains("$"))
+            {
+                var index = location.IndexOf("$", StringComparison.CurrentCultureIgnoreCase);
+                location = location.Remove(index, 2);
+            }
                 
                 
             var response = context.HttpContext.Response;

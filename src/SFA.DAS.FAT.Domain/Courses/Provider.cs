@@ -36,6 +36,15 @@ namespace SFA.DAS.FAT.Domain.Courses
         NotFound = 3
     }
 
+    public enum ProviderRating
+    {
+        NotYetReviewed = 0,
+        VeryPoor = 1,
+        Poor = 2,
+        Good = 3,
+        Excellent = 4
+    }
+
     public class Feedback
     {
         public int TotalEmployerResponses { get; set; }

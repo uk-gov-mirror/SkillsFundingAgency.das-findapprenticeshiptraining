@@ -32,6 +32,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                     It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id) 
                     && c.Location.Equals(request.Location)
                     && c.DeliveryModes.SequenceEqual(request.DeliveryModes.Select(type => (Domain.Courses.DeliveryModeType)type))
+                    && c.ProviderRatings.SequenceEqual(request.ProviderRatings.Select(type => (Domain.Courses.ProviderRating)type))
                     && c.SortOrder.Equals(request.SortOrder)),
                     It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);

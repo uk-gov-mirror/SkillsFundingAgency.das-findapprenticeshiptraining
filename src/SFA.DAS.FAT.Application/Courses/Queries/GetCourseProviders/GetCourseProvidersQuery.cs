@@ -9,6 +9,8 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders
         public int CourseId { get; set; }
         public string Location { get ; set ; }
         public IEnumerable<DeliveryModeType> DeliveryModes { get; set; }
+        public IEnumerable<ProviderRating> ProviderRatings { get; set; }
+
         public ProviderSortBy SortOrder { get ; set ; }
     }
 }

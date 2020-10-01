@@ -14,7 +14,7 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
         private readonly int _sortOrder;
         private readonly int _id;
 
-        public GetCourseProvidersApiRequest(string baseUrl, int id, string location, IEnumerable<DeliveryModeType> deliveryModeTypes, int sortOrder = 0, IEnumerable<ProviderRating> providerRatingTypes)
+        public GetCourseProvidersApiRequest(string baseUrl, int id, string location, IEnumerable<DeliveryModeType> deliveryModeTypes, IEnumerable<ProviderRating> providerRatingTypes, int sortOrder = 0)
         {
             _location = location;
             _deliveryModeTypes = deliveryModeTypes;

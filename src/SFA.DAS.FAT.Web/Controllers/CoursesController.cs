@@ -94,7 +94,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                     CourseId = request.Id,
                     Location = location,
                     DeliveryModes = request.DeliveryModes.Select(type => (Domain.Courses.DeliveryModeType)type),
-                    SortOrder = request.SortOrder
+                    SortOrder = request.SortOrder,
+                    ProviderRatings = request.ProviderRatings.Select(rating => (Domain.Courses.ProviderRating)rating)
                 });
                 
                 var cookieResult =new LocationCookieItem

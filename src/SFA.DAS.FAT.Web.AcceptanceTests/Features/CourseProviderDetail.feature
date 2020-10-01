@@ -14,12 +14,12 @@ And the page content includes the following: There are 4 training providers for
 Scenario: No feedback on provider
 Given I navigate to the following url: courses/2/providers/1001?location=london
 Then an http status code of 200 is returned
-And the page content includes the following: Not yet reviewed (employer reviews)
+And the page content includes the following: Not yet reviewed
 
 @WireMockServer
 Scenario: Feedback on provider
 Given I navigate to the following url: courses/2/providers/1001
 Then an http status code of 200 is returned
-And the page content includes the following: (50&#x2B; employer reviews)	
+And the page content includes the following: (50&#x2B; reviews)	
 
 

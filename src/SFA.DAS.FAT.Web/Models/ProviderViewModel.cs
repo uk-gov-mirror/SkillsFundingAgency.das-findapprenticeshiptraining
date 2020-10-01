@@ -50,24 +50,26 @@ namespace SFA.DAS.FAT.Web.Models
                 DeliveryModes = source.DeliveryModes!=null ? BuildDeliveryModes(source.DeliveryModes.ToList()) : new List<DeliveryModeViewModel>(),
                 TotalFeedbackRating = source.Feedback.TotalFeedbackRating,
                 TotalEmployerResponses = source.Feedback.TotalEmployerResponses,
-                TotalFeedbackRatingText = GetFeedbackRatingText(source),
-                TotalFeedbackRatingTextProviderDetail = GetFeedbackRatingText(source).Replace("employer ",""),
+                TotalFeedbackRatingText = GetFeedbackRatingText(source, false),
+                TotalFeedbackRatingTextProviderDetail = GetFeedbackRatingText(source, true),
                 TotalFeedbackText = (ProviderRating)source.Feedback.TotalFeedbackRating
             };
         }
 
-        private static string GetFeedbackRatingText(Provider source)
+        private static string GetFeedbackRatingText(Provider source, bool isProviderDetail)
         {
             switch (source.Feedback.TotalEmployerResponses)
             {
                 case 0:
-                    return "Not yet reviewed (employer reviews)";
+                    return !isProviderDetail ? "Not yet reviewed (employer reviews)" : "Not yet reviewed";
                 case 1:
-                    return "(1 employer review)";
+                    return !isProviderDetail ? "(1 employer review)" : "(1 review)";
             }
 
-            return source.Feedback.TotalEmployerResponses > 50 ? "(50+ employer reviews)" 
+            var returnText = source.Feedback.TotalEmployerResponses > 50 ? "(50+ employer reviews)" 
                 : $"({source.Feedback.TotalEmployerResponses} employer reviews)";
+
+            return isProviderDetail ? returnText.Replace("employer ", "") : returnText;
         }
 
         private static IEnumerable<DeliveryModeViewModel> BuildDeliveryModes(List<DeliveryMode> source)

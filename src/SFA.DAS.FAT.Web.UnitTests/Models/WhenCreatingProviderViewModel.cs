@@ -49,7 +49,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         [InlineAutoData(50, "(50 reviews)")]
         [InlineAutoData(51, "(50+ reviews)")]
         [InlineAutoData(1, "(1 review)")]
-        [InlineAutoData(0, "Not yet reviewed (reviews)")]
+        [InlineAutoData(0, "Not yet reviewed")]
         public void Then_The_Feedback_Provider_Detail_Text_Is_Formatted_Correctly(int numberOfReviews, string expectedText, Provider source)
         {
             source.Feedback.TotalEmployerResponses = numberOfReviews;

@@ -1,4 +1,4 @@
-﻿@using SFA.DAS.FAT.Web.Infrastructure
+@using SFA.DAS.FAT.Web.Infrastructure
 @using SFA.DAS.FAT.Domain.Extensions
 @using SFA.DAS.FAT.Domain.Courses
 @model SFA.DAS.FAT.Web.Models.CourseProvidersViewModel
@@ -69,10 +69,10 @@
                             <div class="govuk-form-group">
                                 <fieldset class="govuk-fieldset">
                                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                        Average Employer Review
+                                        Average employer review
                                     </legend>
                                     <div class="govuk-checkboxes govuk-checkboxes--small">
-                                        @foreach (var providerRating in Model.ProviderRatings )
+                                        @foreach (var providerRating in Model.ProviderRatings.OrderByDescending(c=>(int)c.ProviderRatingType) )
                                         {
                                             <div class="govuk-checkboxes__item">
                                                 <input @(providerRating.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="providerRating-@providerRating.ProviderRatingType" name="providerRatings" type="checkbox" value="@providerRating.ProviderRatingType" />

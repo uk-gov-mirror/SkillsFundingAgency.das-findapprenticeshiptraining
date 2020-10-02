@@ -21,7 +21,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
                 .Select(vm => vm.ProviderRatingType);
 
             var link = model.BuildSortLink();
-            link.Should().Be($"?location={model.Location}&deliveryModes={string.Join("&deliveryModes=", selectedDeliveryModes)}&sortorder={ProviderSortBy.Name}&providerRatings={string.Join("&provideRatings=", selectedProviderRatings)}");
+            link.Should().Be($"?location={model.Location}&deliveryModes={string.Join("&deliveryModes=", selectedDeliveryModes)}&providerRatings={string.Join("&provideRatings=", selectedProviderRatings)}&sortorder={ProviderSortBy.Name}");
         }
 
         [Test, AutoData]
@@ -37,7 +37,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
 
             var link = model.BuildSortLink();
 
-            link.Should().Be($"?location={model.Location}&deliveryModes={string.Join("&deliveryModes=", selectedDeliveryModes)}&sortorder={ProviderSortBy.Distance}&providerRatings={string.Join("&provideRatings=", selectedProviderRatings)}");
+            link.Should().Be($"?location={model.Location}&deliveryModes={string.Join("&deliveryModes=", selectedDeliveryModes)}&providerRatings={string.Join("&provideRatings=", selectedProviderRatings)}&sortorder={ProviderSortBy.Distance}");
         }
     }
 }

@@ -49,7 +49,16 @@ namespace SFA.DAS.FAT.Web.Models
 
         public Dictionary<string, string> BuildClearDeliveryModeLinks()
         {
-            var links = new Dictionary<string, string>();
+            var clearDeliveryModeLinks = new Dictionary<string, string>();
+
+            if (DeliveryModes == null)
+            {
+                return clearDeliveryModeLinks;
+            }
+
+            var providerRatings = BuildProviderRatingLinks("appendTo");
+            var location = BuildLocationLink();
+            var sortOrder = BuildSortOrder("appendTo");
 
             foreach (var deliveryMode in DeliveryModes.Where(model => model.Selected))
             {
@@ -58,17 +67,26 @@ namespace SFA.DAS.FAT.Web.Models
                         viewModel.Selected &&
                         viewModel.DeliveryModeType != deliveryMode.DeliveryModeType)
                     .Select(viewModel => viewModel.DeliveryModeType);
-                var link = $"?location={HttpUtility.UrlEncode($"{Location}")}&deliveryModes={HttpUtility.UrlEncode($"{string.Join("&deliveryModes=", otherSelected)}")}&sortorder={HttpUtility.UrlEncode($"{SortOrder}")}";
 
-                links.Add(deliveryMode.Description, link);
+                var link = $"{location}&deliveryModes={$"{string.Join("&deliveryModes=", otherSelected)}"}{providerRatings}{sortOrder}";
+
+                clearDeliveryModeLinks.Add(deliveryMode.Description, link);
             }
 
-            return links;
+            return clearDeliveryModeLinks;
         }
-
         public Dictionary<string, string> BuildClearProviderRatingLinks()
         {
-            var links = new Dictionary<string, string>();
+            var providerRatingLinks = new Dictionary<string, string>();
+
+            if (ProviderRatings == null)
+            {
+                return providerRatingLinks;
+            }
+
+            var deliveryModes = BuildDeliveryModeLinks("appendTo");
+            var location = BuildLocationLink();
+            var sortOrder = BuildSortOrder("appendTo");
 
             foreach (var providerRating in ProviderRatings.Where(model => model.Selected))
             {
@@ -77,13 +95,43 @@ namespace SFA.DAS.FAT.Web.Models
                         viewModel.Selected &&
                         viewModel.ProviderRatingType != providerRating.ProviderRatingType)
                     .Select(viewModel => viewModel.ProviderRatingType);
-                var link = $"?location={HttpUtility.UrlEncode($"{Location}")}&providerRatings={HttpUtility.UrlEncode($"{string.Join("&providerRatings=", otherSelected)}")}&sortorder={HttpUtility.UrlEncode($"{SortOrder}")}";
+                var link = $"{location}{deliveryModes}&providerRatings={$"{string.Join("&providerRatings=", otherSelected)}"}{sortOrder}";
 
-                links.Add(providerRating.Description, link);
+                providerRatingLinks.Add(providerRating.Description, link);
             }
-
-            return links;
+            return providerRatingLinks;
         }
+
+        private string BuildDeliveryModeLinks(string linkToAppendTo)
+        {
+            if (DeliveryModes != null && DeliveryModes.Any())
+            {
+                var deliveryModes = DeliveryModes.Where(dm => dm.Selected).Select(dm => dm.DeliveryModeType);
+                return $"{GetSeparator(linkToAppendTo)}deliveryModes={$"{string.Join("&deliveryModes=", deliveryModes)}"}";
+            }
+            return null;
+        }
+
+        private string BuildSortOrder(string linkToAppendTo)
+        {
+            return $"{GetSeparator(linkToAppendTo)}sortorder={ HttpUtility.UrlEncode($"{SortOrder}")}";
+        }
+
+        private string BuildLocationLink()
+        {
+            return $"{GetSeparator("")}location={ HttpUtility.UrlEncode($"{Location}")}";
+        }
+
+        private string BuildProviderRatingLinks(string linkToAppendTo)
+        {
+            if (ProviderRatings != null && ProviderRatings.Any())
+            {
+                var providerRatings = ProviderRatings.Where(pr => pr.Selected).Select(pr => pr.ProviderRatingType);
+                return $"{GetSeparator(linkToAppendTo)}providerRatings={$"{string.Join("&providerRatings=", providerRatings)}"}";
+            }
+            return null;
+        }
+
 
         private string GetTotalMessage()
         {
@@ -126,6 +174,10 @@ namespace SFA.DAS.FAT.Web.Models
             }
 
             return providerRatingOptionViewModel;
+        }
+        private object GetSeparator(string url)
+        {
+            return string.IsNullOrEmpty(url) ? "?" : "&";
         }
     }
 }

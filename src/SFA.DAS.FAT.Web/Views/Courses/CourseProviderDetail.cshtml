@@ -26,7 +26,14 @@
                     <span class="govuk-!-font-weight-bold das-rating__label--@(Model.Provider.TotalFeedbackRating > 2 ? "good" : "poor")">@Model.Provider.TotalFeedbackText.GetDescription()</span>
                 }
             
-                <span class="govuk-body govuk-!-font-size das-text--muted">@Model.Provider.TotalFeedbackRatingTextProviderDetail</span>
+                @if (Model.Provider.TotalFeedbackRating == 0)
+                {
+                    <span class="govuk-!-font-weight-bold das-rating__label--@(Model.Provider.TotalFeedbackRating > 2 ? "good" : "poor")">@Model.Provider.TotalFeedbackRatingTextProviderDetail</span>    
+                }
+                else
+                {
+                    <span class="govuk-body">@Model.Provider.TotalFeedbackRatingTextProviderDetail</span>
+                }
             </p>                               
                     
             <div class="das-highlight govuk-!-margin-bottom-5">

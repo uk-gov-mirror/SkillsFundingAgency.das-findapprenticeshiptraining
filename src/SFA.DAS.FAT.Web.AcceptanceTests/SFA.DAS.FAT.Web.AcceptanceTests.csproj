@@ -55,6 +55,7 @@
     <Content Include="Features\Courses.feature" />
     <Content Include="Features\CourseDetail.feature" />
     <Content Include="Features\CourseProviders.feature" />
+    <Content Include="Features\CourseProviderDetail.feature" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
 using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Domain.Extensions;
@@ -57,7 +58,7 @@ namespace SFA.DAS.FAT.Web.Models
                         viewModel.Selected &&
                         viewModel.DeliveryModeType != deliveryMode.DeliveryModeType)
                     .Select(viewModel => viewModel.DeliveryModeType);
-                var link = $"?location={Location}&deliveryModes={string.Join("&deliveryModes=", otherSelected)}&sortorder={SortOrder}";
+                var link = $"?location={HttpUtility.UrlEncode($"{Location}")}&deliveryModes={HttpUtility.UrlEncode($"{string.Join("&deliveryModes=", otherSelected)}")}&sortorder={HttpUtility.UrlEncode($"{SortOrder}")}";
 
                 links.Add(deliveryMode.Description, link);
             }
@@ -76,7 +77,7 @@ namespace SFA.DAS.FAT.Web.Models
                         viewModel.Selected &&
                         viewModel.ProviderRatingType != providerRating.ProviderRatingType)
                     .Select(viewModel => viewModel.ProviderRatingType);
-                var link = $"?location={Location}&providerRatings={string.Join("&providerRatings=", otherSelected)}&sortorder={SortOrder}";
+                var link = $"?location={HttpUtility.UrlEncode($"{Location}")}&providerRatings={HttpUtility.UrlEncode($"{string.Join("&providerRatings=", otherSelected)}")}&sortorder={HttpUtility.UrlEncode($"{SortOrder}")}";
 
                 links.Add(providerRating.Description, link);
             }

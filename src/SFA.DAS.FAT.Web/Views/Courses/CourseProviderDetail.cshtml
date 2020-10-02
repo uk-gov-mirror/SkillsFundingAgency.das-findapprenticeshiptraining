@@ -12,7 +12,30 @@
             <h1 class="govuk-heading-xl">
                 @Model.Provider.Name
             </h1>
-
+            
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Employer reviews</h2>
+            <p class="govuk-body-l govuk-!-margin-bottom-30">
+                @if (Model.Provider.TotalFeedbackRating != 0)
+                {
+                    <span class="das-rating das-rating--@(Model.Provider.TotalFeedbackRating > 2 ? "good" : "poor")" role="img" aria-label="Rating: @Model.Provider.TotalFeedbackRating out of 4 stars">
+                        <span aria-hidden="true" class="das-rating__icon-star"></span>
+                        <span aria-hidden="true" class="das-rating__icon-star@(Model.Provider.TotalFeedbackRating < 2 ? "--empty" : "")"></span>
+                        <span aria-hidden="true" class="das-rating__icon-star@(Model.Provider.TotalFeedbackRating < 3 ? "--empty" : "")"></span>
+                        <span aria-hidden="true" class="das-rating__icon-star@(Model.Provider.TotalFeedbackRating < 4 ? "--empty" : "")"></span>
+                    </span>    
+                    <span class="govuk-!-font-weight-bold das-rating__label--@(Model.Provider.TotalFeedbackRating > 2 ? "good" : "poor")">@Model.Provider.TotalFeedbackText.GetDescription()</span>
+                }
+            
+                @if (Model.Provider.TotalFeedbackRating == 0)
+                {
+                    <span class="govuk-!-font-weight-bold das-rating__label--@(Model.Provider.TotalFeedbackRating > 2 ? "good" : "poor")">@Model.Provider.TotalFeedbackRatingTextProviderDetail</span>    
+                }
+                else
+                {
+                    <span class="govuk-body">@Model.Provider.TotalFeedbackRatingTextProviderDetail</span>
+                }
+            </p>                               
+                    
             <div class="das-highlight govuk-!-margin-bottom-5">
                 <span class="govuk-caption-l">Apprenticeship training course</span>
                 <h2 class="govuk-heading-l govuk-!-margin-bottom-3">@Model.Course.Title <span class="das-no-wrap">(level @Model.Course.Level)</span></h2>

@@ -12,12 +12,17 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
     public class WhenBuildingProviderRatingLinks
     {
         [Test, AutoData]
-        public void And_ProviderRating_Selected_Then_Link_Returned(CourseProvidersViewModel model)
+        public void And_ProviderRating_Selected_Then_Link_Returned_With_No_DeliveryModes(CourseProvidersViewModel model)
         {
             // Arrange
             foreach (var providerRating in model.ProviderRatings )
             {
                 providerRating.Selected = true;
+            }
+
+            foreach (var deliveryMode in model.DeliveryModes)
+            {
+                deliveryMode.Selected = false;
             }
 
             // Act
@@ -33,7 +38,41 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
                         vm.ProviderRatingType != providerRating.ProviderRatingType)
                     .Select(vm => vm.ProviderRatingType);
 
-                link.Value.Should().Be($"?location={model.Location}&providerRatings={string.Join("&providerRatings=", otherSelected)}&sortorder={model.SortOrder}");
+                link.Value.Should().Be($"?location={model.Location}&deliveryModes=&providerRatings={string.Join("&providerRatings=", otherSelected)}&sortorder={model.SortOrder}");
+            }
+        }
+
+        [Test, AutoData]
+        public void And_ProviderRating_Selected_Then_Link_Returned_With_DeliveryModes_Selected(CourseProvidersViewModel model)
+        {
+            // Arrange
+            foreach (var providerRating in model.ProviderRatings)
+            {
+                providerRating.Selected = true;
+            }
+
+            foreach (var deliveryMode in model.DeliveryModes)
+            {
+                deliveryMode.Selected = true;
+            }
+
+            // Act
+            var links = model.BuildClearProviderRatingLinks();
+
+            // Assert
+            foreach (var providerRating in model.ProviderRatings.Where(vm => vm.Selected))
+            {
+                var link = links.Single(pair => pair.Key == providerRating.Description);
+                var otherSelected = model.ProviderRatings
+                    .Where(vm =>
+                        vm.Selected &&
+                        vm.ProviderRatingType != providerRating.ProviderRatingType)
+                    .Select(vm => vm.ProviderRatingType);
+                var deliveryModeSelected = model.DeliveryModes
+                    .Where(vm => vm.Selected)
+                    .Select(vm => vm.DeliveryModeType);
+
+                link.Value.Should().Be($"?location={model.Location}&deliveryModes={string.Join("&deliveryModes=", deliveryModeSelected)}&providerRatings={string.Join("&providerRatings=", otherSelected)}&sortorder={model.SortOrder}");
             }
         }
 

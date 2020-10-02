@@ -72,12 +72,12 @@
                                         Average Employer Review
                                     </legend>
                                     <div class="govuk-checkboxes govuk-checkboxes--small">
-                                        @foreach (var mode in Model.ProviderRatings )
+                                        @foreach (var providerRating in Model.ProviderRatings )
                                         {
                                             <div class="govuk-checkboxes__item">
-                                                <input @(mode.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="providerRating-@mode.ProviderRatingType" name="providerRating" type="checkbox" value="@mode.ProviderRatingType" />
-                                                <label class="govuk-label govuk-checkboxes__label" for="providerRating-@mode.ProviderRatingType ">
-                                                    @mode.Description
+                                                <input @(providerRating.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="providerRating-@providerRating.ProviderRatingType" name="providerRatings" type="checkbox" value="@providerRating.ProviderRatingType" />
+                                                <label class="govuk-label govuk-checkboxes__label" for="providerRating-@providerRating.ProviderRatingType ">
+                                                    @providerRating.Description
                                                 </label>
                                             </div>
                                         }

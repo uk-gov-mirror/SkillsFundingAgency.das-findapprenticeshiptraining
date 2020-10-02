@@ -65,7 +65,7 @@
                                             Training options
                                         </legend>
                                         <div class="govuk-checkboxes govuk-checkboxes--small">
-                                            @foreach (var mode in Model.DeliveryModes.Where(c=>c.DeliveryModeType!=DeliveryModeType.NotFound))
+                                            @foreach (var mode in Model.DeliveryModes)
                                             {
                                                 <div class="govuk-checkboxes__item">
                                                     <input @(mode.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="deliveryMode-@mode.DeliveryModeType" name="deliveryModes" type="checkbox" value="@mode.DeliveryModeType"/>

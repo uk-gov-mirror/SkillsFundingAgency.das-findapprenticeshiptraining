@@ -27,7 +27,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
         }
 
         [Test, AutoData]
-        public void Then_Builds_Delivery_Modes(GetCourseProvidersRequest request, GetCourseProvidersResult result)
+        public void Then_Builds_Delivery_Modes_Excluding_NotFound(GetCourseProvidersRequest request, GetCourseProvidersResult result)
         {
             var expectedDeliveryModes = new List<DeliveryModeOptionViewModel>();
             foreach (DeliveryModeType deliveryModeType in Enum.GetValues(typeof(DeliveryModeType)))
@@ -42,7 +42,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
 
             var model = new CourseProvidersViewModel(request, result);
 
-            model.DeliveryModes.Should().BeEquivalentTo(expectedDeliveryModes);
+            model.DeliveryModes.Should().BeEquivalentTo(expectedDeliveryModes.Where(c=>c.DeliveryModeType!=DeliveryModeType.NotFound));
         }
     }
 }

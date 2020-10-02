@@ -23,10 +23,10 @@
                         <span aria-hidden="true" class="das-rating__icon-star@(Model.Provider.TotalFeedbackRating < 3 ? "--empty" : "")"></span>
                         <span aria-hidden="true" class="das-rating__icon-star@(Model.Provider.TotalFeedbackRating < 4 ? "--empty" : "")"></span>
                     </span>    
-                    <span class="das-rating__label--@(Model.Provider.TotalFeedbackRating > 2 ? "good" : "poor")">@Model.Provider.TotalFeedbackText.GetDescription()</span>
+                    <span class="govuk-!-font-weight-bold das-rating__label--@(Model.Provider.TotalFeedbackRating > 2 ? "good" : "poor")">@Model.Provider.TotalFeedbackText.GetDescription()</span>
                 }
             
-                <span class="das-text--muted">@Model.Provider.TotalFeedbackRatingTextProviderDetail</span>
+                <span class="govuk-body govuk-!-font-size das-text--muted">@Model.Provider.TotalFeedbackRatingTextProviderDetail</span>
             </p>                               
                     
             <div class="das-highlight govuk-!-margin-bottom-5">

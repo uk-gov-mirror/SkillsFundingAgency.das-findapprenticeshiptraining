@@ -24,7 +24,7 @@
                     <div class="das-filter__header">
                         <h2 class="das-filter__heading">Filter</h2>
                     </div>
-                    @if (Model.HasLocation)
+                    @if (Model.ShowFilters)
                     {
                         var routeData = new Dictionary<string, string>
                         {
@@ -37,8 +37,11 @@
                         <h3 class="das-filter__selected-heading">Selected filters</h3>
                         <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-all-route-data="routeData" asp-route="@RouteNames.CourseProviders">Clear</a>
                     </div>
-                    <h4 class="das-filter__selected-sub-heading">Apprenticeship location</h4>
-                    <a asp-route="@RouteNames.CourseProviders" asp-all-route-data="routeData" title="Clear this filter @Model.Location" class="das-filter__tag">@Model.Location</a>
+                    @if (Model.HasLocation)
+                    {
+                        <h4 class="das-filter__selected-sub-heading">Apprenticeship location</h4>
+                        <a asp-route="@RouteNames.CourseProviders" asp-all-route-data="routeData" title="Clear this filter @Model.Location" class="das-filter__tag">@Model.Location</a>
+                    }
                     @if (Model.BuildClearDeliveryModeLinks().Any())
                     {
                         <h4 class="das-filter__selected-sub-heading">Training options</h4>

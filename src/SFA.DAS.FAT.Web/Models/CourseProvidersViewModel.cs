@@ -30,6 +30,16 @@ namespace SFA.DAS.FAT.Web.Models
         public string Location { get; set; }
         public ProviderSortBy SortOrder { get; set; }
         public bool HasLocation => !string.IsNullOrWhiteSpace(Location);
+        public bool ShowFilters => GetCurrentFilters();
+
+        private bool GetCurrentFilters()
+        {
+            var result = !string.IsNullOrWhiteSpace(Location) ||
+                BuildClearDeliveryModeLinks().Any() ||
+                BuildClearProviderRatingLinks().Any() ? true : false;
+            return result;
+        }
+
         public string BuildSortLink()
         {
             var newOrder = SortOrder == ProviderSortBy.Distance ? 

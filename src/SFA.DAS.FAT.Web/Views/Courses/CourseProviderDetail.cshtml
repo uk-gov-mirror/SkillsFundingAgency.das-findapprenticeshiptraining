@@ -86,11 +86,11 @@
                                 <li class="das-icon-list__list-item">
                                     @if (mode.IsAvailable)
                                     {
-                                        <span class="das-icon-list__icon das-icon-list__icon--tick">available</span>
+                                        <span class="das-icon-list__icon govuk-!-font-size-24 das-icon-list__icon--tick">available</span>
                                     }
                                     else
                                     {
-                                        <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
+                                        <span class="das-icon-list__icon govuk-!-font-size-24 das-icon-list__icon--cross">not available</span>
                                     }
                                     @mode.DeliveryModeType.GetDescription() @mode.FormattedDistanceInMiles
                                 </li>

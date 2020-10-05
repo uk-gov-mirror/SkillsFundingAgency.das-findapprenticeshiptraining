@@ -34,16 +34,20 @@
           "totalFeedbackRating": 2,
           "feedbackDetail": [
             {
-              "feedbackName": "Good",
+              "feedbackName": "Excellent",
               "feedbackCount": 3
             },
             {
+              "feedbackName": "Good",
+              "feedbackCount": 30
+            },
+            {
               "feedbackName": "Poor",
-              "feedbackCount": 1
+              "feedbackCount": 10
             },
             {
               "feedbackName": "Very Poor",
-              "feedbackCount": 2
+              "feedbackCount": 8
             }
           ]
         }

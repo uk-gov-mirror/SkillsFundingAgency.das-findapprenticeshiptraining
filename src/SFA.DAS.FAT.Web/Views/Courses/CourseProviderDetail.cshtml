@@ -34,8 +34,34 @@
                 {
                     <span class="govuk-body">@Model.Provider.TotalFeedbackRatingTextProviderDetail</span>
                 }
-            </p>                               
-                    
+        </p>   
+        @if (Model.Provider.TotalFeedbackRating != 0)
+        {
+            <details class="govuk-details" data-module="govuk-details" open="">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text govuk-!-font-size">
+                        View more details
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+                    <ul class="govuk-list graph-list govuk-!-width-three-quarters">
+                        
+                        @foreach (var feedbackDetail in Model.Provider.FeedbackDetail.OrderByDescending(c=>(int)c.Rating))
+                        {
+                            <li class="level-1">
+                                <span class="label">@feedbackDetail.Rating.GetDescription()</span>
+                                <span class="chart">
+                                    <span class="graph">
+                                        <span class="bar " style="width: @(feedbackDetail.RatingPercentage)%"></span>
+                                    </span>
+                                </span>
+                                <span class="figure govuk-!-font-size-16">@feedbackDetail.RatingText</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </details>
+        }  
             <div class="das-highlight govuk-!-margin-bottom-5">
                 <span class="govuk-caption-l">Apprenticeship training course</span>
                 <h2 class="govuk-heading-l govuk-!-margin-bottom-3">@Model.Course.Title <span class="das-no-wrap">(level @Model.Course.Level)</span></h2>

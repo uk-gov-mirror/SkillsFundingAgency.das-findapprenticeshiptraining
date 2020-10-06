@@ -118,11 +118,6 @@
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
                 @if (Model.HasLocation)
                 {
-                    var routeData = new Dictionary<string, string>
-                    {
-                        {"location","-1"},
-                        {"id",Model.Course.Id.ToString()}
-                    };
                     <p class="govuk-body govuk-!-margin-bottom-0">
                         <span style="margin-right: 10px">@Model.Location</span>
                         <a asp-querystring="@Model.ClearLocationLink" class="govuk-link govuk-link--no-visited-state" id="lnk-remove-location">Remove&nbsp;location</a>

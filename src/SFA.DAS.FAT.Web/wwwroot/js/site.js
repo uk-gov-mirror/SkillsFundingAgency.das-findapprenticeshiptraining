@@ -47,5 +47,6 @@ if ($keywordsInput.length > 0) {
         onConfirm: onConfirm,
         defaultValue: $defaultValue,
         confirmOnBlur: false,
+        autoselect: true
     });
 }

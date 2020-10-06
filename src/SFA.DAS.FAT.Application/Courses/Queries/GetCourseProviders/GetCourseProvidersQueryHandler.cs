@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -16,14 +17,16 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders
 
         public async Task<GetCourseProvidersResult> Handle(GetCourseProvidersQuery request, CancellationToken cancellationToken)
         {
-            var courseProviders = await _courseService.GetCourseProviders(request.CourseId, request.Location, request.SortOrder);
+            var courseProviders = await _courseService.GetCourseProviders(request.CourseId, request.Location, request.DeliveryModes, request.SortOrder);
 
             return new GetCourseProvidersResult
             {
                 Course = courseProviders.Course,
                 Providers = courseProviders.CourseProviders,
                 Total = courseProviders.Total,
-                Location = courseProviders.Location,
+                TotalFiltered = courseProviders.TotalFiltered,
+                Location = courseProviders.Location?.Name,
+                LocationGeoPoint = courseProviders.Location?.LocationPoint?.GeoPoint
             };
         }
     }

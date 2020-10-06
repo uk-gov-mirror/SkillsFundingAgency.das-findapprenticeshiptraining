@@ -1,6 +1,7 @@
 ﻿@using SFA.DAS.FAT.Web.Infrastructure
 @using SFA.DAS.FAT.Domain.Extensions
 @using SFA.DAS.FAT.Domain.Courses
+@using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType
 @model SFA.DAS.FAT.Web.Models.CourseProvidersViewModel
 @{
     ViewData["Title"] = "Available training providers";
@@ -24,7 +25,7 @@
                     <div class="das-filter__header">
                         <h2 class="das-filter__heading">Filter</h2>
                     </div>
-                    @if (!string.IsNullOrEmpty(Model.Location))
+                    @if (Model.HasLocation)
                     {
                         var routeData = new Dictionary<string, string>
                         {
@@ -39,24 +40,54 @@
                             </div>
                             <h4 class="das-filter__selected-sub-heading">Apprenticeship location</h4>
                             <a asp-route="@RouteNames.CourseProviders" asp-all-route-data="routeData" title="Clear this filter '@Model.Location'" class="das-filter__tag">&lsquo;@Model.Location&rsquo;</a>
-                        </div>    
+                            @if (Model.BuildClearDeliveryModeLinks().Any())
+                            {
+                                <h4 class="das-filter__selected-sub-heading">Training options</h4>
+                                @foreach (var deliveryModeLink in Model.BuildClearDeliveryModeLinks())
+                                {
+                                    <a class="das-filter__tag" asp-querystring="@deliveryModeLink.Value" title="Clear this training option filter @deliveryModeLink.Key">@deliveryModeLink.Key</a>
+                                }
+                            }
+                        </div>
                     }
                     <div class="das-filter__body das-!-show--from-tablet" id="fat-filter-options">
                         <form method="GET" asp-route="@RouteNames.CourseProviders" asp-route-id="@Model.Course.Id">
                             <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
+                            <div class="govuk-form-group">
+                                <label for="search-location" class="govuk-label"><span class="govuk-!-font-weight-bold govuk-!-font-size-24">Apprenticeship location</span></label>
+                                <input type="search" id="search-location" name="location" title="Search" class="govuk-input govuk-!-width-three-quarters" data-submit-on-selection="false" data-default-value="@Model.Location">
+                            </div>
+                            @if (Model.HasLocation)
+                            {
                                 <div class="govuk-form-group">
-                                    <label for="search-location" class="govuk-label"><span class="govuk-!-font-weight-bold govuk-!-font-size-24">Apprenticeship location</span></label>
-                                    <input type="search" id="search-location" name="location" title="Search" class="govuk-input govuk-!-width-three-quarters" data-submit-on-selection="false" data-default-value="@Model.Location">
+                                    <fieldset class="govuk-fieldset">
+                                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                            Training options
+                                        </legend>
+                                        <div class="govuk-checkboxes govuk-checkboxes--small">
+                                            @foreach (var mode in Model.DeliveryModes)
+                                            {
+                                                <div class="govuk-checkboxes__item">
+                                                    <input @(mode.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="deliveryMode-@mode.DeliveryModeType" name="deliveryModes" type="checkbox" value="@mode.DeliveryModeType"/>
+                                                    <label class="govuk-label govuk-checkboxes__label" for="deliveryMode-@mode.DeliveryModeType">
+                                                        @mode.Description
+                                                    </label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </fieldset>
                                 </div>
+                            }
                         </form>
                     </div>
                 </div>
+                <button class="govuk-button das-filter__toggle das-show-hide__button das-!-show--mobile" data-aria-controls="fat-filter@(Model.HasLocation ? "-options" : "")" data-button-string="filter @(Model.HasLocation ? " options" : "")" data-focus-id="search-location">Show/hide</button>
             </div>
         </div>
         <div class="govuk-grid-column-two-thirds">
             <div class="das-highlight govuk-!-margin-top-0 govuk-!-margin-bottom-5">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
-                @if (Model.HasLocations)
+                @if (Model.HasLocation)
                 {
                     var routeData = new Dictionary<string, string>
                     {
@@ -71,29 +102,26 @@
                 else
                 {
                     <p class="govuk-body govuk-!-margin-bottom-2">Show only providers who offer this training for the apprenticeship location.</p>
-                    <p class="govuk-body govuk-!-margin-bottom-0"><a href="#search-location" class="govuk-link govuk-link--no-visited-state" id="lnk-enter-location">Enter&nbsp;location</a></p>
+                    <p class="govuk-body govuk-!-margin-bottom-0" data-module="das-show-hide"><a href="#search-location" class="govuk-link govuk-link--no-visited-state das-show-hide__show-link" data-aria-controls="fat-filter" id="lnk-enter-location" data-focus-id="search-location">Enter&nbsp;location</a></p>
                 }
                 
             </div>
             <h2 class="govuk-heading-m">@Model.TotalMessage</h2>
-            @if (Model.Total > 1 && Model.HasLocations)
+            @if (Model.Total > 1 && Model.HasLocation)
             {
+                <p class="govuk-body govuk-!-margin-bottom-6">
+                Sort by:
                 @if (Model.SortOrder == ProviderSortBy.Name)
                 {
-                    <p class="govuk-body govuk-!-margin-bottom-6">
-                        Sorted by:
-                        <span class="govuk-!-font-weight-bold">Name,</span>
-                        <a id="sort-by-distance" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Distance (nearest first)</a>
-                    </p>
+                    <a id="sort-by-distance" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Distance (nearest first)</a>
+                    @:,<span class="govuk-!-font-weight-bold">Name</span>
                 }
                 else
                 {
-                    <p class="govuk-body govuk-!-margin-bottom-6">
-                        Sorted by:
-                        <a id="sort-by-name" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Name</a>,
-                        <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>
-                    </p>
+                    @:<span class="govuk-!-font-weight-bold">Distance (nearest first)</span>,
+                    <a id="sort-by-name" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Name</a>
                 }
+                </p>
             }
             else if (Model.Total > 1)
             {
@@ -107,7 +135,7 @@
                 <p class="govuk-body govuk-!-margin-bottom-6">No training providers for the selected filters.</p>
             }
 
-            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3">
+            <hr class="govuk-section-break govuk-section-break--visible">
 
             <div class="das-search-results">
                 <ol class="das-search-results__list">
@@ -127,55 +155,51 @@
                                 @provider.Name
                             </a>
                         </h2>
-                        <ul class="govuk-list">
-                            @if (Model.HasLocations)
-                            {
-                                <li>
-                                    <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2">
-                                        @foreach (var mode in provider.DeliveryModes)
-                                        {
-                                            <li class="das-icon-list__list-item" id="@provider.ProviderId-@mode.DeliveryModeType">
-                                                @if (mode.IsAvailable)
-                                                {
-                                                    <span class="das-icon-list__icon das-icon-list__icon--tick">available</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
-                                                }
-                                                @mode.DeliveryModeType.GetDescription() @mode.FormattedDistanceInMiles
-                                            </li>
-                                        }
-                                    </ul>
-                                </li>
-                            }
-                            @if (provider.OverallCohort != null)
-                            {
-                                <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
-                                    <span class="govuk-!-font-size-16">@provider.OverallAchievementRatePercentage pass rate</span>
-                                    <span class="das-text--muted">(out of @provider.OverallCohort apprentices)</span>
-                                </li>
-                            }
-                            <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
-
-
-                                @if (provider.TotalFeedbackRating != 0)
+                   
+                        @if (Model.HasLocation)
+                        {
+                            
+                            <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-0">
+                                @foreach (var mode in provider.DeliveryModes)
                                 {
-                                    <span class="das-rating das-rating--@(provider.TotalFeedbackRating > 2 ? "good" : "poor")" role="img" aria-label="Rating: @provider.TotalFeedbackRating out of 4 stars">
-                                        <span aria-hidden="true" class="das-rating__icon-star"></span>
-                                        <span aria-hidden="true" class="das-rating__icon-star@(provider.TotalFeedbackRating < 2 ? "--empty" : "")"></span>
-                                        <span aria-hidden="true" class="das-rating__icon-star@(provider.TotalFeedbackRating < 3 ? "--empty" : "")"></span>
-                                        <span aria-hidden="true" class="das-rating__icon-star@(provider.TotalFeedbackRating < 4 ? "--empty" : "")"></span>
-                                    </span>    
-                                    <span class="das-rating__label--@(provider.TotalFeedbackRating > 2 ? "good" : "poor")">@provider.TotalFeedbackText.GetDescription()</span>
+                                    <li class="das-icon-list__list-item" id="@provider.ProviderId-@mode.DeliveryModeType">
+                                        @if (mode.IsAvailable)
+                                        {
+                                            <span class="das-icon-list__icon das-icon-list__icon--tick">available</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
+                                        }
+                                        @mode.DeliveryModeType.GetDescription() @mode.FormattedDistanceInMiles
+                                    </li>
                                 }
-                                
-                                <span class="das-text--muted">@provider.TotalFeedbackRatingText</span>
-                                                                
-                                        
-                            </li>
+                            </ul>
+                            
+                        }
+                        
+                        @if (provider.OverallCohort != null)
+                        {
+                            <p class="govuk-!-margin-0 govuk-!-margin-top-2 govuk-!-font-size-16">
+                                @provider.OverallAchievementRatePercentage pass rate
+                                <span class="das-text--muted">(out of @provider.OverallCohort apprentices)</span>
+                            </p>
+                        }
 
-                        </ul>
+                        <p class="govuk-!-margin-0 govuk-!-margin-top-2 govuk-!-font-size-16">
+                            @if (provider.TotalFeedbackRating != 0)
+                            {
+                                <span class="das-rating das-rating--@(provider.TotalFeedbackRating > 2 ? "good" : "poor")" role="img" aria-label="Rating: @provider.TotalFeedbackRating out of 4 stars">
+                                    <span aria-hidden="true" class="das-rating__icon-star"></span>
+                                    <span aria-hidden="true" class="das-rating__icon-star@(provider.TotalFeedbackRating < 2 ? "--empty" : "")"></span>
+                                    <span aria-hidden="true" class="das-rating__icon-star@(provider.TotalFeedbackRating < 3 ? "--empty" : "")"></span>
+                                    <span aria-hidden="true" class="das-rating__icon-star@(provider.TotalFeedbackRating < 4 ? "--empty" : "")"></span>
+                                </span>    
+                                <span class="das-rating__label--@(provider.TotalFeedbackRating > 2 ? "good" : "poor")">@provider.TotalFeedbackText.GetDescription()</span>
+                            }
+                            <span class="das-text--muted">@provider.TotalFeedbackRatingText</span>         
+                        </p>
+                        
                     </li>
                 }
                 </ol>

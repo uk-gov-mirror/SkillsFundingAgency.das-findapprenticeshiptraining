@@ -30,7 +30,9 @@ namespace SFA.DAS.FAT.Web.Models
         public int TotalFeedbackRating { get ; set ; }
         public string TotalFeedbackRatingText { get ; set ; }
 
+        public string TotalFeedbackRatingTextProviderDetail { get ; set ; }
         public ProviderRating TotalFeedbackText { get ; set ; }
+
 
         public static implicit operator ProviderViewModel(Provider source)
         {
@@ -48,23 +50,26 @@ namespace SFA.DAS.FAT.Web.Models
                 DeliveryModes = source.DeliveryModes!=null ? BuildDeliveryModes(source.DeliveryModes.ToList()) : new List<DeliveryModeViewModel>(),
                 TotalFeedbackRating = source.Feedback.TotalFeedbackRating,
                 TotalEmployerResponses = source.Feedback.TotalEmployerResponses,
-                TotalFeedbackRatingText = GetFeedbackRatingText(source),
+                TotalFeedbackRatingText = GetFeedbackRatingText(source, false),
+                TotalFeedbackRatingTextProviderDetail = GetFeedbackRatingText(source, true),
                 TotalFeedbackText = (ProviderRating)source.Feedback.TotalFeedbackRating
             };
         }
 
-        private static string GetFeedbackRatingText(Provider source)
+        private static string GetFeedbackRatingText(Provider source, bool isProviderDetail)
         {
             switch (source.Feedback.TotalEmployerResponses)
             {
                 case 0:
-                    return "Not yet reviewed (employer reviews)";
+                    return !isProviderDetail ? "Not yet reviewed (employer reviews)" : "Not yet reviewed";
                 case 1:
-                    return "(1 employer review)";
+                    return !isProviderDetail ? "(1 employer review)" : "(1 review)";
             }
 
-            return source.Feedback.TotalEmployerResponses > 50 ? "(50+ employer reviews)" 
+            var returnText = source.Feedback.TotalEmployerResponses > 50 ? "(50+ employer reviews)" 
                 : $"({source.Feedback.TotalEmployerResponses} employer reviews)";
+
+            return isProviderDetail ? returnText.Replace("employer ", "") : returnText;
         }
 
         private static IEnumerable<DeliveryModeViewModel> BuildDeliveryModes(List<DeliveryMode> source)
@@ -72,6 +77,15 @@ namespace SFA.DAS.FAT.Web.Models
             if (source.Count == 0)
             {
                 return new List<DeliveryModeViewModel>();
+            }
+            var notFound = source.SingleOrDefault(mode => 
+                mode.DeliveryModeType == Domain.Courses.DeliveryModeType.NotFound);
+            if (source.Count == 1 && notFound != null)
+            {
+                return new List<DeliveryModeViewModel>
+                {
+                    new DeliveryModeViewModel().Map(notFound, DeliveryModeType.NotFound)
+                };
             }
             
             var dayRelease = source.SingleOrDefault(mode =>
@@ -84,7 +98,8 @@ namespace SFA.DAS.FAT.Web.Models
             {
                 new DeliveryModeViewModel().Map(workPlace, DeliveryModeType.Workplace),
                 new DeliveryModeViewModel().Map(dayRelease, DeliveryModeType.DayRelease),
-                new DeliveryModeViewModel().Map(blockRelease, DeliveryModeType.BlockRelease)
+                new DeliveryModeViewModel().Map(blockRelease, DeliveryModeType.BlockRelease),
+                
             };
             
             return returnList;
@@ -107,7 +122,7 @@ namespace SFA.DAS.FAT.Web.Models
         {
             var viewModel = source ?? new DeliveryModeViewModel();
             viewModel.DeliveryModeType = deliveryModeType;
-            viewModel.IsAvailable = source != default;
+            viewModel.IsAvailable =  source != default;
             viewModel.FormattedDistanceInMiles = source != default && deliveryModeType != DeliveryModeType.Workplace
                 ? $"({source.DistanceInMiles:##.#} miles away)"
                 : null;
@@ -164,7 +179,9 @@ namespace SFA.DAS.FAT.Web.Models
         [Description("Day release")]
         DayRelease = 1,
         [Description("Block release")]
-        BlockRelease = 2
+        BlockRelease = 2,
+        [Description("Not Found")]
+        NotFound = 3
     }
 
     public enum ProviderRating

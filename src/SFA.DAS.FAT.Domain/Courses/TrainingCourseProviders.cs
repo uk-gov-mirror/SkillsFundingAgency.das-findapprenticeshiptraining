@@ -11,7 +11,9 @@ namespace SFA.DAS.FAT.Domain.Courses
         public IEnumerable<Provider> CourseProviders { get; set; }
         [JsonProperty("total")]
         public int Total { get; set; }
+        [JsonProperty("totalFiltered")] 
+        public int TotalFiltered { get; set; }
         [JsonProperty("location")]
-        public string Location { get; set; }
+        public Locations.Locations.LocationItem Location { get; set; }
     }
 }

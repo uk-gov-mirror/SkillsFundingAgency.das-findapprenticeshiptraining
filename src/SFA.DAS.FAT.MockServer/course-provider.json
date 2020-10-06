@@ -17,6 +17,18 @@
     "sectorSubjectAreaTier2": 4.1
     
   },
+  "providersCount": {
+    "providersAtLocation": 3,
+    "totalProviders": 3
+  },
+  "location": {
+    "name":"Camden, Camden",
+    "location": {
+      "geoPoint": [
+        51.289916,
+        -0.773876
+      ]}
+  },
   "trainingCourseProvider": 
       {
         "providerId": 1001, 
@@ -29,8 +41,8 @@
         "overallAchievementRate": 64.2,
         "nationalOverallAchievementRate": 66.8,
         "feedback": {
-          "totalEmployerResponses": 1,
-          "totalFeedbackRating": 1
+          "totalEmployerResponses": 0,
+          "totalFeedbackRating": 0
         },
         "deliveryModes": [
           {

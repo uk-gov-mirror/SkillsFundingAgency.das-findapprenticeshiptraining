@@ -66,6 +66,9 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviderDet
             actual.Provider.Should().BeEquivalentTo(courseProviderResponse.CourseProviderDetails);
             actual.Course.Should().BeEquivalentTo(courseProviderResponse.TrainingCourse);
             actual.AdditionalCourses.Should().BeEquivalentTo(courseProviderResponse.AdditionalCourses);
+            actual.Location.Should().Be(courseProviderResponse.Location.Name);
+            actual.LocationGeoPoint.Should().BeEquivalentTo(courseProviderResponse.Location.LocationPoint.GeoPoint);
+            actual.ProvidersAtLocation.Should().Be(courseProviderResponse.ProvidersCount.ProvidersAtLocation);
         }
 
         [Test, MoqAutoData]
@@ -90,6 +93,8 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviderDet
             Assert.IsNull(actual.Provider);
             Assert.IsNull(actual.Course);
             Assert.IsNull(actual.AdditionalCourses);
+            Assert.IsNull(actual.Location);
+            Assert.IsNull(actual.LocationGeoPoint);
         }
     }
 }

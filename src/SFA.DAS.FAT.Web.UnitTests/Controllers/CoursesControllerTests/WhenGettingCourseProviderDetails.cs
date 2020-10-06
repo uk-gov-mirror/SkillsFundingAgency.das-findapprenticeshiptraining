@@ -14,6 +14,7 @@ using SFA.DAS.Testing.AutoFixture;
 using SFA.DAS.FAT.Web.Models;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Domain.Interfaces;
 
@@ -29,10 +30,13 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             string location,
             GetCourseProviderResult response,
             [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
             [Greedy] CoursesController controller
             )
         {
             //Arrange
+            response.Location=string.Empty;
+            response.LocationGeoPoint = null;
             mediator.Setup(x => x.Send(It.Is<GetCourseProviderQuery>(c =>
                 c.ProviderId.Equals(providerId) && c.CourseId.Equals(courseId) && c.Location.Equals(location)), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
@@ -48,6 +52,9 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             Assert.IsNotNull(actualModel);
             Assert.IsNotNull(actualModel.AdditionalCourses);
             Assert.IsNotNull(actualModel.AdditionalCourses.Courses);
+            actualModel.Location.Should().BeNullOrEmpty();
+            cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,It.IsAny<LocationCookieItem>(), It.IsAny<int>()), Times.Never);
+            
         }
         
         
@@ -58,10 +65,11 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             string location,
             GetCourseProviderResult response,
             [Frozen] Mock<IMediator> mediator,
-            [Frozen] Mock<ICookieStorageService<string>> cookieStorageService,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
             [Greedy] CoursesController controller)
         {
             //Arrange
+            cookieStorageService.Setup(x => x.Get(Constants.LocationCookieName)).Returns((LocationCookieItem)null);
             mediator.Setup(x => x.Send(It.Is<GetCourseProviderQuery>(c =>
                     c.ProviderId.Equals(providerId) && c.CourseId.Equals(courseId) && c.Location.Equals(location)), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
@@ -70,7 +78,11 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             await controller.CourseProviderDetail(courseId, providerId, location);
             
             //Assert
-            cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,location,2));
+            cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,It.Is<LocationCookieItem>(c=>
+                c.Name.Equals(response.Location)
+                && c.Lat.Equals(response.LocationGeoPoint.FirstOrDefault())
+                && c.Lon.Equals(response.LocationGeoPoint.LastOrDefault())
+                ),2));
         }
 
         [Test, MoqAutoData]
@@ -79,7 +91,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             int courseId,
             GetCourseProviderResult response,
             [Frozen] Mock<IMediator> mediator,
-            [Frozen] Mock<ICookieStorageService<string>> cookieStorageService,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
             [Greedy] CoursesController controller)
         {
             //Arrange
@@ -103,16 +115,16 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         public async Task Then_If_There_Is_Location_Stored_In_Cookie_And_No_Location_In_Query_It_Is_Used_For_Results_And_Cookie_Updated(
             int providerId,
             int courseId,
-            string location,
+            LocationCookieItem location,
             GetCourseProviderResult response,
             [Frozen] Mock<IMediator> mediator,
-            [Frozen] Mock<ICookieStorageService<string>> cookieStorageService,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
             [Greedy] CoursesController controller)
         {
             //Arrange
             cookieStorageService.Setup(x => x.Get(Constants.LocationCookieName)).Returns(location);
             mediator.Setup(x => x.Send(It.Is<GetCourseProviderQuery>(c =>
-                    c.ProviderId.Equals(providerId) && c.CourseId.Equals(courseId) && c.Location.Equals(location)), It.IsAny<CancellationToken>()))
+                    c.ProviderId.Equals(providerId) && c.CourseId.Equals(courseId) && c.Location.Equals(location.Name)), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
 
             //Act
@@ -124,7 +136,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             Assert.IsNotNull(actualResult);
             var actualModel = actualResult.Model as CourseProviderViewModel;
             Assert.IsNotNull(actualModel);
-            cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,location,2));
+            cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,It.Is<LocationCookieItem>(c=>c.Name.Equals(response.Location)),2));
         }
 
         [Test, MoqAutoData]

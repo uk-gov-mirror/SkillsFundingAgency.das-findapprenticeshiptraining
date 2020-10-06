@@ -36,6 +36,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CourseProvider.feature.cs</LastGenOutput>
     </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Features\CourseProviderDetail.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CourseProviderDetail.feature.cs</LastGenOutput>
+    </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Features\Courses.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Courses.feature.cs</LastGenOutput>
@@ -44,6 +48,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CourseDetail.feature.cs</LastGenOutput>
     </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Features\RedirectRules.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>RedirectRules.feature.cs</LastGenOutput>
+    </SpecFlowFeatureFiles>
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +59,8 @@
     <Content Include="Features\Courses.feature" />
     <Content Include="Features\CourseDetail.feature" />
     <Content Include="Features\CourseProviders.feature" />
+    <Content Include="Features\CourseProviderDetail.feature" />
+    <Content Include="Features\RedirectRules.feature" />
   </ItemGroup>
 
 </Project>

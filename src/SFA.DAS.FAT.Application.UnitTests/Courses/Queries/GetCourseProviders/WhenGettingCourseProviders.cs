@@ -21,7 +21,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviders
             GetCourseProvidersQueryHandler handler)
         {
             mockService
-                .Setup(service => service.GetCourseProviders(query.CourseId, query.Location, query.SortOrder))
+                .Setup(service => service.GetCourseProviders(query.CourseId, query.Location, query.DeliveryModes, query.SortOrder))
                 .ReturnsAsync(providersFromService);
 
             var result = await handler.Handle(query, CancellationToken.None);
@@ -29,6 +29,30 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviders
             result.Course.Should().BeEquivalentTo(providersFromService.Course);
             result.Providers.Should().BeEquivalentTo(providersFromService.CourseProviders);
             result.Total.Should().Be(providersFromService.Total);
+            result.TotalFiltered.Should().Be(providersFromService.TotalFiltered);
+            result.Location.Should().Be(providersFromService.Location.Name);
+            result.LocationGeoPoint.Should().BeEquivalentTo(providersFromService.Location.LocationPoint.GeoPoint);
         }
+        [Test, MoqAutoData]
+        public async Task Then_Returns_Results_From_Service_With_No_Location(
+            GetCourseProvidersQuery query,
+            TrainingCourseProviders providersFromService,
+            [Frozen] Mock<ICourseService> mockService,
+            GetCourseProvidersQueryHandler handler)
+        {
+            providersFromService.Location = null;
+            mockService
+                .Setup(service => service.GetCourseProviders(query.CourseId, query.Location,query.DeliveryModes, query.SortOrder))
+                .ReturnsAsync(providersFromService);
+
+            var result = await handler.Handle(query, CancellationToken.None);
+
+            result.Course.Should().BeEquivalentTo(providersFromService.Course);
+            result.Providers.Should().BeEquivalentTo(providersFromService.CourseProviders);
+            result.Total.Should().Be(providersFromService.Total);
+            result.Location.Should().BeNullOrEmpty();
+            result.LocationGeoPoint.Should().BeNull();
+        }
+
     }
 }

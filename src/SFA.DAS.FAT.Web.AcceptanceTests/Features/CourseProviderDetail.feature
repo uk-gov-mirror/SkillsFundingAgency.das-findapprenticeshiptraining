@@ -9,6 +9,7 @@ Given I navigate to the following url: courses/2/providers/1001?location=coventr
 Then an http status code of 200 is returned
 And the page content includes the following: This training provider does not offer this course at the apprenticeship location
 And the page content includes the following: There are 4 training providers for
+And the page content includes the following: View other training providers
 	
 @WireMockServer	
 Scenario: No feedback on provider

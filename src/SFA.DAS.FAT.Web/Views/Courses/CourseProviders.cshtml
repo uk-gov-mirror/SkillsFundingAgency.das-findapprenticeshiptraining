@@ -29,9 +29,9 @@
                         var routeData = new Dictionary<string, string>
                         {
                             {"location","-1"},
-                            {"id",Model.Course.Id.ToString()}
+                            {"id",Model.Course.Id.ToString()},
                         };
-                        
+
                 <div class="das-filter__selected-filters">
                     <div class="das-filter__selected-header">
                         <h3 class="das-filter__selected-heading">Selected filters</h3>
@@ -40,7 +40,7 @@
                     @if (Model.HasLocation)
                     {
                         <h4 class="das-filter__selected-sub-heading">Apprenticeship location</h4>
-                        <a asp-route="@RouteNames.CourseProviders" asp-all-route-data="routeData" title="Clear this filter @Model.Location" class="das-filter__tag">@Model.Location</a>
+                        <a asp-querystring="@Model.ClearLocationLink" title="Clear this filter @Model.Location" class="das-filter__tag">@Model.Location</a>
                     }
                     @if (Model.BuildClearDeliveryModeLinks().Any())
                     {

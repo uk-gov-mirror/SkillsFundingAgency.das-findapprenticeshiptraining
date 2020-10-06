@@ -28,6 +28,7 @@ namespace SFA.DAS.FAT.Web.Models
         public int TotalFiltered { get; set; }
         public string TotalMessage => GetTotalMessage();
         public string Location { get; set; }
+        public string ClearLocationLink => BuildClearLocationFilterLink();
         public ProviderSortBy SortOrder { get; set; }
         public bool HasLocation => !string.IsNullOrWhiteSpace(Location);
         public bool ShowFilters => GetCurrentFilters();
@@ -110,6 +111,16 @@ namespace SFA.DAS.FAT.Web.Models
                 providerRatingLinks.Add(providerRating.Description, link);
             }
             return providerRatingLinks;
+        }
+
+        public string BuildClearLocationFilterLink()
+        {
+            var location = BuildLocationLink();
+            var deliveryModes = BuildDeliveryModeLinks("appendTo");
+
+            var link = $"{location}{deliveryModes}";
+
+            return link;
         }
 
         private string BuildDeliveryModeLinks(string linkToAppendTo)

@@ -44,21 +44,22 @@
                     </span>
                 </summary>
                 <div class="govuk-details__text">
-                    <ul class="govuk-list graph-list govuk-!-width-three-quarters">
-                        
-                        @foreach (var feedbackDetail in Model.Provider.FeedbackDetail.OrderByDescending(c=>(int)c.Rating))
-                        {
-                            <li class="level-1">
-                                <span class="label">@feedbackDetail.Rating.GetDescription()</span>
-                                <span class="chart">
-                                    <span class="graph">
-                                        <span class="bar " style="width: @(feedbackDetail.RatingPercentage)%"></span>
+                    <div class="das-graph govuk-!-width-three-quarters">
+                        <ul class="das-graph__list">                          
+                            @foreach (var feedbackDetail in Model.Provider.FeedbackDetail.OrderByDescending(c=>(int)c.Rating))
+                            {
+                                <li class="das-graph__list-item">
+                                    <h3 class="das-graph__label">@feedbackDetail.Rating.GetDescription()</h3>
+                                    <span class="das-graph__chart">
+                                        <span class="das-graph__bar">
+                                            <span class="das-graph__bar-value" style="width: @(feedbackDetail.RatingPercentage)%"></span>
+                                        </span>
                                     </span>
-                                </span>
-                                <span class="figure govuk-!-font-size-16">@feedbackDetail.RatingText</span>
-                            </li>
-                        }
-                    </ul>
+                                    <p class="das-graph__figure">@feedbackDetail.RatingText <span class="das-visually-hidden">out of @Model.Provider.TotalEmployerResponses were given rating of @feedbackDetail.Rating.GetDescription()</span></p>
+                                </li>
+                            }
+                        </ul>
+                    </div>
                 </div>
             </details>
         }  

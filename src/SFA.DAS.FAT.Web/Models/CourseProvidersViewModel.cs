@@ -163,6 +163,11 @@ namespace SFA.DAS.FAT.Web.Models
 
             foreach (DeliveryModeType deliveryModeType in Enum.GetValues(typeof(DeliveryModeType)))
             {
+                if (deliveryModeType == DeliveryModeType.NotFound)
+                {
+                    continue;
+                }
+                
                 deliveryModeOptionViewModels.Add(new DeliveryModeOptionViewModel
                 {
                     DeliveryModeType = deliveryModeType,

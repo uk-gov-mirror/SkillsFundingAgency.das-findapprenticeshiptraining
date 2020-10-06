@@ -132,11 +132,11 @@
                         }
                     <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship Location</h3>
                         <p class="govuk-body">Check if a provider can offer this training for the apprenticeship location.</p>
-                        <form method="GET" asp-route="@RouteNames.CourseProviders" asp-route-id="@Model.Id">
+                        <form method="GET" asp-route="@RouteNames.CourseProviders" asp-route-id="@Model.Id" class="govuk-!-width-three-quarters">
                             <input type="hidden" name="sortOrder" value="@ProviderSortBy.Name">
                             <div class="govuk-form-group">
                                 <label for="search-location" class="govuk-label">Enter location</label>
-                                <input type="search" id="search-location" name="location" title="Search" class="govuk-input govuk-!-width-three-quarters" data-submit-on-selection="true">
+                                <input type="search" id="search-location" name="location" title="Search" class="govuk-input" data-submit-on-selection="true">
                             </div>
                             <button class="govuk-button govuk-!-margin-bottom-0" id="btn-view-providers">
                                 View providers for this course

@@ -45,6 +45,18 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
 
             actual.TotalFeedbackRatingText.Should().Be(expectedText);
         }
+        [Test]
+        [InlineAutoData(50, "(50 reviews)")]
+        [InlineAutoData(51, "(50+ reviews)")]
+        [InlineAutoData(1, "(1 review)")]
+        [InlineAutoData(0, "Not yet reviewed")]
+        public void Then_The_Feedback_Provider_Detail_Text_Is_Formatted_Correctly(int numberOfReviews, string expectedText, Provider source)
+        {
+            source.Feedback.TotalEmployerResponses = numberOfReviews;
+            var actual = (ProviderViewModel) source;    
+
+            actual.TotalFeedbackRatingTextProviderDetail.Should().Be(expectedText);
+        }
 
         [Test]
         [InlineAutoData(1,"Very poor")]

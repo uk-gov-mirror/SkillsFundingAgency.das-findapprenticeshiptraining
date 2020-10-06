@@ -43,7 +43,7 @@
                         <h4 class="das-filter__selected-sub-heading">Apprenticeship location</h4>
                         <a asp-querystring="@Model.ClearLocationLink" title="Clear this filter @Model.Location" class="das-filter__tag">@Model.Location</a>
                     }
-                    @if (Model.BuildClearDeliveryModeLinks().Any())
+                    @if (Model.HasDeliveryModes)
                     {
                         <h4 class="das-filter__selected-sub-heading">Training options</h4>
                         @foreach (var deliveryModeLink in Model.BuildClearDeliveryModeLinks())
@@ -52,7 +52,7 @@
                         }
                     }
 
-                    @if (Model.BuildClearProviderRatingLinks().Any())
+                    @if (Model.HasProviderRatings)
                     {
                         <h4 class="das-filter__selected-sub-heading">Average employer review</h4>
                         @foreach (var providerRatingLink in Model.BuildClearProviderRatingLinks())

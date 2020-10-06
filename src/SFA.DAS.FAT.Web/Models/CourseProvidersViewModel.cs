@@ -31,6 +31,8 @@ namespace SFA.DAS.FAT.Web.Models
         public string ClearLocationLink => BuildClearLocationFilterLink();
         public ProviderSortBy SortOrder { get; set; }
         public bool HasLocation => !string.IsNullOrWhiteSpace(Location);
+        public bool HasProviderRatings => ProviderRatings.Any(model => model.Selected);
+        public bool HasDeliveryModes => DeliveryModes.Any(model => model.Selected);
         public bool ShowFilters => GetCurrentFilters();
 
         private bool GetCurrentFilters()

@@ -88,7 +88,7 @@ namespace SFA.DAS.FAT.Web.Models
                     return !isProviderDetail ? "(1 employer review)" : "(1 review)";
             }
 
-            var returnText = source.Feedback.TotalEmployerResponses > 50 ? "(50+ employer reviews)" 
+            var returnText = source.Feedback.TotalEmployerResponses > 50 && !isProviderDetail ? "(50+ employer reviews)" 
                 : $"({source.Feedback.TotalEmployerResponses} employer reviews)";
 
             return isProviderDetail ? returnText.Replace("employer ", "") : returnText;
@@ -203,11 +203,7 @@ namespace SFA.DAS.FAT.Web.Models
 
         private string GetRatingText()
         {
-            if (RatingCount == 1)
-            {
-                return "1 review";
-            }
-            return RatingCount > 50 ? "50+ reviews" : $"{RatingCount} reviews";
+            return RatingCount == 1 ? "1 review" : $"{RatingCount} reviews";
         }
     }
     

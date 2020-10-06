@@ -1,6 +1,7 @@
 @using SFA.DAS.FAT.Web.Infrastructure
 @using SFA.DAS.FAT.Domain.Extensions
-@using SFA.DAS.FAT.Web.Models
+@using SFA.DAS.FAT.Domain.Courses
+@using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType
 @model SFA.DAS.FAT.Web.Models.CourseProviderViewModel
 @{
     ViewData["Title"] = "Training provider details";
@@ -74,6 +75,11 @@
                         {
                             <p class="govuk-body">There are @Model.TotalProviders training providers for @Model.Course.TitleAndLevel in the apprenticeship location.</p>
                         }
+                        <form method="GET" asp-route="@RouteNames.CourseProviders" asp-route-id="@Model.Course.Id" class="govuk-!-width-three-quarters">
+                            <button class="govuk-button govuk-!-margin-bottom-0" id="btn-view-providers">
+                                View other training providers
+                            </button>
+                        </form>
                     }
                     else
                     {

@@ -125,7 +125,7 @@
                     };
                     <p class="govuk-body govuk-!-margin-bottom-0">
                         <span style="margin-right: 10px">@Model.Location</span>
-                        <a asp-route="@RouteNames.CourseProviders" asp-all-route-data="@routeData" class="govuk-link govuk-link--no-visited-state" id="lnk-remove-location">Remove&nbsp;location</a>
+                        <a asp-querystring="@Model.ClearLocationLink" class="govuk-link govuk-link--no-visited-state" id="lnk-remove-location">Remove&nbsp;location</a>
                     </p>    
                 }
                 else

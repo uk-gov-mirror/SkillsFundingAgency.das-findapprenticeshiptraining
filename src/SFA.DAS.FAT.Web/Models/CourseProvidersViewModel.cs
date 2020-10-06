@@ -36,8 +36,8 @@ namespace SFA.DAS.FAT.Web.Models
         private bool GetCurrentFilters()
         {
             var result = !string.IsNullOrWhiteSpace(Location) ||
-                BuildClearDeliveryModeLinks().Any() ||
-                BuildClearProviderRatingLinks().Any() ? true : false;
+                         BuildClearDeliveryModeLinks().Any() ||
+                         BuildClearProviderRatingLinks().Any();
             return result;
         }
 
@@ -45,14 +45,8 @@ namespace SFA.DAS.FAT.Web.Models
         {
             var newOrder = SortOrder == ProviderSortBy.Distance ? 
                 ProviderSortBy.Name : ProviderSortBy.Distance;
-            var selectedDeliveryModes = DeliveryModes
-                .Where(viewModel => viewModel.Selected)
-                .Select(viewModel => viewModel.DeliveryModeType);
-            var selectedProviderRatings = ProviderRatings
-                .Where(viewModel => viewModel.Selected)
-                .Select(viewModel => viewModel.ProviderRatingType);
              
-            return $"?location={Location}" + "&deliveryModes=" + $"{string.Join("&deliveryModes=", selectedDeliveryModes)}" + "&providerRatings=" + $"{string.Join("&providerRatings=", selectedProviderRatings)}" + $"&sortorder={newOrder}";
+            return $"?location={Location}" + BuildDeliveryModeLinks("location") + BuildProviderRatingLinks("location") + $"&sortorder={newOrder}";
         }
 
         public IEnumerable<DeliveryModeOptionViewModel> DeliveryModes { get; set; }
@@ -79,7 +73,7 @@ namespace SFA.DAS.FAT.Web.Models
                         viewModel.DeliveryModeType != deliveryMode.DeliveryModeType)
                     .Select(viewModel => viewModel.DeliveryModeType);
 
-                var link = $"{location}&deliveryModes={$"{string.Join("&deliveryModes=", otherSelected)}"}{providerRatings}{sortOrder}";
+                var link = $"{location}&deliveryModes={string.Join("&deliveryModes=", otherSelected)}{providerRatings}{sortOrder}";
 
                 clearDeliveryModeLinks.Add(deliveryMode.Description, link);
             }
@@ -106,7 +100,7 @@ namespace SFA.DAS.FAT.Web.Models
                         viewModel.Selected &&
                         viewModel.ProviderRatingType != providerRating.ProviderRatingType)
                     .Select(viewModel => viewModel.ProviderRatingType);
-                var link = $"{location}{deliveryModes}&providerRatings={$"{string.Join("&providerRatings=", otherSelected)}"}{sortOrder}";
+                var link = $"{location}{deliveryModes}&providerRatings={string.Join("&providerRatings=", otherSelected)}{sortOrder}";
 
                 providerRatingLinks.Add(providerRating.Description, link);
             }
@@ -115,10 +109,10 @@ namespace SFA.DAS.FAT.Web.Models
 
         public string BuildClearLocationFilterLink()
         {
-            var location = BuildLocationLink();
-            var deliveryModes = BuildDeliveryModeLinks("appendTo");
+            var location = "?location=-1";
+            var providerRatings = BuildProviderRatingLinks(location);
 
-            var link = $"{location}{deliveryModes}";
+            var link = $"{location}{providerRatings}";
 
             return link;
         }
@@ -128,19 +122,19 @@ namespace SFA.DAS.FAT.Web.Models
             if (DeliveryModes != null && DeliveryModes.Any())
             {
                 var deliveryModes = DeliveryModes.Where(dm => dm.Selected).Select(dm => dm.DeliveryModeType);
-                return $"{GetSeparator(linkToAppendTo)}deliveryModes={$"{string.Join("&deliveryModes=", deliveryModes)}"}";
+                return $"{GetSeparator(linkToAppendTo)}deliveryModes={string.Join("&deliveryModes=", deliveryModes)}";
             }
             return null;
         }
 
         private string BuildSortOrder(string linkToAppendTo)
         {
-            return $"{GetSeparator(linkToAppendTo)}sortorder={ HttpUtility.UrlEncode($"{SortOrder}")}";
+            return $"{GetSeparator(linkToAppendTo)}sortorder={HttpUtility.UrlEncode($"{SortOrder}")}";
         }
 
         private string BuildLocationLink()
         {
-            return $"{GetSeparator("")}location={ HttpUtility.UrlEncode($"{Location}")}";
+            return $"?location={HttpUtility.UrlEncode($"{Location}")}";
         }
 
         private string BuildProviderRatingLinks(string linkToAppendTo)
@@ -148,7 +142,7 @@ namespace SFA.DAS.FAT.Web.Models
             if (ProviderRatings != null && ProviderRatings.Any())
             {
                 var providerRatings = ProviderRatings.Where(pr => pr.Selected).Select(pr => pr.ProviderRatingType);
-                return $"{GetSeparator(linkToAppendTo)}providerRatings={$"{string.Join("&providerRatings=", providerRatings)}"}";
+                return $"{GetSeparator(linkToAppendTo)}providerRatings={string.Join("&providerRatings=", providerRatings)}";
             }
             return null;
         }
@@ -196,7 +190,7 @@ namespace SFA.DAS.FAT.Web.Models
 
             return providerRatingOptionViewModel;
         }
-        private object GetSeparator(string url)
+        private static string GetSeparator(string url)
         {
             return string.IsNullOrEmpty(url) ? "?" : "&";
         }

@@ -1,6 +1,7 @@
 @using SFA.DAS.FAT.Web.Infrastructure
 @using SFA.DAS.FAT.Domain.Extensions
-@using SFA.DAS.FAT.Web.Models
+@using SFA.DAS.FAT.Domain.Courses
+@using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType
 @model SFA.DAS.FAT.Web.Models.CourseProviderViewModel
 @{
     ViewData["Title"] = "Training provider details";
@@ -74,23 +75,28 @@
                         {
                             <p class="govuk-body">There are @Model.TotalProviders training providers for @Model.Course.TitleAndLevel in the apprenticeship location.</p>
                         }
+                        <form method="GET" asp-route="@RouteNames.CourseProviders" asp-route-id="@Model.Course.Id" class="govuk-!-width-three-quarters">
+                            <button class="govuk-button govuk-!-margin-bottom-0" id="btn-view-providers">
+                                View other training providers
+                            </button>
+                        </form>
                     }
                     else
                     {
                         
                         <h2 class="govuk-heading-s govuk-!-margin-bottom-3 govuk-!-margin-top-4">@Model.Provider.Name’s training options</h2>
 
-                        <ul class="govuk-list das-icon-list govuk-!-margin-top-1 govuk-!-margin-bottom-0">
+                        <ul class="govuk-list das-icon-list das-icon-list--large govuk-!-margin-top-1 govuk-!-margin-bottom-0">
                             @foreach (var mode in Model.Provider.DeliveryModes)
                             {
                                 <li class="das-icon-list__list-item">
                                     @if (mode.IsAvailable)
                                     {
-                                        <span class="das-icon-list__icon govuk-!-font-size-24 das-icon-list__icon--tick">available</span>
+                                        <span class="das-icon-list__icon das-icon-list__icon--tick">available</span>
                                     }
                                     else
                                     {
-                                        <span class="das-icon-list__icon govuk-!-font-size-24 das-icon-list__icon--cross">not available</span>
+                                        <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
                                     }
                                     @mode.DeliveryModeType.GetDescription() @mode.FormattedDistanceInMiles
                                 </li>
@@ -166,6 +172,14 @@
                 </dl>
 
             </div>
+            @if (Model.TotalProviders != 0 && Model.Provider.DeliveryModes.FirstOrDefault(c => c.DeliveryModeType == DeliveryModeType.NotFound) == null)
+            {
+                <div>
+                    <p class="govuk-body">@Model.Provider.Name is 1 of @Model.TotalProviders training providers for @Model.Course.TitleAndLevel in the apprenticeship location.</p>
+                    <p><a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.CourseProviders" asp-route-id="@Model.Course.Id">View other training providers</a></p>
+                </div>    
+            }
+            
             @if (Model.AdditionalCourses.Total > 0)
             {
                 <details class="govuk-details govuk-!-margin-top-7" data-module="govuk-details">

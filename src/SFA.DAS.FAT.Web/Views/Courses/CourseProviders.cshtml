@@ -46,7 +46,7 @@
                     @if (Model.HasDeliveryModes)
                     {
                         <h4 class="das-filter__selected-sub-heading">Training options</h4>
-                        @foreach (var deliveryModeLink in Model.BuildClearDeliveryModeLinks())
+                        @foreach (var deliveryModeLink in Model.ClearDeliveryModeLinks)
                         {
                             <a class="das-filter__tag" asp-querystring="@deliveryModeLink.Value" title="Clear this level filter @deliveryModeLink.Key">@deliveryModeLink.Key</a>
                         }
@@ -55,7 +55,7 @@
                     @if (Model.HasProviderRatings)
                     {
                         <h4 class="das-filter__selected-sub-heading">Average employer review</h4>
-                        @foreach (var providerRatingLink in Model.BuildClearProviderRatingLinks())
+                        @foreach (var providerRatingLink in Model.ClearProviderRatingLinks)
                         {
                             <a class="das-filter__tag" asp-querystring="@providerRatingLink.Value" title="Clear this level filter @providerRatingLink.Key">@providerRatingLink.Key</a>
                         }

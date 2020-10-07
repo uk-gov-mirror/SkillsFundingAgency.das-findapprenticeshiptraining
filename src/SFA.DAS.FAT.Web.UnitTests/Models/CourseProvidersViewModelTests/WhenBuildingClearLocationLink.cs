@@ -11,7 +11,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
         [Test, AutoData]
         public void Then_The_Location_Is_Set_To_Minus_One_And_No_Delivery_Modes(CourseProvidersViewModel model)
         {
-            var actual = model.BuildClearLocationFilterLink();
+            var actual = model.ClearLocationLink;
 
             actual.Should().StartWith("?location=-1");
         }
@@ -30,9 +30,14 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
                 return c;
             }).ToList();
             
-            var actual = model.BuildClearLocationFilterLink();
+            var actual = model.ClearDeliveryModeLinks;
 
-            actual.Should().Be("?location=-1&providerRatings=" + $"{string.Join("&providerRatings=", model.ProviderRatings.Select(c=>c.ProviderRatingType))}");            
+            foreach (var actualItem in actual)
+            {
+                actualItem.Value.Should().Contain($"&providerRatings={string.Join("&providerRatings=", model.ProviderRatings.Select(c => c.ProviderRatingType))}");
+                actualItem.Value.Should().StartWith($"?location={model.Location}");
+            }
+            
         }
     }
 }

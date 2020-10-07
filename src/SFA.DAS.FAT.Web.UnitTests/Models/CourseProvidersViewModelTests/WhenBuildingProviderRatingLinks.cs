@@ -26,19 +26,19 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
             }
 
             // Act
-            var links = model.BuildClearProviderRatingLinks();
+            var links = model.ClearProviderRatingLinks;
 
             // Assert
             foreach (var providerRating in model.ProviderRatings.Where(vm => vm.Selected))
             {
                 var link = links.Single(pair => pair.Key == providerRating.Description);
-                var otherSelected = model.ProviderRatings
+                var selectedProviderRatings = model.ProviderRatings
                     .Where(vm =>
                         vm.Selected &&
                         vm.ProviderRatingType != providerRating.ProviderRatingType)
                     .Select(vm => vm.ProviderRatingType);
 
-                link.Value.Should().Be($"?location={model.Location}&deliveryModes=&providerRatings={string.Join("&providerRatings=", otherSelected)}&sortorder={model.SortOrder}");
+                link.Value.Should().Be($"?location={model.Location}&providerRatings={string.Join("&providerRatings=", selectedProviderRatings)}&sortorder={model.SortOrder}");
             }
         }
 
@@ -57,13 +57,13 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
             }
 
             // Act
-            var links = model.BuildClearProviderRatingLinks();
+            var links = model.ClearProviderRatingLinks;
 
             // Assert
             foreach (var providerRating in model.ProviderRatings.Where(vm => vm.Selected))
             {
                 var link = links.Single(pair => pair.Key == providerRating.Description);
-                var otherSelected = model.ProviderRatings
+                var selectedProviderRatings = model.ProviderRatings
                     .Where(vm =>
                         vm.Selected &&
                         vm.ProviderRatingType != providerRating.ProviderRatingType)
@@ -72,7 +72,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
                     .Where(vm => vm.Selected)
                     .Select(vm => vm.DeliveryModeType);
 
-                link.Value.Should().Be($"?location={model.Location}&deliveryModes={string.Join("&deliveryModes=", deliveryModeSelected)}&providerRatings={string.Join("&providerRatings=", otherSelected)}&sortorder={model.SortOrder}");
+                link.Value.Should().Be($"?location={model.Location}&deliveryModes={string.Join("&deliveryModes=", deliveryModeSelected)}&providerRatings={string.Join("&providerRatings=", selectedProviderRatings)}&sortorder={model.SortOrder}");
             }
         }
 
@@ -84,7 +84,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
                 providerRating.Selected = false;
             }
 
-            var links = model.BuildClearProviderRatingLinks();
+            var links = model.ClearProviderRatingLinks;
 
             links.Should().BeEmpty();
         }

@@ -21,7 +21,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
                 providerRating.Selected = false;
             }
 
-            var links = model.BuildClearDeliveryModeLinks();
+            var links = model.ClearDeliveryModeLinks;
 
             foreach (var deliveryMode in model.DeliveryModes.Where(viewModel => viewModel.Selected))
             {
@@ -32,7 +32,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
                         viewModel.DeliveryModeType != deliveryMode.DeliveryModeType)
                     .Select(viewModel => viewModel.DeliveryModeType);
 
-                link.Value.Should().Be($"?location={model.Location}&deliveryModes={string.Join("&deliveryModes=", otherSelected)}&providerRatings=&sortorder={model.SortOrder}");
+                link.Value.Should().Be($"?location={model.Location}&deliveryModes={string.Join("&deliveryModes=", otherSelected)}&sortorder={model.SortOrder}");
             }
         }
 
@@ -44,7 +44,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
                 deliveryMode.Selected = false;
             }
 
-            var links = model.BuildClearDeliveryModeLinks();
+            var links = model.ClearDeliveryModeLinks;
 
             links.Should().BeEmpty();
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using SFA.DAS.FAT.Domain.Courses;
+using SFA.DAS.FAT.Domain.Extensions;
 
 namespace SFA.DAS.FAT.Web.Models
 {
@@ -32,7 +33,7 @@ namespace SFA.DAS.FAT.Web.Models
 
         public string TotalFeedbackRatingTextProviderDetail { get ; set ; }
         public ProviderRating TotalFeedbackText { get ; set ; }
-
+        public List<FeedBackDetail> FeedbackDetail { get ; set ; }
 
         public static implicit operator ProviderViewModel(Provider source)
         {
@@ -52,8 +53,29 @@ namespace SFA.DAS.FAT.Web.Models
                 TotalEmployerResponses = source.Feedback.TotalEmployerResponses,
                 TotalFeedbackRatingText = GetFeedbackRatingText(source, false),
                 TotalFeedbackRatingTextProviderDetail = GetFeedbackRatingText(source, true),
-                TotalFeedbackText = (ProviderRating)source.Feedback.TotalFeedbackRating
+                TotalFeedbackText = (ProviderRating)source.Feedback.TotalFeedbackRating,
+                FeedbackDetail = BuildFeedbackRating(source)
             };
+        }
+
+        private static List<FeedBackDetail> BuildFeedbackRating(Provider source)
+        {
+            var ratingList = new List<FeedBackDetail>();
+            for(var i = 1; i <= (int)ProviderRating.Excellent; i++)
+            {
+                var rating = (ProviderRating) i;
+                var feedback = source.Feedback.FeedbackDetail.FirstOrDefault(c => c.FeedbackName.Equals(rating.GetDescription(), StringComparison.CurrentCultureIgnoreCase));
+                
+                ratingList.Add(new FeedBackDetail
+                {
+                    Rating = rating,
+                    RatingCount = feedback?.FeedbackCount ?? 0,
+                    RatingPercentage = feedback == null || feedback.FeedbackCount == 0 ? 0 : Math.Round((decimal) feedback.FeedbackCount / source.Feedback.TotalEmployerResponses * 100, 1)
+                });
+            
+            }
+
+            return ratingList;
         }
 
         private static string GetFeedbackRatingText(Provider source, bool isProviderDetail)
@@ -66,7 +88,7 @@ namespace SFA.DAS.FAT.Web.Models
                     return !isProviderDetail ? "(1 employer review)" : "(1 review)";
             }
 
-            var returnText = source.Feedback.TotalEmployerResponses > 50 ? "(50+ employer reviews)" 
+            var returnText = source.Feedback.TotalEmployerResponses > 50 && !isProviderDetail ? "(50+ employer reviews)" 
                 : $"({source.Feedback.TotalEmployerResponses} employer reviews)";
 
             return isProviderDetail ? returnText.Replace("employer ", "") : returnText;
@@ -172,6 +194,19 @@ namespace SFA.DAS.FAT.Web.Models
         }
     }
 
+    public class FeedBackDetail
+    {
+        public ProviderRating Rating { get; set; }
+        public decimal RatingPercentage { get; set; }
+        public int RatingCount { get; set; }
+        public string RatingText => GetRatingText();
+
+        private string GetRatingText()
+        {
+            return RatingCount == 1 ? "1 review" : $"{RatingCount} reviews";
+        }
+    }
+    
     public enum DeliveryModeType
     {
         [Description("At apprentice’s workplace")]

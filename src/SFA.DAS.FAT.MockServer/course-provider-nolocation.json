@@ -31,7 +31,25 @@
         "deliveryModes": null,
         "feedback": {
           "totalEmployerResponses": 51,
-          "totalFeedbackRating": 2
+          "totalFeedbackRating": 2,
+          "feedbackDetail": [
+            {
+              "feedbackName": "Excellent",
+              "feedbackCount": 3
+            },
+            {
+              "feedbackName": "Good",
+              "feedbackCount": 30
+            },
+            {
+              "feedbackName": "Poor",
+              "feedbackCount": 10
+            },
+            {
+              "feedbackName": "Very Poor",
+              "feedbackCount": 8
+            }
+          ]
         }
       },
   "providersCount": {

@@ -47,7 +47,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         }
         [Test]
         [InlineAutoData(50, "(50 reviews)")]
-        [InlineAutoData(51, "(50+ reviews)")]
+        [InlineAutoData(51, "(51 reviews)")]
         [InlineAutoData(1, "(1 review)")]
         [InlineAutoData(0, "Not yet reviewed")]
         public void Then_The_Feedback_Provider_Detail_Text_Is_Formatted_Correctly(int numberOfReviews, string expectedText, Provider source)
@@ -72,6 +72,38 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             actual.TotalFeedbackText.GetDescription().Should().Be(expected);
         }
 
+        [Test, AutoData]
+        public void Then_The_Feedback_Detail_Exists_For_Each_Rating_Type(Provider source)
+        {
+            
+            var actual = (ProviderViewModel) source;
+
+            actual.FeedbackDetail.Count.Should().Be(4);
+            actual.FeedbackDetail.Select(c => c.Rating).Contains(ProviderRating.Excellent).Should().BeTrue();
+            actual.FeedbackDetail.Select(c => c.Rating).Contains(ProviderRating.Good).Should().BeTrue();
+            actual.FeedbackDetail.Select(c => c.Rating).Contains(ProviderRating.Poor).Should().BeTrue();
+            actual.FeedbackDetail.Select(c => c.Rating).Contains(ProviderRating.VeryPoor).Should().BeTrue();
+        }
+
+        [Test]
+        [InlineAutoData(50, 50, 100.0, "50 reviews")]
+        [InlineAutoData(51, 60, 85.0,"51 reviews")]
+        [InlineAutoData(1, 11, 9.1, "1 review")]
+        [InlineAutoData(0, 0, 0.0, "0 reviews")]
+        public void Then_The_Text_Is_Generated_For_Number_Of_Reviews_With_Percentage(int numberOfReviews,int totalReviews, double expectedPercentage, string expectedText, Provider source)
+        {
+            source.Feedback.TotalEmployerResponses = totalReviews;
+            source.Feedback.FeedbackDetail.FirstOrDefault().FeedbackCount = numberOfReviews;
+            source.Feedback.FeedbackDetail.FirstOrDefault().FeedbackName = "Good";
+            
+            var actual = (ProviderViewModel) source;
+
+            var actualFeedbackDetail = actual.FeedbackDetail.FirstOrDefault(c => c.Rating.Equals(ProviderRating.Good));
+            Assert.IsNotNull(actualFeedbackDetail);
+            actualFeedbackDetail.RatingText.Should().Be(expectedText);
+            actualFeedbackDetail.RatingCount.Should().Be(numberOfReviews);
+            actualFeedbackDetail.RatingPercentage.Should().Be((decimal)expectedPercentage);
+        }
 
         // achievement rate
         [Test, AutoData]

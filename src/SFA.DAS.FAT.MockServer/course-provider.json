@@ -45,7 +45,15 @@
           "totalFeedbackRating": 0,
           "feedbackDetail": [
             
-          ]
+          ],
+          "feedbackAttributes": {
+            "strengths": [
+           
+            ],
+            "weaknesses": [
+           
+            ]
+          }
         },
         "deliveryModes": [
           {

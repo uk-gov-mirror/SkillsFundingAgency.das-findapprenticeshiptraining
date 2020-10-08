@@ -27,7 +27,15 @@
         "totalFeedbackRating": 3,
         "feedbackDetail": [
           
-        ]
+        ],
+        "feedbackAttributes": {
+          "strengths": [
+
+          ],
+          "weaknesses": [
+
+          ]
+        }
       },
       "deliveryModes": [
         {
@@ -50,7 +58,15 @@
         "totalFeedbackRating": 1,
         "feedbackDetail": [
 
-        ]
+        ],
+        "feedbackAttributes": {
+          "strengths": [
+
+          ],
+          "weaknesses": [
+
+          ]
+        }
       },
       "deliveryModes": [
         {
@@ -73,7 +89,15 @@
         "totalFeedbackRating": 4,
         "feedbackDetail": [
 
-        ]
+        ],
+        "feedbackAttributes": {
+          "strengths": [
+
+          ],
+          "weaknesses": [
+
+          ]
+        }
       },
       "deliveryModes": [
         {
@@ -100,7 +124,15 @@
         "totalFeedbackRating": 2,
         "feedbackDetail": [
 
-        ]
+        ],
+        "feedbackAttributes": {
+          "strengths": [
+
+          ],
+          "weaknesses": [
+
+          ]
+        }
       },
       "deliveryModes": [
         {
@@ -127,7 +159,15 @@
         "totalFeedbackRating": 0,
         "feedbackDetail": [
 
-        ]
+        ],
+        "feedbackAttributes": {
+          "strengths": [
+
+          ],
+          "weaknesses": [
+
+          ]
+        }
       },
       "deliveryModes": [
         {
@@ -154,7 +194,15 @@
         "totalFeedbackRating": 0,
         "feedbackDetail": [
 
-        ]
+        ],
+        "feedbackAttributes": {
+          "strengths": [
+
+          ],
+          "weaknesses": [
+
+          ]
+        }
       },
       "deliveryModes": [
         {
@@ -181,7 +229,15 @@
         "totalFeedbackRating": 1,
         "feedbackDetail": [
 
-        ]
+        ],
+        "feedbackAttributes": {
+          "strengths": [
+
+          ],
+          "weaknesses": [
+
+          ]
+        }
       },
       "deliveryModes": [
         {
@@ -208,7 +264,15 @@
         "totalFeedbackRating": 0,
         "feedbackDetail": [
 
-        ]
+        ],
+        "feedbackAttributes": {
+          "strengths": [
+
+          ],
+          "weaknesses": [
+
+          ]
+        }
       },
       "deliveryModes": [
         {
@@ -235,7 +299,15 @@
         "totalFeedbackRating": 0,
         "feedbackDetail": [
 
-        ]
+        ],
+        "feedbackAttributes": {
+          "strengths": [
+
+          ],
+          "weaknesses": [
+
+          ]
+        }
       },
       "deliveryModes": [
         {
@@ -262,7 +334,15 @@
         "totalFeedbackRating": 0,
         "feedbackDetail": [
 
-        ]
+        ],
+        "feedbackAttributes": {
+          "strengths": [
+
+          ],
+          "weaknesses": [
+
+          ]
+        }
       },
       "deliveryModes": [
         {
@@ -289,7 +369,15 @@
         "totalFeedbackRating": 2,
         "feedbackDetail": [
 
-        ]
+        ],
+        "feedbackAttributes": {
+          "strengths": [
+
+          ],
+          "weaknesses": [
+
+          ]
+        }
       },
       "deliveryModes": [
         {
@@ -316,7 +404,15 @@
         "totalFeedbackRating": 3,
         "feedbackDetail": [
 
-        ]
+        ],
+        "feedbackAttributes": {
+          "strengths": [
+
+          ],
+          "weaknesses": [
+
+          ]
+        }
       },
       "deliveryModes": [
         {

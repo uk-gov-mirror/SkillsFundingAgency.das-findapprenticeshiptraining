@@ -41,11 +41,19 @@ namespace SFA.DAS.FAT.Domain.Courses
         public int TotalEmployerResponses { get; set; }
         public int TotalFeedbackRating { get; set; }
         public IEnumerable<FeedbackDetail> FeedbackDetail { get; set; }
+        
+        public FeedbackAttributes FeedbackAttributes {get; set; }
     }
 
     public class FeedbackDetail
     {
         public string FeedbackName { get; set; }
         public int FeedbackCount { get; set; }
+    }
+
+    public class FeedbackAttributes
+    {
+        public List<string> Strengths { get; set; }
+        public List<string> Weaknesses { get; set; }
     }
 }

@@ -206,7 +206,7 @@
                                         <td class="govuk-table__cell">
                                             <a class="govuk-link govuk-link--no-visited-state"
                                                asp-route="@RouteNames.CourseProviderDetails"
-                                               asp-all-route-data="@routeData">@course.TitleAndLevel</a>
+                                               asp-all-route-data="@routeData">@course.Title<span class="das-no-wrap">(level @course.Level)</span></a>
                                         </td>
                                     </tr>
                                 }

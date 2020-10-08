@@ -15,7 +15,7 @@
             </h1>
             
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Employer reviews</h2>
-            <p class="govuk-body-l govuk-!-margin-bottom-30">
+            <p class="govuk-body-l govuk-!-margin-bottom-4">
                 @if (Model.Provider.TotalFeedbackRating != 0)
                 {
                     <span class="das-rating das-rating--@(Model.Provider.TotalFeedbackRating > 2 ? "good" : "poor")" role="img" aria-label="Rating: @Model.Provider.TotalFeedbackRating out of 4 stars">
@@ -56,7 +56,7 @@
                                             <span class="das-graph__bar-value das-graph__bar-value--@(feedbackDetail.Rating.ToString().ToLower())" style="width: @(feedbackDetail.RatingPercentage)%"></span>
                                         </span>
                                     </span>
-                                    <p class="das-graph__figure">@feedbackDetail.RatingText <span class="das-visually-hidden">out of @Model.Provider.TotalEmployerResponses were given rating of @feedbackDetail.Rating.GetDescription()</span></p>
+                                    <p class="das-graph__figure">@feedbackDetail.RatingText <span class="govuk-visually-hidden">out of @Model.Provider.TotalEmployerResponses were given rating of @feedbackDetail.Rating.GetDescription()</span></p>
                                 </li>
                             }
                         </ul>

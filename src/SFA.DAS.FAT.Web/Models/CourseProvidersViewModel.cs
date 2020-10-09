@@ -97,7 +97,7 @@ namespace SFA.DAS.FAT.Web.Models
             var deliveryModes = BuildDeliveryModeLinks(location);
             var sortOrder = BuildSortOrder(location);
 
-            foreach (var providerRating in ProviderRatings.Where(model => model.Selected))
+            foreach (var providerRating in ProviderRatings.Where(model => model.Selected).OrderByDescending(c=>c.ProviderRatingType))
             {
                 var otherSelected = ProviderRatings
                     .Where(viewModel =>

@@ -21,7 +21,7 @@ And the page content includes the following: Not yet reviewed
 Scenario: Feedback on provider
 Given I navigate to the following url: courses/2/providers/1001
 Then an http status code of 200 is returned
-And the page content includes the following: (50&#x2B; reviews)	
+And the page content includes the following: (51 reviews)	
 
 @WireMockServer
 Scenario: Course offered at location

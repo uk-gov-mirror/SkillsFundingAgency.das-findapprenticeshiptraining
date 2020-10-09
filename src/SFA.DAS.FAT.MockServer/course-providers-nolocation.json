@@ -29,7 +29,10 @@
       "overallAchievementRate": 93.3,
       "feedback": {
         "totalEmployerResponses": 48,
-        "totalFeedbackRating": 3
+        "totalFeedbackRating": 3,
+        "feedbackDetail": [
+
+        ]
       },
       "deliveryModes": [
         
@@ -42,7 +45,10 @@
       "overallAchievementRate": null,
       "feedback": {
         "totalEmployerResponses": 15,
-        "totalFeedbackRating": 1
+        "totalFeedbackRating": 1,
+        "feedbackDetail": [
+
+        ]
       },
       "deliveryModes": [
 
@@ -55,7 +61,10 @@
       "overallAchievementRate": null,
       "feedback": {
         "totalEmployerResponses": 2,
-        "totalFeedbackRating": 4
+        "totalFeedbackRating": 4,
+        "feedbackDetail": [
+
+        ]
       },
       "deliveryModes": [
 
@@ -68,7 +77,10 @@
       "overallAchievementRate": 63.3,
       "feedback": {
         "totalEmployerResponses": 2000,
-        "totalFeedbackRating": 2
+        "totalFeedbackRating": 2,
+        "feedbackDetail": [
+
+        ]
       },
       "deliveryModes": [
 
@@ -81,7 +93,10 @@
       "overallAchievementRate": null,
       "feedback": {
         "totalEmployerResponses": 0,
-        "totalFeedbackRating": 0
+        "totalFeedbackRating": 0,
+        "feedbackDetail": [
+
+        ]
       },
       "deliveryModes": [
 
@@ -94,7 +109,10 @@
       "overallAchievementRate": null,
       "feedback": {
         "totalEmployerResponses": 0,
-        "totalFeedbackRating": 0
+        "totalFeedbackRating": 0,
+        "feedbackDetail": [
+
+        ]
       },
       "deliveryModes": [
 
@@ -107,7 +125,10 @@
       "overallAchievementRate": 73.3,
       "feedback": {
         "totalEmployerResponses": 1,
-        "totalFeedbackRating": 1
+        "totalFeedbackRating": 1,
+        "feedbackDetail": [
+
+        ]
       },
       "deliveryModes": [
 
@@ -120,7 +141,10 @@
       "overallAchievementRate": null,
       "feedback": {
         "totalEmployerResponses": 0,
-        "totalFeedbackRating": 0
+        "totalFeedbackRating": 0,
+        "feedbackDetail": [
+
+        ]
       },
       "deliveryModes": [
 
@@ -133,7 +157,10 @@
       "overallAchievementRate": null,
       "feedback": {
         "totalEmployerResponses": 0,
-        "totalFeedbackRating": 0
+        "totalFeedbackRating": 0,
+        "feedbackDetail": [
+
+        ]
       },
       "deliveryModes": [
 
@@ -146,7 +173,10 @@
       "overallAchievementRate": null,
       "feedback": {
         "totalEmployerResponses": 0,
-        "totalFeedbackRating": 0
+        "totalFeedbackRating": 0,
+        "feedbackDetail": [
+
+        ]
       },
       "deliveryModes": [
 
@@ -159,7 +189,10 @@
       "overallAchievementRate": null,
       "feedback": {
         "totalEmployerResponses": 10,
-        "totalFeedbackRating": 2
+        "totalFeedbackRating": 2,
+        "feedbackDetail": [
+
+        ]
       },
       "deliveryModes": [
 
@@ -172,7 +205,10 @@
       "overallAchievementRate": null,
       "feedback": {
         "totalEmployerResponses": 54,
-        "totalFeedbackRating": 3
+        "totalFeedbackRating": 3,
+        "feedbackDetail": [
+
+        ]
       },
       "deliveryModes": [
 

@@ -60,8 +60,8 @@
         "configurationStorageConnectionString": {
             "type": "securestring"
         },
-        "redisConnectionString": {
-			  "type": "string"
+        "defaultSessionRedisConnectionString": {
+			  "type": "securestring"
 		    },
 		    "dataProtectionKeysDatabase": {
 			  "type": "string"
@@ -207,7 +207,7 @@
                             },
 							{
 								"name": "FindApprenticeshipTrainingWeb:RedisConnectionString",
-								"value": "[parameters('redisConnectionString')]"
+								"value": "[parameters('defaultSessionRedisConnectionString')]"
 							},
 							{
 								"name": "FindApprenticeshipTrainingWeb:DataProtectionKeysDatabase",

@@ -16,6 +16,8 @@ using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Infrastructure.HealthCheck;
 using SFA.DAS.FAT.Web.AppStart;
+using SFA.DAS.FAT.Web.Extensions;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace SFA.DAS.FAT.Web
 {
@@ -23,10 +25,12 @@ namespace SFA.DAS.FAT.Web
     {
         private readonly IWebHostEnvironment _environment;
         private readonly IConfigurationRoot _configuration;
+        public IHostingEnvironment Environment { get; }
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment, IHostingEnvironment hostingEnvironment)
         {
             _environment = environment;
+            Environment = hostingEnvironment;
             var config = new ConfigurationBuilder()
                 .AddConfiguration(configuration)
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -75,6 +79,7 @@ namespace SFA.DAS.FAT.Web
                         failureStatus: HealthStatus.Unhealthy,
                         tags: new[] {"ready"});
             }
+            services.AddDataProtection(_configuration, Environment);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -60,12 +60,12 @@
         "configurationStorageConnectionString": {
             "type": "securestring"
         },
-		"redisConnectionString": {
-			"type": "string"
-		},
-		"dataProtectionKeysDatabase": {
-			"type": "string"
-		}
+        "redisConnectionString": {
+			  "type": "string"
+		    },
+		    "dataProtectionKeysDatabase": {
+			  "type": "string"
+		    }
     },
     "variables": {
         "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",

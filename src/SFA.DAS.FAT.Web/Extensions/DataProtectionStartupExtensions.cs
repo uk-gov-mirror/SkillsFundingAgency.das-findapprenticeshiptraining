@@ -9,27 +9,24 @@ namespace SFA.DAS.FAT.Web.Extensions
 {
     public static class DataProtectionStartupExtensions
     {
-        public static IServiceCollection AddDataProtection(this IServiceCollection services, IConfiguration configuration, IHostingEnvironment environment)
+        public static void AddDataProtection(this IServiceCollection services, IConfiguration configuration)
         {
-            if (!environment.IsDevelopment())
+            
+            var redisConfiguration = configuration.GetSection(nameof(FindApprenticeshipTrainingWeb))
+                .Get<FindApprenticeshipTrainingWeb>();
+
+            if (redisConfiguration != null)
             {
-                var redisConfiguration = configuration.GetSection(ConfigurationKeys.ConnectionStrings)
-                    .Get<FatSettings>();
+                var redisConnectionString = redisConfiguration.RedisConnectionString;
+                var dataProtectionKeysDatabase = redisConfiguration.DataProtectionKeysDatabase;
 
-                if (redisConfiguration != null)
-                {
-                    var redisConnectionString = redisConfiguration.RedisConnectionString;
-                    var dataProtectionKeysDatabase = redisConfiguration.DataProtectionKeysDatabase;
+                var redis = ConnectionMultiplexer
+                    .Connect($"{redisConnectionString},{dataProtectionKeysDatabase}");
 
-                    var redis = ConnectionMultiplexer
-                        .Connect($"{redisConnectionString},{dataProtectionKeysDatabase}");
-
-                    services.AddDataProtection()
-                        .SetApplicationName("das-find-appenticeship-training")
-                        .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
-                }
+                services.AddDataProtection()
+                    .SetApplicationName("das-find-apprenticeship-training")
+                    .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
             }
-            return services;
         }
     }
 }

@@ -25,12 +25,10 @@ namespace SFA.DAS.FAT.Web
     {
         private readonly IWebHostEnvironment _environment;
         private readonly IConfigurationRoot _configuration;
-        public IHostingEnvironment Environment { get; }
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment environment, IHostingEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             _environment = environment;
-            Environment = hostingEnvironment;
             var config = new ConfigurationBuilder()
                 .AddConfiguration(configuration)
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -78,8 +76,10 @@ namespace SFA.DAS.FAT.Web
                         "FAT Outer Api",
                         failureStatus: HealthStatus.Unhealthy,
                         tags: new[] {"ready"});
+                
+                services.AddDataProtection(_configuration);
             }
-            services.AddDataProtection(_configuration, Environment);
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

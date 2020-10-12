@@ -9,7 +9,7 @@ namespace SFA.DAS.FAT.Domain.Interfaces
     {
         Task<TrainingCourse> GetCourse(int courseId, double lat, double lon);
         Task<TrainingCourses> GetCourses(string keyword, List<Guid> requestRouteIds, List<int> requestLevels, OrderBy orderBy);
-        Task<TrainingCourseProviders> GetCourseProviders(int courseId, string queryLocation, IEnumerable<DeliveryModeType> queryDeliveryModes, ProviderSortBy sortBy);
+        Task<TrainingCourseProviders> GetCourseProviders(int courseId, string queryLocation, IEnumerable<DeliveryModeType> queryDeliveryModes, IEnumerable<ProviderRating> queryProviderRatings, ProviderSortBy sortBy);
         Task<TrainingCourseProviderDetails> GetCourseProviderDetails(int providerId, int standardId, string location);
     }
 }

@@ -221,6 +221,8 @@ namespace SFA.DAS.FAT.Web.Models
 
     public enum ProviderRating
     {
+        [Description("Not yet reviewed")]
+        NotYetReviewed = 0,
         [Description("Very poor")]
         VeryPoor = 1,
         [Description("Poor")]

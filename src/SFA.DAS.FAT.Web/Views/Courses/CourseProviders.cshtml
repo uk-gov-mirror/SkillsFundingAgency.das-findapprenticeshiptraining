@@ -25,29 +25,42 @@
                     <div class="das-filter__header">
                         <h2 class="das-filter__heading">Filter</h2>
                     </div>
-                    @if (Model.HasLocation)
+                    @if (Model.ShowFilters)
                     {
                         var routeData = new Dictionary<string, string>
                         {
                             {"location","-1"},
-                            {"id",Model.Course.Id.ToString()}
+                            {"id",Model.Course.Id.ToString()},
                         };
-                        
+
                         <div class="das-filter__selected-filters">
                             <div class="das-filter__selected-header">
                                 <h3 class="das-filter__selected-heading">Selected filters</h3>
                                 <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-all-route-data="routeData" asp-route="@RouteNames.CourseProviders">Clear</a>
                             </div>
-                            <h4 class="das-filter__selected-sub-heading">Apprenticeship location</h4>
-                            <a asp-route="@RouteNames.CourseProviders" asp-all-route-data="routeData" title="Clear this filter '@Model.Location'" class="das-filter__tag">&lsquo;@Model.Location&rsquo;</a>
-                            @if (Model.BuildClearDeliveryModeLinks().Any())
+                            @if (Model.HasLocation)
+                            {
+                                <h4 class="das-filter__selected-sub-heading">Apprenticeship location</h4>
+                                <a asp-querystring="@Model.ClearLocationLink" title="Clear this filter @Model.Location" class="das-filter__tag">@Model.Location</a>
+                            }
+                            @if (Model.HasDeliveryModes)
                             {
                                 <h4 class="das-filter__selected-sub-heading">Training options</h4>
-                                @foreach (var deliveryModeLink in Model.BuildClearDeliveryModeLinks())
+                                @foreach (var deliveryModeLink in Model.ClearDeliveryModeLinks)
                                 {
-                                    <a class="das-filter__tag" asp-querystring="@deliveryModeLink.Value" title="Clear this training option filter @deliveryModeLink.Key">@deliveryModeLink.Key</a>
+                                    <a class="das-filter__tag" asp-querystring="@deliveryModeLink.Value" title="Clear this level filter @deliveryModeLink.Key">@deliveryModeLink.Key</a>
                                 }
                             }
+
+                            @if (Model.HasProviderRatings)
+                            {
+                                <h4 class="das-filter__selected-sub-heading">Average employer review</h4>
+                                @foreach (var providerRatingLink in Model.ClearProviderRatingLinks)
+                                {
+                                    <a class="das-filter__tag" asp-querystring="@providerRatingLink.Value" title="Clear this level filter @providerRatingLink.Key">@providerRatingLink.Key</a>
+                                }
+                            }
+
                         </div>
                     }
                     <div class="das-filter__body das-!-show--from-tablet" id="fat-filter-options">
@@ -57,7 +70,7 @@
                                 <label for="search-location" class="govuk-label"><span class="govuk-!-font-weight-bold govuk-!-font-size-24">Apprenticeship location</span></label>
                                 <input type="search" id="search-location" name="location" title="Search" class="govuk-input govuk-!-width-three-quarters" data-submit-on-selection="false" data-default-value="@Model.Location">
                             </div>
-                            @if (Model.HasLocation)
+                             @if (Model.HasLocation)
                             {
                                 <div class="govuk-form-group">
                                     <fieldset class="govuk-fieldset">
@@ -78,10 +91,29 @@
                                     </fieldset>
                                 </div>
                             }
+                            <div class="govuk-form-group">
+                                <fieldset class="govuk-fieldset">
+                                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                        Average employer review
+                                    </legend>
+                                    <div class="govuk-checkboxes govuk-checkboxes--small">
+                                        @foreach (var providerRating in Model.ProviderRatings.OrderByDescending(c=>(int)c.ProviderRatingType) )
+                                        {
+                                            <div class="govuk-checkboxes__item">
+                                                <input @(providerRating.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="providerRating-@providerRating.ProviderRatingType" name="providerRatings" type="checkbox" value="@providerRating.ProviderRatingType" />
+                                                <label class="govuk-label govuk-checkboxes__label" for="providerRating-@providerRating.ProviderRatingType">
+                                                    @providerRating.Description
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                                </fieldset>
+                            </div>
+                           
                         </form>
                     </div>
                 </div>
-                <button class="govuk-button das-filter__toggle das-show-hide__button das-!-show--mobile" data-aria-controls="fat-filter@(Model.HasLocation ? "-options" : "")" data-button-string="filter @(Model.HasLocation ? " options" : "")" >Show/hide</button>
+                <button class="govuk-button das-filter__toggle das-show-hide__button das-!-show--mobile" data-aria-controls="fat-filter@(Model.ShowFilters ? "-options" : "")" data-button-string="filter @(Model.ShowFilters ? " options" : "")" >Show/hide</button>
             </div>
         </div>
         <div class="govuk-grid-column-two-thirds">
@@ -89,20 +121,15 @@
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
                 @if (Model.HasLocation)
                 {
-                    var routeData = new Dictionary<string, string>
-                    {
-                        {"location","-1"},
-                        {"id",Model.Course.Id.ToString()}
-                    };
                     <p class="govuk-body govuk-!-margin-bottom-0">
                         <span style="margin-right: 10px">@Model.Location</span>
-                        <a asp-route="@RouteNames.CourseProviders" asp-all-route-data="@routeData" class="govuk-link govuk-link--no-visited-state" id="lnk-remove-location">Remove&nbsp;location</a>
+                        <a asp-querystring="@Model.ClearLocationLink" class="govuk-link govuk-link--no-visited-state" id="lnk-remove-location">Remove&nbsp;location</a>
                     </p>    
                 }
                 else
                 {
                     <p class="govuk-body govuk-!-margin-bottom-2">Show only providers who offer this training for the apprenticeship location.</p>
-                    <p class="govuk-body govuk-!-margin-bottom-0" data-module="das-show-hide"><a href="#search-location" class="govuk-link govuk-link--no-visited-state das-show-hide__show-link" data-aria-controls="fat-filter" id="lnk-enter-location" data-focus-id="search-location">Enter&nbsp;location</a></p>
+                    <p class="govuk-body govuk-!-margin-bottom-0" data-module="das-show-hide"><a href="#search-location" class="govuk-link govuk-link--no-visited-state das-show-hide__show-link" data-aria-controls="fat-filter@(Model.ShowFilters ? "-options" : "")" id="lnk-enter-location" data-focus-id="search-location">Enter&nbsp;location</a></p>
                 }
                 
             </div>
@@ -113,8 +140,8 @@
                 Sort by:
                 @if (Model.SortOrder == ProviderSortBy.Name)
                 {
-                    <a id="sort-by-distance" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Distance (nearest first)</a>
-                    @:,<span class="govuk-!-font-weight-bold">Name</span>
+                    <a id="sort-by-distance" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Distance (nearest first)</a>@:,
+                    @:<span class="govuk-!-font-weight-bold">Name</span>
                 }
                 else
                 {

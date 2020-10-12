@@ -44,5 +44,24 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
 
             model.DeliveryModes.Should().BeEquivalentTo(expectedDeliveryModes.Where(c=>c.DeliveryModeType!=DeliveryModeType.NotFound));
         }
+
+        [Test, AutoData]
+        public void Then_Builds_Provider_Ratings(GetCourseProvidersRequest request, GetCourseProvidersResult result)
+        {
+            var expectedProviderRatings = new List<ProviderRatingOptionViewModel>();
+            foreach (ProviderRating providerRatingType in Enum.GetValues(typeof(ProviderRating)))
+            {
+                expectedProviderRatings.Add(new ProviderRatingOptionViewModel
+                {
+                    ProviderRatingType = providerRatingType,
+                    Description = providerRatingType.GetDescription(),
+                    Selected = request.ProviderRatings.Any(type => type == providerRatingType)
+                });
+            }
+
+            var model = new CourseProvidersViewModel(request, result);
+
+            model.ProviderRatings.Should().BeEquivalentTo(expectedProviderRatings);
+        }
     }
 }

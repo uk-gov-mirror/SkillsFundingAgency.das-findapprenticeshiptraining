@@ -106,7 +106,7 @@
                             <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Regulated occupation</h3>
                             <p class="govuk-body">@Model.TitleAndLevel needs a training provider who is approved by the appropriate regulatory body.</p>
                         }
-                        <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship Location</h3>
+                        <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h3>
                         <p class="govuk-body"><span class="govuk-!-margin-right-2">@Model.LocationName</span> <a class="govuk-link" asp-route="@RouteNames.CourseDetails" asp-route-id="@Model.Id" asp-route-location="-1" >Remove location</a></p>
                         <p class="govuk-body das-text--error das-text--error-icon">@Model.ProvidersAtLocationCount providers available for this apprenticeship location</p>
                         @if (Model.TotalProvidersCount == 1)

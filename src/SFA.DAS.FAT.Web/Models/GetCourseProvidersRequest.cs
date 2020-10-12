@@ -12,6 +12,8 @@ namespace SFA.DAS.FAT.Web.Models
         [FromQuery]
         public IReadOnlyList<DeliveryModeType> DeliveryModes { get; set; } = new List<DeliveryModeType>();
         [FromQuery]
+        public IReadOnlyList<ProviderRating> ProviderRatings { get; set; } = new List<ProviderRating>();
+        [FromQuery]
         public ProviderSortBy SortOrder { get; set; }
     }
 }

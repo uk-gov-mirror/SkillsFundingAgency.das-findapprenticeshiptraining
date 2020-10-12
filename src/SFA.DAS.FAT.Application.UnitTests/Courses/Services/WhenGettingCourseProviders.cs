@@ -21,14 +21,15 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             int courseId,
             string location,
             List<DeliveryModeType> deliveryModes,
+            List<ProviderRating> provderRatings,
             ProviderSortBy sortBy,
             [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> mockConfig,
             [Frozen] Mock<IApiClient> mockApiClient,
             CourseService service)
         {
-            var expectedUrl = new GetCourseProvidersApiRequest(mockConfig.Object.Value.BaseUrl, courseId, location, deliveryModes).GetUrl;
+            var expectedUrl = new GetCourseProvidersApiRequest(mockConfig.Object.Value.BaseUrl, courseId, location, deliveryModes, provderRatings).GetUrl;
 
-            await service.GetCourseProviders(courseId, location, deliveryModes, sortBy);
+            await service.GetCourseProviders(courseId, location, deliveryModes, provderRatings, sortBy);
 
             mockApiClient.Verify(client => client.Get<TrainingCourseProviders>(
                 It.Is<GetCourseProvidersApiRequest>(request => request.GetUrl == expectedUrl)));
@@ -39,6 +40,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             int courseId,
             string location,
             List<DeliveryModeType> deliveryModes,
+            List<ProviderRating> provderRatings,
             ProviderSortBy sortBy,
             TrainingCourseProviders providersFromApi,
             [Frozen] Mock<IApiClient> mockApiClient,
@@ -49,7 +51,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
                     It.IsAny<GetCourseProvidersApiRequest>()))
                 .ReturnsAsync(providersFromApi);
 
-            var response = await service.GetCourseProviders(courseId, location, deliveryModes, sortBy);
+            var response = await service.GetCourseProviders(courseId, location, deliveryModes, provderRatings, sortBy);
 
             response.Course.Should().Be(providersFromApi.Course);
             response.CourseProviders.Should().BeEquivalentTo(providersFromApi.CourseProviders);

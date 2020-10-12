@@ -9,14 +9,19 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
     public class WhenBuildingDeliveryModeLinks
     {
         [Test, AutoData]
-        public void And_DeliveryMode_Selected_Then_Link_Returned(CourseProvidersViewModel model)
+        public void And_DeliveryMode_Selected_And_No_ProviderRatings_Selected_Then_Link_Returned(CourseProvidersViewModel model)
         {
             foreach (var deliveryMode in model.DeliveryModes)
             {
                 deliveryMode.Selected = true;
             }
 
-            var links = model.BuildClearDeliveryModeLinks();
+            foreach (var providerRating in model.ProviderRatings)
+            {
+                providerRating.Selected = false;
+            }
+
+            var links = model.ClearDeliveryModeLinks;
 
             foreach (var deliveryMode in model.DeliveryModes.Where(viewModel => viewModel.Selected))
             {
@@ -39,7 +44,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
                 deliveryMode.Selected = false;
             }
 
-            var links = model.BuildClearDeliveryModeLinks();
+            var links = model.ClearDeliveryModeLinks;
 
             links.Should().BeEmpty();
         }

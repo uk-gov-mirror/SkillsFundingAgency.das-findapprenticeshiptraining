@@ -47,9 +47,11 @@ namespace SFA.DAS.FAT.Application.Courses.Services
             int courseId,
             string queryLocation, 
             IEnumerable<DeliveryModeType> queryDeliveryModes,
-            ProviderSortBy sortBy)
+            IEnumerable<ProviderRating> queryProviderRatings,
+            ProviderSortBy sortBy
+           )
         {
-            var request = new GetCourseProvidersApiRequest(_config.BaseUrl, courseId, queryLocation, queryDeliveryModes, (short)sortBy);
+            var request = new GetCourseProvidersApiRequest(_config.BaseUrl, courseId, queryLocation, queryDeliveryModes, queryProviderRatings, (short)sortBy);
 
             var response = await _apiClient.Get<TrainingCourseProviders>(request);
 

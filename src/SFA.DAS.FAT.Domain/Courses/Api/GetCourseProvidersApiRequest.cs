@@ -9,16 +9,19 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
     {
         private readonly string _location;
         private readonly IEnumerable<DeliveryModeType> _deliveryModeTypes;
+        private readonly IEnumerable<ProviderRating> _providerRatingTypes;
+
         private readonly int _sortOrder;
         private readonly int _id;
 
-        public GetCourseProvidersApiRequest (string baseUrl, int id, string location, IEnumerable<DeliveryModeType> deliveryModeTypes, int sortOrder = 0)
+        public GetCourseProvidersApiRequest(string baseUrl, int id, string location, IEnumerable<DeliveryModeType> deliveryModeTypes, IEnumerable<ProviderRating> providerRatingTypes, int sortOrder = 0)
         {
             _location = location;
             _deliveryModeTypes = deliveryModeTypes;
             _sortOrder = sortOrder;
             BaseUrl = baseUrl;
             _id = id;
+            _providerRatingTypes = providerRatingTypes;
         }
 
         public string BaseUrl { get; }
@@ -30,6 +33,10 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
             if (_deliveryModeTypes!= null && _deliveryModeTypes.Any())
             {
                 buildUrl += $"&deliveryModes={string.Join("&deliveryModes=", _deliveryModeTypes)}";
+            }
+            if (_providerRatingTypes != null && _providerRatingTypes.Any())
+            {
+                buildUrl += $"&providerRatings={string.Join("&providerRatings=", _providerRatingTypes)}";
             }
             
             return buildUrl;

@@ -21,7 +21,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviders
             GetCourseProvidersQueryHandler handler)
         {
             mockService
-                .Setup(service => service.GetCourseProviders(query.CourseId, query.Location, query.DeliveryModes, query.SortOrder))
+                .Setup(service => service.GetCourseProviders(query.CourseId, query.Location, query.DeliveryModes, query.ProviderRatings, query.SortOrder))
                 .ReturnsAsync(providersFromService);
 
             var result = await handler.Handle(query, CancellationToken.None);
@@ -42,7 +42,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviders
         {
             providersFromService.Location = null;
             mockService
-                .Setup(service => service.GetCourseProviders(query.CourseId, query.Location,query.DeliveryModes, query.SortOrder))
+                .Setup(service => service.GetCourseProviders(query.CourseId, query.Location,query.DeliveryModes, query.ProviderRatings, query.SortOrder))
                 .ReturnsAsync(providersFromService);
 
             var result = await handler.Handle(query, CancellationToken.None);

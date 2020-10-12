@@ -16,6 +16,8 @@ using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Infrastructure.HealthCheck;
 using SFA.DAS.FAT.Web.AppStart;
+using SFA.DAS.FAT.Web.Extensions;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace SFA.DAS.FAT.Web
 {
@@ -74,7 +76,10 @@ namespace SFA.DAS.FAT.Web
                         "FAT Outer Api",
                         failureStatus: HealthStatus.Unhealthy,
                         tags: new[] {"ready"});
+                
+                services.AddDataProtection(_configuration);
             }
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

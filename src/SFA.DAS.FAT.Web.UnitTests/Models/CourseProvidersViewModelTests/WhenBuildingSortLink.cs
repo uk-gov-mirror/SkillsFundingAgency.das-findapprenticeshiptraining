@@ -16,10 +16,12 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
             var selectedDeliveryModes = model.DeliveryModes
                 .Where(viewModel => viewModel.Selected)
                 .Select(viewModel => viewModel.DeliveryModeType);
+            var selectedProviderRatings = model.ProviderRatings
+                .Where(vm => vm.Selected)
+                .Select(vm => vm.ProviderRatingType);
 
             var link = model.BuildSortLink();
-
-            link.Should().Be($"?location={model.Location}&deliveryModes={string.Join("&deliveryModes=", selectedDeliveryModes)}&sortorder={ProviderSortBy.Name}");
+            link.Should().Be($"?location={model.Location}&deliveryModes={string.Join("&deliveryModes=", selectedDeliveryModes)}&providerRatings={string.Join("&provideRatings=", selectedProviderRatings)}&sortorder={ProviderSortBy.Name}");
         }
 
         [Test, AutoData]
@@ -29,10 +31,13 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
             var selectedDeliveryModes = model.DeliveryModes
                 .Where(viewModel => viewModel.Selected)
                 .Select(viewModel => viewModel.DeliveryModeType);
+            var selectedProviderRatings = model.ProviderRatings
+                .Where(vm => vm.Selected)
+                .Select(vm => vm.ProviderRatingType);
 
             var link = model.BuildSortLink();
 
-            link.Should().Be($"?location={model.Location}&deliveryModes={string.Join("&deliveryModes=", selectedDeliveryModes)}&sortorder={ProviderSortBy.Distance}");
+            link.Should().Be($"?location={model.Location}&deliveryModes={string.Join("&deliveryModes=", selectedDeliveryModes)}&providerRatings={string.Join("&provideRatings=", selectedProviderRatings)}&sortorder={ProviderSortBy.Distance}");
         }
     }
 }

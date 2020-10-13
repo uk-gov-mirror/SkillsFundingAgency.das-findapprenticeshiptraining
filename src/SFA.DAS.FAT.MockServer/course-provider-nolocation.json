@@ -49,7 +49,18 @@
               "feedbackName": "Very Poor",
               "feedbackCount": 8
             }
-          ]
+          ],
+          "feedbackAttributes": {
+            "strengths": [
+              "Providing relevant training at the right time",
+              "Improving apprentice skills",
+              "Onboarding new apprentices"
+            ],
+            "weaknesses": [
+              "Taking on small cohorts (small number of apprentices)",
+              "Improving business outcomes"
+            ]
+          }
         }
       },
   "providersCount": {

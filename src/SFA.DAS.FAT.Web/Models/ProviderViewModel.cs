@@ -35,6 +35,10 @@ namespace SFA.DAS.FAT.Web.Models
         public ProviderRating TotalFeedbackText { get ; set ; }
         public List<FeedBackDetail> FeedbackDetail { get ; set ; }
 
+        public List<string> FeedbackWeaknesses { get ; set ; }
+
+        public List<string> FeedbackStrengths { get ; set ; }
+
         public static implicit operator ProviderViewModel(Provider source)
         {
             return new ProviderViewModel
@@ -54,7 +58,9 @@ namespace SFA.DAS.FAT.Web.Models
                 TotalFeedbackRatingText = GetFeedbackRatingText(source, false),
                 TotalFeedbackRatingTextProviderDetail = GetFeedbackRatingText(source, true),
                 TotalFeedbackText = (ProviderRating)source.Feedback.TotalFeedbackRating,
-                FeedbackDetail = BuildFeedbackRating(source)
+                FeedbackDetail = BuildFeedbackRating(source),
+                FeedbackStrengths = source.Feedback.FeedbackAttributes.Strengths,
+                FeedbackWeaknesses = source.Feedback.FeedbackAttributes.Weaknesses,
             };
         }
 

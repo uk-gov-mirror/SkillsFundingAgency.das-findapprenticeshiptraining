@@ -28,6 +28,7 @@
         "nationalOverallCohort": 7850,
         "overallAchievementRate": 64.2,
         "nationalOverallAchievementRate": 66.8,
+        "providerDistance": 1.5,
         "feedback": {
             "totalEmployerResponses": 6,
             "totalFeedbackRating": 4,

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoFixture.NUnit3;
@@ -25,6 +25,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
                 .Excluding(c=>c.NationalOverallCohort)
                 .Excluding(c => c.DeliveryModes)
                 .Excluding(c=>c.Feedback)
+                .Excluding(c => c.DistanceInMiles)
             );
 
             actual.OverallAchievementRatePercentage.Should().Be($"{(Math.Round(source.OverallAchievementRate.Value)/100):0%}");

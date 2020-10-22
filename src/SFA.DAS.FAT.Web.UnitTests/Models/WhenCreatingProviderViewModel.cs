@@ -286,7 +286,29 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
 
             var dayReleaseDeliveryMode = actual.DeliveryModes.Single(model =>
                 model.DeliveryModeType == DeliveryModeType.DayRelease);
-            dayReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($"({distanceInMiles:##.#} miles away)");
+            dayReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($"({distanceInMiles.FormatDistance()} miles away)");
+            dayReleaseDeliveryMode.IsAvailable.Should().BeTrue();
+        }
+        
+        [Test, AutoData]
+        public void And_Has_DayRelease_Delivery_Then_Formatted_DeliveryMode_With_Trailing_Zeros_Removed(
+            Provider source)
+        {
+            var distanceInMiles = 1.0m;
+            source.DeliveryModes = new List<DeliveryMode>
+            {
+                new DeliveryMode
+                {
+                    DeliveryModeType = Domain.Courses.DeliveryModeType.DayRelease,
+                    DistanceInMiles = distanceInMiles
+                }
+            };
+
+            var actual = (ProviderViewModel)source;
+
+            var dayReleaseDeliveryMode = actual.DeliveryModes.Single(model =>
+                model.DeliveryModeType == DeliveryModeType.DayRelease);
+            dayReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($"(1 mile away)");
             dayReleaseDeliveryMode.IsAvailable.Should().BeTrue();
         }
 

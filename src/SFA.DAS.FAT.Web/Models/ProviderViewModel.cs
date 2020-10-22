@@ -168,7 +168,9 @@ namespace SFA.DAS.FAT.Web.Models
             viewModel.DeliveryModeType = deliveryModeType;
             viewModel.IsAvailable =  source != default;
             viewModel.FormattedDistanceInMiles = source != default && deliveryModeType != DeliveryModeType.Workplace
-                ? $"({source.DistanceInMiles:##.#} miles away)"
+                ? source.DistanceInMiles.FormatDistance() == "1" 
+                    ? "(1 mile away)" 
+                    : $"({source.DistanceInMiles.FormatDistance()} miles away)"
                 : null;
             viewModel.AddressFormatted = source != default ? 
                 BuildFormattedAddress(source) 

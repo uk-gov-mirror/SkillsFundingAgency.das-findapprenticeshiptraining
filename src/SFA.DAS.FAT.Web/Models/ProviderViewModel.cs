@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Domain.Extensions;
+using SFA.DAS.FAT.Web.Extensions;
 
 namespace SFA.DAS.FAT.Web.Models
 {
@@ -39,6 +40,9 @@ namespace SFA.DAS.FAT.Web.Models
 
         public List<string> FeedbackStrengths { get ; set ; }
 
+        public string ProviderDistance { get ; set ; }
+        public string ProviderDistanceText { get; set; }
+    
         public static implicit operator ProviderViewModel(Provider source)
         {
             return new ProviderViewModel
@@ -61,6 +65,8 @@ namespace SFA.DAS.FAT.Web.Models
                 FeedbackDetail = BuildFeedbackRating(source),
                 FeedbackStrengths = source.Feedback.FeedbackAttributes.Strengths,
                 FeedbackWeaknesses = source.Feedback.FeedbackAttributes.Weaknesses,
+                ProviderDistance = source.DistanceInMiles.FormatDistance(),
+                ProviderDistanceText = GetProviderDistanceText(source.DistanceInMiles.FormatDistance())
             };
         }
 
@@ -84,6 +90,16 @@ namespace SFA.DAS.FAT.Web.Models
             return ratingList;
         }
 
+        private static string GetProviderDistanceText(string distance)
+        {
+            if (distance == "1")
+            {
+                return "Head office 1 mile away";
+            }
+
+            return $"Head office {distance} miles away";
+        }
+        
         private static string GetFeedbackRatingText(Provider source, bool isProviderDetail)
         {
             switch (source.Feedback.TotalEmployerResponses)

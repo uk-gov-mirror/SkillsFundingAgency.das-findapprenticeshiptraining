@@ -132,7 +132,9 @@
                     {
                         
                         <h2 class="govuk-heading-s govuk-!-margin-bottom-3 govuk-!-margin-top-4">@Model.Provider.Name’s training options</h2>
-
+                        <p class="govuk-body govuk-!-font-weight-bold">
+                            @Model.Provider.ProviderDistanceText 
+                        </p>
                         <ul class="govuk-list das-icon-list das-icon-list--large govuk-!-margin-top-1 govuk-!-margin-bottom-0">
                             @foreach (var mode in Model.Provider.DeliveryModes)
                             {

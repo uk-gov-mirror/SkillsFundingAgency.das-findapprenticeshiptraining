@@ -115,8 +115,9 @@ namespace SFA.DAS.FAT.Web.Models
         {
             var location = "?location=-1";
             var providerRatings = BuildProviderRatingLinks(location);
-
-            var link = $"{location}{providerRatings}";
+            var deliveryModeLinks = BuildDeliveryModeLinks(location);
+            
+            var link = $"{location}{providerRatings}{deliveryModeLinks}";
 
             return link;
         }

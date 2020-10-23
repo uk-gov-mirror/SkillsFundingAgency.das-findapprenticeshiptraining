@@ -369,5 +369,36 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             actual.DeliveryModes.Count().Should().Be(3);
             actual.DeliveryModes.ToList().TrueForAll(x => x.DeliveryModeType == DeliveryModeType.NotFound).Should().BeFalse();
         }
+
+        [Test, AutoData]
+        public void Then_Adds_National_Text_If_DeliveryMode_Is_Workplace_And_Flag_Set(Provider source)
+        {
+            // Arrange
+            source.DeliveryModes = new List<DeliveryMode>
+            {
+                new DeliveryMode
+                {
+                    DeliveryModeType = Domain.Courses.DeliveryModeType.Workplace,
+                    National = true
+                },
+                new DeliveryMode
+                {
+                    DeliveryModeType = Domain.Courses.DeliveryModeType.DayRelease,
+                    National = false
+                },
+                new DeliveryMode
+                {
+                    DeliveryModeType = Domain.Courses.DeliveryModeType.BlockRelease,
+                    National = true
+                }
+                
+            };
+
+            // Act
+            var actual = (ProviderViewModel)source;
+
+            // Assert
+            actual.DeliveryModes.Count(x => x.NationalText == "(national)").Should().Be(1);
+        }
     }
 }

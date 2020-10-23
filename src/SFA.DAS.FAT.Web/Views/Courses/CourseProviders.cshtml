@@ -70,8 +70,6 @@
                                 <label for="search-location" class="govuk-label"><span class="govuk-!-font-weight-bold govuk-!-font-size-24">Apprenticeship location</span></label>
                                 <input type="search" id="search-location" name="location" title="Search" class="govuk-input govuk-!-width-three-quarters" data-submit-on-selection="false" data-default-value="@Model.Location">
                             </div>
-                             @if (Model.HasLocation)
-                            {
                                 <div class="govuk-form-group">
                                     <fieldset class="govuk-fieldset">
                                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
@@ -90,7 +88,6 @@
                                         </div>
                                     </fieldset>
                                 </div>
-                            }
                             <div class="govuk-form-group">
                                 <fieldset class="govuk-fieldset">
                                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
@@ -183,27 +180,26 @@
                             </a>
                         </h2>
                    
-                        @if (Model.HasLocation)
-                        {
+                        
                             
-                            <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-0">
-                                @foreach (var mode in provider.DeliveryModes)
-                                {
-                                    <li class="das-icon-list__list-item" id="@provider.ProviderId-@mode.DeliveryModeType">
-                                        @if (mode.IsAvailable)
-                                        {
-                                            <span class="das-icon-list__icon das-icon-list__icon--tick">available</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
-                                        }
-                                        @mode.DeliveryModeType.GetDescription() @mode.FormattedDistanceInMiles @mode.NationalText
-                                    </li>
-                                }
-                            </ul>
-                            
-                        }
+                        <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-0">
+                            @foreach (var mode in provider.DeliveryModes)
+                            {
+                                <li class="das-icon-list__list-item" id="@provider.ProviderId-@mode.DeliveryModeType">
+                                    @if (mode.IsAvailable)
+                                    {
+                                        <span class="das-icon-list__icon das-icon-list__icon--tick">available</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
+                                    }
+                                    @mode.DeliveryModeType.GetDescription() @(Model.HasLocation ? mode.FormattedDistanceInMiles : "") @mode.NationalText
+                                </li>
+                            }
+                        </ul>
+                        
+                    
                         
                         @if (provider.OverallCohort != null)
                         {

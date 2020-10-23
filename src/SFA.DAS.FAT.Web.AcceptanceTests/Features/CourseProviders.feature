@@ -9,11 +9,10 @@ When I navigate to the following url: /courses/123/providers
 Then an http status code of 200 is returned
 And the page content includes the following: Training providers for
 And there is a row for each course provider
-And the delivery modes for each provider are not displayed
-And the page content includes the following: Filter
-And the page content does not include the following: Selected filters
-	
-@WireMockServer
+And the delivery modes for each provider are displayed
+And the page content includes the following: Apply filters
+
+	@WireMockServer
 Scenario: Navigate to providers for course page with location
 When I navigate to the following url: /courses/123/providers?location=london
 Then an http status code of 200 is returned

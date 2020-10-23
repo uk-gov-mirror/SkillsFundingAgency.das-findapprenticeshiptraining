@@ -35,14 +35,14 @@ namespace SFA.DAS.FAT.Web.Models
         public bool HasLocation => !string.IsNullOrWhiteSpace(Location);
         public bool HasProviderRatings => ProviderRatings != null && ProviderRatings.Any(model => model.Selected);
         public bool HasDeliveryModes => DeliveryModes !=null && DeliveryModes.Any(model => model.Selected);
-        public bool ShowFilters => ShouldShowFilters();
+        public bool ShowSelectedFilters => ShouldShowFilters();
 
         public IEnumerable<DeliveryModeOptionViewModel> DeliveryModes { get; set; }
         public IEnumerable<ProviderRatingOptionViewModel> ProviderRatings { get; set; }
 
         private bool ShouldShowFilters()
         {
-            var result = 
+            var result = HasLocation || 
                          HasDeliveryModes ||
                          HasProviderRatings;
             return result;

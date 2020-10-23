@@ -11,10 +11,11 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
     public class WhenGettingShowFilters
     {
         [Test, AutoData]
-        public void Then_False_When_DeliveryModes_Empty_And_ProviderRatings_Empty(
+        public void Then_False_When_DeliveryModes_Empty_And_ProviderRatings_Empty_And_Empty_Location(
             CourseProvidersViewModel model)
         {
             // Arrange
+            model.Location = "";
             foreach( var dm in model.DeliveryModes)
             {
                 dm.Selected = false;
@@ -26,11 +27,33 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
             };
 
             // Act
-            var expected = false;
-            var actual = model.ShowFilters;
+            var actual = model.ShowSelectedFilters;
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            Assert.IsFalse(actual);
+        }
+        
+        [Test, AutoData]
+        public void Then_True_When_DeliveryModes_Empty_And_ProviderRatings_Empty_And_Location_Has_Value(
+            CourseProvidersViewModel model)
+        {
+            // Arrange
+            model.Location = "test";
+            foreach( var dm in model.DeliveryModes)
+            {
+                dm.Selected = false;
+            };
+
+            foreach (var pr in model.ProviderRatings)
+            {
+                pr.Selected = false;
+            };
+
+            // Act
+            var actual = model.ShowSelectedFilters;
+
+            // Assert
+            Assert.IsTrue(actual);
         }
 
         [Test, AutoData]
@@ -38,6 +61,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
                    CourseProvidersViewModel model)
         {
             // Arrange
+            model.Location = "";
             foreach (var dm in model.DeliveryModes)
             {
                 dm.Selected = true;
@@ -49,11 +73,10 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
             };
 
             // Act
-            var expected = true;
-            var actual = model.ShowFilters;
+            var actual = model.ShowSelectedFilters;
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            Assert.IsTrue(actual);
         }
 
         [Test, AutoData]
@@ -61,6 +84,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
                    CourseProvidersViewModel model)
         {
             // Arrange
+            model.Location = "";
             foreach (var dm in model.DeliveryModes)
             {
                 dm.Selected = false;
@@ -72,18 +96,18 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
             };
 
             // Act
-            var expected = true;
-            var actual = model.ShowFilters;
+            var actual = model.ShowSelectedFilters;
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            Assert.IsTrue(actual);
         }
 
         [Test, AutoData]
-        public void And_ProviderRatings_Are_Set_And_DeliveryModes_Are_Set_Then_True(
+        public void And_ProviderRatings_Are_Set_And_DeliveryModes_Are_Set_And_Location_Then_True(
                    CourseProvidersViewModel model)
         {
             // Arrange
+            model.Location = "test";
             foreach (var dm in model.DeliveryModes)
             {
                 dm.Selected = true;
@@ -95,11 +119,10 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
             };
 
             // Act
-            var expected = true;
-            var actual = model.ShowFilters;
+            var actual = model.ShowSelectedFilters;
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            Assert.IsTrue(actual);
         }
     }
 }

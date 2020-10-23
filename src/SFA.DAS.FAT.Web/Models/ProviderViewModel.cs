@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -145,6 +145,8 @@ namespace SFA.DAS.FAT.Web.Models
         public string Postcode { get; set; }
         public string County { get; set; }
         public string AddressFormatted { get; set; }
+        public bool National { get ; set ; }
+        public string NationalText { get ; set ; }
 
         public DeliveryModeViewModel Map(DeliveryMode source, DeliveryModeType deliveryModeType)
         {
@@ -195,9 +197,12 @@ namespace SFA.DAS.FAT.Web.Models
                 Address2 = source.Address2,
                 Town = source.Town,
                 County = source.County,
-                Postcode = source.Postcode
+                Postcode = source.Postcode,
+                National = source.National
             };
         }
+
+        
     }
 
     public class FeedBackDetail

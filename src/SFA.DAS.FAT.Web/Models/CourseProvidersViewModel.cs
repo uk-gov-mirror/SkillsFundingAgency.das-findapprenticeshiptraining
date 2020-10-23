@@ -42,7 +42,7 @@ namespace SFA.DAS.FAT.Web.Models
 
         private bool ShouldShowFilters()
         {
-            var result = !string.IsNullOrWhiteSpace(Location) ||
+            var result = 
                          HasDeliveryModes ||
                          HasProviderRatings;
             return result;

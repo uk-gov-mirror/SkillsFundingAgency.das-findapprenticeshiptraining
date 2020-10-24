@@ -50,3 +50,14 @@ if ($keywordsInput.length > 0) {
         autoselect: true
     });
 }
+
+$('#deliveryMode-National').on('change',function (){
+    if ($(this).is(':checked')) {
+        $('#deliveryMode-Workplace').prop('checked', true);
+    }
+});
+$('#deliveryMode-Workplace').on('change', function(){
+    if (!$(this).is(':checked')) {
+        $('#deliveryMode-National').prop('checked', false);
+    }
+});

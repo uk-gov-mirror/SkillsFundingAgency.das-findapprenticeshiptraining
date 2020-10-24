@@ -52,7 +52,7 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Steps
 
             foreach (var mode in Enum.GetValues(typeof(DeliveryModeType)).Cast<DeliveryModeType>())
             {
-                if (mode == DeliveryModeType.NotFound)
+                if (mode == DeliveryModeType.NotFound || mode == DeliveryModeType.National)
                 {
                     continue;
                 }

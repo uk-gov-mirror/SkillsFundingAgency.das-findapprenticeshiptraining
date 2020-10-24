@@ -181,6 +181,14 @@ namespace SFA.DAS.FAT.Web.Models
                 });
             }
 
+            if (deliveryModeOptionViewModels.FirstOrDefault(c =>
+                c.Selected && c.DeliveryModeType == DeliveryModeType.National) != null)
+            {
+                deliveryModeOptionViewModels.First(c => c.DeliveryModeType == DeliveryModeType.Workplace).Selected =
+                    true;
+            }
+            
+
             return deliveryModeOptionViewModels;
         }
 

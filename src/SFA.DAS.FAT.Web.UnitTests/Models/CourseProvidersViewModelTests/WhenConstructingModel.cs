@@ -46,6 +46,18 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
         }
 
         [Test, AutoData]
+        public void Then_If_National_Delivery_Mode_Is_Selected_Then_AtWorkplace_Is_Selected(GetCourseProvidersRequest request, GetCourseProvidersResult result)
+        {
+            request.DeliveryModes = new List<DeliveryModeType> {DeliveryModeType.National};
+            
+            var model = new CourseProvidersViewModel(request, result);
+
+            model.DeliveryModes.Count(c => c.Selected).Should().Be(2);
+            model.DeliveryModes.Where(c => c.Selected).Select(c => c.DeliveryModeType).ToList().Should()
+                .BeEquivalentTo(new List<DeliveryModeType> {DeliveryModeType.Workplace, DeliveryModeType.National});
+        }
+        
+        [Test, AutoData]
         public void Then_Builds_Provider_Ratings(GetCourseProvidersRequest request, GetCourseProvidersResult result)
         {
             var expectedProviderRatings = new List<ProviderRatingOptionViewModel>();

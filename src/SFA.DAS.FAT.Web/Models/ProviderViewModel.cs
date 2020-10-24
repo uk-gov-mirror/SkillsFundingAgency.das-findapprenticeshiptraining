@@ -229,7 +229,9 @@ namespace SFA.DAS.FAT.Web.Models
         [Description("Block release")]
         BlockRelease = 2,
         [Description("Not Found")]
-        NotFound = 3
+        NotFound = 3,
+        [Description("National")]
+        National = 4,
     }
 
     public enum ProviderRating

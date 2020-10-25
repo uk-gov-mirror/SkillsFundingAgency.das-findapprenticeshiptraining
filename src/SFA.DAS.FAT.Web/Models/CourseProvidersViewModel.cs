@@ -77,6 +77,11 @@ namespace SFA.DAS.FAT.Web.Models
                         viewModel.DeliveryModeType != deliveryMode.DeliveryModeType)
                     .Select(viewModel => viewModel.DeliveryModeType);
 
+                if (deliveryMode.DeliveryModeType == DeliveryModeType.Workplace)
+                {
+                    otherSelected = otherSelected.Where(c => c != DeliveryModeType.National);
+                }
+                
                 var link = $"{location}&deliveryModes={string.Join("&deliveryModes=", otherSelected)}{providerRatings}{sortOrder}";
 
                 clearDeliveryModeLinks.Add(deliveryMode.Description, link);

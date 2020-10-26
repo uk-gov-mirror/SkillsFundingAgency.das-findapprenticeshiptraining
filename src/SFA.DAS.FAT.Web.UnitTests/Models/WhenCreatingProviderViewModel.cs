@@ -6,6 +6,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Domain.Extensions;
+using SFA.DAS.FAT.Web.Extensions;
 using SFA.DAS.FAT.Web.Models;
 using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType;
 using ProviderRating = SFA.DAS.FAT.Web.Models.ProviderRating;
@@ -25,6 +26,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
                 .Excluding(c=>c.NationalOverallCohort)
                 .Excluding(c => c.DeliveryModes)
                 .Excluding(c=>c.Feedback)
+                .Excluding(c => c.DistanceInMiles)
             );
 
             actual.OverallAchievementRatePercentage.Should().Be($"{(Math.Round(source.OverallAchievementRate.Value)/100):0%}");
@@ -33,6 +35,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             actual.TotalFeedbackRating.Should().Be(source.Feedback.TotalFeedbackRating);
             actual.FeedbackStrengths.Should().BeEquivalentTo(source.Feedback.FeedbackAttributes.Strengths);
             actual.FeedbackWeaknesses.Should().BeEquivalentTo(source.Feedback.FeedbackAttributes.Weaknesses);
+            actual.ProviderDistance.Should().Be(source.DistanceInMiles.FormatDistance());
         }
 
         //Feedback
@@ -283,7 +286,29 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
 
             var dayReleaseDeliveryMode = actual.DeliveryModes.Single(model =>
                 model.DeliveryModeType == DeliveryModeType.DayRelease);
-            dayReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($"({distanceInMiles:##.#} miles away)");
+            dayReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($"({distanceInMiles.FormatDistance()} miles away)");
+            dayReleaseDeliveryMode.IsAvailable.Should().BeTrue();
+        }
+        
+        [Test, AutoData]
+        public void And_Has_DayRelease_Delivery_Then_Formatted_DeliveryMode_With_Trailing_Zeros_Removed(
+            Provider source)
+        {
+            var distanceInMiles = 1.0m;
+            source.DeliveryModes = new List<DeliveryMode>
+            {
+                new DeliveryMode
+                {
+                    DeliveryModeType = Domain.Courses.DeliveryModeType.DayRelease,
+                    DistanceInMiles = distanceInMiles
+                }
+            };
+
+            var actual = (ProviderViewModel)source;
+
+            var dayReleaseDeliveryMode = actual.DeliveryModes.Single(model =>
+                model.DeliveryModeType == DeliveryModeType.DayRelease);
+            dayReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($"(1 mile away)");
             dayReleaseDeliveryMode.IsAvailable.Should().BeTrue();
         }
 

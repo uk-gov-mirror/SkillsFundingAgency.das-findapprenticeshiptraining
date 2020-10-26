@@ -13,6 +13,7 @@ namespace SFA.DAS.FAT.Domain.Courses
         public decimal? OverallAchievementRate { get; set; }
         public int? NationalOverallCohort { get; set; }
         public decimal? NationalOverallAchievementRate { get; set; }
+        public decimal DistanceInMiles { get; set; }
         public IEnumerable<DeliveryMode> DeliveryModes { get; set; }
         public Feedback Feedback { get; set; }
     }

@@ -77,6 +77,11 @@ namespace SFA.DAS.FAT.Web.Models
                         viewModel.DeliveryModeType != deliveryMode.DeliveryModeType)
                     .Select(viewModel => viewModel.DeliveryModeType);
 
+                if (deliveryMode.DeliveryModeType == DeliveryModeType.Workplace)
+                {
+                    otherSelected = otherSelected.Where(c => c != DeliveryModeType.National);
+                }
+                
                 var link = $"{location}&deliveryModes={string.Join("&deliveryModes=", otherSelected)}{providerRatings}{sortOrder}";
 
                 clearDeliveryModeLinks.Add(deliveryMode.Description, link);
@@ -180,6 +185,14 @@ namespace SFA.DAS.FAT.Web.Models
                     Selected = selectedDeliveryModeTypes.Any(type => type == deliveryModeType)
                 });
             }
+
+            if (deliveryModeOptionViewModels.FirstOrDefault(c =>
+                c.Selected && c.DeliveryModeType == DeliveryModeType.National) != null)
+            {
+                deliveryModeOptionViewModels.First(c => c.DeliveryModeType == DeliveryModeType.Workplace).Selected =
+                    true;
+            }
+            
 
             return deliveryModeOptionViewModels;
         }

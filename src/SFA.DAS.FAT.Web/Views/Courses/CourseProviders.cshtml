@@ -76,14 +76,31 @@
                                             Training options
                                         </legend>
                                         <div class="govuk-checkboxes govuk-checkboxes--small">
-                                            @foreach (var mode in Model.DeliveryModes)
+                                            @foreach (var mode in Model.DeliveryModes.Where(c=>c.DeliveryModeType!=DeliveryModeType.National))
                                             {
+                                                
                                                 <div class="govuk-checkboxes__item">
                                                     <input @(mode.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="deliveryMode-@mode.DeliveryModeType" name="deliveryModes" type="checkbox" value="@mode.DeliveryModeType"/>
                                                     <label class="govuk-label govuk-checkboxes__label" for="deliveryMode-@mode.DeliveryModeType">
                                                         @mode.Description
                                                     </label>
                                                 </div>
+                                                if (mode.DeliveryModeType == DeliveryModeType.Workplace)
+                                                {
+                                                    <div class="govuk-checkboxes__conditional">
+                                                        @{
+                                                              var nationalDeliveryMode = Model.DeliveryModes.SingleOrDefault(c => c.DeliveryModeType == DeliveryModeType.National);
+                                                        }
+                                                        <div class="govuk-form-group">
+                                                            <div class="govuk-checkboxes__item">
+                                                                <input @(nationalDeliveryMode.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="deliveryMode-@nationalDeliveryMode.DeliveryModeType" name="deliveryModes" type="checkbox" value="@nationalDeliveryMode.DeliveryModeType">
+                                                                <label class="govuk-label govuk-checkboxes__label" for="deliveryMode-@nationalDeliveryMode.DeliveryModeType">
+                                                                    @nationalDeliveryMode.Description
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
                                             }
                                         </div>
                                     </fieldset>

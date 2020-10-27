@@ -21,6 +21,42 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
         {
             model.DeliveryModes = model.DeliveryModes.Select(c =>
             {
+                c.Selected = false;
+                return c;
+            }).ToList();
+            model.ProviderRatings = model.ProviderRatings.Select(c =>
+            {
+                c.Selected = true;
+                return c;
+            }).ToList();
+            
+            var actual = model.ClearLocationLink;
+            actual.Should().StartWith($"?location=-1&providerRatings={string.Join("&providerRatings=", model.ProviderRatings.Select(c => c.ProviderRatingType))}");
+        }
+        
+        [Test, AutoData]
+        public void Then_Any_Selected_Delivery_Options_Are_Maintained(CourseProvidersViewModel model)
+        {
+            model.DeliveryModes = model.DeliveryModes.Select(c =>
+            {
+                c.Selected = true;
+                return c;
+            }).ToList();
+            model.ProviderRatings = model.ProviderRatings.Select(c =>
+            {
+                c.Selected = false;
+                return c;
+            }).ToList();
+            
+            var actual = model.ClearLocationLink;
+            actual.Should().StartWith($"?location=-1&deliveryModes={string.Join("&deliveryModes=", model.DeliveryModes.Select(c => c.DeliveryModeType))}");
+        }
+        
+        [Test, AutoData]
+        public void Then_Any_Selected_Delivery_Options_And_Ratings_Are_Maintained(CourseProvidersViewModel model)
+        {
+            model.DeliveryModes = model.DeliveryModes.Select(c =>
+            {
                 c.Selected = true;
                 return c;
             }).ToList();
@@ -30,13 +66,8 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
                 return c;
             }).ToList();
             
-            var actual = model.ClearDeliveryModeLinks;
-
-            foreach (var actualItem in actual)
-            {
-                actualItem.Value.Should().Contain($"&providerRatings={string.Join("&providerRatings=", model.ProviderRatings.Select(c => c.ProviderRatingType))}");
-                actualItem.Value.Should().StartWith($"?location={model.Location}");
-            }
+            var actual = model.ClearLocationLink;
+            actual.Should().StartWith($"?location=-1&providerRatings={string.Join("&providerRatings=", model.ProviderRatings.Select(c => c.ProviderRatingType))}&deliveryModes={string.Join("&deliveryModes=", model.DeliveryModes.Select(c => c.DeliveryModeType))}");
             
         }
     }

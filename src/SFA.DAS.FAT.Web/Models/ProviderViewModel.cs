@@ -161,6 +161,8 @@ namespace SFA.DAS.FAT.Web.Models
         public string Postcode { get; set; }
         public string County { get; set; }
         public string AddressFormatted { get; set; }
+        public bool National { get ; set ; }
+        public string NationalText { get ; set ; }
 
         public DeliveryModeViewModel Map(DeliveryMode source, DeliveryModeType deliveryModeType)
         {
@@ -172,6 +174,8 @@ namespace SFA.DAS.FAT.Web.Models
                     ? "(1 mile away)" 
                     : $"({source.DistanceInMiles.FormatDistance()} miles away)"
                 : null;
+            viewModel.NationalText = source != default && 
+                source.National && deliveryModeType == DeliveryModeType.Workplace ? "(national)" : null;
             viewModel.AddressFormatted = source != default ? 
                 BuildFormattedAddress(source) 
                 : "";
@@ -213,9 +217,12 @@ namespace SFA.DAS.FAT.Web.Models
                 Address2 = source.Address2,
                 Town = source.Town,
                 County = source.County,
-                Postcode = source.Postcode
+                Postcode = source.Postcode,
+                National = source.National
             };
         }
+
+        
     }
 
     public class FeedBackDetail

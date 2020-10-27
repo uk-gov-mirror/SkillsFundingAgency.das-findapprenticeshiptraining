@@ -35,14 +35,14 @@ namespace SFA.DAS.FAT.Web.Models
         public bool HasLocation => !string.IsNullOrWhiteSpace(Location);
         public bool HasProviderRatings => ProviderRatings != null && ProviderRatings.Any(model => model.Selected);
         public bool HasDeliveryModes => DeliveryModes !=null && DeliveryModes.Any(model => model.Selected);
-        public bool ShowFilters => ShouldShowFilters();
+        public bool ShowSelectedFilters => ShouldShowFilters();
 
         public IEnumerable<DeliveryModeOptionViewModel> DeliveryModes { get; set; }
         public IEnumerable<ProviderRatingOptionViewModel> ProviderRatings { get; set; }
 
         private bool ShouldShowFilters()
         {
-            var result = !string.IsNullOrWhiteSpace(Location) ||
+            var result = HasLocation || 
                          HasDeliveryModes ||
                          HasProviderRatings;
             return result;
@@ -115,8 +115,9 @@ namespace SFA.DAS.FAT.Web.Models
         {
             var location = "?location=-1";
             var providerRatings = BuildProviderRatingLinks(location);
-
-            var link = $"{location}{providerRatings}";
+            var deliveryModeLinks = BuildDeliveryModeLinks(location);
+            
+            var link = $"{location}{providerRatings}{deliveryModeLinks}";
 
             return link;
         }

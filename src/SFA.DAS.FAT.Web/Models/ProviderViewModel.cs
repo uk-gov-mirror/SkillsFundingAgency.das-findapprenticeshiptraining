@@ -23,6 +23,7 @@ namespace SFA.DAS.FAT.Web.Models
         public string Email { get ; set ; }
 
         public string Name { get ; set ; }
+        public string TradingName { get; set; }
         public string OverallAchievementRatePercentage { get ; set ; }
         public string NationalOverallAchievementRatePercentage { get ; set ; }
         public IEnumerable<DeliveryModeViewModel> DeliveryModes { get; set; }
@@ -48,6 +49,7 @@ namespace SFA.DAS.FAT.Web.Models
             return new ProviderViewModel
             {
                 Name = source.Name,
+                TradingName = source.TradingName,
                 Email = source.Email,
                 Phone = source.Phone,
                 Website = source.Website,    

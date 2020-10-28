@@ -95,9 +95,12 @@
                     <p class="govuk-body govuk-!-margin-bottom-1"><span class=" govuk-!-font-weight-bold">@Model.Provider.OverallAchievementRatePercentage achievement rate</span></p>
                     <p class="govuk-body "><span>@Model.Provider.NationalOverallAchievementRatePercentage national average pass rate</span></p>    
                 }
-                <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Apprenticeship location</h2>
-                @if (Model.Provider.DeliveryModes.Any())
+                
+                
+                
+                @if (!string.IsNullOrEmpty(Model.Location))
                 {
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Apprenticeship location</h2>
                     <p class="govuk-body govuk-!-margin-bottom-"><span style="margin-right: 10px">@Model.Location</span> 
                         @{
                             var routeData = new Dictionary<string, string>
@@ -109,8 +112,13 @@
                         }
                         <a asp-all-route-data="@routeData" asp-route="@RouteNames.CourseProviderDetails" class="govuk-link govuk-link--no-visited-state">Remove&nbsp;location</a></p>
 
+                }
+                
+                
+                @if (Model.Provider.DeliveryModes.Any())
+                {
                    
-                    @if (Model.Provider.DeliveryModes.FirstOrDefault(c => c.DeliveryModeType == DeliveryModeType.NotFound) != null)
+                    if (Model.Provider.DeliveryModes.FirstOrDefault(c => c.DeliveryModeType == DeliveryModeType.NotFound) != null)
                     {
                         <p class="govuk-body das-text--error das-text--error-icon">This training provider does not offer this course at the apprenticeship location</p>
 
@@ -131,13 +139,16 @@
                     else
                     {
                         
-                        <h2 class="govuk-heading-s govuk-!-margin-bottom-3 govuk-!-margin-top-4">@Model.Provider.Name’s training options</h2>
-                        @if (Model.Provider.ProviderDistance != "-1")
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-3 govuk-!-margin-top-4">@Model.Provider.Name’s training options</h2>
+                        
+                        if (!string.IsNullOrEmpty(Model.Provider.ProviderAddress))
                         {
-                            <h3 class="govuk-heading-s">
-                                @Model.Provider.ProviderDistanceText 
+                            <h3 class="govuk-heading-s govuk-!-margin-bottom-1">
+                                @Model.Provider.ProviderDistanceText
                             </h3>    
+                            <p class="govuk-body">@Model.Provider.ProviderAddress</p>     
                         }
+                        
                         <ul class="govuk-list das-icon-list das-icon-list--large govuk-!-margin-top-1 govuk-!-margin-bottom-0">
                             @foreach (var mode in Model.Provider.DeliveryModes)
                             {
@@ -150,36 +161,40 @@
                                     {
                                         <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
                                     }
-                                    @mode.DeliveryModeType.GetDescription() @mode.FormattedDistanceInMiles @mode.NationalText
+                                    @mode.DeliveryModeType.GetDescription() @(!string.IsNullOrEmpty(Model.Location) ? mode.FormattedDistanceInMiles : "")  @mode.NationalText
                                 </li>
                             }
                         </ul>
 
-                        var dayRelease = Model.Provider.DeliveryModes.SingleOrDefault(c => c.DeliveryModeType == DeliveryModeType.DayRelease);
-                        var blockRelease = Model.Provider.DeliveryModes.SingleOrDefault(c => c.DeliveryModeType == DeliveryModeType.BlockRelease);
-                            
-                        if (dayRelease!= null && blockRelease!= null && dayRelease.AddressFormatted == blockRelease.AddressFormatted && !string.IsNullOrEmpty(dayRelease.AddressFormatted))
+                        if (!string.IsNullOrEmpty(Model.Location))
                         {
-                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-top-4 govuk-!-margin-bottom-1">Day and block release address</p>
-                            <p class="govuk-body govuk-!-margin-bottom-0">@dayRelease.AddressFormatted</p>    
-                        }
-                        else
-                        {
-                            if (dayRelease != null && !string.IsNullOrEmpty(dayRelease.AddressFormatted))
+                            var dayRelease = Model.Provider.DeliveryModes.SingleOrDefault(c => c.DeliveryModeType == DeliveryModeType.DayRelease);
+                            var blockRelease = Model.Provider.DeliveryModes.SingleOrDefault(c => c.DeliveryModeType == DeliveryModeType.BlockRelease);
+
+                            if (dayRelease != null && blockRelease != null && dayRelease.AddressFormatted == blockRelease.AddressFormatted && !string.IsNullOrEmpty(dayRelease.AddressFormatted))
                             {
-                                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-top-4 govuk-!-margin-bottom-1">Day release address</p>
-                                <p class="govuk-body govuk-!-margin-bottom-0">@dayRelease.AddressFormatted</p>    
+                                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-top-4 govuk-!-margin-bottom-1">Day and block release address</p>
+                                <p class="govuk-body govuk-!-margin-bottom-0">@dayRelease.AddressFormatted</p>
                             }
-                            if (blockRelease != null && !string.IsNullOrEmpty(blockRelease.AddressFormatted))
+                            else
                             {
-                                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-top-4 govuk-!-margin-bottom-1">Block release address</p>
-                                <p class="govuk-body govuk-!-margin-bottom-0">@blockRelease.AddressFormatted</p>    
-                            }    
+                                if (dayRelease != null && !string.IsNullOrEmpty(dayRelease.AddressFormatted))
+                                {
+                                    <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-top-4 govuk-!-margin-bottom-1">Day release address</p>
+                                    <p class="govuk-body govuk-!-margin-bottom-0">@dayRelease.AddressFormatted</p>
+                                }
+                                if (blockRelease != null && !string.IsNullOrEmpty(blockRelease.AddressFormatted))
+                                {
+                                    <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-top-4 govuk-!-margin-bottom-1">Block release address</p>
+                                    <p class="govuk-body govuk-!-margin-bottom-0">@blockRelease.AddressFormatted</p>
+                                }
+                            }
                         }
                     }  
                 }
-                else
+                @if (string.IsNullOrEmpty(Model.Location))
                 {
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Apprenticeship location</h2>
                     <p class="govuk-body">Check @Model.Provider.Name’s training options for the apprenticeship location.</p>
                     <form method="GET" class="das-search-form govuk-!-width-two-thirds" sp-route-id="@Model.Course.Id" asp-route-providerId="@Model.Provider.ProviderId" asp-route="@RouteNames.CourseProviderDetails">
                         <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small govuk-!-margin-bottom-0" >
@@ -193,6 +208,7 @@
                         </div>
                     </form>
                 }
+                
                
             </div>
             <div class="das-highlight govuk-!-margin-bottom-5">

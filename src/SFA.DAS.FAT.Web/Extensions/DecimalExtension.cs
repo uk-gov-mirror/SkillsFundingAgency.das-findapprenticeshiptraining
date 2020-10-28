@@ -10,5 +10,13 @@
             returnValue = returnValue.TrimEnd('.');
             return returnValue;
         }
+        public static string FormatDistance(this decimal? value)
+        {
+            if (!value.HasValue)
+            {
+                return "";
+            }
+            return FormatDistance(value.Value);
+        }
     }
 }

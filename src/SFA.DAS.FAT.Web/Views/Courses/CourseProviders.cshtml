@@ -131,22 +131,7 @@
             </div>
         </div>
         <div class="govuk-grid-column-two-thirds">
-            <div class="das-highlight govuk-!-margin-top-0 govuk-!-margin-bottom-5">
-                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
-                @if (Model.HasLocation)
-                {
-                    <p class="govuk-body govuk-!-margin-bottom-0">
-                        <span style="margin-right: 10px">@Model.Location</span>
-                        <a asp-querystring="@Model.ClearLocationLink" class="govuk-link govuk-link--no-visited-state" id="lnk-remove-location">Remove&nbsp;location</a>
-                    </p>    
-                }
-                else
-                {
-                    <p class="govuk-body govuk-!-margin-bottom-2">Show only providers who offer this training for the apprenticeship location.</p>
-                    <p class="govuk-body govuk-!-margin-bottom-0" data-module="das-show-hide"><a href="#search-location" class="govuk-link govuk-link--no-visited-state das-show-hide__show-link" data-aria-controls="fat-filter@(Model.ShowSelectedFilters ? "-options" : "")" id="lnk-enter-location" data-focus-id="search-location">Enter&nbsp;location</a></p>
-                }
-                
-            </div>
+            
             <h2 class="govuk-heading-m">@Model.TotalMessage</h2>
             @if (Model.Total > 1 && Model.HasLocation)
             {
@@ -176,6 +161,23 @@
                 <p class="govuk-body govuk-!-margin-bottom-6">No training providers for the selected filters.</p>
             }
 
+            <div class="das-highlight govuk-!-margin-top-0 govuk-!-margin-bottom-5">
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
+                @if (Model.HasLocation)
+                {
+                    <p class="govuk-body govuk-!-margin-bottom-0">
+                        <span style="margin-right: 10px">@Model.Location</span>
+                        <a asp-querystring="@Model.ClearLocationLink" class="govuk-link govuk-link--no-visited-state" id="lnk-remove-location">Remove&nbsp;location</a>
+                    </p>    
+                }
+                else
+                {
+                    <p class="govuk-body govuk-!-margin-bottom-2">Show only providers who offer this training for the apprenticeship location.</p>
+                    <p class="govuk-body govuk-!-margin-bottom-0" data-module="das-show-hide"><a href="#search-location" class="govuk-link govuk-link--no-visited-state das-show-hide__show-link" data-aria-controls="fat-filter@(Model.ShowSelectedFilters ? "-options" : "")" id="lnk-enter-location" data-focus-id="search-location">Enter&nbsp;location</a></p>
+                }
+                
+            </div>
+            
             <hr class="govuk-section-break govuk-section-break--visible">
 
             <div class="das-search-results">

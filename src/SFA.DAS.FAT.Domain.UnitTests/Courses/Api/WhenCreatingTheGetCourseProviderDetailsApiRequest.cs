@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Web;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
@@ -30,6 +31,17 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
 
             //Assert
             actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{courseId}/providers/{providerId}?location=");
+        }
+        
+        [Test, AutoData]
+        public void Then_The_Location_Is_Url_Encoded(string baseUrl, int courseId,
+            int providerId, string location)
+        {
+            //Arrange Act
+            var actual = new GetCourseProviderDetailsApiRequest(baseUrl, courseId, providerId, $"{location} & {location}");
+            
+            //Assert
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{courseId}/providers/{providerId}?location={HttpUtility.UrlEncode($"{location} & {location}")}");
         }
     }
 }

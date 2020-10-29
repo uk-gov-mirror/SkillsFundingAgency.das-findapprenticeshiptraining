@@ -28,7 +28,10 @@
         "nationalOverallCohort": 7850,
         "overallAchievementRate": 64.2,
         "nationalOverallAchievementRate": 66.8,
-        "distanceInMiles": 1.0,
+        "providerAddress": {
+          "address1": "test address",
+          "distanceInMiles": 1.0
+        },        
         "deliveryModes": null,
         "feedback": {
           "totalEmployerResponses": 51,

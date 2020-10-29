@@ -13,7 +13,7 @@ namespace SFA.DAS.FAT.Domain.Courses
         public decimal? OverallAchievementRate { get; set; }
         public int? NationalOverallCohort { get; set; }
         public decimal? NationalOverallAchievementRate { get; set; }
-        public decimal DistanceInMiles { get; set; }
+        public ProviderAddress ProviderAddress { get; set; }
         public IEnumerable<DeliveryMode> DeliveryModes { get; set; }
         public Feedback Feedback { get; set; }
     }
@@ -67,5 +67,16 @@ namespace SFA.DAS.FAT.Domain.Courses
     {
         public List<string> Strengths { get; set; }
         public List<string> Weaknesses { get; set; }
+    }
+
+    public class ProviderAddress
+    {
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+        public string Address3 { get; set; }
+        public string Address4 { get; set; }
+        public string Town { get; set; }
+        public string Postcode { get; set; }
+        public decimal? DistanceInMiles { get; set; }
     }
 }

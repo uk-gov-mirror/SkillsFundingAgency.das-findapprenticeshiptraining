@@ -26,7 +26,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
                 .Excluding(c=>c.NationalOverallCohort)
                 .Excluding(c => c.DeliveryModes)
                 .Excluding(c=>c.Feedback)
-                .Excluding(c => c.DistanceInMiles)
+                .Excluding(c => c.ProviderAddress)
             );
 
             actual.OverallAchievementRatePercentage.Should().Be($"{(Math.Round(source.OverallAchievementRate.Value)/100):0%}");
@@ -35,7 +35,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             actual.TotalFeedbackRating.Should().Be(source.Feedback.TotalFeedbackRating);
             actual.FeedbackStrengths.Should().BeEquivalentTo(source.Feedback.FeedbackAttributes.Strengths);
             actual.FeedbackWeaknesses.Should().BeEquivalentTo(source.Feedback.FeedbackAttributes.Weaknesses);
-            actual.ProviderDistance.Should().Be(source.DistanceInMiles.FormatDistance());
+            actual.ProviderDistance.Should().Be(source.ProviderAddress.DistanceInMiles.FormatDistance());
         }
 
         //Feedback
@@ -424,6 +424,79 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
 
             // Assert
             actual.DeliveryModes.Count(x => x.NationalText == "(national)").Should().Be(1);
+        }
+
+        [Test]
+        [InlineAutoData(-1.0, "Head office")]
+        [InlineAutoData(1.0, "Head office 1 mile away")]
+        [InlineAutoData(10.5, "Head office 10.5 miles away")]
+        public void Then_Builds_Head_Office_Label(double distance, string expectedText, Provider source)
+        {
+            //Arrange
+            source.ProviderAddress.DistanceInMiles = (decimal)distance;
+            
+            // Act
+            var actual = (ProviderViewModel)source;
+            
+            //Assert
+            actual.ProviderDistanceText.Should().Be(expectedText);
+        }
+
+        [Test, AutoData]
+        public void Then_If_Null_Distance_Returns_Correct_Head_Office_Label(Provider source)
+        {
+            //Arrange
+            source.ProviderAddress.DistanceInMiles = null;
+            
+            // Act
+            var actual = (ProviderViewModel)source;
+            
+            //Assert
+            actual.ProviderDistanceText.Should().Be("Head office");
+        }
+
+        [Test]
+        [InlineAutoData("Address 1", "Address 2", "Address 3", "Address 4", "Town", "Postcode", "Address 1, Address 2, Address 3, Address 4, Town, Postcode")]
+        [InlineAutoData("Address 1", "", "Address 3", "Address 4", "Town", "Postcode", "Address 1, Address 3, Address 4, Town, Postcode")]
+        [InlineAutoData("Address 1", "Address 2", null, "Address 4", "Town", "Postcode", "Address 1, Address 2, Address 4, Town, Postcode")]
+        [InlineAutoData("Address 1", "", "", "", "", "Postcode", "Address 1, Postcode")]
+        [InlineAutoData(null, null, "", "Address 4", "Town", "Postcode", "Address 4, Town, Postcode")]
+        [InlineAutoData(null, null, "", "", "", "", "")]
+        [InlineAutoData(null, null, null, null, null, null, "")]
+        [InlineAutoData("", "", "", "", "", "", "")]
+        public void Then_Builds_The_Head_Office_Address(string address1, string address2, string address3, string address4, string town, string postcode, string expected, Provider source)
+        {
+            //Arrange
+            source.ProviderAddress = new ProviderAddress
+            {
+                Address1 = address1,
+                Address2 = address2,
+                Address3 = address3,
+                Address4 = address4,
+                Town = town,
+                Postcode = postcode
+            };
+            
+            // Act
+            var actual = (ProviderViewModel)source;
+            
+            //Assert
+            actual.ProviderAddress.Should().Be(expected);
+        }
+
+        [Test, AutoData]
+        public void Then_No_Address_Data_Gives_Defaults(Provider source)
+        {
+            //Arrange
+            source.ProviderAddress = null;
+            
+            //Act
+            var actual = (ProviderViewModel) source;
+            
+            //Assert
+            actual.ProviderAddress.Should().BeEmpty();
+            actual.ProviderDistanceText.Should().BeEmpty();
+            actual.ProviderDistance.Should().BeEmpty();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Web;
 using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAT.Domain.Courses.Api
@@ -21,6 +22,6 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
         }
 
         public string BaseUrl { get; }
-        public string GetUrl => $"{BaseUrl}trainingcourses/{_courseId}/providers/{_providerId}?location={_location}";
+        public string GetUrl => $"{BaseUrl}trainingcourses/{_courseId}/providers/{_providerId}?location={HttpUtility.UrlEncode(_location)}";
     }
 }

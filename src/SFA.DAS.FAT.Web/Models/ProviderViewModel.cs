@@ -43,7 +43,8 @@ namespace SFA.DAS.FAT.Web.Models
 
         public string ProviderDistance { get ; set ; }
         public string ProviderDistanceText { get; set; }
-    
+        public string ProviderAddress { get ; set ; }
+
         public static implicit operator ProviderViewModel(Provider source)
         {
             return new ProviderViewModel
@@ -67,8 +68,9 @@ namespace SFA.DAS.FAT.Web.Models
                 FeedbackDetail = BuildFeedbackRating(source),
                 FeedbackStrengths = source.Feedback.FeedbackAttributes.Strengths,
                 FeedbackWeaknesses = source.Feedback.FeedbackAttributes.Weaknesses,
-                ProviderDistance = source.DistanceInMiles.FormatDistance(),
-                ProviderDistanceText = GetProviderDistanceText(source.DistanceInMiles.FormatDistance())
+                ProviderDistance = source.ProviderAddress?.DistanceInMiles !=null ? source.ProviderAddress.DistanceInMiles.FormatDistance() : "",
+                ProviderDistanceText =source.ProviderAddress !=null ? GetProviderDistanceText(source.ProviderAddress.DistanceInMiles.FormatDistance()) : "",
+                ProviderAddress = source.ProviderAddress !=null ? BuildProviderAddress(source.ProviderAddress) : ""
             };
         }
 
@@ -94,12 +96,47 @@ namespace SFA.DAS.FAT.Web.Models
 
         private static string GetProviderDistanceText(string distance)
         {
+            if (string.IsNullOrEmpty(distance) || distance == "-1")
+            {
+                return "Head office";
+            }
+            
             if (distance == "1")
             {
                 return "Head office 1 mile away";
             }
 
             return $"Head office {distance} miles away";
+        }
+        private static string BuildProviderAddress(ProviderAddress sourceProviderAddress)
+        {
+            var returnAddressFields = new List<string>();
+
+            if (!string.IsNullOrEmpty(sourceProviderAddress.Address1))
+            {
+                returnAddressFields.Add(sourceProviderAddress.Address1);
+            }
+            if (!string.IsNullOrEmpty(sourceProviderAddress.Address2))
+            {
+                returnAddressFields.Add(sourceProviderAddress.Address2);
+            }
+            if (!string.IsNullOrEmpty(sourceProviderAddress.Address3))
+            {
+                returnAddressFields.Add(sourceProviderAddress.Address3);
+            }
+            if (!string.IsNullOrEmpty(sourceProviderAddress.Address4))
+            {
+                returnAddressFields.Add(sourceProviderAddress.Address4);
+            }
+            if (!string.IsNullOrEmpty(sourceProviderAddress.Town))
+            {
+                returnAddressFields.Add(sourceProviderAddress.Town);
+            }
+            if (!string.IsNullOrEmpty(sourceProviderAddress.Postcode))
+            {
+                returnAddressFields.Add(sourceProviderAddress.Postcode);
+            }
+            return string.Join(", ", returnAddressFields);
         }
         
         private static string GetFeedbackRatingText(Provider source, bool isProviderDetail)

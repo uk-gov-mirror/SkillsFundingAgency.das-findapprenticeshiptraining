@@ -196,7 +196,13 @@
                                 @provider.Name
                             </a>
                         </h2>
-                   
+                        @if(!string.IsNullOrEmpty(provider.TradingName))
+                        {
+                            <p class="govuk-!-margin-0 govuk-!-margin-top-2 govuk-!-margin-bottom-2 govuk-!-font-size-16">
+                                <span class="das-text--muted">Other names: </span>
+                                @provider.TradingName
+                            </p>
+                        }
                         
                             
                         <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-0">

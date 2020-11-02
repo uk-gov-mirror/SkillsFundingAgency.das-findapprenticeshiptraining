@@ -13,7 +13,7 @@
             <h1 class="govuk-heading-xl">
                 @Model.Provider.Name
             </h1>
-            @if (Model.Provider.TradingName != null && Model.Provider.TradingName.Any())
+            @if (!string.IsNullOrEmpty(Model.Provider.TradingName))
             {
                 <p class="govuk-body govuk-!-margin-bottom-1"><span class=" govuk-!-font-weight-bold">Other names:</span></p>
                 <span class="govuk-caption-l govuk-!-margin-bottom-4">@Model.Provider.TradingName</span>

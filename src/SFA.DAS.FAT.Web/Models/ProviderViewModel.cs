@@ -50,7 +50,7 @@ namespace SFA.DAS.FAT.Web.Models
             return new ProviderViewModel
             {
                 Name = source.Name,
-                TradingName = source.TradingName == null ? null : CheckTradingNameMatchesName(source.TradingName, source.Name),
+                TradingName = !string.IsNullOrEmpty(source.TradingName) && !source.TradingName.Equals(source.Name, StringComparison.CurrentCultureIgnoreCase) ? source.TradingName : null, 
                 Email = source.Email,
                 Phone = source.Phone,
                 Website = source.Website,    
@@ -72,15 +72,6 @@ namespace SFA.DAS.FAT.Web.Models
                 ProviderDistanceText =source.ProviderAddress !=null ? GetProviderDistanceText(source.ProviderAddress.DistanceInMiles.FormatDistance()) : "",
                 ProviderAddress = source.ProviderAddress !=null ? BuildProviderAddress(source.ProviderAddress) : ""
             };
-        }
-
-        private static string CheckTradingNameMatchesName(string tradingName, string name)
-        {
-            if (tradingName.Trim().ToLower() == name.Trim().ToLower())
-            {
-                return null;
-            }
-            return tradingName;
         }
 
         private static List<FeedBackDetail> BuildFeedbackRating(Provider source)

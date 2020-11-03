@@ -117,6 +117,7 @@
     {
       "providerId": 1004,
       "name": "Lab trainings 4 some",
+      "tradingName": "Lab trainings",
       "overallCohort": 15,
       "overallAchievementRate": 63.3,
       "feedback": {

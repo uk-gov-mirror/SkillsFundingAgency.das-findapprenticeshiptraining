@@ -10,13 +10,14 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <span class="govuk-caption-xl">Training provider</span>
-            <h1 class="govuk-heading-xl">
+            <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">
                 @Model.Provider.Name
             </h1>
             @if (!string.IsNullOrEmpty(Model.Provider.TradingName))
             {
-                <p class="govuk-body govuk-!-margin-bottom-1"><span class=" govuk-!-font-weight-bold">Other names:</span></p>
-                <span class="govuk-caption-l govuk-!-margin-bottom-4">@Model.Provider.TradingName</span>
+                <p class="govuk-!-margin-top-">
+                    <span class="govuk-!-font-weight-bold">Other names:</span><br>@Model.Provider.TradingName
+                </p>
             }
 
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Employer reviews</h2>

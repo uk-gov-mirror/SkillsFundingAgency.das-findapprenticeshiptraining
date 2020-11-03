@@ -1,10 +1,9 @@
-﻿
-@{
-    ViewData["Title"] = "AccessibilityStatement";
-}
+﻿@using Microsoft.AspNetCore.Routing
+@using SFA.DAS.FAT.Web.Infrastructure
+
 
 <div class="govuk-width-container">
-    <a href="#" class="govuk-back-link">Back</a>
+    <a asp-route="@RouteNames.ServiceStart" class="govuk-back-link">Back</a>
 
     <main class="govuk-main-wrapper">
 
@@ -22,7 +21,7 @@
                         <li>listen to most of the website using a screen reader (including the most recent versions of JAWS, NVDA and VoiceOver)</li>
                     </ul>
                     <p class="govuk-body">We’ve also made the website text as simple as possible to understand.</p>
-                    <p class="govuk-body"><span><a>AbilityNet</a></span> has advice on making your device easier to use if you have a disability.</p>
+                    <p class="govuk-body"><span><a class="govuk-link" href="https://mcmw.abilitynet.org.uk/">AbilityNet</a></span> has advice on making your device easier to use if you have a disability.</p>
                 </div>
             </div>
         </div>
@@ -30,7 +29,7 @@
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
                 <h2 class="govuk-heading-m">What to do if you cannot access parts of this website</h2>
-                <p class="govuk-body">If you need information on this website in a different format, like accessible PDF or large print, email<span><a> helpdesk@manage-apprenticeships.service.gov.uk.</a></span></p>
+                <p class="govuk-body">If you need information on this website in a different format, like accessible PDF or large print, email <span><a class="govuk-link" href="mailto:helpdesk@manage-apprenticeships.service.gov.uk">helpdesk@manage-apprenticeships.service.gov.uk.</a></span></p>
                 <p class="govuk-body">We’ll consider your request and get back to you in 5 days.</p>
             </div>
         </div>
@@ -38,7 +37,7 @@
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
                 <h2 class="govuk-heading-m">Reporting accessibility problems with this website</h2>
-                <p class="govuk-body">We’re always looking to improve the accessibility of this website. If you find any problems not listed on this page or think we’re not meeting accessibility requirements,  email<span><a> helpdesk@manage-apprenticeships.service.gov.uk.</a></span></p>
+                <p class="govuk-body">We’re always looking to improve the accessibility of this website. If you find any problems not listed on this page or think we’re not meeting accessibility requirements,  email <span><a class="govuk-link" href="mailto:helpdesk@manage-apprenticeships.service.gov.uk">helpdesk@manage-apprenticeships.service.gov.uk.</a></span></p>
             </div>
         </div>
 
@@ -46,7 +45,7 @@
             <div class="govuk-grid-column-two-thirds">
                 <h2 class="govuk-heading-m">Enforcement procedure</h2>
                 <p class="govuk-body">The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’).</p>
-                <p class="govuk-body">If you’re not happy with how we respond to your complaint, <span><a>contact the Equality Advisory and Support Service (EASS).</a></span></p>
+                <p class="govuk-body">If you’re not happy with how we respond to your complaint, <span><a class="govuk-link" href="https://www.equalityadvisoryservice.com/">contact the Equality Advisory and Support Service (EASS).</a></span></p>
 
             </div>
         </div>
@@ -55,7 +54,7 @@
             <div class="govuk-grid-column-two-thirds">
                 <h2 class="govuk-heading-m">Technical information about this website’s accessibility</h2>
                 <p class="govuk-body">The Education and Skills Funding Agency is committed to making its website accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.</p>
-                <p class="govuk-body">This website is compliant with the <span><a>>Web Content Accessibility Guidelines version 2.1 AA standard.</a> </span></p>
+                <p class="govuk-body">This website is compliant with the <span><a class="govuk-link" href="https://www.w3.org/TR/WCAG21/">>Web Content Accessibility Guidelines version 2.1 AA standard.</a> </span></p>
 
             </div>
         </div>

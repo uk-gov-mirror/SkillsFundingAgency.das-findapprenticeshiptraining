@@ -23,6 +23,7 @@ namespace SFA.DAS.FAT.Web.Models
         public int? TotalProvidersCount { get; set; }
         public int? ProvidersAtLocationCount { get; set; }
         public bool OtherBodyApprovalRequired { get; set; }
+        public string ApprovalBody { get; set; }
         public DateTime? LastDateStarts { get; set; }
         public bool AfterLastStartDate { get; set; }
         public string LocationName { get; set; }
@@ -44,6 +45,7 @@ namespace SFA.DAS.FAT.Web.Models
                 TypicalDuration = course.TypicalDuration,
                 MaximumFunding = course.MaxFunding.ToGdsCostFormat(),
                 OtherBodyApprovalRequired = course.OtherBodyApprovalRequired,
+                ApprovalBody = string.IsNullOrEmpty(course.ApprovalBody) ? null : course.ApprovalBody,
                 LastDateStarts = course.StandardDates?.LastDateStarts,
                 AfterLastStartDate = DateTime.UtcNow > course.StandardDates?.LastDateStarts,
             };

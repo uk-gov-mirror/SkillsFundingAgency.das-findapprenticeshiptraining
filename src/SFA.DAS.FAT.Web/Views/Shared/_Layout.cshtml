@@ -83,7 +83,7 @@
     </p>
 </div>
 <div class="govuk-width-container">
-    @if (!Context.GetRouteData().Values["Controller"].Equals("Home") && !Context.GetRouteData().Values["Action"].Equals("Index"))
+    @if (!Context.GetRouteData().Values["Controller"].Equals("Home") && !Context.GetRouteData().Values["Action"].Equals("Index") && !Context.GetRouteData().Values["Controller"].Equals("Accessibility"))
     {
         <div class="govuk-breadcrumbs">
             <ol class="govuk-breadcrumbs__list">

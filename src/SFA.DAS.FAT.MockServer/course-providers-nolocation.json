@@ -25,6 +25,7 @@
     {
       "providerId": 1001,
       "name": "Lab trainings r us",
+      "tradingName": "Lab trainings",
       "overallCohort": 10,
       "overallAchievementRate": 93.3,
       "feedback": {

@@ -176,10 +176,14 @@
                                 @provider.Name
                             </a>
                         </h2>
-                   
-                        
                             
                         <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-0">
+                             @if(!string.IsNullOrEmpty(provider.TradingName))
+                            {
+                                <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
+                                    <span class="das-text--muted">Other names:</span> @provider.TradingName
+                                </li>
+                            }
                             @foreach (var mode in provider.DeliveryModes)
                             {
                                 <li class="das-icon-list__list-item" id="@provider.ProviderId-@mode.DeliveryModeType">

@@ -4,7 +4,8 @@
 @using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType
 @model SFA.DAS.FAT.Web.Models.CourseProviderViewModel
 @{
-    ViewData["Title"] = "Training provider details";
+    ViewData["Title"] = Model.Provider.Name + " - training provider";
+    ViewData["Description"] = "View "+ Model.Provider.Name + "’s available training options, pass rate and contact details for " + Model.Course.Title + " (level " + Model.Course.Level + "). You can also check their employer reviews and any other apprenticeship training courses that they offer.";
 }
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
     <div class="govuk-grid-row">

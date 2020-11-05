@@ -1,6 +1,6 @@
 @using SFA.DAS.FAT.Web.Infrastructure
 @{
-    ViewData["Title"] = "Find apprenticeship training for your apprentice";
+    ViewData["Title"] = "Cookies";
 }
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
     <div class="govuk-grid-row">
@@ -72,7 +72,7 @@
                                 <li>the notifications you've seen so we do not show them to you again</li>
                             </ul>
                             <p>They always need to be on.</p>
-                            <p><a asp-controller="Home" asp-action="CookiesDetails" class="govuk-link">Find out more about cookies on this service</a>.</p>
+                            <p><a asp-route="@RouteNames.CookiesDetails" class="govuk-link">Find out more about cookies on this service</a>.</p>
                             <hr class="govuk-section-break govuk-section-break--l" />
                             <button class="govuk-button" type="submit">Save changes</button>
                         </form>

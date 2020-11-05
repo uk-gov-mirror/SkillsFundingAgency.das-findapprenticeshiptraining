@@ -1,6 +1,6 @@
 @using SFA.DAS.FAT.Web.Infrastructure
 @{
-    ViewData["Title"] = "Find apprenticeship training for your apprentice";
+    ViewData["Title"] = "Cookies details";
 }
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
     <div class="govuk-grid-row">
@@ -181,7 +181,7 @@
         <hr class="govuk-section-break govuk-section-break--l g" />
 
         <h3 class="govuk-heading-s">Change your settings</h3>
-        <p>You can <a asp-controller="Home" asp-action="Cookies" class="govuk-link">change which cookies you're happy for us to use</a>.</p>
+        <p>You can <a asp-route="@RouteNames.Cookies" class="govuk-link">change which cookies you're happy for us to use</a>.</p>
 
         </div>
     </div>

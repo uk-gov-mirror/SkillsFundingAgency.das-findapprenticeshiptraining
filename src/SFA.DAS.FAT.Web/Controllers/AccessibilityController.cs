@@ -7,7 +7,7 @@ using SFA.DAS.FAT.Web.Infrastructure;
 
 namespace SFA.DAS.FAT.Web.Controllers
 {
-    [Route("controller")]
+    [Route("[controller]")]
     public class AccessibilityController : Controller
     {
         [Route("", Name = RouteNames.AccessibilityStatement)]

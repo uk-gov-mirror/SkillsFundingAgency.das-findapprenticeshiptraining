@@ -20,7 +20,8 @@
   "trainingCourseProvider": 
       {
         "providerId": 1001, 
-        "name": "Lab trainings r us", 
+        "name": "Lab trainings r us",
+        "tradingName": "Lab trainings",
         "email": "test@test.com", 
         "phone": "555 555 555", 
         "website": "test@test.com",

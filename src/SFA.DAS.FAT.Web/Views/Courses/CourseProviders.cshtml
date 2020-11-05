@@ -133,30 +133,8 @@
         <div class="govuk-grid-column-two-thirds">
             
             <h2 class="govuk-heading-m">@Model.TotalMessage</h2>
-            @if (Model.Total > 1 && Model.HasLocation)
-            {
-                <p class="govuk-body govuk-!-margin-bottom-6">
-                Sort by:
-                @if (Model.SortOrder == ProviderSortBy.Name)
-                {
-                    <a id="sort-by-distance" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Distance (nearest first)</a>@:,
-                    @:<span class="govuk-!-font-weight-bold">Name</span>
-                }
-                else
-                {
-                    @:<span class="govuk-!-font-weight-bold">Distance (nearest first)</span>,
-                    <a id="sort-by-name" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.BuildSortLink()">Name</a>
-                }
-                </p>
-            }
-            else if (Model.Total > 1)
-            {
-                <p class="govuk-body govuk-!-margin-bottom-6">
-                    Sorted by:
-                    <span class="govuk-!-font-weight-bold">Name</span>
-                </p>
-            }
-            else if (Model.Total == 0)
+            
+            @if (Model.Total == 0)
             {
                 <p class="govuk-body govuk-!-margin-bottom-6">No training providers for the selected filters.</p>
             }
@@ -198,10 +176,14 @@
                                 @provider.Name
                             </a>
                         </h2>
-                   
-                        
                             
                         <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-0">
+                             @if(!string.IsNullOrEmpty(provider.TradingName))
+                            {
+                                <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
+                                    <span class="das-text--muted">Other names:</span> @provider.TradingName
+                                </li>
+                            }
                             @foreach (var mode in provider.DeliveryModes)
                             {
                                 <li class="das-icon-list__list-item" id="@provider.ProviderId-@mode.DeliveryModeType">

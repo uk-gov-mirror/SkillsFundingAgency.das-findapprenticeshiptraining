@@ -34,7 +34,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
                         viewModel.DeliveryModeType != deliveryMode.DeliveryModeType)
                     .Select(viewModel => viewModel.DeliveryModeType);
 
-                link.Value.Should().Be($"?location={model.Location}&deliveryModes={string.Join("&deliveryModes=", otherSelected)}&sortorder={model.SortOrder}");
+                link.Value.Should().Be($"?location={model.Location}&deliveryModes={string.Join("&deliveryModes=", otherSelected)}");
             }
         }
 
@@ -76,11 +76,11 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
 
                 if (link.Key == DeliveryModeType.Workplace.GetDescription())
                 {
-                    link.Value.Should().Be($"?location={model.Location}&deliveryModes=&sortorder={model.SortOrder}");
+                    link.Value.Should().Be($"?location={model.Location}&deliveryModes=");
                 }
                 else
                 {
-                    link.Value.Should().Be($"?location={model.Location}&deliveryModes={string.Join("&deliveryModes=", otherSelected)}&sortorder={model.SortOrder}");    
+                    link.Value.Should().Be($"?location={model.Location}&deliveryModes={string.Join("&deliveryModes=", otherSelected)}");    
                 }
                 
             }

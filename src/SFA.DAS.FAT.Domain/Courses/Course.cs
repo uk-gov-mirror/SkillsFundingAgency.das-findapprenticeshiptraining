@@ -14,6 +14,7 @@
         public int TypicalDuration { get ; set ; }
         public long MaxFunding { get ; set ; }
         public bool OtherBodyApprovalRequired { get; set; }
+        public string ApprovalBody { get; set; }
         public StandardDates StandardDates { get; set; }
     }
 }

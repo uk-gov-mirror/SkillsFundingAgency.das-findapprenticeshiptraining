@@ -18,8 +18,8 @@ namespace SFA.DAS.FAT.Web.Controllers
             return View();
         }
 
-        [Route("cookie-details", Name = RouteNames.CookieDetails)]
-        public IActionResult CookieDetails()
+        [Route("cookies-details", Name = RouteNames.CookiesDetails)]
+        public IActionResult CookiesDetails()
         {
             return View();
         }

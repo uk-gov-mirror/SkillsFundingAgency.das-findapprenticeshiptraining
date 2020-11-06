@@ -26,7 +26,12 @@
                 <dl class="govuk-summary-list">
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Level</dt>
-                        <dd class="govuk-summary-list__value">@Model.Level</dd>
+                        <dd class="govuk-summary-list__value">
+                            @Model.Level <br />
+                            <span class="govuk-!-font-size-16 das-text--muted">
+                                @Model.LevelEquivalent
+                            </span>
+                        </dd>
                     </div>
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Typical duration</dt>

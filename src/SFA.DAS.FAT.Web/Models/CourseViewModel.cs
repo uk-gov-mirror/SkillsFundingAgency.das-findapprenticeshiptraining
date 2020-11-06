@@ -19,6 +19,7 @@ namespace SFA.DAS.FAT.Web.Models
         public string ExternalCourseUrl { get ; private set ; }
         public int TypicalDuration { get ; private set ; }
         public int Level { get ; private set ; }
+        public string LevelEquivalent { get; set; }
         public string MaximumFunding { get ; set ; }
         public int? TotalProvidersCount { get; set; }
         public int? ProvidersAtLocationCount { get; set; }
@@ -37,6 +38,7 @@ namespace SFA.DAS.FAT.Web.Models
                 Title = course.Title,
                 TitleAndLevel = $"{course.Title} (level {course.Level})",
                 Level = course.Level,
+                LevelEquivalent = course.LevelEquivalent,
                 IntegratedDegree = course.IntegratedDegree,
                 ExternalCourseUrl = course.StandardPageUrl,
                 OverviewOfRole = course.OverviewOfRole,

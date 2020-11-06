@@ -17,7 +17,6 @@ namespace SFA.DAS.FAT.Web.Models
             Total = result.Total;
             TotalFiltered = result.TotalFiltered;
             Location = result.Location;
-            SortOrder = request.SortOrder;
             DeliveryModes = BuildDeliveryModeOptionViewModel(request.DeliveryModes);
             ProviderRatings = BuildProviderRatingOptionViewModel(request.ProviderRatings);
         }
@@ -31,7 +30,7 @@ namespace SFA.DAS.FAT.Web.Models
         public string ClearLocationLink => BuildClearLocationFilterLink();
         public Dictionary<string, string> ClearDeliveryModeLinks => BuildClearDeliveryModeLinks();
         public Dictionary<string, string> ClearProviderRatingLinks => BuildClearProviderRatingLinks();
-        public ProviderSortBy SortOrder { get; set; }
+        
         public bool HasLocation => !string.IsNullOrWhiteSpace(Location);
         public bool HasProviderRatings => ProviderRatings != null && ProviderRatings.Any(model => model.Selected);
         public bool HasDeliveryModes => DeliveryModes !=null && DeliveryModes.Any(model => model.Selected);
@@ -48,14 +47,6 @@ namespace SFA.DAS.FAT.Web.Models
             return result;
         }
 
-        public string BuildSortLink()
-        {
-            var newOrder = SortOrder == ProviderSortBy.Distance ? 
-                ProviderSortBy.Name : ProviderSortBy.Distance;
-             
-            return $"?location={Location}" + BuildDeliveryModeLinks("location") + BuildProviderRatingLinks("location") + $"&sortorder={newOrder}";
-        }
-
         private Dictionary<string, string> BuildClearDeliveryModeLinks()
         {
             var clearDeliveryModeLinks = new Dictionary<string, string>();
@@ -67,7 +58,6 @@ namespace SFA.DAS.FAT.Web.Models
 
             var location = BuildLocationLink();
             var providerRatings = BuildProviderRatingLinks(location);
-            var sortOrder = BuildSortOrder(location);
 
             foreach (var deliveryMode in DeliveryModes.Where(model => model.Selected))
             {
@@ -82,7 +72,7 @@ namespace SFA.DAS.FAT.Web.Models
                     otherSelected = otherSelected.Where(c => c != DeliveryModeType.National);
                 }
                 
-                var link = $"{location}&deliveryModes={string.Join("&deliveryModes=", otherSelected)}{providerRatings}{sortOrder}";
+                var link = $"{location}&deliveryModes={string.Join("&deliveryModes=", otherSelected)}{providerRatings}";
 
                 clearDeliveryModeLinks.Add(deliveryMode.Description, link);
             }
@@ -100,7 +90,6 @@ namespace SFA.DAS.FAT.Web.Models
 
             var location = BuildLocationLink();
             var deliveryModes = BuildDeliveryModeLinks(location);
-            var sortOrder = BuildSortOrder(location);
 
             foreach (var providerRating in ProviderRatings.Where(model => model.Selected).OrderByDescending(c=>c.ProviderRatingType))
             {
@@ -109,7 +98,7 @@ namespace SFA.DAS.FAT.Web.Models
                         viewModel.Selected &&
                         viewModel.ProviderRatingType != providerRating.ProviderRatingType)
                     .Select(viewModel => viewModel.ProviderRatingType);
-                var link = $"{location}{deliveryModes}&providerRatings={string.Join("&providerRatings=", otherSelected)}{sortOrder}";
+                var link = $"{location}{deliveryModes}&providerRatings={string.Join("&providerRatings=", otherSelected)}";
 
                 providerRatingLinks.Add(providerRating.Description, link);
             }
@@ -135,11 +124,6 @@ namespace SFA.DAS.FAT.Web.Models
                 return $"{GetSeparator(linkToAppendTo)}deliveryModes={string.Join("&deliveryModes=", deliveryModes)}";
             }
             return null;
-        }
-
-        private string BuildSortOrder(string linkToAppendTo)
-        {
-            return $"{GetSeparator(linkToAppendTo)}sortorder={HttpUtility.UrlEncode($"{SortOrder}")}";
         }
 
         private string BuildLocationLink()

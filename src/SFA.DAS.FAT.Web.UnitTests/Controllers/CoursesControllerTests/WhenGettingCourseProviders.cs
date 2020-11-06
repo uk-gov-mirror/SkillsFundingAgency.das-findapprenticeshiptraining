@@ -108,13 +108,17 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             [Greedy] CoursesController controller)
         {
             //Arrange
+            request.Location = string.Empty;
             cookieStorageService
                 .Setup(x => x.Get(Constants.LocationCookieName))
                 .Returns(location);
             mediator
                 .Setup(x => x.Send(
                     It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id)
-                                                        && c.Location.Equals(request.Location)),
+                                                        && c.Location.Equals(location.Name)
+                                                        && c.Lon.Equals(location.Lon)
+                                                        && c.Lat.Equals(location.Lat)
+                                                        ),
                     It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
 

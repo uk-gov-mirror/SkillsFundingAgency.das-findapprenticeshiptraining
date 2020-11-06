@@ -89,6 +89,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                 {
                     CourseId = request.Id,
                     Location = location?.Name ?? "",
+                    Lat = location?.Lat ?? 0,
+                    Lon = location?.Lon ?? 0,
                     DeliveryModes = request.DeliveryModes.Select(type => (Domain.Courses.DeliveryModeType)type),
                     ProviderRatings = request.ProviderRatings.Select(rating => (Domain.Courses.ProviderRating)rating)
                 });
@@ -120,7 +122,9 @@ namespace SFA.DAS.FAT.Web.Controllers
                 {
                     ProviderId = providerId ,
                     CourseId = id, 
-                    Location = locationItem?.Name ?? ""
+                    Location = locationItem?.Name ?? "",
+                    Lat = locationItem?.Lat ?? 0,
+                    Lon = locationItem?.Lon ?? 0
                 });
 
                 var cookieResult =new LocationCookieItem

@@ -69,5 +69,17 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
             //Assert
             actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{id}/providers?location={HttpUtility.UrlEncode($"{location} & {location}")}&sortOrder={sortOrder}&deliveryModes={string.Join("&deliveryModes=", deliveryModeTypes)}&providerRatings={string.Join("&providerRatings=", providerRatingTypes)}");
         }
+
+        [Test, AutoData]
+        public void Then_The_Lat_Lon_Is_Added_If_Not_Zero(string baseUrl, int id, string location,
+            List<DeliveryModeType> deliveryModeTypes, List<ProviderRating> providerRatingTypes, int sortOrder,
+            double lat, double lon)
+        {
+            //Arrange Act
+            var actual = new GetCourseProvidersApiRequest(baseUrl, id, $"{location} & {location}", deliveryModeTypes, providerRatingTypes, sortOrder, lat, lon);
+            
+            //Assert
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{id}/providers?location={HttpUtility.UrlEncode($"{location} & {location}")}&sortOrder={sortOrder}&deliveryModes={string.Join("&deliveryModes=", deliveryModeTypes)}&providerRatings={string.Join("&providerRatings=", providerRatingTypes)}&lat={lat}&lon={lon}");
+        }
     }
 }

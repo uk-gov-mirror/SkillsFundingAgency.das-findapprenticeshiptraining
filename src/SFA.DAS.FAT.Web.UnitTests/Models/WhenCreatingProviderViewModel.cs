@@ -38,6 +38,33 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             actual.ProviderDistance.Should().Be(source.ProviderAddress.DistanceInMiles.FormatDistance());
         }
 
+        [Test, AutoData]
+        public void Then_Return_Null_When_Trading_Name_Matches_Name(Provider source)
+        {
+            // arrange
+            source.TradingName = "university of suffolk";
+            source.Name = "UNIVERSITY OF SUFFOLK";
+
+            // act
+            var actual = (ProviderViewModel)source;
+
+            // assert
+            actual.TradingName.Should().BeNull();
+        }
+
+        [Test, AutoData]
+        public void Then_Return_Null_When_Trading_Name_Is_Null(Provider source)
+        {
+            // arrange
+            source.TradingName = null;
+
+            // act
+            var actual = (ProviderViewModel)source;
+
+            // assert
+            actual.TradingName.Should().BeNull();
+        }
+
         //Feedback
         [Test]
         [InlineAutoData(50, "(50 employer reviews)")]

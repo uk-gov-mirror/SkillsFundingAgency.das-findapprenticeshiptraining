@@ -21,14 +21,16 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             int courseId,
             string location,
             List<DeliveryModeType> deliveryModes,
-            List<ProviderRating> provderRatings,
+            List<ProviderRating> providerRatings,
+            double lat,
+            double lon,
             [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> mockConfig,
             [Frozen] Mock<IApiClient> mockApiClient,
             CourseService service)
         {
-            var expectedUrl = new GetCourseProvidersApiRequest(mockConfig.Object.Value.BaseUrl, courseId, location, deliveryModes, provderRatings).GetUrl;
+            var expectedUrl = new GetCourseProvidersApiRequest(mockConfig.Object.Value.BaseUrl, courseId, location, deliveryModes, providerRatings, 0, lat, lon).GetUrl;
 
-            await service.GetCourseProviders(courseId, location, deliveryModes, provderRatings);
+            await service.GetCourseProviders(courseId, location, deliveryModes, providerRatings, lat, lon);
 
             mockApiClient.Verify(client => client.Get<TrainingCourseProviders>(
                 It.Is<GetCourseProvidersApiRequest>(request => request.GetUrl == expectedUrl)));
@@ -39,7 +41,9 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             int courseId,
             string location,
             List<DeliveryModeType> deliveryModes,
-            List<ProviderRating> provderRatings,
+            List<ProviderRating> providerRatings,
+            double lat,
+            double lon,
             TrainingCourseProviders providersFromApi,
             [Frozen] Mock<IApiClient> mockApiClient,
             CourseService service)
@@ -49,7 +53,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
                     It.IsAny<GetCourseProvidersApiRequest>()))
                 .ReturnsAsync(providersFromApi);
 
-            var response = await service.GetCourseProviders(courseId, location, deliveryModes, provderRatings);
+            var response = await service.GetCourseProviders(courseId, location, deliveryModes, providerRatings, lat, lon);
 
             response.Course.Should().Be(providersFromApi.Course);
             response.CourseProviders.Should().BeEquivalentTo(providersFromApi.CourseProviders);

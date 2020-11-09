@@ -4,6 +4,8 @@
     {
         public const string ServiceStartDefault = "default";
         public const string ServiceStart = "service-start";
+        public const string Cookies = "cookies";
+        public const string CookiesDetails = "cookies-details";
         
         public const string Courses = "courses";
         public const string CourseDetails = "course-details";

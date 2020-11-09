@@ -20,8 +20,7 @@ namespace SFA.DAS.FAT.Web.Models
             var result = new Dictionary<string, string>
             {
                 {nameof(Id), Id.ToString()},
-                {nameof(Location), Location},
-                {nameof(SortOrder), SortOrder.ToString()}
+                {nameof(Location), Location}
             };
 
             for (var i = 0; i < DeliveryModes.Count; i++)

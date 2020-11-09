@@ -145,8 +145,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             //Arrange
             mediator.Setup(x => x.Send(
                     It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id) 
-                                                        && c.Location.Equals(request.Location)
-                                                        && c.SortOrder.Equals(request.SortOrder)),
+                                                        && c.Location.Equals(request.Location)),
                     It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
             

@@ -22,13 +22,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.GetCourseProvidersRequestTests
         }
 
         [Test, AutoData]
-        public void Then_Adds_SortOrder_To_Dictionary(GetCourseProvidersRequest request)
-        {
-            request.ToDictionary().Should().ContainKey(nameof(GetCourseProvidersRequest.SortOrder))
-                .WhichValue.Should().Be(request.SortOrder.ToString());
-        }
-
-        [Test, AutoData]
         public void Then_Adds_DeliveryModes_To_Dictionary(GetCourseProvidersRequest request)
         {
             var dictionary = request.ToDictionary();

@@ -1,8 +1,9 @@
 ﻿@using SFA.DAS.FAT.Web.Infrastructure
 @using SFA.DAS.FAT.Domain.Courses
 @model SFA.DAS.FAT.Web.Models.CoursesViewModel
-@{ 
+@{
     ViewData["Title"] = "Apprenticeship training courses";
+    ViewData["Description"] = "View all available apprenticeship training courses in England. Search using keywords, different qualification levels and categories.";
 }
 
 <main class="govuk-main-wrapper" id="main-content" role="main">
@@ -28,8 +29,8 @@
                             @if (!string.IsNullOrEmpty(Model.Keyword))
                             {
                                 <h4 class="das-filter__selected-sub-heading">Keywords</h4>
-                                <a  asp-querystring="@Model.ClearKeywordLink" title="Clear this filter '@Model.Keyword'" class="das-filter__tag">&lsquo;@Model.Keyword&rsquo;</a>    
-                            }   
+                                <a asp-querystring="@Model.ClearKeywordLink" title="Clear this filter '@Model.Keyword'" class="das-filter__tag">&lsquo;@Model.Keyword&rsquo;</a>
+                            }
                             @if (Model.ClearSectorLinks.Any())
                             {
                                 <h4 class="das-filter__selected-sub-heading">Sector</h4>
@@ -47,15 +48,15 @@
                                 }
                             }
                         </div>
-                    
+
                     }
                     <div class="das-filter__body das-!-show--from-tablet" id="fat-filter-options">
                         <form asp-route="@RouteNames.Courses" method="GET">
                             @if (Model.OrderBy != OrderBy.None)
                             {
-                                <input type="hidden" asp-for="OrderBy"/>    
+                                <input type="hidden" asp-for="OrderBy" />
                             }
-                            
+
                             <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
                             <div class="govuk-form-group">
                                 <label for="Keyword" class="govuk-label das-filter__search-label">Keywords</label>
@@ -88,7 +89,7 @@
                                         @foreach (var level in Model.Levels)
                                         {
                                             <div class="govuk-checkboxes__item">
-                                                <input @(level.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="level-@level.Code" name="levels" type="checkbox" value="@level.Code"/>
+                                                <input @(level.Selected ? "checked='checked" : "") class="govuk-checkboxes__input" id="level-@level.Code" name="levels" type="checkbox" value="@level.Code" />
                                                 <label class="govuk-label govuk-checkboxes__label" for="level-@level.Code">
                                                     @level.Title
                                                 </label>
@@ -99,7 +100,7 @@
                             </div>
                             <p class="govuk-body govuk-!-font-size-16"><a class="govuk-link govuk-link--no-visited-state" href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels" target="_blank" rel="external">What levels mean (opens in new tab or window)</a></p>
                             <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
-                            </form>
+                        </form>
                     </div>
                 </div>
                 <button class="govuk-button das-filter__toggle das-show-hide__button das-!-show--mobile" data-aria-controls="fat-filter@(Model.ShowFilterOptions ? "-options" : "")" data-button-string="filter @(Model.ShowFilterOptions ? " options" : "")" data-focus-id="Keyword">Show/hide</button>
@@ -114,32 +115,34 @@
                 {
                     if (Model.OrderBy == OrderBy.Relevance)
                     {
-                        <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
-    
-                            <span class="govuk-!-font-weight-bold">Relevance</span>, 
+                        <p class="govuk-body govuk-!-margin-bottom-6">
+                            Sort by:
+
+                            <span class="govuk-!-font-weight-bold">Relevance</span>,
                             <a id="sort-by-name" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.OrderByName">Name</a>
-    
-                        </p>    
+
+                        </p>
                     }
                     else
                     {
-                        <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
-    
+                        <p class="govuk-body govuk-!-margin-bottom-6">
+                            Sort by:
+
                             <a id="sort-by-relevance" class="govuk-link govuk-link--no-visited-state" asp-querystring="@Model.OrderByRelevance">Relevance</a>,
                             <span class="govuk-!-font-weight-bold">Name</span>
-    
+
                         </p>
                     }
-                    
+
                 }
                 else
                 {
                     <p class="govuk-body govuk-!-margin-bottom-6">
-                     Sorted by:
-                    <span class="govuk-!-font-weight-bold">Name</span> 
+                        Sorted by:
+                        <span class="govuk-!-font-weight-bold">Name</span>
                     </p>
                 }
-              
+
                 <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 ">
 
                 <div class="das-search-results">
@@ -154,7 +157,7 @@
                                 </h2>
                                 <p class="govuk-body das-search-results__body">@course.OverviewOfRole</p>
                                 <dl class="das-definition-list das-definition-list--meta das-search-results__meta">
-                                    <dt class="das-definition-list__title">Sector</dt> 
+                                    <dt class="das-definition-list__title">Sector</dt>
                                     <dd class="das-definition-list__definition">@course.Sector</dd>
                                 </dl>
                             </li>

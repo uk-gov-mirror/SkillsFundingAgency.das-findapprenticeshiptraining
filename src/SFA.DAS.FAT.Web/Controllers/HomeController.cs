@@ -11,5 +11,17 @@ namespace SFA.DAS.FAT.Web.Controllers
         {
             return View();
         }
+
+        [Route("cookies", Name = RouteNames.Cookies)]
+        public IActionResult Cookies()
+        {
+            return View();
+        }
+
+        [Route("cookies-details", Name = RouteNames.CookiesDetails)]
+        public IActionResult CookiesDetails()
+        {
+            return View();
+        }
     }
 }

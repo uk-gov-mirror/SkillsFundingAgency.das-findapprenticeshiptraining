@@ -53,6 +53,33 @@
 
 <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
 
+<div data-module="cookie-banner" role="region" aria-label="cookie banner" class="das-cookie-banner__wrap">
+    <div class="das-cookie-banner">
+        <div class="das-cookie-banner__wrapper govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h2 class="govuk-heading-m das-cookie-banner__header">Tell us whether you accept cookies</h2>
+                    <p class="das-cookie-banner__message">We use <a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.CookiesDetails">cookies to collect information</a> about how you use this service. We use this information to make the service work as well as possible and improve this service.</p>
+                    <div class="das-cookie-banner__buttons">
+                        <div class="das-cookie-banner__button-wrap das-cookie-banner__button-accept">
+                            <button class="govuk-button das-cookie-banner__button" type="submit" data-accept-cookies="true">Accept all cookies</button>
+                        </div>
+                        <div class="das-cookie-banner__button-wrap das-cookie-banner__button-settings">
+                            <a class="govuk-button das-cookie-banner__button" role="button" asp-route="@RouteNames.Cookies">Set cookie preferences</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="das-cookie-banner__confirmation govuk-width-container" tabindex="-1">
+            <p class="das-cookie-banner__confirmation-message">
+                You've accepted all cookies. You can <a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.Cookies">change your cookie settings</a> at any time.
+            </p>
+            <button class="das-cookie-banner__hide-button" data-hide-cookie-banner="true">Hide</button>
+        </div>
+    </div>
+</div>
+
 <header class="govuk-header" role="banner" data-module="govuk-header">
     <div class="govuk-header__container govuk-width-container">
 
@@ -71,7 +98,7 @@
             </a>
         </div>
         <div class="govuk-header__content">
-            <a asp-action="Index" asp-controller="Home" class="govuk-header__link govuk-header__link--service-name">Find apprenticeship training for your apprentice</a>
+            <a asp-route="@RouteNames.ServiceStartDefault" class="govuk-header__link govuk-header__link--service-name">Find apprenticeship training for your apprentice</a>
         </div>
     </div>
 </header>
@@ -92,7 +119,7 @@
         <div class="govuk-breadcrumbs">
             <ol class="govuk-breadcrumbs__list">
                 <li class="govuk-breadcrumbs__list-item">
-                    <a class="govuk-breadcrumbs__link" asp-route="@RouteNames.ServiceStart">Home: Find apprenticeship training</a>
+                    <a class="govuk-breadcrumbs__link" asp-route="@RouteNames.ServiceStartDefault">Home: Find apprenticeship training</a>
                 </li>
             </ol>
         </div>
@@ -124,13 +151,13 @@
                     </li>
 
                     <li class="govuk-footer__inline-list-item">
-                        <a class="govuk-footer__link" asp-route="@RouteNames.AccessibilityStatement" rel="noreferrer noopener">
+                        <a class="govuk-footer__link" asp-route="@RouteNames.AccessibilityStatement">
                             Accessibility statement
                         </a>
                     </li>
 
                     <li class="govuk-footer__inline-list-item">
-                        <a class="govuk-footer__link" href="https://www.gov.uk/help/cookies" target="_blank" rel="noreferrer noopener">
+                        <a class="govuk-footer__link" asp-route="@RouteNames.Cookies">
                             Cookies
                         </a>
                     </li>

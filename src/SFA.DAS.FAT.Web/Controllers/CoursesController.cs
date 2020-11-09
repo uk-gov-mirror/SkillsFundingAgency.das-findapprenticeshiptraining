@@ -12,9 +12,7 @@ using Microsoft.Extensions.Logging;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
 using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
 using SFA.DAS.FAT.Domain.Configuration;
-using SFA.DAS.FAT.Domain.Extensions;
 using SFA.DAS.FAT.Domain.Interfaces;
-using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType;
 
 namespace SFA.DAS.FAT.Web.Controllers
 {
@@ -23,16 +21,19 @@ namespace SFA.DAS.FAT.Web.Controllers
     {
         private readonly ILogger<CoursesController> _logger;
         private readonly IMediator _mediator;
-        private readonly ICookieStorageService<LocationCookieItem> _cookieStorageService;
+        private readonly ICookieStorageService<LocationCookieItem> _locationCookieStorageService;
+        private readonly ICookieStorageService<GetCourseProvidersRequest> _courseProvidersCookieStorageService;
 
         public CoursesController (
             ILogger<CoursesController> logger,
             IMediator mediator,
-            ICookieStorageService<LocationCookieItem> cookieStorageService)
+            ICookieStorageService<LocationCookieItem> locationCookieStorageService,
+            ICookieStorageService<GetCourseProvidersRequest> courseProvidersCookieStorageService)
         {
             _logger = logger;
             _mediator = mediator;
-            _cookieStorageService = cookieStorageService;
+            _locationCookieStorageService = locationCookieStorageService;
+            _courseProvidersCookieStorageService = courseProvidersCookieStorageService;
         }
 
         [Route("", Name = RouteNames.Courses)]
@@ -58,7 +59,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                 Levels = result.Levels.Select(level => new LevelViewModel(level, request.Levels)).ToList(),
                 OrderBy = request.OrderBy
             };
-            
+
             return View(viewModel);
         }
 
@@ -66,7 +67,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         public async Task<IActionResult> CourseDetail(int id, [FromQuery(Name="location")]string locationName)
         {
             CheckLocation(locationName);
-            var location = _cookieStorageService.Get(Constants.LocationCookieName);
+            var location = _locationCookieStorageService.Get(Constants.LocationCookieName);
             var result = await _mediator.Send(new GetCourseQuery
             {
                 CourseId = id,
@@ -104,6 +105,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                     Lon = result.LocationGeoPoint?.LastOrDefault() ??0
                 }; 
                 UpdateLocationCookie(cookieResult);
+
+                _courseProvidersCookieStorageService.Create(request, nameof(GetCourseProvidersRequest));
                 
                 return View(new CourseProvidersViewModel(request, result));
             }
@@ -134,10 +137,13 @@ namespace SFA.DAS.FAT.Web.Controllers
                     Lon = result.LocationGeoPoint?.LastOrDefault() ?? 0
                 }; 
                 UpdateLocationCookie(cookieResult);
-                
-                var viewModel = (CourseProviderViewModel)result;
 
+                var viewModel = (CourseProviderViewModel)result;
                 viewModel.Location = cookieResult.Name;
+                viewModel.GetCourseProvidersRequest = _courseProvidersCookieStorageService
+                    .Get(nameof(GetCourseProvidersRequest))?
+                    .ToDictionary();
+
                 return View(viewModel);
             }
             catch (Exception e)
@@ -151,21 +157,22 @@ namespace SFA.DAS.FAT.Web.Controllers
         {
             if (location == "-1")
             {
-                _cookieStorageService.Delete(Constants.LocationCookieName);
+                _locationCookieStorageService.Delete(Constants.LocationCookieName);
                 return "";
             }
             if (string.IsNullOrEmpty(location))
             {
-                location = _cookieStorageService.Get(Constants.LocationCookieName)?.Name;
+                location = _locationCookieStorageService.Get(Constants.LocationCookieName)?.Name;
             }
 
             return location;
         }
+
         private void UpdateLocationCookie(LocationCookieItem location)
         {
             if (!string.IsNullOrEmpty(location.Name) && location.Lat != 0 && location.Lon != 0)
             {
-                _cookieStorageService.Update(Constants.LocationCookieName, location, 2);    
+                _locationCookieStorageService.Update(Constants.LocationCookieName, location, 2);    
             }
         }
     }

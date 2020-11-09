@@ -135,6 +135,33 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         }
 
         [Test, MoqAutoData]
+        public async Task Then_The_Request_Is_Added_To_A_Cookie(
+            GetCourseProvidersRequest request,
+            GetCourseProvidersResult response,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<GetCourseProvidersRequest>> cookieStorageService,
+            [Greedy] CoursesController controller)
+        {
+            //Arrange
+            mediator.Setup(x => x.Send(
+                    It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id) 
+                                                        && c.Location.Equals(request.Location)
+                                                        && c.SortOrder.Equals(request.SortOrder)),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+            
+            //Act
+            var actual = await controller.CourseProviders(request) as ViewResult;
+            var actualModel = actual.Model as CourseProvidersViewModel;
+            
+            //Assert
+            cookieStorageService.Verify(x=>x.Create(
+                It.Is<GetCourseProvidersRequest>(c=>c == request),
+                nameof(GetCourseProvidersRequest),
+                1));
+        }
+
+        [Test, MoqAutoData]
         public async Task And_Error_Then_Redirect_To_Error_Route(
             GetCourseProvidersRequest request,
             Exception exception,

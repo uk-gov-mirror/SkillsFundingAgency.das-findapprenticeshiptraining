@@ -1,6 +1,8 @@
 @using SFA.DAS.FAT.Web.Infrastructure
+@using SFA.DAS.FAT.Web.Models
 @{
     ViewData["Title"] = "Page not found";
+    ViewData[nameof(BreadCrumbViewModel)] = new BreadCrumbViewModel {Level = BreadCrumbLevel.Error};
 }
 <main class="govuk-main-wrapper " id="main-content" role="main">
     <div class="govuk-grid-row">

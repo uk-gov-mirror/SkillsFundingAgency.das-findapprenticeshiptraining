@@ -14,6 +14,7 @@ namespace SFA.DAS.FAT.Web.Models
     {
         Home,
         Error,
+        Accessibility,
         CourseList,
         CourseDetails,
         CourseProvidersList,

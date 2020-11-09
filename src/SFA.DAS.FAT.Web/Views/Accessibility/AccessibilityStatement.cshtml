@@ -1,7 +1,9 @@
 ﻿@using SFA.DAS.FAT.Web.Infrastructure
+@using SFA.DAS.FAT.Web.Models
 
 @{
     ViewData["Title"] = "Accessibility statement";
+    ViewData[nameof(BreadCrumbViewModel)] = new BreadCrumbViewModel {Level = BreadCrumbLevel.Accessibility};
     ViewData["Description"] = "How accessible find apprenticeship training is, how to report problems and how to request information in an alternative format.";
 }
 

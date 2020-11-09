@@ -8,7 +8,6 @@ namespace SFA.DAS.FAT.Web.Models
         public string CourseId { get; set; }
         public string CourseDescription { get; set; }
         public Dictionary<string, string> ProvidersFilters { get; set; }
-        public string QueryString { get; set; }
     }
 
     public enum BreadCrumbLevel

@@ -1,7 +1,4 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-// Write your Javascript code.
-var $keywordsInput = $('#search-location');
+﻿var $keywordsInput = $('#search-location');
 var $submitOnConfirm = $('#search-location').data('submit-on-selection');
 var $defaultValue = $('#search-location').data('default-value');
 if ($keywordsInput.length > 0) {
@@ -61,3 +58,26 @@ $('#deliveryMode-Workplace').on('change', function(){
         $('#deliveryMode-National').prop('checked', false);
     }
 });
+
+
+var $backLinkOrHome = $('.das-js-back-link-or-home');
+var backLinkOrHome = function () {
+
+    var referrer = document.referrer;
+
+    var backLink = $('<a>')
+        .attr({'href': '#', 'class': 'govuk-back-link'})
+        .text('Back')
+        .on('click', function (e) {
+            window.history.back();
+            e.preventDefault();
+        });
+
+    if (referrer && referrer !== document.location.href) {
+        $backLinkOrHome.replaceWith(backLink);
+    }
+}
+
+if ($backLinkOrHome) {
+    backLinkOrHome();
+}

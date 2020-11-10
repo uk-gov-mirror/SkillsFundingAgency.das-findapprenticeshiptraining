@@ -36,9 +36,9 @@ namespace SFA.DAS.FAT.Application.Courses.Services
 
             return response;
         }
-        public async Task<TrainingCourseProviderDetails> GetCourseProviderDetails(int providerId, int courseId, string location)
+        public async Task<TrainingCourseProviderDetails> GetCourseProviderDetails(int providerId, int courseId, string location, double lat, double lon)
         {
-            var request = new GetCourseProviderDetailsApiRequest(_config.BaseUrl,courseId, providerId, location);
+            var request = new GetCourseProviderDetailsApiRequest(_config.BaseUrl,courseId, providerId, location, lat, lon);
             var response = await _apiClient.Get<TrainingCourseProviderDetails>(request);
             return response;
         }
@@ -47,10 +47,12 @@ namespace SFA.DAS.FAT.Application.Courses.Services
             int courseId,
             string queryLocation, 
             IEnumerable<DeliveryModeType> queryDeliveryModes,
-            IEnumerable<ProviderRating> queryProviderRatings
+            IEnumerable<ProviderRating> queryProviderRatings,
+            double lat,
+            double lon
            )
         {
-            var request = new GetCourseProvidersApiRequest(_config.BaseUrl, courseId, queryLocation, queryDeliveryModes, queryProviderRatings);
+            var request = new GetCourseProvidersApiRequest(_config.BaseUrl, courseId, queryLocation, queryDeliveryModes, queryProviderRatings,0, lat, lon);
 
             var response = await _apiClient.Get<TrainingCourseProviders>(request);
 

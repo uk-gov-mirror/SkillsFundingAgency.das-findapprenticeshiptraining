@@ -124,7 +124,12 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             //Arrange
             cookieStorageService.Setup(x => x.Get(Constants.LocationCookieName)).Returns(location);
             mediator.Setup(x => x.Send(It.Is<GetCourseProviderQuery>(c =>
-                    c.ProviderId.Equals(providerId) && c.CourseId.Equals(courseId) && c.Location.Equals(location.Name)), It.IsAny<CancellationToken>()))
+                    c.ProviderId.Equals(providerId) 
+                    && c.CourseId.Equals(courseId) 
+                    && c.Location.Equals(location.Name)
+                    && c.Lat.Equals(location.Lat)
+                    && c.Lon.Equals(location.Lon)
+                    ), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
 
             //Act

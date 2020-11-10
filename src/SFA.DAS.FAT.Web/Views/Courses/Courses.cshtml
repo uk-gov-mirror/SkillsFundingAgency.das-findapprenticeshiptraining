@@ -33,7 +33,7 @@
                             }
                             @if (Model.ClearSectorLinks.Any())
                             {
-                                <h4 class="das-filter__selected-sub-heading">Sector</h4>
+                                <h4 class="das-filter__selected-sub-heading">Apprenticeship category</h4>
                                 @foreach (var filterLink in Model.ClearSectorLinks)
                                 {
                                     <a class="das-filter__tag" asp-querystring="@filterLink.Value" title="Clear this sector filter @filterLink.Key">@filterLink.Key</a>
@@ -65,7 +65,7 @@
                             <div class="govuk-form-group">
                                 <fieldset class="govuk-fieldset">
                                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                        Sector
+                                        Apprenticeship Category
                                     </legend>
                                     <div class="govuk-checkboxes govuk-checkboxes--small">
                                         @foreach (var sector in Model.Sectors)
@@ -157,7 +157,7 @@
                                 </h2>
                                 <p class="govuk-body das-search-results__body">@course.OverviewOfRole</p>
                                 <dl class="das-definition-list das-definition-list--meta das-search-results__meta">
-                                    <dt class="das-definition-list__title">Sector</dt>
+                                    <dt class="das-definition-list__title">Apprenticeship category</dt>
                                     <dd class="das-definition-list__definition">@course.Sector</dd>
                                 </dl>
                             </li>

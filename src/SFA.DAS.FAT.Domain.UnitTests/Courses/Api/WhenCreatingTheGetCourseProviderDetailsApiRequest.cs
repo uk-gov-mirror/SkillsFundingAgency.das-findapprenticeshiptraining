@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web;
+﻿using System.Web;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
@@ -18,7 +15,7 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
             var actual = new GetCourseProviderDetailsApiRequest(baseUrl, courseId, providerId, location);
 
             //Assert
-            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{courseId}/providers/{providerId}?location={location}");
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{courseId}/providers/{providerId}?location={location}&lat=0&lon=0");
 
         }
 
@@ -30,7 +27,7 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
             var actual = new GetCourseProviderDetailsApiRequest(baseUrl, courseId, providerId, "");
 
             //Assert
-            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{courseId}/providers/{providerId}?location=");
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{courseId}/providers/{providerId}?location=&lat=0&lon=0");
         }
         
         [Test, AutoData]
@@ -41,7 +38,18 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
             var actual = new GetCourseProviderDetailsApiRequest(baseUrl, courseId, providerId, $"{location} & {location}");
             
             //Assert
-            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{courseId}/providers/{providerId}?location={HttpUtility.UrlEncode($"{location} & {location}")}");
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{courseId}/providers/{providerId}?location={HttpUtility.UrlEncode($"{location} & {location}")}&lat=0&lon=0");
+        }
+
+        [Test, AutoData]
+        public void Then_The_Lat_Lon_Is_Added(string baseUrl, int courseId, int providerId,
+            string location, double lat, double lon)
+        {
+            //Arrange Act
+            var actual = new GetCourseProviderDetailsApiRequest(baseUrl, courseId, providerId, $"{location} & {location}", lat, lon);
+            
+            //Assert
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{courseId}/providers/{providerId}?location={HttpUtility.UrlEncode($"{location} & {location}")}&lat={lat}&lon={lon}");
         }
     }
 }

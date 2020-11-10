@@ -24,15 +24,17 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             int courseId,
             string location,
             string baseUrl,
+            double lat,
+            double lon,
             [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
             [Frozen] Mock<IApiClient> apiClient,
             CourseService courseService)
         {
             //Arrange
-            var courseApiRequest = new GetCourseProviderDetailsApiRequest(config.Object.Value.BaseUrl, courseId, providerId, location);
+            var courseApiRequest = new GetCourseProviderDetailsApiRequest(config.Object.Value.BaseUrl, courseId, providerId, location, lat, lon);
 
             //Act
-            await courseService.GetCourseProviderDetails(providerId, courseId, location);
+            await courseService.GetCourseProviderDetails(providerId, courseId, location, lat, lon);
 
             //Assert
             apiClient.Verify(x => x.Get<TrainingCourseProviderDetails>(
@@ -45,6 +47,8 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             int courseId,
             string location,
             string baseUrl,
+            double lat,
+            double lon,
             TrainingCourseProviderDetails apiResponse,
             [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
             [Frozen] Mock<IApiClient> apiClient,
@@ -58,7 +62,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
                     && request.GetUrl.Contains(location)
                     ))).ReturnsAsync(apiResponse);
             //Act
-            var actual = await courseService.GetCourseProviderDetails(providerId, courseId, location);
+            var actual = await courseService.GetCourseProviderDetails(providerId, courseId, location, lat, lon);
             //Assert
             actual.Should().BeEquivalentTo(apiResponse);
         }

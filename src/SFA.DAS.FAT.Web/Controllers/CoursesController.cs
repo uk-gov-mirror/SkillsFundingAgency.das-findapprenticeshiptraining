@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +11,7 @@ using Microsoft.Extensions.Logging;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
 using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
 using SFA.DAS.FAT.Domain.Configuration;
-using SFA.DAS.FAT.Domain.Extensions;
 using SFA.DAS.FAT.Domain.Interfaces;
-using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType;
 
 namespace SFA.DAS.FAT.Web.Controllers
 {
@@ -65,8 +62,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         [Route("{id}", Name = RouteNames.CourseDetails)]
         public async Task<IActionResult> CourseDetail(int id, [FromQuery(Name="location")]string locationName)
         {
-            CheckLocation(locationName);
-            var location = _cookieStorageService.Get(Constants.LocationCookieName);
+            var location = CheckLocation(locationName);
             var result = await _mediator.Send(new GetCourseQuery
             {
                 CourseId = id,
@@ -92,7 +88,9 @@ namespace SFA.DAS.FAT.Web.Controllers
                 var result = await _mediator.Send(new GetCourseProvidersQuery
                 {
                     CourseId = request.Id,
-                    Location = location,
+                    Location = location?.Name ?? "",
+                    Lat = location?.Lat ?? 0,
+                    Lon = location?.Lon ?? 0,
                     DeliveryModes = request.DeliveryModes.Select(type => (Domain.Courses.DeliveryModeType)type),
                     ProviderRatings = request.ProviderRatings.Select(rating => (Domain.Courses.ProviderRating)rating)
                 });
@@ -119,12 +117,14 @@ namespace SFA.DAS.FAT.Web.Controllers
         {
             try
             {
-                location = CheckLocation(location);
+                var locationItem = CheckLocation(location);
                 var result = await _mediator.Send(new GetCourseProviderQuery
                 {
                     ProviderId = providerId ,
                     CourseId = id, 
-                    Location = location
+                    Location = locationItem?.Name ?? "",
+                    Lat = locationItem?.Lat ?? 0,
+                    Lon = locationItem?.Lon ?? 0
                 });
 
                 var cookieResult =new LocationCookieItem
@@ -147,19 +147,22 @@ namespace SFA.DAS.FAT.Web.Controllers
             }
         }
 
-        private string CheckLocation(string location)
+        private LocationCookieItem CheckLocation(string location)
         {
             if (location == "-1")
             {
                 _cookieStorageService.Delete(Constants.LocationCookieName);
-                return "";
+                return null;
             }
             if (string.IsNullOrEmpty(location))
             {
-                location = _cookieStorageService.Get(Constants.LocationCookieName)?.Name;
+                return _cookieStorageService.Get(Constants.LocationCookieName);
             }
 
-            return location;
+            return new LocationCookieItem
+            {
+                Name = location
+            };
         }
         private void UpdateLocationCookie(LocationCookieItem location)
         {

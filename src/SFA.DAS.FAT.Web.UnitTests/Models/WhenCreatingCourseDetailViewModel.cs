@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoFixture.NUnit3;
@@ -23,6 +23,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             Assert.AreEqual(course.MaxFunding.ToGdsCostFormat(), actual.MaximumFunding);
             Assert.AreEqual($"{course.Title} (level {course.Level})", actual.TitleAndLevel);
             Assert.AreEqual(course.Level, actual.Level);
+            Assert.AreEqual(course.LevelEquivalent, actual.LevelEquivalent);
             Assert.AreEqual(course.Route, actual.Sector);
             Assert.AreEqual(course.IntegratedDegree, actual.IntegratedDegree);
             Assert.AreEqual(course.OverviewOfRole, actual.OverviewOfRole);
@@ -31,6 +32,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             Assert.AreEqual(course.StandardPageUrl, actual.ExternalCourseUrl);
             Assert.AreEqual(course.TypicalDuration, actual.TypicalDuration);
             Assert.AreEqual(course.OtherBodyApprovalRequired, actual.OtherBodyApprovalRequired);
+            Assert.AreEqual(course.ApprovalBody, actual.ApprovalBody);
             Assert.AreEqual(course.StandardDates.LastDateStarts, actual.LastDateStarts);
             Assert.AreEqual(DateTime.Now > course.StandardDates?.LastDateStarts, actual.AfterLastStartDate);
         }
@@ -61,6 +63,19 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             //Assert
             Assert.IsAssignableFrom<List<string>>(actual.TypicalJobTitles);
             Assert.IsEmpty(actual.TypicalJobTitles);
+        }
+
+        [Test, AutoData]
+        public void Then_If_Approval_Body_Is_Null_An_Empty_String_Is_Returned(Course course)
+        {
+            //Arrange
+            course.ApprovalBody = null;
+
+            //Act
+            var actual = (CourseViewModel)course;
+
+            //Assert
+            Assert.IsNull(actual.ApprovalBody);
         }
     }
 }

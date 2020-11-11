@@ -28,4 +28,4 @@ Scenario: Expired course
 Scenario: Regulated course
 	Given I navigate to the following url: /courses/333
 	Then an http status code of 200 is returned
-	And the page content includes the following: needs a training provider who is approved by the appropriate regulatory body
+	And the page content includes the following: needs a training provider who is approved by test

@@ -63,7 +63,7 @@ Feature: FAT v1 Redirect Rules
   Scenario: Navigate from v1 course detail page
     Given I navigate to the following url: /apprenticeship/Standard/333
     Then an http status code of 200 is returned
-    And the page content includes the following: needs a training provider who is approved by the appropriate regulatory body
+    And the page content includes the following: needs a training provider who is approved by test
 
   @WireMockServer
   Scenario: Navigate from v1 provider standards result page

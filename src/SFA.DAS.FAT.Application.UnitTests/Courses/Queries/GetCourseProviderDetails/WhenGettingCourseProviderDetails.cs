@@ -55,13 +55,13 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviderDet
             //Arrange
             validationResult.ValidationDictionary.Clear();
             mockValidator.Setup(x => x.ValidateAsync(request)).ReturnsAsync(validationResult);
-            mockService.Setup(x => x.GetCourseProviderDetails(request.ProviderId, request.CourseId, request.Location)).ReturnsAsync(courseProviderResponse);
+            mockService.Setup(x => x.GetCourseProviderDetails(request.ProviderId, request.CourseId, request.Location, request.Lat, request.Lon)).ReturnsAsync(courseProviderResponse);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
 
             //Assert
-            mockService.Verify(x => x.GetCourseProviderDetails(request.ProviderId, request.CourseId, request.Location), Times.Once);
+            mockService.Verify(x => x.GetCourseProviderDetails(request.ProviderId, request.CourseId, request.Location, request.Lat, request.Lon), Times.Once);
             Assert.IsNotNull(actual);
             actual.Provider.Should().BeEquivalentTo(courseProviderResponse.CourseProviderDetails);
             actual.Course.Should().BeEquivalentTo(courseProviderResponse.TrainingCourse);
@@ -83,13 +83,13 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviderDet
             //Arrange
             validationResult.ValidationDictionary.Clear();
             mockValidator.Setup(x => x.ValidateAsync(request)).ReturnsAsync(validationResult);
-            mockService.Setup(x => x.GetCourseProviderDetails(request.ProviderId, request.CourseId, request.Location)).ReturnsAsync((TrainingCourseProviderDetails)null);
+            mockService.Setup(x => x.GetCourseProviderDetails(request.ProviderId, request.CourseId, request.Location, request.Lat, request.Lon)).ReturnsAsync((TrainingCourseProviderDetails)null);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
 
             //Assert
-            mockService.Verify(x => x.GetCourseProviderDetails(request.ProviderId, request.CourseId, request.Location), Times.Once);
+            mockService.Verify(x => x.GetCourseProviderDetails(request.ProviderId, request.CourseId, request.Location, request.Lat, request.Lon), Times.Once);
             Assert.IsNull(actual.Provider);
             Assert.IsNull(actual.Course);
             Assert.IsNull(actual.AdditionalCourses);

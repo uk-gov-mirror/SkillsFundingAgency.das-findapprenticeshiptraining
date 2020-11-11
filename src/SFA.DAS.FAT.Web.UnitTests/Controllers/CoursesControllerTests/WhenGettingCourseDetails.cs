@@ -20,7 +20,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         [Test, MoqAutoData]
         public async Task Then_The_Query_Is_Sent_And_Data_Retrieved_And_View_Shown(
             int standardCode,
-            string locationName,
             GetCourseResult response,
             LocationCookieItem locationCookieItem,
             [Frozen] Mock<IMediator> mediator,
@@ -38,7 +37,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
             
             //Act
-            var actual = await controller.CourseDetail(standardCode, locationName);
+            var actual = await controller.CourseDetail(standardCode, "");
             
             //Assert
             Assert.IsNotNull(actual);
@@ -54,7 +53,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         [Test, MoqAutoData]
         public async Task Then_If_There_Is_A_Location_Cookie_The_Lat_Lon_Are_Passed_To_The_Query(
             int standardCode,
-            string locationName,
             GetCourseResult response,
             LocationCookieItem locationCookieItem,
             [Frozen] Mock<IMediator> mediator,
@@ -73,7 +71,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
             
             //Act
-            var actual = await controller.CourseDetail(standardCode, locationName);
+            var actual = await controller.CourseDetail(standardCode, "");
             
             //Assert
             Assert.IsNotNull(actual);

@@ -54,8 +54,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,It.IsAny<LocationCookieItem>(), It.IsAny<int>()), Times.Never);
             
         }
-        
-        
+
         [Test, MoqAutoData]
         public async Task Then_The_Location_Is_Added_To_The_Cookie_If_Set(
             int providerId,
@@ -77,7 +76,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             
             //Assert
             var model = result!.Model as CourseProviderViewModel;
-            model!.GetCourseProvidersRequest[nameof(GetCourseProvidersRequest.Location)].Should().Be(location);
+            model!.GetCourseProvidersRequest[nameof(GetCourseProvidersRequest.Location)].Should().Be(response.Location);
             cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,It.Is<LocationCookieItem>(c=>
                 c.Name.Equals(response.Location)
                 && c.Lat.Equals(response.LocationGeoPoint.FirstOrDefault())
@@ -95,8 +94,12 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             [Greedy] CoursesController controller)
         {
             //Arrange
-            mediator.Setup(x => x.Send(It.Is<GetCourseProviderQuery>(c =>
-                    c.ProviderId.Equals(providerId) && c.CourseId.Equals(courseId) && c.Location.Equals("")), It.IsAny<CancellationToken>()))
+            mediator.Setup(x => x.Send(
+                    It.Is<GetCourseProviderQuery>(c => 
+                        c.ProviderId.Equals(providerId) && 
+                        c.CourseId.Equals(courseId) && 
+                        c.Location.Equals("")), 
+                    It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
             
             //Act
@@ -105,7 +108,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             //Assert
             cookieStorageService.Verify(x=>x.Delete(Constants.LocationCookieName));
             var model = actual!.Model as CourseProviderViewModel;
-            model!.GetCourseProvidersRequest[nameof(GetCourseProvidersRequest.Location)].Should().BeNullOrEmpty();
+            model!.GetCourseProvidersRequest[nameof(GetCourseProvidersRequest.Location)].Should().Be(response.Location);
         }
 
         [Test, MoqAutoData]
@@ -121,7 +124,12 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             //Arrange
             cookieStorageService.Setup(x => x.Get(Constants.LocationCookieName)).Returns(location);
             mediator.Setup(x => x.Send(It.Is<GetCourseProviderQuery>(c =>
-                    c.ProviderId.Equals(providerId) && c.CourseId.Equals(courseId) && c.Location.Equals(location.Name)), It.IsAny<CancellationToken>()))
+                    c.ProviderId.Equals(providerId) 
+                    && c.CourseId.Equals(courseId) 
+                    && c.Location.Equals(location.Name)
+                    && c.Lat.Equals(location.Lat)
+                    && c.Lon.Equals(location.Lon)
+                    ), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
 
             //Act

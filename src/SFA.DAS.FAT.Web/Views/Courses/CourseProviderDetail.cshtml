@@ -17,7 +17,7 @@
             </h1>
             @if (!string.IsNullOrEmpty(Model.Provider.TradingName))
             {
-                <p class="govuk-!-margin-top-">
+                <p class="govuk-body">
                     <span class="govuk-!-font-weight-bold">Other names:</span><br>@Model.Provider.TradingName
                 </p>
             }
@@ -48,7 +48,7 @@
             {
                 <details class="govuk-details" data-module="govuk-details">
                     <summary class="govuk-details__summary">
-                        <span class="govuk-details__summary-text govuk-!-font-size">
+                        <span class="govuk-details__summary-text">
                             View more details
                         </span>
                     </summary>
@@ -105,7 +105,7 @@
                 
                     <details class="govuk-details" data-module="govuk-details">
                         <summary class="govuk-details__summary">
-                            <span class="govuk-details__summary-text govuk-!-font-size">
+                            <span class="govuk-details__summary-text">
                                 Explain pass rate
                             </span>
                         </summary>
@@ -120,8 +120,8 @@
                 @if (!string.IsNullOrEmpty(Model.Location))
                 {
                     <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Apprenticeship location</h2>
-                    <p class="govuk-body govuk-!-margin-bottom-">
-                        <span style="margin-right: 10px">@Model.Location</span>
+                    <p class="govuk-body">
+                        <span class="govuk-!-margin-right-2">@Model.Location</span>
                         @{
                             var routeData = new Dictionary<string, string>
                                                                 {
@@ -276,7 +276,7 @@
             {
                 <details class="govuk-details govuk-!-margin-top-7" data-module="govuk-details">
                     <summary class="govuk-details__summary">
-                        <span class="govuk-details__summary-text govuk-!-font-size">
+                        <span class="govuk-details__summary-text">
                             @(Model.AdditionalCourses.Total == 1 ?
                             "View the 1 other course offered by this provider" :
                             $"View all {Model.AdditionalCourses.Total} courses offered by this provider")

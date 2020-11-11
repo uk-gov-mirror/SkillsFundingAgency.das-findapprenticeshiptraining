@@ -73,9 +73,11 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
             
             //Act
-            await controller.CourseProviderDetail(courseId, providerId, location);
+            var result = await controller.CourseProviderDetail(courseId, providerId, location) as ViewResult;
             
             //Assert
+            var model = result!.Model as CourseProviderViewModel;
+            model!.GetCourseProvidersRequest[nameof(GetCourseProvidersRequest.Location)].Should().Be(location);
             cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,It.Is<LocationCookieItem>(c=>
                 c.Name.Equals(response.Location)
                 && c.Lat.Equals(response.LocationGeoPoint.FirstOrDefault())
@@ -98,15 +100,12 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
             
             //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, "-1");
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "-1") as ViewResult;
             
             //Assert
             cookieStorageService.Verify(x=>x.Delete(Constants.LocationCookieName));
-            Assert.IsNotNull(actual);
-            var actualResult = actual as ViewResult;
-            Assert.IsNotNull(actualResult);
-            var actualModel = actualResult.Model as CourseProviderViewModel;
-            Assert.IsNotNull(actualModel);
+            var model = actual!.Model as CourseProviderViewModel;
+            model!.GetCourseProvidersRequest[nameof(GetCourseProvidersRequest.Location)].Should().BeNullOrEmpty();
         }
 
         [Test, MoqAutoData]
@@ -161,8 +160,8 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             var actual = await controller.CourseProviderDetail(courseId, providerId, "") as ViewResult;
             
             //Assert
-            var model = actual.Model as CourseProviderViewModel;
-            model.GetCourseProvidersRequest.Should().BeEquivalentTo(providersRequest.ToDictionary());
+            var model = actual!.Model as CourseProviderViewModel;
+            model!.GetCourseProvidersRequest.Should().BeEquivalentTo(providersRequest.ToDictionary());
         }
 
         [Test, MoqAutoData]
@@ -185,7 +184,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             var actual = await controller.CourseProviderDetail(courseId, providerId, location) as RedirectToRouteResult;
 
             // Assert
-            actual.RouteName.Should().Be(RouteNames.Error500);
+            actual!.RouteName.Should().Be(RouteNames.Error500);
         }
     }
 }

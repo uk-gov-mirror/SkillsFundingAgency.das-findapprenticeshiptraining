@@ -63,7 +63,7 @@
                     @if (Model.TypicalJobTitles.Any())
                     {
                         <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">Typical job title@(Model.TypicalJobTitles.Count > 1 ? "s" : "")</dt>
+                            <dt class="govuk-summary-list__key">Also known as</dt>
                             <dd class="govuk-summary-list__value">
                                 <ul class="govuk-list @(Model.TypicalJobTitles.Count > 1 ? "govuk-list--bullet" : "")">
                                     @foreach (var jobTitle in Model.TypicalJobTitles)

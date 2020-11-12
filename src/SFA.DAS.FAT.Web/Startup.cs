@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Infrastructure.HealthCheck;
@@ -34,6 +35,14 @@ namespace SFA.DAS.FAT.Web
 #endif
                 .AddEnvironmentVariables();
 
+            config.AddAzureTableStorage(options =>
+                {
+                    options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
+                    options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
+                    options.EnvironmentName = configuration["Environment"];
+                    options.PreFixConfigurationKeys = false;
+                }
+            );
             
             _configuration = config.Build();
         }

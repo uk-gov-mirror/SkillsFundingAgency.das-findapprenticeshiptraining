@@ -5,6 +5,8 @@
 @inject IOptions<FindApprenticeshipTrainingWeb> fatWebConfig
 @{
     var sectionId = fatWebConfig.Value?.ZendeskSectionId;
+    var snippetKey = fatWebConfig.Value?.ZendeskSnippetKey;
+    var coBrowsingSnippetKey = fatWebConfig.Value?.ZendeskCoBrowsingSnippetKey;
 }
 
 <script type="text/javascript">
@@ -29,8 +31,8 @@
         }
     };
 </script>
-<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=1b1ce288-39ea-4d40-a5e1-3a5e08aadd89"></script>
-<script id="co-snippet" src="https://embed-euw1.rcrsv.io/h6255jcoYuIOGsFnsagb3xgrbKz9mHeBGjifWcngdcP05WZQu46kKykuID1LpD9d?zwwi=1"></script>
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=@snippetKey"></script>
+<script id="co-snippet" src="https://embed-euw1.rcrsv.io/@coBrowsingSnippetKey?zwwi=1"></script>
 
 
 @Html.SetZenDeskLabels($"fat-{ViewBag.Title}")

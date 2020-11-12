@@ -4,5 +4,6 @@
     {
         public string RedisConnectionString { get; set; }
         public string DataProtectionKeysDatabase { get; set; }
+        public string ZendeskSectionId { get; set; }
     }
 }

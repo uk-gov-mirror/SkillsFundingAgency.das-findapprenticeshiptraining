@@ -1,7 +1,10 @@
 ﻿@using static SFA.DAS.FAT.Web.Extensions.ZenDeskLabelExtensions
+@using Microsoft.Extensions.Options
+@using SFA.DAS.FAT.Domain.Configuration
 
+@inject IOptions<FindApprenticeshipTrainingWeb> fatWebConfig
 @{
-    var sectionId = "999999999999";//todo: update
+    var sectionId = fatWebConfig.Value?.ZendeskSectionId;
 }
 
 <script type="text/javascript">
@@ -12,7 +15,7 @@
             },
             chat: {
                 talk: {
-                    nickname: "Find apprenticeship training"
+                    nickname: "Tier 1 Support - Apprenticeships"
                 },
                 menuOptions: {
                     emailTranscript: false

@@ -1,14 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Http;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Moq;
 using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Domain.Courses.Api;
@@ -37,7 +31,7 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure
         public void StartWebApp()
         {
             _staticServer = MockApiServer.Start();
-            _staticClient = new WebApplicationFactory<Startup>().CreateClient();
+            _staticClient = new CustomWebApplicationFactory<Startup>().CreateClient();
             _context.Set(_staticClient,ContextKeys.HttpClient);
         }
 
@@ -53,39 +47,12 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure
             _server = new TestServer(new WebHostBuilder()
                 .ConfigureTestServices(services => ConfigureTestServices(services, _mockApiClient))
                 .UseStartup<Startup>()
-                .UseConfiguration(GenerateConfiguration()));
+                .UseConfiguration(ConfigBuilder.GenerateConfiguration()));
 
             _staticClient = _server.CreateClient();
             
             _context.Set(_mockApiClient, ContextKeys.MockApiClient);
             _context.Set(_staticClient,ContextKeys.HttpClient);
-        }
-
-        private IConfigurationRoot GenerateConfiguration()
-        {
-            var configSource = new MemoryConfigurationSource
-            {
-                InitialData = new[]
-                {
-                    new KeyValuePair<string, string>("ConfigurationStorageConnectionString", "UseDevelopmentStorage=true;"),
-                    new KeyValuePair<string, string>("ConfigNames", "SFA.DAS.FindApprenticeshipTraining.Web"),
-                    new KeyValuePair<string, string>("Environment", "DEV"),
-                    new KeyValuePair<string, string>("Version", "1.0"),
-
-                    new KeyValuePair<string, string>("FindApprenticeshipTrainingApi:Key", "test"),
-                    new KeyValuePair<string, string>("FindApprenticeshipTrainingApi:BaseUrl", "http://localhost:5003/"),
-                    new KeyValuePair<string, string>("FindApprenticeshipTrainingApi:PingUrl", "http://localhost:5003/"),
-                    new KeyValuePair<string, string>("FindApprenticeshipTrainingWeb:RedisConnectionString", ""),
-                    new KeyValuePair<string, string>("FindApprenticeshipTrainingWeb:DataProtectionKeysDatabase", ""),
-                    new KeyValuePair<string, string>("FindApprenticeshipTrainingWeb:ZendeskSectionId", "213452345"),
-                    new KeyValuePair<string, string>("FindApprenticeshipTrainingWeb:ZendeskSnippetKey", "e0730bdd"),
-                    new KeyValuePair<string, string>("FindApprenticeshipTrainingWeb:ZendeskCoBrowsingSnippetKey", "Qec2OgXsUy8")
-                }
-            };
-
-            var provider = new MemoryConfigurationProvider(configSource);
-
-            return new ConfigurationRoot(new List<IConfigurationProvider> { provider });
         }
 
         private void ConfigureTestServices(IServiceCollection serviceCollection,Mock<IApiClient> mockApiClient)

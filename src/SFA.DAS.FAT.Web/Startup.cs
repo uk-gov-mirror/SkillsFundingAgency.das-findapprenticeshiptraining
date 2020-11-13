@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,15 +36,18 @@ namespace SFA.DAS.FAT.Web
 #endif
                 .AddEnvironmentVariables();
 
-            config.AddAzureTableStorage(options =>
-                {
-                    options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
-                    options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
-                    options.EnvironmentName = configuration["Environment"];
-                    options.PreFixConfigurationKeys = false;
-                }
-            );
-            
+            if (!configuration["Environment"].Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
+            {
+                config.AddAzureTableStorage(options =>
+                    {
+                        options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
+                        options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
+                        options.EnvironmentName = configuration["Environment"];
+                        options.PreFixConfigurationKeys = false;
+                    }
+                );
+            }
+
             _configuration = config.Build();
         }
 

@@ -43,7 +43,7 @@ namespace SFA.DAS.FAT.Web.Models
                 IntegratedDegree = course.IntegratedDegree,
                 ExternalCourseUrl = course.StandardPageUrl,
                 OverviewOfRole = course.OverviewOfRole,
-                TypicalJobTitles = course.TypicalJobTitles.Count >= 1? course.TypicalJobTitles: new List<string>(),
+                TypicalJobTitles = course.TypicalJobTitles,
                 TypicalDuration = course.TypicalDuration,
                 MaximumFunding = course.MaxFunding.ToGdsCostFormat(),
                 OtherBodyApprovalRequired = course.OtherBodyApprovalRequired,

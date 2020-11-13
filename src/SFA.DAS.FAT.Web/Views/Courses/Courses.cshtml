@@ -23,33 +23,33 @@
                     </div>
                     @if (Model.ShowFilterOptions)
                     {
-                        <div class="das-filter__selected-filters">
-                            <div class="das-filter__selected-header">
-                                <h3 class="das-filter__selected-heading">Selected filters</h3>
-                                <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.Courses">Clear <span class="govuk-visually-hidden">the selected filters</span></a>
-                            </div>
-                            @if (!string.IsNullOrEmpty(Model.Keyword))
-                            {
-                                <h4 class="das-filter__selected-sub-heading">Keywords</h4>
-                                <a asp-querystring="@Model.ClearKeywordLink" title="Clear this filter '@Model.Keyword'" class="das-filter__tag">&lsquo;@Model.Keyword&rsquo;</a>
-                            }
-                            @if (Model.ClearSectorLinks.Any())
-                            {
-                                <h4 class="das-filter__selected-sub-heading">Sector</h4>
-                                @foreach (var filterLink in Model.ClearSectorLinks)
-                                {
-                                    <a class="das-filter__tag" asp-querystring="@filterLink.Value" title="Clear this sector filter @filterLink.Key">@filterLink.Key</a>
-                                }
-                            }
-                            @if (Model.ClearLevelLinks.Any())
-                            {
-                                <h4 class="das-filter__selected-sub-heading">Level</h4>
-                                @foreach (var levelLink in Model.ClearLevelLinks)
-                                {
-                                    <a class="das-filter__tag" asp-querystring="@levelLink.Value" title="Clear this level filter @levelLink.Key">@levelLink.Key</a>
-                                }
-                            }
-                        </div>
+                <div class="das-filter__selected-filters">
+                    <div class="das-filter__selected-header">
+                        <h3 class="das-filter__selected-heading">Selected filters</h3>
+                        <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.Courses">Clear <span class="govuk-visually-hidden">the selected filters</span></a>
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.Keyword))
+                    {
+                        <h4 class="das-filter__selected-sub-heading">Keywords</h4>
+                        <a asp-querystring="@Model.ClearKeywordLink" title="Clear this filter '@Model.Keyword'" class="das-filter__tag">&lsquo;@Model.Keyword&rsquo;</a>
+                    }
+                    @if (Model.ClearLevelLinks.Any())
+                    {
+                        <h4 class="das-filter__selected-sub-heading">Qualification level</h4>
+                        @foreach (var levelLink in Model.ClearLevelLinks)
+                        {
+                            <a class="das-filter__tag" asp-querystring="@levelLink.Value" title="Clear this level filter @levelLink.Key">@levelLink.Key</a>
+                        }
+                    }
+                    @if (Model.ClearSectorLinks.Any())
+                    {
+                        <h4 class="das-filter__selected-sub-heading">Apprenticeship category</h4>
+                        @foreach (var filterLink in Model.ClearSectorLinks)
+                        {
+                            <a class="das-filter__tag" asp-querystring="@filterLink.Value" title="Clear this sector filter @filterLink.Key">@filterLink.Key</a>
+                        }
+                    }
+                </div>
 
                     }
                     <div class="das-filter__body das-!-show--from-tablet" id="fat-filter-options">
@@ -63,24 +63,6 @@
                             <div class="govuk-form-group">
                                 <label for="Keyword" class="govuk-label das-filter__search-label">Keywords</label>
                                 <input asp-for="Keyword" type="search" title="Search" class="govuk-input">
-                            </div>
-                            <div class="govuk-form-group">
-                                <fieldset class="govuk-fieldset">
-                                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                        Sector
-                                    </legend>
-                                    <div class="govuk-checkboxes govuk-checkboxes--small">
-                                        @foreach (var sector in Model.Sectors)
-                                        {
-                                            <div class="govuk-checkboxes__item">
-                                                <input @(sector.Selected ? "checked='checked'" : "") class="govuk-checkboxes__input" id="route-@sector.Id" name="sectors" type="checkbox" value="@sector.Id">
-                                                <label class="govuk-label govuk-checkboxes__label" for="route-@sector.Id">
-                                                    @sector.Route
-                                                </label>
-                                            </div>
-                                        }
-                                    </div>
-                                </fieldset>
                             </div>
                             <div class="govuk-form-group">
                                 <fieldset class="govuk-fieldset">
@@ -99,8 +81,27 @@
                                         }
                                     </div>
                                 </fieldset>
+                                <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-3"><a class="govuk-link govuk-link--no-visited-state" href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels" target="_blank" rel="external">What levels mean (opens in new tab or window)</a></p>
                             </div>
-                            <p class="govuk-body govuk-!-font-size-16"><a class="govuk-link govuk-link--no-visited-state" href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels" target="_blank" rel="external">What levels mean (opens in new tab or window)</a></p>
+                            
+                            <div class="govuk-form-group">
+                                <fieldset class="govuk-fieldset">
+                                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                        Apprenticeship category
+                                    </legend>
+                                    <div class="govuk-checkboxes govuk-checkboxes--small">
+                                        @foreach (var sector in Model.Sectors)
+                                        {
+                                            <div class="govuk-checkboxes__item">
+                                                <input @(sector.Selected ? "checked='checked'" : "") class="govuk-checkboxes__input" id="route-@sector.Id" name="sectors" type="checkbox" value="@sector.Id">
+                                                <label class="govuk-label govuk-checkboxes__label" for="route-@sector.Id">
+                                                    @sector.Route
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                                </fieldset>
+                            </div>
                             <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
                         </form>
                     </div>
@@ -159,7 +160,7 @@
                                 </h2>
                                 <p class="govuk-body das-search-results__body">@course.OverviewOfRole</p>
                                 <dl class="das-definition-list das-definition-list--meta das-search-results__meta">
-                                    <dt class="das-definition-list__title">Sector</dt>
+                                    <dt class="das-definition-list__title">Apprenticeship category</dt>
                                     <dd class="das-definition-list__definition">@course.Sector</dd>
                                 </dl>
                             </li>

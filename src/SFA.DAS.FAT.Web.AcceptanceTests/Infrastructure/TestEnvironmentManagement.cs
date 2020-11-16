@@ -31,7 +31,7 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure
         [BeforeScenario("WireMockServer")]
         public void StartWebApp()
         {
-            _staticServer = MockApiServer.Start();
+            _staticApiServer = MockApiServer.Start();
             _staticClient = new CustomWebApplicationFactory<Startup>().CreateClient();
             _context.Set(_staticClient,ContextKeys.HttpClient);
         }
@@ -71,7 +71,7 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure
         [AfterScenario("WireMockServer")]
         public void StopEnvironment()
         {
-            _staticServer?.Stop();
+            _staticApiServer?.Stop();
             _staticClient?.Dispose();
         }
         

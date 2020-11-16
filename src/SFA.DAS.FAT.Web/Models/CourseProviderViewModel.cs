@@ -1,4 +1,5 @@
-﻿using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
+﻿using System.Collections.Generic;
+using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
 
 namespace SFA.DAS.FAT.Web.Models
 {
@@ -9,6 +10,7 @@ namespace SFA.DAS.FAT.Web.Models
         public ProviderCoursesViewModel AdditionalCourses { get; set; }
         public string Location { get ; set ; }
         public int TotalProviders { get ; set ; }
+        public Dictionary<string, string> GetCourseProvidersRequest { get; set; } = new Dictionary<string, string>();
 
         public static implicit operator CourseProviderViewModel(GetCourseProviderResult provider)
         {

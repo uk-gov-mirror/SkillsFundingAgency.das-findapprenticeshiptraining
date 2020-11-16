@@ -1,8 +1,10 @@
 @using SFA.DAS.FAT.Web.Infrastructure
+@using SFA.DAS.FAT.Web.Models
 @model SFA.DAS.FAT.Web.Models.CourseViewModel
 
 @{
     ViewData["Title"] = $"{Model.TitleAndLevel} - apprenticeship training course";
+    ViewData[nameof(BreadCrumbViewModel)] = new BreadCrumbViewModel {Level = BreadCrumbLevel.CourseDetails};
     if (Model.AfterLastStartDate)
     {
         ViewData["Description"] = $"The apprenticeship training course {Model.TitleAndLevel} is no longer available.";
@@ -63,7 +65,7 @@
                     @if (Model.TypicalJobTitles.Any())
                     {
                         <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">Typical job title@(Model.TypicalJobTitles.Count > 1 ? "s" : "")</dt>
+                            <dt class="govuk-summary-list__key">Also known as</dt>
                             <dd class="govuk-summary-list__value">
                                 <ul class="govuk-list @(Model.TypicalJobTitles.Count > 1 ? "govuk-list--bullet" : "")">
                                     @foreach (var jobTitle in Model.TypicalJobTitles)

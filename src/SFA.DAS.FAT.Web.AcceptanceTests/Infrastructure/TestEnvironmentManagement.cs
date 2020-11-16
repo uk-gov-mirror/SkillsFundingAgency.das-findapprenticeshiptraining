@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Net.Http;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -21,9 +22,9 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure
     {
         private readonly ScenarioContext _context;
         private static HttpClient _staticClient;
-        private static IWireMockServer _staticServer;
+        private static IWireMockServer _staticApiServer;
         private Mock<IApiClient> _mockApiClient;
-        private TestServer _server;
+        private static TestServer _server;
 
         public TestEnvironmentManagement(ScenarioContext context)
         {
@@ -33,8 +34,11 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure
         [BeforeScenario("WireMockServer")]
         public void StartWebApp()
         {
-            _staticServer = MockApiServer.Start();
-            _staticClient = new WebApplicationFactory<Startup>().CreateClient();
+            _staticApiServer = MockApiServer.Start();
+            var webApp = new WebApplicationFactory<Startup>();
+            _server = webApp.Server;
+            _staticClient = webApp.CreateClient(new WebApplicationFactoryClientOptions{HandleCookies = false});
+            _context.Set(_server, ContextKeys.TestServer);
             _context.Set(_staticClient,ContextKeys.HttpClient);
         }
 
@@ -74,7 +78,7 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure
         [AfterScenario("WireMockServer")]
         public void StopEnvironment()
         {
-            _staticServer.Stop();
+            _staticApiServer.Stop();
             _staticClient.Dispose();
         }
         

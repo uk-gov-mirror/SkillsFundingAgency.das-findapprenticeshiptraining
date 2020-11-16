@@ -128,7 +128,7 @@ namespace SFA.DAS.FAT.Web.Models
 
         private string BuildLocationLink()
         {
-            return $"?location={HttpUtility.UrlEncode($"{Location}")}";
+            return $"?location={HttpUtility.UrlEncode(Location)}";
         }
 
         private string BuildProviderRatingLinks(string linkToAppendTo)

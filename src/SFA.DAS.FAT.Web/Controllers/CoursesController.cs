@@ -20,16 +20,19 @@ namespace SFA.DAS.FAT.Web.Controllers
     {
         private readonly ILogger<CoursesController> _logger;
         private readonly IMediator _mediator;
-        private readonly ICookieStorageService<LocationCookieItem> _cookieStorageService;
+        private readonly ICookieStorageService<LocationCookieItem> _locationCookieStorageService;
+        private readonly ICookieStorageService<GetCourseProvidersRequest> _courseProvidersCookieStorageService;
 
         public CoursesController (
             ILogger<CoursesController> logger,
             IMediator mediator,
-            ICookieStorageService<LocationCookieItem> cookieStorageService)
+            ICookieStorageService<LocationCookieItem> locationCookieStorageService,
+            ICookieStorageService<GetCourseProvidersRequest> courseProvidersCookieStorageService)
         {
             _logger = logger;
             _mediator = mediator;
-            _cookieStorageService = cookieStorageService;
+            _locationCookieStorageService = locationCookieStorageService;
+            _courseProvidersCookieStorageService = courseProvidersCookieStorageService;
         }
 
         [Route("", Name = RouteNames.Courses)]
@@ -55,7 +58,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                 Levels = result.Levels.Select(level => new LevelViewModel(level, request.Levels)).ToList(),
                 OrderBy = request.OrderBy
             };
-            
+
             return View(viewModel);
         }
 
@@ -102,6 +105,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                     Lon = result.LocationGeoPoint?.LastOrDefault() ??0
                 }; 
                 UpdateLocationCookie(cookieResult);
+
+                _courseProvidersCookieStorageService.Create(request, nameof(GetCourseProvidersRequest));
                 
                 return View(new CourseProvidersViewModel(request, result));
             }
@@ -134,10 +139,16 @@ namespace SFA.DAS.FAT.Web.Controllers
                     Lon = result.LocationGeoPoint?.LastOrDefault() ?? 0
                 }; 
                 UpdateLocationCookie(cookieResult);
-                
-                var viewModel = (CourseProviderViewModel)result;
 
+                var viewModel = (CourseProviderViewModel)result;
                 viewModel.Location = cookieResult.Name;
+                var providersRequestCookie = _courseProvidersCookieStorageService.Get(nameof(GetCourseProvidersRequest));
+                if (providersRequestCookie != default)
+                {
+                    providersRequestCookie.Location = result?.Location;
+                    viewModel.GetCourseProvidersRequest = providersRequestCookie.ToDictionary();
+                }
+
                 return View(viewModel);
             }
             catch (Exception e)
@@ -151,12 +162,12 @@ namespace SFA.DAS.FAT.Web.Controllers
         {
             if (location == "-1")
             {
-                _cookieStorageService.Delete(Constants.LocationCookieName);
+                _locationCookieStorageService.Delete(Constants.LocationCookieName);
                 return null;
             }
             if (string.IsNullOrEmpty(location))
             {
-                return _cookieStorageService.Get(Constants.LocationCookieName);
+                return _locationCookieStorageService.Get(Constants.LocationCookieName);
             }
 
             return new LocationCookieItem
@@ -164,11 +175,12 @@ namespace SFA.DAS.FAT.Web.Controllers
                 Name = location
             };
         }
+
         private void UpdateLocationCookie(LocationCookieItem location)
         {
             if (!string.IsNullOrEmpty(location.Name) && location.Lat != 0 && location.Lon != 0)
             {
-                _cookieStorageService.Update(Constants.LocationCookieName, location, 2);    
+                _locationCookieStorageService.Update(Constants.LocationCookieName, location, 2);    
             }
         }
     }

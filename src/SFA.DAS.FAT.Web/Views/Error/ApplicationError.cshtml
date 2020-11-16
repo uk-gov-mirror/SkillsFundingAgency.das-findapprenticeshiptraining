@@ -4,21 +4,16 @@
     ViewData["Title"] = "Error";
     ViewData[nameof(BreadCrumbViewModel)] = new BreadCrumbViewModel {Level = BreadCrumbLevel.Error};
 }
-<main class="govuk-main-wrapper " id="main-content" role="main">
+<main class="govuk-main-wrapper" id="main-content">
     <div class="govuk-grid-row">
-
         <div class="govuk-grid-column-two-thirds">
-
             <h1 class="govuk-heading-xl">There's been an error</h1>
-
-                <p class="govuk-body">If you entered a web address please check it was correct.</p>
-                <p class="govuk-body">
-                    You can return to the
-                    <a asp-route="@RouteNames.ServiceStart">start page</a>
-                    to try again.
-                </p>
-
-
+            <p class="govuk-body">If you entered a web address please check it was correct.</p>
+            <p class="govuk-body">
+                You can return to the
+                <a asp-route="@RouteNames.ServiceStart" class="govuk-link govuk-link--no-visited-state">start page</a>
+                to try again.
+            </p>
         </div>
     </div>
 </main>

@@ -189,6 +189,14 @@
                                     "value": "[parameters('environmentName')]"
                                 },
                                 {
+                                    "name": "Environment",
+                                    "value": "[parameters('environmentName')]"
+                                },
+                                {
+                                    "name": "ConfigNames",
+                                    "value": "SFA.DAS.FindApprenticeshipTraining.Web"
+                                },
+                                {
                                     "name": "Cdn:Url",
                                     "value": "[parameters('cdnUrl')]"
                                 },

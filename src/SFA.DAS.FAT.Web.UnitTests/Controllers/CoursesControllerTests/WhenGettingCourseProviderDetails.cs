@@ -12,8 +12,6 @@ using SFA.DAS.FAT.Web.Controllers;
 using SFA.DAS.FAT.Web.Infrastructure;
 using SFA.DAS.Testing.AutoFixture;
 using SFA.DAS.FAT.Web.Models;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -56,8 +54,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,It.IsAny<LocationCookieItem>(), It.IsAny<int>()), Times.Never);
             
         }
-        
-        
+
         [Test, MoqAutoData]
         public async Task Then_The_Location_Is_Added_To_The_Cookie_If_Set(
             int providerId,
@@ -75,9 +72,11 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
             
             //Act
-            await controller.CourseProviderDetail(courseId, providerId, location);
+            var result = await controller.CourseProviderDetail(courseId, providerId, location) as ViewResult;
             
             //Assert
+            var model = result!.Model as CourseProviderViewModel;
+            model!.GetCourseProvidersRequest[nameof(GetCourseProvidersRequest.Location)].Should().Be(response.Location);
             cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,It.Is<LocationCookieItem>(c=>
                 c.Name.Equals(response.Location)
                 && c.Lat.Equals(response.LocationGeoPoint.FirstOrDefault())
@@ -95,20 +94,21 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             [Greedy] CoursesController controller)
         {
             //Arrange
-            mediator.Setup(x => x.Send(It.Is<GetCourseProviderQuery>(c =>
-                    c.ProviderId.Equals(providerId) && c.CourseId.Equals(courseId) && c.Location.Equals("")), It.IsAny<CancellationToken>()))
+            mediator.Setup(x => x.Send(
+                    It.Is<GetCourseProviderQuery>(c => 
+                        c.ProviderId.Equals(providerId) && 
+                        c.CourseId.Equals(courseId) && 
+                        c.Location.Equals("")), 
+                    It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
             
             //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, "-1");
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "-1") as ViewResult;
             
             //Assert
             cookieStorageService.Verify(x=>x.Delete(Constants.LocationCookieName));
-            Assert.IsNotNull(actual);
-            var actualResult = actual as ViewResult;
-            Assert.IsNotNull(actualResult);
-            var actualModel = actualResult.Model as CourseProviderViewModel;
-            Assert.IsNotNull(actualModel);
+            var model = actual!.Model as CourseProviderViewModel;
+            model!.GetCourseProvidersRequest[nameof(GetCourseProvidersRequest.Location)].Should().Be(response.Location);
         }
 
         [Test, MoqAutoData]
@@ -145,6 +145,34 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         }
 
         [Test, MoqAutoData]
+        public async Task Then_ProviderFilters_Populated_From_Cookie(
+            int providerId,
+            int courseId,
+            GetCourseProvidersRequest providersRequest,
+            GetCourseProviderResult response,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<GetCourseProvidersRequest>> cookieStorageService,
+            [Greedy] CoursesController controller)
+        {
+            //Arrange
+            cookieStorageService
+                .Setup(x => x.Get(nameof(GetCourseProvidersRequest)))
+                .Returns(providersRequest);
+            mediator
+                .Setup(x => x.Send(
+                    It.IsAny<GetCourseProviderQuery>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+
+            //Act
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "") as ViewResult;
+            
+            //Assert
+            var model = actual!.Model as CourseProviderViewModel;
+            model!.GetCourseProvidersRequest.Should().BeEquivalentTo(providersRequest.ToDictionary());
+        }
+
+        [Test, MoqAutoData]
         public async Task And_Error_Then_Redirect_To_Error_Route(
             int providerId,
             int courseId,
@@ -164,7 +192,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             var actual = await controller.CourseProviderDetail(courseId, providerId, location) as RedirectToRouteResult;
 
             // Assert
-            actual.RouteName.Should().Be(RouteNames.Error500);
+            actual!.RouteName.Should().Be(RouteNames.Error500);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿@using SFA.DAS.FAT.Web.Infrastructure
 @using SFA.DAS.FAT.Domain.Extensions
+@using SFA.DAS.FAT.Web.Models
 @using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType
 
 @model SFA.DAS.FAT.Web.Models.CourseProvidersViewModel
@@ -7,8 +8,14 @@
 @{
     ViewData["Title"] = $"Training providers for {Model.Course.TitleAndLevel}";
     ViewData["Description"] = $"Compare training providers who offer apprenticeship training for {Model.Course.TitleAndLevel}. You can check their available training options, employer reviews and pass rates.";
+    ViewData[nameof(BreadCrumbViewModel)] = new BreadCrumbViewModel
+    {
+        Level = BreadCrumbLevel.CourseProvidersList, 
+        CourseId = Model.Course.Id.ToString(),
+        CourseDescription = Model.Course.TitleAndLevel
+    };
 }
-<main class="govuk-main-wrapper" id="main-content" role="main">
+<main class="govuk-main-wrapper" id="main-content">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <h1 class="govuk-heading-xl govuk-!-margin-bottom-4">
@@ -125,7 +132,7 @@
                                     </div>
                                 </fieldset>
                             </div>
-                             <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
+                             <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
                         </form>
                     </div>
                 </div>
@@ -146,7 +153,7 @@
                 @if (Model.HasLocation)
                 {
                     <p class="govuk-body govuk-!-margin-bottom-0">
-                        <span style="margin-right: 10px">@Model.Location</span>
+                        <span class="govuk-!-margin-right-2">@Model.Location</span>
                         <a asp-querystring="@Model.ClearLocationLink" class="govuk-link govuk-link--no-visited-state" id="lnk-remove-location">Remove&nbsp;location</a>
                     </p>    
                 }

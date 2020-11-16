@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Net.Http;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,9 +19,9 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure
     {
         private readonly ScenarioContext _context;
         private static HttpClient _staticClient;
-        private static IWireMockServer _staticServer;
+        private static IWireMockServer _staticApiServer;
         private Mock<IApiClient> _mockApiClient;
-        private TestServer _server;
+        private static TestServer _server;
 
         public TestEnvironmentManagement(ScenarioContext context)
         {

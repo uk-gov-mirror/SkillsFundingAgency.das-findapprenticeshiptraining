@@ -1,8 +1,12 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.CodeAnalysis.CSharp;
 using NUnit.Framework;
 using SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure;
+using SFA.DAS.FAT.Web.Models;
 using TechTalk.SpecFlow;
 
 namespace SFA.DAS.FAT.Web.AcceptanceTests.Steps
@@ -22,7 +26,21 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Steps
         public async Task WhenINavigateToTheFollowingUrl(string url)
         {
             var client = _context.Get<HttpClient>(ContextKeys.HttpClient);
-            var response = await client.GetAsync(url);
+            HttpResponseMessage response;
+            if (_context.TryGetValue<string>(ContextKeys.ProviderFiltersCookie, out var filtersCookie))
+            {
+                response = await client.SendAsync(new HttpRequestMessage
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri(url, UriKind.Relative),
+                    Headers = {{"Cookie", filtersCookie}}
+                });
+            }
+            else
+            {
+                response = await client.GetAsync(url);
+            }
+
             _context.Set(response, ContextKeys.HttpResponse);
         }
 

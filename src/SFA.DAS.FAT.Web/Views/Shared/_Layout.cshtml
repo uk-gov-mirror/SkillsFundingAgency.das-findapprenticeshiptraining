@@ -1,5 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Routing
 @using SFA.DAS.FAT.Web.Infrastructure
+@using SFA.DAS.FAT.Web.Models
+
+@{
+    var breadCrumbViewModel = ViewData[nameof(BreadCrumbViewModel)] as BreadCrumbViewModel;
+}
 
 <!DOCTYPE html>
 <html lang="en" class="govuk-template">
@@ -80,7 +85,7 @@
     </div>
 </div>
 
-<header class="govuk-header" role="banner" data-module="govuk-header">
+<header class="govuk-header" data-module="govuk-header">
     <div class="govuk-header__container govuk-width-container">
 
         <div class="govuk-header__logo">
@@ -113,29 +118,47 @@
         </span>
     </p>
 </div>
+
 <div class="govuk-width-container">
-    @if (!Context.GetRouteData().Values["Controller"].Equals("Home") && !Context.GetRouteData().Values["Action"].Equals("Index") && !Context.GetRouteData().Values["Controller"].Equals("Accessibility"))
+    @if (breadCrumbViewModel != null && breadCrumbViewModel.Level > BreadCrumbLevel.Home)
     {
         <div class="govuk-breadcrumbs">
             <ol class="govuk-breadcrumbs__list">
-                <li class="govuk-breadcrumbs__list-item">
-                    <a class="govuk-breadcrumbs__link" asp-route="@RouteNames.ServiceStartDefault">Home: Find apprenticeship training</a>
-                </li>
+                @if (breadCrumbViewModel.Level > BreadCrumbLevel.Home)
+                {
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" asp-route="@RouteNames.ServiceStart">Home</a>
+                    </li>
+                }
+                @if (breadCrumbViewModel.Level > BreadCrumbLevel.CourseList)
+                {
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" asp-route="@RouteNames.Courses">Apprenticeship training courses</a>
+                    </li>
+                }
+                @if (breadCrumbViewModel.Level > BreadCrumbLevel.CourseDetails)
+                {
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" asp-route="@RouteNames.CourseDetails" asp-route-id="@breadCrumbViewModel.CourseId">@breadCrumbViewModel.CourseDescription</a>
+                    </li>
+                }
+                @if (breadCrumbViewModel.Level > BreadCrumbLevel.CourseProvidersList)
+                {
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" asp-route="@RouteNames.CourseProviders" asp-all-route-data="@breadCrumbViewModel.ProvidersFilters">Training providers</a>
+                    </li>
+                }
             </ol>
         </div>
     }
-
     @RenderBody()
 </div>
 
-<footer class="govuk-footer " role="contentinfo">
+<footer class="govuk-footer">
     <div class="govuk-width-container ">
-
         <div class="govuk-footer__meta">
             <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
-
                 <h2 class="govuk-visually-hidden">Support links</h2>
-
                 <ul class="govuk-footer__inline-list">
 
                     <li class="govuk-footer__inline-list-item">

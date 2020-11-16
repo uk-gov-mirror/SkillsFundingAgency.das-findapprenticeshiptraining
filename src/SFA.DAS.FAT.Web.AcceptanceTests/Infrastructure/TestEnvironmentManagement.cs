@@ -2,6 +2,7 @@
 using System.Net.Http;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -32,7 +33,10 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure
         public void StartWebApp()
         {
             _staticApiServer = MockApiServer.Start();
-            _staticClient = new CustomWebApplicationFactory<Startup>().CreateClient();
+            var webApp = new CustomWebApplicationFactory<Startup>();
+            _server = webApp.Server;
+            _staticClient = new CustomWebApplicationFactory<Startup>().CreateClient(new WebApplicationFactoryClientOptions{HandleCookies = false});
+            _context.Set(_server, ContextKeys.TestServer);
             _context.Set(_staticClient,ContextKeys.HttpClient);
         }
 

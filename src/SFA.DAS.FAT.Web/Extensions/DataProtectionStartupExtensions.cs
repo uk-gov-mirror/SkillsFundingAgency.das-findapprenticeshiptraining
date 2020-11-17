@@ -11,13 +11,15 @@ namespace SFA.DAS.FAT.Web.Extensions
         public static void AddDataProtection(this IServiceCollection services, IConfiguration configuration)
         {
             
-            var redisConfiguration = configuration.GetSection(nameof(FindApprenticeshipTrainingWeb))
+            var fatWebConfig = configuration.GetSection(nameof(FindApprenticeshipTrainingWeb))
                 .Get<FindApprenticeshipTrainingWeb>();
 
-            if (redisConfiguration != null)
+            if (fatWebConfig != null 
+                && !string.IsNullOrEmpty(fatWebConfig.DataProtectionKeysDatabase) 
+                && !string.IsNullOrEmpty(fatWebConfig.RedisConnectionString))
             {
-                var redisConnectionString = redisConfiguration.RedisConnectionString;
-                var dataProtectionKeysDatabase = redisConfiguration.DataProtectionKeysDatabase;
+                var redisConnectionString = fatWebConfig.RedisConnectionString;
+                var dataProtectionKeysDatabase = fatWebConfig.DataProtectionKeysDatabase;
 
                 var redis = ConnectionMultiplexer
                     .Connect($"{redisConnectionString},{dataProtectionKeysDatabase}");

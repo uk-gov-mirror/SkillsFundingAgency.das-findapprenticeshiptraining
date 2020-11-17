@@ -1,23 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Net;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Infrastructure.HealthCheck;
 using SFA.DAS.FAT.Web.AppStart;
 using SFA.DAS.FAT.Web.Extensions;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace SFA.DAS.FAT.Web
 {
@@ -38,7 +36,18 @@ namespace SFA.DAS.FAT.Web
 #endif
                 .AddEnvironmentVariables();
 
-            
+            if (!configuration["Environment"].Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
+            {
+                config.AddAzureTableStorage(options =>
+                    {
+                        options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
+                        options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
+                        options.EnvironmentName = configuration["Environment"];
+                        options.PreFixConfigurationKeys = false;
+                    }
+                );
+            }
+
             _configuration = config.Build();
         }
 
@@ -55,6 +64,8 @@ namespace SFA.DAS.FAT.Web
             services.AddOptions();
             services.Configure<FindApprenticeshipTrainingApi>(_configuration.GetSection("FindApprenticeshipTrainingApi"));
             services.AddSingleton(cfg => cfg.GetService<IOptions<FindApprenticeshipTrainingApi>>().Value);
+            services.Configure<FindApprenticeshipTrainingWeb>(_configuration.GetSection("FindApprenticeshipTrainingWeb"));
+            services.AddSingleton(cfg => cfg.GetService<IOptions<FindApprenticeshipTrainingWeb>>().Value);
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 

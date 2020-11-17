@@ -1,7 +1,13 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "tags": {
+            "type": "object"
+        },
+        "resourceGroupLocation": {
+            "type": "string"
+        },
         "resourceEnvironmentName": {
             "type": "string"
         },
@@ -25,12 +31,6 @@
             "defaultValue": []
         },
         "uiCustomHostname": {
-            "type": "string"
-        },
-        "apimBaseUrl": {
-            "type": "string"
-        },
-        "outerApiPingUrl": {
             "type": "string"
         },
         "sharedApimResourceGroup": {
@@ -59,22 +59,26 @@
         },
         "configurationStorageConnectionString": {
             "type": "securestring"
-        },
-        "defaultSessionRedisConnectionString": {
-			  "type": "securestring"
-		    },
-		    "dataProtectionKeysDatabase": {
-			  "type": "string"
-		    }
+        }
     },
     "variables": {
         "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
+        "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "uiAppServiceName": "[concat(variables('resourceNamePrefix'), 'ui-as')]"
     },
     "resources": [
         {
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2020-06-01",
+            "name": "[variables('resourceGroupName')]",
+            "type": "Microsoft.Resources/resourceGroups",
+            "location": "[parameters('resourceGroupLocation')]",
+            "tags": "[parameters('tags')]",
+            "properties": {
+            }
+        },
+        {
+            "apiVersion": "2020-06-01",
             "name": "ui-app-service-certificate",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
@@ -98,8 +102,9 @@
             }
         },
         {
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2020-06-01",
             "name": "ui-application-insights",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
@@ -118,7 +123,7 @@
             }
         },
         {
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2020-06-01",
             "name": "apim-product-subscription",
             "resourceGroup": "[parameters('sharedApimResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
@@ -142,8 +147,9 @@
             }
         },
         {
-            "apiVersion": "2017-05-10",
+            "apiVersion": "2020-06-01",
             "name": "ui-app-service",
+            "resourceGroup": "[variables('resourceGroupName')]",
             "type": "Microsoft.Resources/deployments",
             "dependsOn": [
                 "apim-product-subscription"
@@ -151,7 +157,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('deploymentUrlBase'),'app-service.json')]",
+                    "uri": "[concat(variables('deploymentUrlBase'),'app-service-v2.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -168,52 +174,42 @@
                         "value": "[parameters('sharedFrontEndSubnetResourceId')]"
                     },
                     "appServiceAppSettings": {
-                        "value": [
-                            {
-                                "name": "LoggingRedisConnectionString",
-                                "value": "[parameters('loggingRedisConnectionString')]"
-                            },
-                            {
-                                "name": "LoggingRedisKey",
-                                "value": "[parameters('loggingRedisKey')]"
-                            },
-                            {
-                                "name": "EnvironmentName",
-                                "value": "[parameters('environmentName')]"
-                            },
-                            {
-                                "name": "FindApprenticeshipTrainingApi:BaseUrl",
-                                "value": "[parameters('apimBaseUrl')]"
-                            },
-                            {
-                                "name": "FindApprenticeshipTrainingApi:PingUrl",
-                                "value": "[parameters('outerApiPingUrl')]"
-                            },
-                            {
-                                "name": "FindApprenticeshipTrainingApi:Key",
-                                "value": "[reference(resourceId(parameters('sharedApimResourceGroup'),'Microsoft.ApiManagement/service/subscriptions', parameters('sharedApimName'), variables('uiAppServiceName')), '2019-01-01').primaryKey]"
-                            },
-                            {
-                                "name": "Cdn:Url",
-                                "value": "[parameters('cdnUrl')]"
-                            },
-                            {
-                                "name": "ConfigurationStorageConnectionString",
-                                "value": "[parameters('configurationStorageConnectionString')]"
-                            },
-                            {
-                                "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                "value": "[reference('ui-application-insights').outputs.InstrumentationKey.value]"
-                            },
-							{
-								"name": "FindApprenticeshipTrainingWeb:RedisConnectionString",
-								"value": "[parameters('defaultSessionRedisConnectionString')]"
-							},
-							{
-								"name": "FindApprenticeshipTrainingWeb:DataProtectionKeysDatabase",
-								"value": "[parameters('dataProtectionKeysDatabase')]"
-							}
-                        ]
+                        "value": {
+                            "array": [
+                                {
+                                    "name": "LoggingRedisConnectionString",
+                                    "value": "[parameters('loggingRedisConnectionString')]"
+                                },
+                                {
+                                    "name": "LoggingRedisKey",
+                                    "value": "[parameters('loggingRedisKey')]"
+                                },
+                                {
+                                    "name": "EnvironmentName",
+                                    "value": "[parameters('environmentName')]"
+                                },
+                                {
+                                    "name": "Environment",
+                                    "value": "[parameters('environmentName')]"
+                                },
+                                {
+                                    "name": "ConfigNames",
+                                    "value": "SFA.DAS.FindApprenticeshipTraining.Web"
+                                },
+                                {
+                                    "name": "Cdn:Url",
+                                    "value": "[parameters('cdnUrl')]"
+                                },
+                                {
+                                    "name": "ConfigurationStorageConnectionString",
+                                    "value": "[parameters('configurationStorageConnectionString')]"
+                                },
+                                {
+                                    "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                                    "value": "[reference('ui-application-insights').outputs.InstrumentationKey.value]"
+                                }
+                            ]
+                        }
                     },
                     "customHostName": {
                         "value": "[parameters('uiCustomHostname')]"

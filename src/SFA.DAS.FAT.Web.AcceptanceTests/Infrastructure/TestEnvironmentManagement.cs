@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Moq;
 using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Domain.Courses.Api;
@@ -35,9 +33,9 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure
         public void StartWebApp()
         {
             _staticApiServer = MockApiServer.Start();
-            var webApp = new WebApplicationFactory<Startup>();
+            var webApp = new CustomWebApplicationFactory<Startup>();
             _server = webApp.Server;
-            _staticClient = webApp.CreateClient(new WebApplicationFactoryClientOptions{HandleCookies = false});
+            _staticClient = new CustomWebApplicationFactory<Startup>().CreateClient(new WebApplicationFactoryClientOptions{HandleCookies = false});
             _context.Set(_server, ContextKeys.TestServer);
             _context.Set(_staticClient,ContextKeys.HttpClient);
         }
@@ -53,9 +51,9 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure
             
             _server = new TestServer(new WebHostBuilder()
                 .ConfigureTestServices(services => ConfigureTestServices(services, _mockApiClient))
-                .UseStartup<Startup>());
-            
-            
+                .UseStartup<Startup>()
+                .UseConfiguration(ConfigBuilder.GenerateConfiguration()));
+
             _staticClient = _server.CreateClient();
             
             _context.Set(_mockApiClient, ContextKeys.MockApiClient);
@@ -71,21 +69,20 @@ namespace SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure
                 serviceCollection.Remove(descriptor);
             }
             serviceCollection.AddSingleton(mockApiClient);
-            
             serviceCollection.AddSingleton(mockApiClient.Object);
         }
 
         [AfterScenario("WireMockServer")]
         public void StopEnvironment()
         {
-            _staticApiServer.Stop();
-            _staticClient.Dispose();
+            _staticApiServer?.Stop();
+            _staticClient?.Dispose();
         }
         
         [AfterScenario("MockApiClient")]
         public void StopTestEnvironment()
         {
-            _server.Dispose();
+            _server?.Dispose();
         }
     }
 }

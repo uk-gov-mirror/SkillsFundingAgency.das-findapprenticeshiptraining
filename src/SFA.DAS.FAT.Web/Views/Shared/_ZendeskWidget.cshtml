@@ -1,0 +1,38 @@
+﻿@using static SFA.DAS.FAT.Web.Extensions.ZenDeskLabelExtensions
+@using Microsoft.Extensions.Options
+@using SFA.DAS.FAT.Domain.Configuration
+
+@inject IOptions<FindApprenticeshipTrainingWeb> fatWebConfig
+@{
+    var sectionId = fatWebConfig.Value?.ZendeskSectionId;
+    var snippetKey = fatWebConfig.Value?.ZendeskSnippetKey;
+    var coBrowsingSnippetKey = fatWebConfig.Value?.ZendeskCoBrowsingSnippetKey;
+}
+
+<script type="text/javascript">
+    window.zESettings = {
+        webWidget: {
+            contactForm: {
+                attachments: false
+            },
+            chat: {
+                talk: {
+                    nickname: "Tier 1 Support - Apprenticeships"
+                },
+                menuOptions: {
+                    emailTranscript: false
+                }
+            },
+            helpCenter: { 
+                filter: {
+                    section: "@sectionId"
+                }
+            }
+        }
+    };
+</script>
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=@snippetKey"></script>
+<script id="co-snippet" src="https://embed-euw1.rcrsv.io/@coBrowsingSnippetKey?zwwi=1"></script>
+
+
+@Html.SetZenDeskLabels($"fat-{ViewBag.Title}")

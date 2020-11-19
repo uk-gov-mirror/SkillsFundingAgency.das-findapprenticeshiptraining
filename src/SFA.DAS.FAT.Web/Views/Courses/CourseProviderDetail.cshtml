@@ -45,7 +45,7 @@
 
                 @if (Model.Provider.TotalFeedbackRating == 0)
                 {
-                    <span class="govuk-!-font-weight-bold das-rating__label--@(Model.Provider.TotalFeedbackRating > 2 ? "good" : "poor")">@Model.Provider.TotalFeedbackRatingTextProviderDetail</span>
+                    <span class="govuk-!-font-weight-bold das-rating__label--poor">@Model.Provider.TotalFeedbackRatingTextProviderDetail</span>
                 }
                 else
                 {
@@ -69,8 +69,10 @@
                                         <h3 class="das-graph__label">@feedbackDetail.Rating.GetDescription()</h3>
                                         <span class="das-graph__chart">
                                             <span class="das-graph__bar">
-                                                <span class="das-graph__bar-value das-graph__bar-value--@(feedbackDetail.Rating.ToString().ToLower())" style="width: @(feedbackDetail.RatingPercentage)%"></span>
-                                            </span>
+                                                @if (feedbackDetail.RatingPercentage > 0) {
+                                                    <span class="das-graph__bar-value das-graph__bar-value--@(feedbackDetail.Rating.ToString().ToLower())" style="width: @(feedbackDetail.RatingPercentage)%; min-width: 10px"></span>
+                                                }
+                                           </span>
                                         </span>
                                         <p class="das-graph__figure">@feedbackDetail.RatingText <span class="govuk-visually-hidden">out of @Model.Provider.TotalEmployerResponses were given rating of @feedbackDetail.Rating.GetDescription()</span></p>
                                     </li>

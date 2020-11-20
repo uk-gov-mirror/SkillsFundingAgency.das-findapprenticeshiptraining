@@ -274,7 +274,7 @@
                 </dl>
 
             </div>
-            @if (Model.TotalProviders != 0 && Model.Provider.DeliveryModes.FirstOrDefault(c => c.DeliveryModeType == DeliveryModeType.NotFound) == null)
+            @if (Model.TotalProviders > 1 && Model.Provider.DeliveryModes.FirstOrDefault(c => c.DeliveryModeType == DeliveryModeType.NotFound) == null)
             {
                 <div>
                     <p class="govuk-body">@Model.Provider.Name is 1 of @Model.TotalProviders training providers for @Model.Course.TitleAndLevel in the apprenticeship location.</p>

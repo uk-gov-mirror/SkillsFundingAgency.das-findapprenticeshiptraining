@@ -81,3 +81,13 @@ var backLinkOrHome = function () {
 if ($backLinkOrHome) {
     backLinkOrHome();
 }
+
+$(window).bind('scroll', function() {
+    var isCookieBannerVisible = $('.das-cookie-banner:visible').length
+    var offSet = 150 + (isCookieBannerVisible * 240)
+    if ($(window).scrollTop() > offSet) {
+        $('.app-shortlist-banner').addClass('app-shortlist-banner__fixed');
+    } else {
+        $('.app-shortlist-banner').removeClass('app-shortlist-banner__fixed');
+    }
+}).trigger("scroll");

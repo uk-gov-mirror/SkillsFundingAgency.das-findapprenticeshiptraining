@@ -24,6 +24,7 @@
 
     <!--[if !IE 8]><!-->
     <link href="css/main.css" rel="stylesheet" />
+    <link href="/css/app.css" rel="stylesheet" no-cdn />
     <!--<![endif]-->
 
     <meta property="og:image" content="assets/images/govuk-opengraph-image.png">
@@ -85,7 +86,7 @@
     </div>
 </div>
 
-<header class="govuk-header" data-module="govuk-header">
+<header class="govuk-header" data-module="govuk-header" id="top">
     <div class="govuk-header__container govuk-width-container">
 
         <div class="govuk-header__logo">
@@ -152,6 +153,20 @@
         </div>
     }
     @RenderBody()
+
+    <div class="govuk-body app-shortlist-banner">
+        <a class="govuk-link govuk-link--no-visited-state app-back-to-top-link" href="#top">
+            <svg class="app-back-to-top-link__icon" xmlns="http://www.w3.org/2000/svg" width="13" height="17" viewBox="0 0 13 17">
+                <path fill="currentColor" d="M6.5 0L0 6.5 1.4 8l4-4v12.7h2V4l4.3 4L13 6.4z"></path>
+            </svg>
+            Back to top
+        </a>
+        <a class="govuk-link govuk-link--no-visited-state app-view-shortlist-link" href="shortlist">
+            View shortlist
+            <span class="app-view-shortlist-link__number">0</span>
+        </a>
+    </div>
+
 </div>
 
 <footer class="govuk-footer">

@@ -72,6 +72,11 @@ namespace SFA.DAS.FAT.Web.Controllers
                 Lat = location?.Lat ?? 0,
                 Lon = location?.Lon ?? 0
             });
+
+            if (result.Course == null)
+            {
+                return RedirectToRoute(RouteNames.Error404);
+            }
             
             var viewModel = (CourseViewModel)result.Course;
             viewModel.LocationName = location?.Name;

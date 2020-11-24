@@ -37,17 +37,6 @@ namespace SFA.DAS.FAT.Infrastructure.Api
         
         }
 
-        public async Task<IEnumerable<TResponse>> GetAll<TResponse>(IGetAllApiRequest request)
-        {
-            AddHeaders();
-
-            var response = await _httpClient.GetAsync(request.GetAllUrl).ConfigureAwait(false);
-
-            response.EnsureSuccessStatusCode();
-            var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<IEnumerable<TResponse>>(json);
-        }
-
         public async Task<int> Ping()
         {
             AddHeaders();

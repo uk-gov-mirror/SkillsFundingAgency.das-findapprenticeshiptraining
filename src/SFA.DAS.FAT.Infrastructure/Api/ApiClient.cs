@@ -27,7 +27,11 @@ namespace SFA.DAS.FAT.Infrastructure.Api
 
             var response = await _httpClient.GetAsync(request.GetUrl).ConfigureAwait(false);
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                return default;
+            }
+            
             var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             return JsonConvert.DeserializeObject<TResponse>(json);
         

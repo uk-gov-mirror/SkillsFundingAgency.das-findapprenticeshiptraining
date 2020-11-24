@@ -48,7 +48,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
         
         
         [Test, AutoData]
-        public void Then_If_It_Is_Not_Successful_An_Exception_Is_Thrown(
+        public async Task Then_If_It_Is_Not_Found_Default_Is_Returned(
             FindApprenticeshipTrainingApi config)
         {
             //Arrange
@@ -58,7 +58,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
             var response = new HttpResponseMessage
             {
                 Content = new StringContent(""),
-                StatusCode = HttpStatusCode.BadRequest
+                StatusCode = HttpStatusCode.NotFound
             };
             
             var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, getTestRequest.GetUrl, config.Key);
@@ -66,8 +66,10 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
             var apiClient = new ApiClient(client, configMock.Object);
             
             //Act Assert
-            Assert.ThrowsAsync<HttpRequestException>(() => apiClient.Get<List<string>>(getTestRequest));
-            
+            var actual = await apiClient.Get<List<string>>(getTestRequest);
+
+            actual.Should().BeNull();
+
         }
 
         private class GetTestRequest : IGetApiRequest

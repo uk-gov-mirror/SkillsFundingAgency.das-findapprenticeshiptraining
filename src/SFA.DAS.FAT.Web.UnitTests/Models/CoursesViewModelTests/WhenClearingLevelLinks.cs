@@ -18,7 +18,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             //Arrange Act
             var selectedLevels = selectedLevelsGenerator.Distinct().Take(3).ToList();
 
-            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), "", selectedLevels);
+            var model = CoursesViewModelFactory.BuildModel(new List<string>(), "", selectedLevels);
 
             //Assert
             var clearLinkCount = selectedLevels.Count;
@@ -43,7 +43,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             //Arrange Act
             var selectedLevels = selectedLevelsGenerator.Distinct().Take(3).ToList();
 
-            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels);
+            var model = CoursesViewModelFactory.BuildModel(new List<string>(), keyword, selectedLevels);
 
             //Assert
             var clearLinkCount = selectedLevels.Count;
@@ -69,7 +69,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             //Arrange Act
             var selectedLevels = selectedLevelsGenerator.Distinct().Take(3).ToList();
 
-            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, selectedLevels);
+            var model = CoursesViewModelFactory.BuildModel(new List<string>(), keyword, selectedLevels);
 
             //Assert
             var clearLinkCount = selectedLevels.Count;
@@ -90,7 +90,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         }
 
         [Test, AutoData]
-        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels_And_Sectors(Generator<int> selectedLevelsGenerator, List<Guid> selectedRoutes, string keyword)
+        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels_And_Sectors(Generator<int> selectedLevelsGenerator, List<string> selectedRoutes, string keyword)
         {
             //Arrange Act
             var selectedLevels = selectedLevelsGenerator.Distinct().Take(3).ToList();
@@ -113,23 +113,23 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
                 AssertClearLevelLink(model, clearLevelsLinkCount);
 
                 Assert.AreEqual(clearLevelsLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains($"?keyword={keyword}")));
-                Assert.AreEqual(clearLevelsLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains("&sectors=" + string.Join("&sectors=", model.SelectedSectors))));
+                Assert.AreEqual(clearLevelsLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains("&sectors=" + string.Join("&sectors=", selectedRoutes.Select(HttpUtility.HtmlEncode)))));
                 Assert.AreEqual(clearLevelsLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains($"orderby=")));
             }
             foreach (var selectedRoute in selectedRoutes)
             {
-                var sector = model.Sectors.SingleOrDefault(c => c.Id.Equals(selectedRoute));
+                var sector = model.Sectors.SingleOrDefault(c => c.Route.Equals(selectedRoute));
 
                 Assert.IsNotNull(sector);
                 Assert.IsTrue(model.ClearSectorLinks.ContainsKey(sector.Route));
-                Assert.AreEqual(clearSectorsLinkCount - 1, model.ClearSectorLinks.Count(c => c.Value.Contains($"sectors={selectedRoute}")));
+                Assert.AreEqual(clearSectorsLinkCount - 1, model.ClearSectorLinks.Count(c => c.Value.Contains($"sectors={HttpUtility.HtmlEncode(selectedRoute)}")));
                 Assert.AreEqual(clearSectorsLinkCount, model.ClearSectorLinks.Count(c => c.Value.Contains($"?keyword={keyword}")));
                 Assert.AreEqual(clearSectorsLinkCount, model.ClearSectorLinks.Count(c => c.Value.Contains("&levels=" + string.Join("&levels=", model.SelectedLevels))));
                 Assert.AreEqual(clearSectorsLinkCount, model.ClearSectorLinks.Count(c => c.Value.Contains($"orderby=")));
             }
         }
         [Test, AutoData]
-        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels_And_Sectors_And_OrderBy(Generator<int> selectedLevelsGenerator, List<Guid> selectedRoutes, string keyword)
+        public void Then_The_Clear_Filter_Items_Are_Built_From_The_Selected_Levels_And_Sectors_And_OrderBy(Generator<int> selectedLevelsGenerator, List<string> selectedRoutes, string keyword)
         {
             //Arrange Act
             var selectedLevels = selectedLevelsGenerator.Distinct().Take(3).ToList();
@@ -153,15 +153,15 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 
                 Assert.AreEqual(clearLevelsLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains($"?keyword={keyword}")));
                 Assert.AreEqual(clearLevelsLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains($"&orderby={OrderBy.Name}")));
-                Assert.AreEqual(clearLevelsLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains("&sectors=" + string.Join("&sectors=", model.SelectedSectors))));
+                Assert.AreEqual(clearLevelsLinkCount, model.ClearLevelLinks.Count(c => c.Value.Contains("&sectors=" + string.Join("&sectors=", model.SelectedSectors.Select(HttpUtility.HtmlEncode)))));
             }
             foreach (var selectedRoute in selectedRoutes)
             {
-                var sector = model.Sectors.SingleOrDefault(c => c.Id.Equals(selectedRoute));
+                var sector = model.Sectors.SingleOrDefault(c => c.Route.Equals(selectedRoute));
 
                 Assert.IsNotNull(sector);
                 Assert.IsTrue(model.ClearSectorLinks.ContainsKey(sector.Route));
-                Assert.AreEqual(clearSectorsLinkCount - 1, model.ClearSectorLinks.Count(c => c.Value.Contains($"sectors={selectedRoute}")));
+                Assert.AreEqual(clearSectorsLinkCount - 1, model.ClearSectorLinks.Count(c => c.Value.Contains($"sectors={HttpUtility.HtmlEncode(selectedRoute)}")));
                 Assert.AreEqual(clearSectorsLinkCount, model.ClearSectorLinks.Count(c => c.Value.Contains($"?keyword={keyword}")));
                 Assert.AreEqual(clearSectorsLinkCount, model.ClearSectorLinks.Count(c => c.Value.Contains($"&orderby={OrderBy.Name}")));
                 Assert.AreEqual(clearSectorsLinkCount, model.ClearSectorLinks.Count(c => c.Value.Contains("&levels=" + string.Join("&levels=", model.SelectedLevels))));

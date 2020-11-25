@@ -1,4 +1,7 @@
-﻿var $keywordsInput = $('#search-location');
+﻿
+// AUTOCOMPLETE
+
+var $keywordsInput = $('#search-location');
 var $submitOnConfirm = $('#search-location').data('submit-on-selection');
 var $defaultValue = $('#search-location').data('default-value');
 if ($keywordsInput.length > 0) {
@@ -48,6 +51,11 @@ if ($keywordsInput.length > 0) {
     });
 }
 
+
+// FILTER CHECKBOXES
+// If National filter is checked, then the parent 
+// checkbox is also checked
+
 $('#deliveryMode-National').on('change',function (){
     if ($(this).is(':checked')) {
         $('#deliveryMode-Workplace').prop('checked', true);
@@ -59,6 +67,10 @@ $('#deliveryMode-Workplace').on('change', function(){
     }
 });
 
+
+// BACK LINK
+// If users history-1 does not come from this site, 
+// then show a link to homepage
 
 var $backLinkOrHome = $('.das-js-back-link-or-home');
 var backLinkOrHome = function () {
@@ -83,6 +95,10 @@ if ($backLinkOrHome) {
 }
 
 
+// BACK TO TOP 
+// Shows a back-to-top link in a floating header
+// as soon as the breadcrumbs scroll out of view
+
 $(window).bind('scroll', function() {
 
     var isCookieBannerVisible = $('.das-cookie-banner:visible').length,
@@ -103,3 +119,19 @@ $(window).bind('scroll', function() {
     }
 
 }).trigger("scroll");
+
+
+// SCROLL TO TARGET 
+// On click of the link, checks to see if the target exists
+// If so, scrolls the page to that point, taking into account
+// the back-to-top header
+
+$("a[data-scroll-to-target]").on('click', function () {
+    var target = $(this).data('scroll-to-target'),
+        $target = $(target);
+
+    if ($target.length > 0) {
+        var scrollTo = $target.offset().top - 50;
+        $('html, body').animate({scrollTop: scrollTo}, 0);
+    }
+});

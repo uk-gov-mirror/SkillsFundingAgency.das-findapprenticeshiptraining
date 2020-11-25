@@ -168,6 +168,34 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             }
         }
 
+        [Test, AutoData]
+        public void Then_If_The_Level_Does_Not_Exist_It_Is_Not_Added(List<int> selectedLevels )
+        {
+            //Arrange
+            var fixture = new Fixture();
+            var levels = selectedLevels.Take(1)
+                .Select(selectedLevel => new LevelViewModel(
+                    new Level
+                    {
+                        Code = selectedLevel,
+                        Name = fixture.Create<string>()
+                    }, null))
+                .ToList();
+            
+            //Act
+            var model = new CoursesViewModel
+            {
+                Sectors = null,
+                Levels = levels,
+                Keyword = "",
+                SelectedSectors = null,
+                SelectedLevels = selectedLevels,
+                OrderBy = OrderBy.Name
+            };
+            
+            Assert.AreEqual(1, model.ClearLevelLinks.Count);
+        }
+
         private static void AssertClearLevelLink(CoursesViewModel model, int clearLinkCount)
         {
             foreach (var modelClearLevelLink in model.ClearLevelLinks)

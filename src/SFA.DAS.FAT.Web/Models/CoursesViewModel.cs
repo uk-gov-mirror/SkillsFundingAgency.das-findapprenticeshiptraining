@@ -94,8 +94,11 @@ namespace SFA.DAS.FAT.Web.Models
                 clearFilterString += levels;
                 
                 var sector = Sectors.SingleOrDefault(c => c.Route.Equals(selectedSector, StringComparison.CurrentCultureIgnoreCase));
+                if (sector != null)
+                {
+                    clearFilterLinks.Add(sector.Route, clearFilterString);    
+                }
                 
-                clearFilterLinks.Add(sector.Route, clearFilterString);
             }
 
             return clearFilterLinks;
@@ -117,9 +120,11 @@ namespace SFA.DAS.FAT.Web.Models
 
                 clearFilterString += $"{GetSeparator(clearFilterString)}levels=" + string.Join("&levels=", SelectedLevels.Where(c => !c.Equals(selectedLevel)));
                 clearFilterString += sectors;
-                var sector = Levels.SingleOrDefault(c => c.Code.Equals(selectedLevel));
-                
-                clearLevelLink.Add(sector.Title, clearFilterString);
+                var level = Levels.SingleOrDefault(c => c.Code.Equals(selectedLevel));
+                if(level != null)
+                {
+                    clearLevelLink.Add(level.Title, clearFilterString);    
+                }
             }
             
             return clearLevelLink;

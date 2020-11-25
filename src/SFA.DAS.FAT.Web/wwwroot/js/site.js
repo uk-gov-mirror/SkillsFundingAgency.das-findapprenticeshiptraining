@@ -81,3 +81,25 @@ var backLinkOrHome = function () {
 if ($backLinkOrHome) {
     backLinkOrHome();
 }
+
+
+$(window).bind('scroll', function() {
+
+    var isCookieBannerVisible = $('.das-cookie-banner:visible').length,
+        showHeaderDistance = 150 + (isCookieBannerVisible * 240),
+        $breadcrumbs = $('.govuk-breadcrumbs');
+
+    if ($breadcrumbs.length > 0) {
+        var breadcrumbDistanceFromTop = $breadcrumbs.offset().top,
+            breadcrumbHeight = $breadcrumbs.outerHeight();
+
+        showHeaderDistance = breadcrumbDistanceFromTop + breadcrumbHeight;
+    }
+
+    if ($(window).scrollTop() > showHeaderDistance) {
+        $('.app-shortlist-banner').addClass('app-shortlist-banner__fixed');
+    } else {
+        $('.app-shortlist-banner').removeClass('app-shortlist-banner__fixed');
+    }
+
+}).trigger("scroll");

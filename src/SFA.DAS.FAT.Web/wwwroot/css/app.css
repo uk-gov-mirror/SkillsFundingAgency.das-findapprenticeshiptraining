@@ -1,0 +1,70 @@
+.app-shortlist-banner {
+    background: #fff;
+    display: none;
+}
+
+.app-shortlist-banner__fixed {
+    position: fixed;
+    display: block;
+    top: 0;
+    border: 1px solid #b1b4b6;
+    border-top: 0;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    padding: 10px 15px;
+    left: 0;
+    width: 100%;
+    max-width: 1020px;
+}
+
+@media (min-width: 40.0625em) {
+    .app-shortlist-banner__fixed {
+        padding: 12px 30px;
+    }
+}
+
+@media (min-width: 1020px) {
+    .app-shortlist-banner__fixed {
+        left: auto;
+        margin-left: -30px;
+    }
+}
+
+.app-back-to-top-link__icon {
+    display: inline-block;
+    width: .6em;
+    height: .8em;
+    margin-top: -4px;
+    margin-right: 3px;
+    vertical-align: middle;
+}
+
+.app-view-shortlist-link {
+    float: right;
+}
+
+.app-view-shortlist-link__number {
+    color: #fff;
+    background-color: #1d70b8;
+    display: inline-block;
+    position: relative;
+    padding: .3em;
+    font-size: .8em;
+    margin-left: .2em;
+    margin-top: -.2em;
+    border-radius: 50%;
+    line-height: .8;
+    height: .8em;
+    width: .8em;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.app-view-shortlist-link:hover .app-view-shortlist-link__number {
+    background: #003078;
+}
+
+.app-view-shortlist-link:active .app-view-shortlist-link__number,
+.app-view-shortlist-link:focus .app-view-shortlist-link__number {
+    background: #0b0c0c;
+}

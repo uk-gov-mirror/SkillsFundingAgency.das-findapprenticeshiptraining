@@ -33,6 +33,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             )
         {
             //Arrange
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
             response.Location=string.Empty;
             response.LocationGeoPoint = null;
             mediator.Setup(x => x.Send(It.Is<GetCourseProviderQuery>(c =>
@@ -66,6 +67,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             [Greedy] CoursesController controller)
         {
             //Arrange
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
             cookieStorageService.Setup(x => x.Get(Constants.LocationCookieName)).Returns((LocationCookieItem)null);
             mediator.Setup(x => x.Send(It.Is<GetCourseProviderQuery>(c =>
                     c.ProviderId.Equals(providerId) && c.CourseId.Equals(courseId) && c.Location.Equals(location)), It.IsAny<CancellationToken>()))
@@ -94,6 +96,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             [Greedy] CoursesController controller)
         {
             //Arrange
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
             mediator.Setup(x => x.Send(
                     It.Is<GetCourseProviderQuery>(c => 
                         c.ProviderId.Equals(providerId) && 
@@ -122,6 +125,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             [Greedy] CoursesController controller)
         {
             //Arrange
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
             cookieStorageService.Setup(x => x.Get(Constants.LocationCookieName)).Returns(location);
             mediator.Setup(x => x.Send(It.Is<GetCourseProviderQuery>(c =>
                     c.ProviderId.Equals(providerId) 
@@ -155,6 +159,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             [Greedy] CoursesController controller)
         {
             //Arrange
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
             cookieStorageService
                 .Setup(x => x.Get(nameof(GetCourseProvidersRequest)))
                 .Returns(providersRequest);
@@ -193,6 +198,35 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
 
             // Assert
             actual!.RouteName.Should().Be(RouteNames.Error500);
+        }
+        
+        [Test, MoqAutoData]
+        public async Task Then_If_Course_Is_After_Last_Start_Then_Redirected_To_Course_Page(
+            int providerId,
+            int courseId,
+            GetCourseProvidersRequest providersRequest,
+            GetCourseProviderResult response,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<GetCourseProvidersRequest>> cookieStorageService,
+            [Greedy] CoursesController controller)
+        {
+            //Arrange
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(-1);
+            cookieStorageService
+                .Setup(x => x.Get(nameof(GetCourseProvidersRequest)))
+                .Returns(providersRequest);
+            mediator
+                .Setup(x => x.Send(
+                    It.IsAny<GetCourseProviderQuery>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+
+            //Act
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "") as RedirectToRouteResult;
+
+            //Assert
+            Assert.IsNotNull(actual);
+            actual.RouteName.Should().Be(RouteNames.CourseDetails);
         }
     }
 }

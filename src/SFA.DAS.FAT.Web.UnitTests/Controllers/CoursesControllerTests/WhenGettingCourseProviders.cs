@@ -28,6 +28,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             [Greedy] CoursesController controller)
         {
             //Arrange
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
             mediator.Setup(x => x.Send(
                     It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id) 
                     && c.Location.Equals(request.Location)
@@ -40,7 +41,9 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             var actual = await controller.CourseProviders(request) as ViewResult;
             
             //Assert
+            Assert.IsNotNull(actual);
             var actualModel = actual.Model as CourseProvidersViewModel;
+            Assert.IsNotNull(actualModel);
             actualModel.Should().BeEquivalentTo(new CourseProvidersViewModel(request, response));
         }
 
@@ -53,6 +56,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             [Greedy] CoursesController controller)
         {
             //Arrange
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
             mediator.Setup(x => x.Send(
                     It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id) 
                                                         && c.Location.Equals(request.Location)),
@@ -61,9 +65,11 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             
             //Act
             var actual = await controller.CourseProviders(request) as ViewResult;
-            var actualModel = actual.Model as CourseProvidersViewModel;
             
             //Assert
+            Assert.IsNotNull(actual);
+            var actualModel = actual.Model as CourseProvidersViewModel;
+            Assert.IsNotNull(actualModel);
             cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,
                 It.Is<LocationCookieItem>(c=>c.Name.Equals(response.Location)
                                           && c.Lat.Equals(response.LocationGeoPoint.FirstOrDefault())
@@ -80,6 +86,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             [Greedy] CoursesController controller)
         {
             //Arrange
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
             response.Location = string.Empty;
             request.Location = "-1";
             response.Location = null;
@@ -93,7 +100,9 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             var actual = await controller.CourseProviders(request) as ViewResult;
             
             //Assert
+            Assert.IsNotNull(actual);
             var actualModel = actual.Model as CourseProvidersViewModel;
+            Assert.IsNotNull(actualModel);
             actualModel.HasLocation.Should().BeFalse();
             cookieStorageService.Verify(x=>x.Delete(Constants.LocationCookieName));
         }
@@ -108,6 +117,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             [Greedy] CoursesController controller)
         {
             //Arrange
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
             request.Location = string.Empty;
             cookieStorageService
                 .Setup(x => x.Get(Constants.LocationCookieName))
@@ -126,7 +136,9 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             var actual = await controller.CourseProviders(request) as ViewResult;
             
             //Assert
+            Assert.IsNotNull(actual);
             var actualModel = actual.Model as CourseProvidersViewModel;
+            Assert.IsNotNull(actualModel);
             actualModel.Providers.Should().BeEquivalentTo(response.Providers.Select(provider => (ProviderViewModel)provider));
             actualModel.HasLocation.Should().BeTrue();
             cookieStorageService.Verify(x=>x.Update(Constants.LocationCookieName,
@@ -147,6 +159,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             [Greedy] CoursesController controller)
         {
             //Arrange
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
             mediator.Setup(x => x.Send(
                     It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id) 
                                                         && c.Location.Equals(request.Location)),
@@ -154,8 +167,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
             
             //Act
-            var actual = await controller.CourseProviders(request) as ViewResult;
-            var actualModel = actual.Model as CourseProvidersViewModel;
+            await controller.CourseProviders(request);
             
             //Assert
             cookieStorageService.Verify(x=>x.Create(
@@ -181,7 +193,32 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             var actual = await controller.CourseProviders(request) as RedirectToRouteResult;
             
             //Assert
+            Assert.IsNotNull(actual);
             actual.RouteName.Should().Be(RouteNames.Error500);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_Course_Is_After_Last_Start_Then_Redirected_To_Course_Page(
+            GetCourseProvidersRequest request,
+            GetCourseProvidersResult response,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<GetCourseProvidersRequest>> cookieStorageService,
+            [Greedy] CoursesController controller)
+        {
+            //Arrange
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(-1);
+            mediator.Setup(x => x.Send(
+                    It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id) 
+                                                        && c.Location.Equals(request.Location)),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+            
+            //Act
+            var actual = await controller.CourseProviders(request) as RedirectToRouteResult;
+
+            //Assert
+            Assert.IsNotNull(actual);
+            actual.RouteName.Should().Be(RouteNames.CourseDetails);
         }
     }
 }

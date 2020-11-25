@@ -112,8 +112,15 @@ namespace SFA.DAS.FAT.Web.Controllers
                 UpdateLocationCookie(cookieResult);
 
                 _courseProvidersCookieStorageService.Create(request, nameof(GetCourseProvidersRequest));
+
+                var courseProvidersViewModel = new CourseProvidersViewModel(request, result);
+
+                if (courseProvidersViewModel.Course.AfterLastStartDate)
+                {
+                    return RedirectToRoute(RouteNames.CourseDetails,new {request.Id});
+                }
                 
-                return View(new CourseProvidersViewModel(request, result));
+                return View(courseProvidersViewModel);
             }
             catch (Exception e)
             {
@@ -154,6 +161,11 @@ namespace SFA.DAS.FAT.Web.Controllers
                     viewModel.GetCourseProvidersRequest = providersRequestCookie.ToDictionary();
                 }
 
+                if (viewModel.Course.AfterLastStartDate)
+                {
+                    return RedirectToRoute(RouteNames.CourseDetails,new {Id = id});
+                }
+                
                 return View(viewModel);
             }
             catch (Exception e)

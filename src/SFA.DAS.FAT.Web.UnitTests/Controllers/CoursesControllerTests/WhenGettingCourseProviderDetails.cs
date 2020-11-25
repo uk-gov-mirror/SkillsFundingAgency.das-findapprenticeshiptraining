@@ -199,6 +199,36 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             // Assert
             actual!.RouteName.Should().Be(RouteNames.Error500);
         }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_No_Course_Or_Provider_Then_Not_Found_Returned(
+            int providerId,
+            int courseId,
+            GetCourseProvidersRequest providersRequest,
+            GetCourseProviderResult response,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<GetCourseProvidersRequest>> cookieStorageService,
+            [Greedy] CoursesController controller)
+        {
+            //Arrange
+            response.Course = null;
+            response.Provider = null;
+            cookieStorageService
+                .Setup(x => x.Get(nameof(GetCourseProvidersRequest)))
+                .Returns(providersRequest);
+            mediator
+                .Setup(x => x.Send(
+                    It.IsAny<GetCourseProviderQuery>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+
+            //Act
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "") as RedirectToRouteResult;
+
+            //Assert
+            Assert.IsNotNull(actual);
+            actual.RouteName.Should().Be(RouteNames.Error404);
+        }
         
         [Test, MoqAutoData]
         public async Task Then_If_Course_Is_After_Last_Start_Then_Redirected_To_Course_Page(

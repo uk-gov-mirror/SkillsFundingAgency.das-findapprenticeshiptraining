@@ -162,7 +162,6 @@ namespace SFA.DAS.FAT.Web.Controllers
                     return RedirectToRoute(RouteNames.Error404);
                 }
                 
-                
                 var viewModel = (CourseProviderViewModel)result;
                 viewModel.Location = cookieResult.Name;
                 var providersRequestCookie = _courseProvidersCookieStorageService.Get(nameof(GetCourseProvidersRequest));

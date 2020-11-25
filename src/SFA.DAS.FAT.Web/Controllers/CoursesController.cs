@@ -157,7 +157,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                 }; 
                 UpdateLocationCookie(cookieResult);
 
-                if (result.Course == null && result.Provider == null)
+                if (result.Course == null)
                 {
                     return RedirectToRoute(RouteNames.Error404);
                 }
@@ -175,6 +175,11 @@ namespace SFA.DAS.FAT.Web.Controllers
                 if (viewModel.Course.AfterLastStartDate)
                 {
                     return RedirectToRoute(RouteNames.CourseDetails,new {Id = id});
+                }
+
+                if (viewModel.Provider == null)
+                {
+                    return RedirectToRoute(RouteNames.Error404);
                 }
                 
                 return View(viewModel);

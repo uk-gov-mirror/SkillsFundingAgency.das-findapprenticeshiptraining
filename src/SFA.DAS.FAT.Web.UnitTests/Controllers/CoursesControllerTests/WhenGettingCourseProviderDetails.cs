@@ -201,7 +201,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         }
 
         [Test, MoqAutoData]
-        public async Task Then_If_No_Course_Or_Provider_Then_Not_Found_Returned(
+        public async Task Then_No_Course_Returns_Page_Not_Found(
             int providerId,
             int courseId,
             GetCourseProvidersRequest providersRequest,
@@ -212,6 +212,35 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         {
             //Arrange
             response.Course = null;
+            cookieStorageService
+                .Setup(x => x.Get(nameof(GetCourseProvidersRequest)))
+                .Returns(providersRequest);
+            mediator
+                .Setup(x => x.Send(
+                    It.IsAny<GetCourseProviderQuery>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+
+            //Act
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "") as RedirectToRouteResult;
+
+            //Assert
+            Assert.IsNotNull(actual);
+            actual.RouteName.Should().Be(RouteNames.Error404);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_Course_And_No_Provider_Then_Not_Found_Returned(
+            int providerId,
+            int courseId,
+            GetCourseProvidersRequest providersRequest,
+            GetCourseProviderResult response,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<GetCourseProvidersRequest>> cookieStorageService,
+            [Greedy] CoursesController controller)
+        {
+            //Arrange
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(1);
             response.Provider = null;
             cookieStorageService
                 .Setup(x => x.Get(nameof(GetCourseProvidersRequest)))

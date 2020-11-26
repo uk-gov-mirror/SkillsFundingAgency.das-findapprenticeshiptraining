@@ -1,0 +1,32 @@
+﻿@using System.Web
+@using Microsoft.AspNetCore.Http
+@using SFA.DAS.FAT.Web.Models
+
+<script>
+    @if (ViewBag.GaData == null)
+    {
+        ViewBag.GaData = new GaData();
+    }
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({
+        'vpv': '@ViewBag.GaData.Vpv',
+        'location' : '@ViewBag.GaData.Location'
+
+        @if (ViewBag.GaData.Extras.Count>0)
+        {
+            @Html.Raw(",");
+        }
+        @{
+            var count = 0;
+            foreach (var extra in ViewBag.GaData.Extras)
+            {
+                count++;
+                @Html.Raw($"'{extra.Key}' : '{extra.Value}'");
+                if (count < ViewBag.GaData.Extras.Count)
+                {
+                    @Html.Raw("," + Environment.NewLine);
+                }
+            }
+        }
+    });
+</script>

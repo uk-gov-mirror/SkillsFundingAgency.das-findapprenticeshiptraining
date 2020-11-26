@@ -56,13 +56,13 @@
                         <form asp-route="@RouteNames.Courses" method="GET">
                             @if (Model.OrderBy != OrderBy.None)
                             {
-                                <input type="hidden" asp-for="OrderBy" />
+                                <input type="hidden" asp-for="OrderBy" name="orderby" />
                             }
 
                             <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
                             <div class="govuk-form-group">
                                 <label for="Keyword" class="govuk-label das-filter__search-label">Keywords</label>
-                                <input asp-for="Keyword" type="search" title="Search" class="govuk-input">
+                                <input asp-for="Keyword" name="keyword" type="search" title="Search" class="govuk-input">
                             </div>
                             <div class="govuk-form-group">
                                 <fieldset class="govuk-fieldset">

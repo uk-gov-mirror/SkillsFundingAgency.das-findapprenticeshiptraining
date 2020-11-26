@@ -72,6 +72,11 @@ namespace SFA.DAS.FAT.Web.Controllers
                 Lat = location?.Lat ?? 0,
                 Lon = location?.Lon ?? 0
             });
+
+            if (result.Course == null)
+            {
+                return RedirectToRoute(RouteNames.Error404);
+            }
             
             var viewModel = (CourseViewModel)result.Course;
             viewModel.LocationName = location?.Name;
@@ -105,10 +110,22 @@ namespace SFA.DAS.FAT.Web.Controllers
                     Lon = result.LocationGeoPoint?.LastOrDefault() ??0
                 }; 
                 UpdateLocationCookie(cookieResult);
-
-                _courseProvidersCookieStorageService.Create(request, nameof(GetCourseProvidersRequest));
                 
-                return View(new CourseProvidersViewModel(request, result));
+                if (result.Course == null)
+                {
+                    return RedirectToRoute(RouteNames.Error404);
+                }
+                
+                _courseProvidersCookieStorageService.Create(request, nameof(GetCourseProvidersRequest));
+
+                var courseProvidersViewModel = new CourseProvidersViewModel(request, result);
+
+                if (courseProvidersViewModel.Course.AfterLastStartDate)
+                {
+                    return RedirectToRoute(RouteNames.CourseDetails,new {request.Id});
+                }
+                
+                return View(courseProvidersViewModel);
             }
             catch (Exception e)
             {
@@ -140,6 +157,11 @@ namespace SFA.DAS.FAT.Web.Controllers
                 }; 
                 UpdateLocationCookie(cookieResult);
 
+                if (result.Course == null)
+                {
+                    return RedirectToRoute(RouteNames.Error404);
+                }
+                
                 var viewModel = (CourseProviderViewModel)result;
                 viewModel.Location = cookieResult.Name;
                 var providersRequestCookie = _courseProvidersCookieStorageService.Get(nameof(GetCourseProvidersRequest));
@@ -149,6 +171,16 @@ namespace SFA.DAS.FAT.Web.Controllers
                     viewModel.GetCourseProvidersRequest = providersRequestCookie.ToDictionary();
                 }
 
+                if (viewModel.Course.AfterLastStartDate)
+                {
+                    return RedirectToRoute(RouteNames.CourseDetails,new {Id = id});
+                }
+
+                if (viewModel.Provider == null)
+                {
+                    return RedirectToRoute(RouteNames.Error404);
+                }
+                
                 return View(viewModel);
             }
             catch (Exception e)

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -27,21 +28,20 @@ namespace SFA.DAS.FAT.Infrastructure.Api
 
             var response = await _httpClient.GetAsync(request.GetUrl).ConfigureAwait(false);
 
+            if (response.StatusCode.Equals(HttpStatusCode.NotFound))
+            {
+                return default;
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                return JsonConvert.DeserializeObject<TResponse>(json);    
+            }
+            
             response.EnsureSuccessStatusCode();
-            var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<TResponse>(json);
-        
-        }
-
-        public async Task<IEnumerable<TResponse>> GetAll<TResponse>(IGetAllApiRequest request)
-        {
-            AddHeaders();
-
-            var response = await _httpClient.GetAsync(request.GetAllUrl).ConfigureAwait(false);
-
-            response.EnsureSuccessStatusCode();
-            var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<IEnumerable<TResponse>>(json);
+            
+            return default;
         }
 
         public async Task<int> Ping()

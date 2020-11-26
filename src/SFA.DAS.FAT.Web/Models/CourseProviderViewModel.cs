@@ -19,7 +19,7 @@ namespace SFA.DAS.FAT.Web.Models
                 Provider = provider.Provider,
                 Course = provider.Course,
                 AdditionalCourses = provider.AdditionalCourses,
-                TotalProviders = provider.ProvidersAtLocation
+                TotalProviders = provider.ProvidersAtLocation 
             };
         }
     }

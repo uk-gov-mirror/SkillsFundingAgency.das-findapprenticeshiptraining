@@ -20,5 +20,13 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             actual.Courses.Should().BeAssignableTo<List<ProviderCourseViewModel>>();
             actual.Should().BeEquivalentTo(source);
         }
+        
+        [Test]
+        public void Then_If_Source_Is_Null_Then_Null_Returned()
+        {
+            var actual = (ProviderCoursesViewModel) null;
+
+            actual.Should().BeNull();
+        }
     }
 }

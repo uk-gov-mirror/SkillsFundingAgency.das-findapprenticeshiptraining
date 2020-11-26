@@ -38,7 +38,7 @@ if ($keywordsInput.length > 0) {
     accessibleAutocomplete({
         element: container,
         id: 'search-location',
-        name: 'Location',
+        name: 'location',
         displayMenu: 'overlay',
         showNoOptionsFound: false,
         minLength: 2,

@@ -129,9 +129,13 @@ $(window).bind('scroll', function() {
 $("a[data-scroll-to-target]").on('click', function () {
     var target = $(this).data('scroll-to-target'),
         $target = $(target);
+        headerOffset = $('.app-shortlist-banner__fixed').outerHeight() || 50;
 
-    if ($target.length > 0) {
-        var scrollTo = $target.offset().top - 50;
-        $('html, body').animate({scrollTop: scrollTo}, 0);
-    }
+    setTimeout(function() {
+        if ($target.length > 0) {
+            var scrollTo = $target.offset().top - headerOffset;
+            $('html, body').animate({scrollTop: scrollTo}, 100);
+        }
+    }, 200)
+
 });

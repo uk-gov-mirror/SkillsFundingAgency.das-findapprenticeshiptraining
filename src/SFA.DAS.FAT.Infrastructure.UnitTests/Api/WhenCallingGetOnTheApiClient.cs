@@ -46,7 +46,6 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
             actual.Should().BeEquivalentTo(testObject);
         }
         
-        
         [Test, AutoData]
         public void Then_If_It_Is_Not_Successful_An_Exception_Is_Thrown(
             FindApprenticeshipTrainingApi config)
@@ -68,6 +67,31 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
             //Act Assert
             Assert.ThrowsAsync<HttpRequestException>(() => apiClient.Get<List<string>>(getTestRequest));
             
+        }
+        
+        [Test, AutoData]
+        public async Task Then_If_It_Is_Not_Found_Default_Is_Returned(
+            FindApprenticeshipTrainingApi config)
+        {
+            //Arrange
+            var configMock = new Mock<IOptions<FindApprenticeshipTrainingApi>>();
+            configMock.Setup(x => x.Value).Returns(config);
+            var getTestRequest = new GetTestRequest("https://test.local");
+            var response = new HttpResponseMessage
+            {
+                Content = new StringContent(""),
+                StatusCode = HttpStatusCode.NotFound
+            };
+            
+            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, getTestRequest.GetUrl, config.Key);
+            var client = new HttpClient(httpMessageHandler.Object);
+            var apiClient = new ApiClient(client, configMock.Object);
+            
+            //Act Assert
+            var actual = await apiClient.Get<List<string>>(getTestRequest);
+
+            actual.Should().BeNull();
+
         }
 
         private class GetTestRequest : IGetApiRequest

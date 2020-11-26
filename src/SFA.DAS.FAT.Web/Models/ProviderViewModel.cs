@@ -47,6 +47,10 @@ namespace SFA.DAS.FAT.Web.Models
 
         public static implicit operator ProviderViewModel(Provider source)
         {
+            if (source == null)
+            {
+                return null;
+            }
             return new ProviderViewModel
             {
                 Name = source.Name,

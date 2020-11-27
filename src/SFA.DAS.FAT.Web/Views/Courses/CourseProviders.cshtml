@@ -22,9 +22,6 @@
                 <span class="govuk-caption-xl">Training providers for</span>
                 @Model.Course.Title <span class="das-no-wrap">(level @Model.Course.Level)</span>
             </h1>
-            <p class="govuk-body govuk-!-margin-bottom-8">
-                <a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.CourseDetails" asp-route-id="@Model.Course.Id">Overview of @Model.Course.TitleAndLevel</a>
-            </p>
         </div>
     </div>
     <div class="govuk-grid-row">
@@ -76,7 +73,9 @@
                         <form method="GET" asp-route="@RouteNames.CourseProviders" asp-route-id="@Model.Course.Id">
                             <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
                             <div class="govuk-form-group">
-                                <label for="search-location" class="govuk-label"><span class="govuk-!-font-weight-bold govuk-!-font-size-24">Apprenticeship location</span></label>
+                                <label for="search-location" class="govuk-label"><span class="govuk-!-font-weight-bold govuk-!-font-size-24">Apprenticeship location</span>
+                                    <p class="govuk-hint">Enter a town, city or postcode</p>
+                                    </label>
                                 <input type="search" id="search-location" name="location" title="Search" class="govuk-input govuk-!-width-three-quarters" data-submit-on-selection="true" data-default-value="@Model.Location">
                             </div>
                                 <div class="govuk-form-group">
@@ -209,16 +208,6 @@
                             }
                         </ul>
                         
-                    
-                        
-                        @if (provider.OverallCohort != null)
-                        {
-                            <p class="govuk-!-margin-0 govuk-!-margin-top-2 govuk-!-font-size-16">
-                                @provider.OverallAchievementRatePercentage pass rate
-                                <span class="das-text--muted">(out of @provider.OverallCohort apprentices)</span>
-                            </p>
-                        }
-
                         <p class="govuk-!-margin-0 govuk-!-margin-top-2 govuk-!-font-size-16">
                             @if (provider.TotalFeedbackRating != 0)
                             {
@@ -232,7 +221,13 @@
                             }
                             <span class="das-text--muted">@provider.TotalFeedbackRatingText</span>         
                         </p>
-                        
+                        @if (provider.OverallCohort != null)
+                        {
+                            <p class="govuk-!-margin-0 govuk-!-margin-top-2 govuk-!-font-size-16">
+                                @provider.OverallAchievementRatePercentage pass rate
+                                <span class="das-text--muted">(out of @provider.OverallCohort apprentices)</span>
+                            </p>
+                        }
                     </li>
                 }
                 </ol>

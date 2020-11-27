@@ -37,7 +37,15 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             actual.FeedbackWeaknesses.Should().BeEquivalentTo(source.Feedback.FeedbackAttributes.Weaknesses);
             actual.ProviderDistance.Should().Be(source.ProviderAddress.DistanceInMiles.FormatDistance());
         }
+        
+        [Test]
+        public void Then_If_Source_Is_Null_Then_Null_Returned()
+        {
+            var actual = (ProviderViewModel) null;
 
+            actual.Should().BeNull();
+        }
+        
         [Test, AutoData]
         public void Then_Return_Null_When_Trading_Name_Matches_Name(Provider source)
         {
@@ -313,7 +321,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
 
             var dayReleaseDeliveryMode = actual.DeliveryModes.Single(model =>
                 model.DeliveryModeType == DeliveryModeType.DayRelease);
-            dayReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($"({distanceInMiles.FormatDistance()} miles away)");
+            dayReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($": {distanceInMiles.FormatDistance()} miles away");
             dayReleaseDeliveryMode.IsAvailable.Should().BeTrue();
         }
         
@@ -335,7 +343,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
 
             var dayReleaseDeliveryMode = actual.DeliveryModes.Single(model =>
                 model.DeliveryModeType == DeliveryModeType.DayRelease);
-            dayReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($"(1 mile away)");
+            dayReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($": 1 mile away");
             dayReleaseDeliveryMode.IsAvailable.Should().BeTrue();
         }
 
@@ -379,7 +387,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
 
             var blockReleaseDeliveryMode = actual.DeliveryModes.Single(model =>
                 model.DeliveryModeType == DeliveryModeType.BlockRelease);
-            blockReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($"({distanceInMiles:##.#} miles away)");
+            blockReleaseDeliveryMode.FormattedDistanceInMiles.Should().Be($": {distanceInMiles:##.#} miles away");
             blockReleaseDeliveryMode.IsAvailable.Should().BeTrue();
         }
 

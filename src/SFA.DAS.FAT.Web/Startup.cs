@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -68,7 +69,11 @@ namespace SFA.DAS.FAT.Web
             services.Configure<FindApprenticeshipTrainingWeb>(_configuration.GetSection("FindApprenticeshipTrainingWeb"));
             services.AddSingleton(cfg => cfg.GetService<IOptions<FindApprenticeshipTrainingWeb>>().Value);
             
-            services.AddMvc(options => options.Filters.Add(new GoogleAnalyticsFilter())).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.Configure<RouteOptions>(options =>
+            {
+                options.LowercaseUrls = true;
+                options.LowercaseQueryStrings = true;
+            }).AddMvc(options => options.Filters.Add(new GoogleAnalyticsFilter())).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddServiceRegistration();
             services.AddMediatR(typeof(GetCourseQueryHandler).Assembly);
@@ -76,10 +81,7 @@ namespace SFA.DAS.FAT.Web
             
             services.AddApplicationInsightsTelemetry(_configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
 
-            services.AddRouting(options =>
-            {
-                options.LowercaseUrls = true;
-            });
+            
 
             if (!_environment.IsDevelopment())
             {

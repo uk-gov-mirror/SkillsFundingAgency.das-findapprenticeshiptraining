@@ -47,6 +47,10 @@ namespace SFA.DAS.FAT.Web.Models
 
         public static implicit operator ProviderViewModel(Provider source)
         {
+            if (source == null)
+            {
+                return null;
+            }
             return new ProviderViewModel
             {
                 Name = source.Name,
@@ -210,8 +214,8 @@ namespace SFA.DAS.FAT.Web.Models
             viewModel.IsAvailable =  source != default;
             viewModel.FormattedDistanceInMiles = source != default && deliveryModeType != DeliveryModeType.Workplace
                 ? source.DistanceInMiles.FormatDistance() == "1" 
-                    ? "(1 mile away)" 
-                    : $"({source.DistanceInMiles.FormatDistance()} miles away)"
+                    ? ": 1 mile away" 
+                    : $": {source.DistanceInMiles.FormatDistance()} miles away"
                 : null;
             viewModel.NationalText = source != default && 
                 source.National && deliveryModeType == DeliveryModeType.Workplace ? "(national)" : null;

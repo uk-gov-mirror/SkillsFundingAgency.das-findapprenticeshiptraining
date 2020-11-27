@@ -16,6 +16,7 @@ using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Infrastructure.HealthCheck;
 using SFA.DAS.FAT.Web.AppStart;
 using SFA.DAS.FAT.Web.Extensions;
+using SFA.DAS.FAT.Web.Filters;
 
 namespace SFA.DAS.FAT.Web
 {
@@ -67,7 +68,7 @@ namespace SFA.DAS.FAT.Web
             services.Configure<FindApprenticeshipTrainingWeb>(_configuration.GetSection("FindApprenticeshipTrainingWeb"));
             services.AddSingleton(cfg => cfg.GetService<IOptions<FindApprenticeshipTrainingWeb>>().Value);
             
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddMvc(options => options.Filters.Add(new GoogleAnalyticsFilter())).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddServiceRegistration();
             services.AddMediatR(typeof(GetCourseQueryHandler).Assembly);

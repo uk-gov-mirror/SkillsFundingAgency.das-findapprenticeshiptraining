@@ -34,7 +34,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             {
                 Total = 10,
                 TotalFiltered = 5,
-                SelectedSectors = new List<Guid> { new Guid() }
+                SelectedSectors = new List<string> { "" }
             };
 
             viewModel.TotalMessage.Should().Be("5 results");
@@ -61,7 +61,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
                 Total = 10,
                 TotalFiltered = 5,
                 SelectedLevels = new List<int> { 1 },
-                SelectedSectors = new List<Guid> { new Guid() },
+                SelectedSectors = new List<string> { "" },
                 Keyword = "Test"
             };
 
@@ -69,7 +69,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         }
         
         [Test, AutoData]
-        public void Then_If_There_Are_Filtered_Levels_Sectors_Keywords_The_ShowFilterOptions_Property_Is_True(List<int> selectedLevels, List<Guid> selectedRoutes, string keyword)
+        public void Then_If_There_Are_Filtered_Levels_Sectors_Keywords_The_ShowFilterOptions_Property_Is_True(List<int> selectedLevels, List<string> selectedRoutes, string keyword)
         {
             //Arrange Act
             var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, selectedLevels);
@@ -78,7 +78,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             Assert.IsTrue(model.ShowFilterOptions); 
         }
         [Test, AutoData]
-        public void Then_If_There_Are_Filtered_Sectors_Keywords_The_ShowFilterOptions_Property_Is_True(List<Guid> selectedRoutes, string keyword)
+        public void Then_If_There_Are_Filtered_Sectors_Keywords_The_ShowFilterOptions_Property_Is_True(List<string> selectedRoutes, string keyword)
         {
             //Arrange Act
             var model = CoursesViewModelFactory.BuildModel(selectedRoutes, keyword, new List<int>());
@@ -91,7 +91,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_If_There_Are_Filtered_Keywords_The_ShowFilterOptions_Property_Is_True(string keyword)
         {
             //Arrange Act
-            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), keyword, new List<int>());
+            var model = CoursesViewModelFactory.BuildModel(new List<string>(), keyword, new List<int>());
             
             //Assert
             Assert.IsTrue(model.ShowFilterOptions); 
@@ -100,7 +100,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_If_There_Are_No_Filtered_Options_The_ShowFilterOptions_Property_Is_False()
         {
             //Arrange Act
-            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), "", new List<int>());
+            var model = CoursesViewModelFactory.BuildModel(new List<string>(), "", new List<int>());
             
             //Assert
             Assert.IsFalse(model.ShowFilterOptions); 
@@ -110,7 +110,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_If_There_Is_A_Keyword_Search_And_No_OrderBy_It_Is_Set_To_Relevance()
         {
             //Arrange Act
-            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), "test", new List<int>(), OrderBy.None);
+            var model = CoursesViewModelFactory.BuildModel(new List<string>(), "test", new List<int>(), OrderBy.None);
             
             //Assert
             Assert.AreEqual(OrderBy.Relevance, model.OrderBy); 
@@ -120,7 +120,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_If_There_Is_A_Keyword_Search_And_OrderBy_It_Is_Maintained()
         {
             //Arrange Act
-            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), "test", new List<int>());
+            var model = CoursesViewModelFactory.BuildModel(new List<string>(), "test", new List<int>());
             
             //Assert
             Assert.AreEqual(OrderBy.Name, model.OrderBy); 
@@ -131,7 +131,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_If_There_Is_No_Keyword_Search_And_OrderBy_It_Is_Set_To_None()
         {
             //Arrange Act
-            var model = CoursesViewModelFactory.BuildModel(new List<Guid>(), "", new List<int>());
+            var model = CoursesViewModelFactory.BuildModel(new List<string>(), "", new List<int>());
             
             //Assert
             Assert.AreEqual(OrderBy.None, model.OrderBy); 

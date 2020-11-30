@@ -11,9 +11,9 @@ namespace SFA.DAS.FAT.Web.Models
             
         }
 
-        public SectorViewModel (Sector sector, ICollection<Guid> selectedIds)
+        public SectorViewModel (Sector sector, ICollection<string> selectedSectors)
         {
-            Selected =selectedIds?.Contains(sector.Id) ?? false;
+            Selected =selectedSectors?.Contains(sector.Route) ?? false;
             Id = sector.Id;
             Route = sector.Route;
 

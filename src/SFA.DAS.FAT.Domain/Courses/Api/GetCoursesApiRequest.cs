@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAT.Domain.Courses.Api
 {
     public class GetCoursesApiRequest : IGetApiRequest
     {
-        public GetCoursesApiRequest( string baseUrl, string keyword, List<Guid> sectors = null, List<int> levels = null, OrderBy orderBy = OrderBy.None)
+        public GetCoursesApiRequest( string baseUrl, string keyword, List<string> sectors = null, List<int> levels = null, OrderBy orderBy = OrderBy.None)
         {
             BaseUrl = baseUrl;
             Keyword = keyword;
@@ -16,8 +17,8 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
             OrderBy = orderBy;
         }
 
-        public List<Guid> Sectors { get ; set ; }
-        public List<int> Levels { get; set; }
+        public List<string> Sectors { get ;  }
+        public List<int> Levels { get; }
 
         public string BaseUrl { get; }
         public string GetUrl => BuildUrl();
@@ -31,7 +32,7 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
             }
             if (Sectors != null && Sectors.Any())
             {
-                url += "&routeIds=" + string.Join("&routeIds=", Sectors);
+                url += "&routeIds=" + string.Join("&routeIds=", Sectors.Select(HttpUtility.HtmlEncode));
             }
             if (Levels != null && Levels.Any())
             {
@@ -40,8 +41,8 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
             return url;
         }
 
-        public string Keyword { get; set; }
-        public OrderBy OrderBy { get; set; }
+        public string Keyword { get;  }
+        public OrderBy OrderBy { get; }
     }
 
 }

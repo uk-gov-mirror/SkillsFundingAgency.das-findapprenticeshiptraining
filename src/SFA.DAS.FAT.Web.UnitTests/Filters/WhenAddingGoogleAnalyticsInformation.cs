@@ -19,7 +19,6 @@ using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.FAT.Web.Controllers;
 using SFA.DAS.FAT.Web.Filters;
 using SFA.DAS.FAT.Web.Models;
-using SFA.DAS.FAT.Web.UnitTests.Customisations;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.FAT.Web.UnitTests.Filters
@@ -72,11 +71,31 @@ namespace SFA.DAS.FAT.Web.UnitTests.Filters
         public async Task
             Then_If_No_Location_In_Context_And_Location_In_Cookie_Adds_The_Location_From_The_Cookie_To_The_ViewBag(
                 LocationCookieItem location,
-                [ArrangeActionContext] ActionExecutingContext context,
                 [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
-                [Greedy] GoogleAnalyticsFilter filter)
+                [Greedy] CoursesController controller,
+                GoogleAnalyticsFilter filter)
         {
             //Arrange
+            var httpContext = new DefaultHttpContext();
+            
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var actionContext = new ActionContext(
+                httpContext,
+                Mock.Of<RouteData>(),
+                Mock.Of<ActionDescriptor>(),
+                new ModelStateDictionary()
+            );
+
+            var context = new ActionExecutingContext(
+                actionContext,
+                new List<IFilterMetadata>(),
+                new Dictionary<string, object>(),
+                controller
+            );
             cookieStorageService.Setup(x => x.Get(Constants.LocationCookieName))
                 .Returns(location);
 
@@ -84,9 +103,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Filters
             await filter.OnActionExecutionAsync(context, Mock.Of<ActionExecutionDelegate>());
 
             //Assert
-            var actualController = context.Controller as Controller;
-            Assert.IsNotNull(actualController);
-            var viewBag = actualController.ViewBag.GaData as GaData;
+            var viewBag = controller.ViewBag.GaData as GaData;
             Assert.IsNotNull(viewBag);
             Assert.AreEqual(location.Name, viewBag.Location);
         }
@@ -95,23 +112,40 @@ namespace SFA.DAS.FAT.Web.UnitTests.Filters
             Then_If_Location_In_Context_And_Location_In_Cookie_Adds_The_Location_From_The_Cookie_To_The_ViewBag(
                 string location,
                 LocationCookieItem cookieLocation,
-                [ArrangeActionContext] ActionExecutingContext context,
-                [Frozen] Mock<ActionExecutionDelegate> nextMethod,
+                [Greedy] CoursesController controller,
                 [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
                 GoogleAnalyticsFilter filter)
         {
             //Arrange
-            context.RouteData.Values.Add("location", location);
+            var httpContext = new DefaultHttpContext();
+            httpContext.Request.QueryString = new QueryString($"?location={location}");
+
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var actionContext = new ActionContext(
+                httpContext,
+                Mock.Of<RouteData>(),
+                Mock.Of<ActionDescriptor>(),
+                new ModelStateDictionary()
+            );
+
+            var context = new ActionExecutingContext(
+                actionContext,
+                new List<IFilterMetadata>(),
+                new Dictionary<string, object>(),
+                controller
+            );
             cookieStorageService.Setup(x => x.Get(Constants.LocationCookieName))
                 .Returns(cookieLocation);
 
             //Act
-            await filter.OnActionExecutionAsync(context, nextMethod.Object);
+            await filter.OnActionExecutionAsync(context, Mock.Of<ActionExecutionDelegate>());
 
             //Assert
-            var actualController = context.Controller as Controller;
-            Assert.IsNotNull(actualController);
-            var viewBag = actualController.ViewBag.GaData as GaData;
+            var viewBag = controller.ViewBag.GaData as GaData;
             Assert.IsNotNull(viewBag);
             Assert.AreEqual(location, viewBag.Location);
         }

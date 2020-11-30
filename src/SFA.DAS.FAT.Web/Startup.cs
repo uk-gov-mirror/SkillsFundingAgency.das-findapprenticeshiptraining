@@ -75,7 +75,7 @@ namespace SFA.DAS.FAT.Web
             {
                 options.LowercaseUrls = true;
                 options.LowercaseQueryStrings = true;
-            }).AddMvc(options => options.Filters.Add(null)).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            }).AddMvc(options => options.Filters.Add(typeof(GoogleAnalyticsFilter))).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddServiceRegistration();
             services.AddMediatR(typeof(GetCourseQueryHandler).Assembly);

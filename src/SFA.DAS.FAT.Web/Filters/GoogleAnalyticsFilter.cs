@@ -26,10 +26,13 @@ namespace SFA.DAS.FAT.Web.Filters
             {
                 controller.ViewBag.GaData =  new GaData {Location = location.ToString()};
             }
-            else if (!string.IsNullOrEmpty(locationFromCookie.Name) && locationFromCookie.Lat != 0 &&
-                     locationFromCookie.Lon != 0)
+            else if (locationFromCookie != null)
             {
-                controller.ViewBag.GaData = new GaData {Location = locationFromCookie.Name};
+                if (!string.IsNullOrEmpty(locationFromCookie.Name) && locationFromCookie.Lat != 0 &&
+                    locationFromCookie.Lon != 0)
+                {
+                    controller.ViewBag.GaData = new GaData {Location = locationFromCookie.Name};
+                }
             }
 
             base.OnActionExecuting(context);

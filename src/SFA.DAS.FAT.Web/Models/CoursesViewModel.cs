@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 
 namespace SFA.DAS.FAT.Web.Models
 {
@@ -14,7 +15,7 @@ namespace SFA.DAS.FAT.Web.Models
         public int TotalFiltered { get ; set ; }
         public List<LevelViewModel> Levels { get; set; }
         public List<SectorViewModel> Sectors { get ; set ; }
-        public List<Guid> SelectedSectors { get ; set ; }
+        public List<string> SelectedSectors { get ; set ; }
         public List<int> SelectedLevels { get ; set ; }
         public OrderBy OrderBy
         {
@@ -89,12 +90,15 @@ namespace SFA.DAS.FAT.Web.Models
             {
                 var clearFilterString = BuildClearFilterStringForKeywordAndOrderBy();
 
-                clearFilterString += $"{GetSeparator(clearFilterString)}sectors=" + string.Join("&sectors=", SelectedSectors.Where(c => !c.Equals(selectedSector)));
+                clearFilterString += $"{GetSeparator(clearFilterString)}sectors=" + string.Join("&sectors=", SelectedSectors.Where(c => !c.Equals(selectedSector, StringComparison.CurrentCultureIgnoreCase)).Select(HttpUtility.HtmlEncode));
                 clearFilterString += levels;
                 
-                var sector = Sectors.SingleOrDefault(c => c.Id.Equals(selectedSector));
+                var sector = Sectors.SingleOrDefault(c => c.Route.Equals(selectedSector, StringComparison.CurrentCultureIgnoreCase));
+                if (sector != null)
+                {
+                    clearFilterLinks.Add(sector.Route, clearFilterString);    
+                }
                 
-                clearFilterLinks.Add(sector.Route, clearFilterString);
             }
 
             return clearFilterLinks;
@@ -116,9 +120,11 @@ namespace SFA.DAS.FAT.Web.Models
 
                 clearFilterString += $"{GetSeparator(clearFilterString)}levels=" + string.Join("&levels=", SelectedLevels.Where(c => !c.Equals(selectedLevel)));
                 clearFilterString += sectors;
-                var sector = Levels.SingleOrDefault(c => c.Code.Equals(selectedLevel));
-                
-                clearLevelLink.Add(sector.Title, clearFilterString);
+                var level = Levels.SingleOrDefault(c => c.Code.Equals(selectedLevel));
+                if(level != null)
+                {
+                    clearLevelLink.Add(level.Title, clearFilterString);    
+                }
             }
             
             return clearLevelLink;
@@ -148,7 +154,7 @@ namespace SFA.DAS.FAT.Web.Models
 
         private string BuildSelectedSectorListLink(string linkToAppendTo)
         {
-            return SelectedSectors != null && SelectedSectors.Any() ? $"{GetSeparator(linkToAppendTo)}sectors=" + string.Join("&sectors=", SelectedSectors) : "";
+            return SelectedSectors != null && SelectedSectors.Any() ? $"{GetSeparator(linkToAppendTo)}sectors=" + string.Join("&sectors=", SelectedSectors.Select(HttpUtility.HtmlEncode)) : "";
         }
 
         private string GetSeparator(string url)

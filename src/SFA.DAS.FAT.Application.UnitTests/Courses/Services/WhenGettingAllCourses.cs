@@ -37,7 +37,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
         [Test, MoqAutoData]
         public async Task Then_The_Keyword_And_RouteIds_Are_Added_To_The_Request(
             string keyword,
-            List<Guid> routeIds,
+            List<string> routeIds,
             [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
             [Frozen] Mock<IApiClient> apiClient,
             CourseService courseService)
@@ -79,7 +79,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
         [Test, MoqAutoData]
         public async Task Then_The_Keyword_And_Levels_And_Sectors_Are_Added_To_The_Request(
         string keyword,
-        List<Guid> routeIds,
+        List<string> routeIds,
         List<int> levels,
         [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
         [Frozen] Mock<IApiClient> apiClient,

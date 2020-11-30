@@ -9,15 +9,15 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
 {
     public static class CoursesViewModelFactory
     {
-        public static CoursesViewModel BuildModel(List<Guid> selectedRoutes, string keyword, List<int> selectedLevels, OrderBy orderBy = OrderBy.Name)
+        public static CoursesViewModel BuildModel(List<string> selectedRoutes, string keyword, List<int> selectedLevels, OrderBy orderBy = OrderBy.Name)
         {
             var fixture = new Fixture();
             var sectors = selectedRoutes
                 .Select(selectedRoute => new SectorViewModel(
                     new Sector
                     {
-                        Id = selectedRoute,
-                        Route = fixture.Create<string>()
+                        Id = fixture.Create<Guid>(),
+                        Route = selectedRoute
                     }, null))
                 .ToList();
             var levels = selectedLevels

@@ -154,7 +154,7 @@
     }
     @RenderBody()
 
-    @if (breadCrumbViewModel.Level > BreadCrumbLevel.Home) {
+    @if (breadCrumbViewModel != null && breadCrumbViewModel.Level > BreadCrumbLevel.Home) {
         <div class="govuk-body app-shortlist-banner">
             <a class="govuk-link govuk-link--no-visited-state app-back-to-top-link" href="#top">
                 <svg class="app-back-to-top-link__icon" xmlns="http://www.w3.org/2000/svg" width="13" height="17" viewBox="0 0 13 17">

@@ -1,10 +1,10 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -83,13 +83,13 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             //Arrange
             response.Sectors.Add(new Sector
             {
-                Id=request.Sectors.First(), 
-                Route = "Selected"
+                Id= Guid.NewGuid(), 
+                Route = request.Sectors.First()
             });
             response.Sectors.Add(new Sector
             {
-                Id=request.Sectors.Skip(1).First(), 
-                Route = "Selected"
+                Id= Guid.NewGuid(), 
+                Route = request.Sectors.Skip(1).First()
             });
             mediator.Setup(x => 
                     x.Send(It.Is<GetCoursesQuery>(c 
@@ -107,8 +107,8 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             var actualModel = actualResult.Model as CoursesViewModel;
             Assert.IsNotNull(actualModel);
             Assert.AreEqual(2, actualModel.Sectors.Count(sector=>sector.Selected));
-            Assert.IsNotNull(actualModel.Sectors.SingleOrDefault(c=>c.Id.Equals(request.Sectors.First())));
-            Assert.IsNotNull(actualModel.Sectors.SingleOrDefault(c=>c.Id.Equals(request.Sectors.Skip(1).First())));
+            Assert.IsNotNull(actualModel.Sectors.SingleOrDefault(c=>c.Route.Equals(request.Sectors.First())));
+            Assert.IsNotNull(actualModel.Sectors.SingleOrDefault(c=>c.Route.Equals(request.Sectors.Skip(1).First())));
         }
     }
 }

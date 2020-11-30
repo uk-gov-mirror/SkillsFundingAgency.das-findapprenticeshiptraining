@@ -68,3 +68,7 @@
 .app-view-shortlist-link:focus .app-view-shortlist-link__number {
     background: #0b0c0c;
 }
+
+.autocomplete__input {
+    min-height: 40px;
+}

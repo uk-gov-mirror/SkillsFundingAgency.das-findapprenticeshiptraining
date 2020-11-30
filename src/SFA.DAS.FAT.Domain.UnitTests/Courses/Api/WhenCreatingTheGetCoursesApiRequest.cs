@@ -1,5 +1,6 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
@@ -11,22 +12,22 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
     public class WhenCreatingTheGetCoursesApiRequest
     {        
         [Test, AutoData]
-        public void Then_The_Get_Url_Is_Constructed_Correctly_With_Levels_And_Routes(string baseUrl, string keyword, List<Guid> sectors, List<int> levels)
+        public void Then_The_Get_Url_Is_Constructed_Correctly_With_Levels_And_Routes(string baseUrl, string keyword, List<string> sectors, List<int> levels)
         {
             //Arrange Act
             var actual = new GetCoursesApiRequest(baseUrl, keyword, sectors, levels);
             //Assert
-            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}&routeIds={string.Join("&routeIds=", sectors)}&levels={string.Join("&levels=", levels)}");
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}&routeIds={string.Join("&routeIds=", sectors.Select(HttpUtility.HtmlEncode))}&levels={string.Join("&levels=", levels)}");
         }
 
         [Test, AutoData]
-        public void Then_The_Get_Url_Is_Constructed_Correctly_With_Routes_And_Levels_Is_Null(string baseUrl, string keyword, List<Guid> sectors)
+        public void Then_The_Get_Url_Is_Constructed_Correctly_With_Routes_And_Levels_Is_Null(string baseUrl, string keyword, List<string> sectors)
         {
             //Arrange Act
             var actual = new GetCoursesApiRequest(baseUrl, keyword, sectors);
             
             //Assert
-            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}&routeIds={string.Join("&routeIds=", sectors)}");
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}&routeIds={string.Join("&routeIds=", sectors.Select(HttpUtility.HtmlEncode))}");
         }
 
         [Test, AutoData]
@@ -44,7 +45,7 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
         public void Then_If_The_List_Of_Sectors_And_Levels_Are_Empty_The_Url_Is_Constructed_Correctly(string baseUrl, string keyword)
         {
             //Arrange Act
-            var actual = new GetCoursesApiRequest(baseUrl, keyword, new List<Guid>(), new List<int>());
+            var actual = new GetCoursesApiRequest(baseUrl, keyword, new List<string>(), new List<int>());
             
             //Assert
             actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}");
@@ -85,14 +86,14 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
         }
         
         [Test, AutoData]
-        public void Then_The_Get_Url_Is_Constructed_Correctly_With_Levels_And_Routes_And_OrderBy(string baseUrl, string keyword, List<Guid> sectors, List<int> levels)
+        public void Then_The_Get_Url_Is_Constructed_Correctly_With_Levels_And_Routes_And_OrderBy(string baseUrl, string keyword, List<string> sectors, List<int> levels)
         {
             //Arrange Act
             var orderBy = OrderBy.Relevance;
             var actual = new GetCoursesApiRequest(baseUrl, keyword, sectors, levels,orderBy);
             
             //Assert
-            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}&orderby={orderBy}&routeIds={string.Join("&routeIds=", sectors)}&levels={string.Join("&levels=", levels)}");
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}&orderby={orderBy}&routeIds={string.Join("&routeIds=", sectors.Select(HttpUtility.HtmlEncode))}&levels={string.Join("&levels=", levels)}");
         }
         
     }

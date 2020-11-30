@@ -21,7 +21,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
         [Test, AutoData]
         public void Then_Any_Selected_Ids_Are_Marked_As_Selected(Sector sector)
         {
-            var actual = new SectorViewModel(sector, new List<Guid>{sector.Id});
+            var actual = new SectorViewModel(sector, new List<string>{sector.Route});
 
             actual.Selected.Should().BeTrue();
         }

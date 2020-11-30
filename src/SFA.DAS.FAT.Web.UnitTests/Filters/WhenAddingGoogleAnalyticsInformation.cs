@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoFixture.AutoMoq;
 using AutoFixture.NUnit3;
+using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
@@ -33,30 +34,8 @@ namespace SFA.DAS.FAT.Web.UnitTests.Filters
             GoogleAnalyticsFilter filter)
         {
             //Arrange
-            var httpContext = new DefaultHttpContext();
-            httpContext.Request.QueryString = new QueryString($"?location={location}");
-
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = httpContext
-            };
-
-            var actionContext = new ActionContext(
-                httpContext,
-                Mock.Of<RouteData>(),
-                Mock.Of<ActionDescriptor>(),
-                new ModelStateDictionary()
-            );
-
-            var context = new ActionExecutingContext(
-                actionContext,
-                new List<IFilterMetadata>(),
-                new Dictionary<string, object>(),
-                controller
-            );
-            
-            cookieStorageService.Setup(x => x.Get(Constants.LocationCookieName))
-                .Returns(new LocationCookieItem());
+            var context =
+                SetupContextAndCookieLocations(controller, location, null, cookieStorageService);
 
             //Act
             await filter.OnActionExecutionAsync(context, Mock.Of<ActionExecutionDelegate>());
@@ -76,7 +55,65 @@ namespace SFA.DAS.FAT.Web.UnitTests.Filters
                 GoogleAnalyticsFilter filter)
         {
             //Arrange
+            var context = SetupContextAndCookieLocations(controller, null, location, cookieStorageService);
+
+            //Act
+            await filter.OnActionExecutionAsync(context, Mock.Of<ActionExecutionDelegate>());
+
+            //Assert
+            var viewBag = controller.ViewBag.GaData as GaData;
+            Assert.IsNotNull(viewBag);
+            Assert.AreEqual(location.Name, viewBag.Location);
+        }
+        [Test, MoqAutoData]
+        public async Task
+            Then_If_Location_In_Context_And_Location_In_Cookie_Adds_The_Location_From_The_Context_To_The_ViewBag(
+                string location,
+                LocationCookieItem cookieLocation,
+                [Greedy] CoursesController controller,
+                [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
+                GoogleAnalyticsFilter filter)
+        {
+            //Arrange
+            var context = SetupContextAndCookieLocations(controller, location, cookieLocation, cookieStorageService);
+
+            //Act
+            await filter.OnActionExecutionAsync(context, Mock.Of<ActionExecutionDelegate>());
+
+            //Assert
+            var viewBag = controller.ViewBag.GaData as GaData;
+            Assert.IsNotNull(viewBag);
+            Assert.AreEqual(location, viewBag.Location);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_No_Location_In_Context_Or_Cookie_Location_Is_Not_Added_To_The_ViewBag(
+            [Greedy] CoursesController controller,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
+            GoogleAnalyticsFilter filter)
+        {
+            // Arrange
+            var context = SetupContextAndCookieLocations(controller, null, null, cookieStorageService);
+
+            //Act
+            await filter.OnActionExecutionAsync(context, Mock.Of<ActionExecutionDelegate>());
+
+            //Assert
+            var viewBag = controller.ViewBag.GaData as GaData;
+            Assert.IsNull(viewBag);
+        }
+
+        private ActionExecutingContext SetupContextAndCookieLocations(CoursesController controller, string location,
+            LocationCookieItem cookieLocation, Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService)
+        {
+            cookieStorageService.Setup(x => x.Get(Constants.LocationCookieName))
+                .Returns(cookieLocation);
+
             var httpContext = new DefaultHttpContext();
+            if (!string.IsNullOrEmpty(location))
+            {
+                httpContext.Request.QueryString = new QueryString($"?location={location}");
+            }
             
             controller.ControllerContext = new ControllerContext
             {
@@ -90,64 +127,12 @@ namespace SFA.DAS.FAT.Web.UnitTests.Filters
                 new ModelStateDictionary()
             );
 
-            var context = new ActionExecutingContext(
+            return new ActionExecutingContext(
                 actionContext,
                 new List<IFilterMetadata>(),
                 new Dictionary<string, object>(),
                 controller
             );
-            cookieStorageService.Setup(x => x.Get(Constants.LocationCookieName))
-                .Returns(location);
-
-            //Act
-            await filter.OnActionExecutionAsync(context, Mock.Of<ActionExecutionDelegate>());
-
-            //Assert
-            var viewBag = controller.ViewBag.GaData as GaData;
-            Assert.IsNotNull(viewBag);
-            Assert.AreEqual(location.Name, viewBag.Location);
-        }
-        [Test, MoqAutoData]
-        public async Task
-            Then_If_Location_In_Context_And_Location_In_Cookie_Adds_The_Location_From_The_Cookie_To_The_ViewBag(
-                string location,
-                LocationCookieItem cookieLocation,
-                [Greedy] CoursesController controller,
-                [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
-                GoogleAnalyticsFilter filter)
-        {
-            //Arrange
-            var httpContext = new DefaultHttpContext();
-            httpContext.Request.QueryString = new QueryString($"?location={location}");
-
-            controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = httpContext
-            };
-
-            var actionContext = new ActionContext(
-                httpContext,
-                Mock.Of<RouteData>(),
-                Mock.Of<ActionDescriptor>(),
-                new ModelStateDictionary()
-            );
-
-            var context = new ActionExecutingContext(
-                actionContext,
-                new List<IFilterMetadata>(),
-                new Dictionary<string, object>(),
-                controller
-            );
-            cookieStorageService.Setup(x => x.Get(Constants.LocationCookieName))
-                .Returns(cookieLocation);
-
-            //Act
-            await filter.OnActionExecutionAsync(context, Mock.Of<ActionExecutionDelegate>());
-
-            //Assert
-            var viewBag = controller.ViewBag.GaData as GaData;
-            Assert.IsNotNull(viewBag);
-            Assert.AreEqual(location, viewBag.Location);
         }
     }
 }

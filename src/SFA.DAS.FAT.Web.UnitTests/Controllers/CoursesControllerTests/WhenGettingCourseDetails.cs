@@ -10,6 +10,7 @@ using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.FAT.Web.Controllers;
+using SFA.DAS.FAT.Web.Infrastructure;
 using SFA.DAS.FAT.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -103,6 +104,35 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             
             //Assert
             cookieStorageService.Verify(service => service.Delete(Constants.LocationCookieName));
+        }
+        
+        [Test, MoqAutoData]
+        public async Task Then_If_No_Course_Is_Returned_Redirected_To_Page_Not_Found(
+            int standardCode,
+            GetCourseResult response,
+            LocationCookieItem locationCookieItem,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService, 
+            [Greedy]CoursesController controller)
+        {
+            //Arrange
+            cookieStorageService
+                .Setup(x => x.Get(Constants.LocationCookieName))
+                .Returns(locationCookieItem);
+            mediator
+                .Setup(x => 
+                    x.Send(It.Is<GetCourseQuery>(c => 
+                        c.CourseId.Equals(standardCode)),It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GetCourseResult());
+            
+            //Act
+            var actual = await controller.CourseDetail(standardCode, "");
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            var actualResult = actual as RedirectToRouteResult;
+            Assert.IsNotNull(actualResult);
+            actualResult.RouteName.Should().Be(RouteNames.Error404);
         }
     }
 }

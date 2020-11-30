@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoFixture.NUnit3;
+using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Web.Extensions;
@@ -36,6 +37,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             Assert.AreEqual(course.StandardDates.LastDateStarts, actual.LastDateStarts);
             Assert.AreEqual(DateTime.Now > course.StandardDates?.LastDateStarts, actual.AfterLastStartDate);
         }
+        
 
         [Test, AutoData]
         public void Then_If_CoreSkills_Is_Null_An_Empty_List_Is_Returned(Course course)

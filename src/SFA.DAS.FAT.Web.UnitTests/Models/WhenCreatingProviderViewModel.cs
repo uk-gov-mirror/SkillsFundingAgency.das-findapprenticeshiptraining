@@ -37,7 +37,15 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             actual.FeedbackWeaknesses.Should().BeEquivalentTo(source.Feedback.FeedbackAttributes.Weaknesses);
             actual.ProviderDistance.Should().Be(source.ProviderAddress.DistanceInMiles.FormatDistance());
         }
+        
+        [Test]
+        public void Then_If_Source_Is_Null_Then_Null_Returned()
+        {
+            var actual = (ProviderViewModel) null;
 
+            actual.Should().BeNull();
+        }
+        
         [Test, AutoData]
         public void Then_Return_Null_When_Trading_Name_Matches_Name(Provider source)
         {

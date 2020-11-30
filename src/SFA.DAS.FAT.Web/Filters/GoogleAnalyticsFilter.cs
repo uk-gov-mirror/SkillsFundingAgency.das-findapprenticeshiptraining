@@ -22,7 +22,7 @@ namespace SFA.DAS.FAT.Web.Filters
 
             var locationFromCookie = _locationCookieStorageService.Get(Constants.LocationCookieName);
             
-            if (context.RouteData.Values.TryGetValue("location", out var location))
+            if (context.HttpContext.Request.Query.TryGetValue("location", out var location))
             {
                 controller.ViewBag.GaData =  new GaData {Location = location.ToString()};
             }

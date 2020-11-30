@@ -15,9 +15,11 @@ using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Infrastructure.HealthCheck;
+using SFA.DAS.FAT.Infrastructure.Services;
 using SFA.DAS.FAT.Web.AppStart;
 using SFA.DAS.FAT.Web.Extensions;
 using SFA.DAS.FAT.Web.Filters;
+using SFA.DAS.FAT.Web.Models;
 
 namespace SFA.DAS.FAT.Web
 {
@@ -73,7 +75,7 @@ namespace SFA.DAS.FAT.Web
             {
                 options.LowercaseUrls = true;
                 options.LowercaseQueryStrings = true;
-            }).AddMvc(options => options.Filters.Add(new GoogleAnalyticsFilter())).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            }).AddMvc(options => options.Filters.Add(null)).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddServiceRegistration();
             services.AddMediatR(typeof(GetCourseQueryHandler).Assembly);

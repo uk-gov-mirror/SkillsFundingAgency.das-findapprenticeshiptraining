@@ -134,8 +134,8 @@ $("a[data-scroll-to-target]").on('click', function () {
     setTimeout(function() {
         if ($target.length > 0) {
             var scrollTo = $target.offset().top - headerOffset;
-            $('html, body').animate({scrollTop: scrollTo}, 100);
+            $('html, body').animate({scrollTop: scrollTo}, 0);
         }
-    }, 200)
+    }, 10)
 
 });

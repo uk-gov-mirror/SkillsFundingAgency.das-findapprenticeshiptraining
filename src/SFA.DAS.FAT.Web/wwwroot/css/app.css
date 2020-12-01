@@ -69,7 +69,7 @@
     background: #0b0c0c;
 }
 
-.autocomplete__input {
+.das-search-form .autocomplete__input {
     min-height: 40px;
     border-right-width: 0;
 }

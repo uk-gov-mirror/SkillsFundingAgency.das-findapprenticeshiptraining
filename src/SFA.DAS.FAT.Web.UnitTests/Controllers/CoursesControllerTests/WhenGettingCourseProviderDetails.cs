@@ -41,7 +41,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
 
             //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, location);
+            var actual = await controller.CourseProviderDetail(courseId, providerId, location, "1", "1");
 
             //Assert
             Assert.IsNotNull(actual);
@@ -74,7 +74,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
             
             //Act
-            var result = await controller.CourseProviderDetail(courseId, providerId, location) as ViewResult;
+            var result = await controller.CourseProviderDetail(courseId, providerId, location,"1","1") as ViewResult;
             
             //Assert
             var model = result!.Model as CourseProviderViewModel;
@@ -106,7 +106,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
             
             //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, "-1") as ViewResult;
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "-1", "1", "1") as ViewResult;
             
             //Assert
             cookieStorageService.Verify(x=>x.Delete(Constants.LocationCookieName));
@@ -137,7 +137,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
 
             //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, "");
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "","1","1");
             
             //Assert
             Assert.IsNotNull(actual);
@@ -170,7 +170,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
 
             //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, "") as ViewResult;
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "","1","1") as ViewResult;
             
             //Assert
             var model = actual!.Model as CourseProviderViewModel;
@@ -194,7 +194,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ThrowsAsync(exception);
 
             // Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, location) as RedirectToRouteResult;
+            var actual = await controller.CourseProviderDetail(courseId, providerId, location,"","") as RedirectToRouteResult;
 
             // Assert
             actual!.RouteName.Should().Be(RouteNames.Error500);
@@ -222,7 +222,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
 
             //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, "") as RedirectToRouteResult;
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "","","") as RedirectToRouteResult;
 
             //Assert
             Assert.IsNotNull(actual);
@@ -252,7 +252,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
 
             //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, "") as RedirectToRouteResult;
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "","","") as RedirectToRouteResult;
 
             //Assert
             Assert.IsNotNull(actual);
@@ -281,7 +281,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
 
             //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, "") as RedirectToRouteResult;
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "","","") as RedirectToRouteResult;
 
             //Assert
             Assert.IsNotNull(actual);

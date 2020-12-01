@@ -11,6 +11,8 @@ namespace SFA.DAS.FAT.Web.Models
         public string Location { get ; set ; }
         public int TotalProviders { get ; set ; }
         public Dictionary<string, string> GetCourseProvidersRequest { get; set; } = new Dictionary<string, string>();
+        public int ProviderPlacement { get; set; }
+        public int ProviderTotal { get; set; }
 
         public static implicit operator CourseProviderViewModel(GetCourseProviderResult provider)
         {

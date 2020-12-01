@@ -135,7 +135,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         }
 
         [Route("{id}/providers/{providerId}", Name = RouteNames.CourseProviderDetails)]
-        public async Task<IActionResult> CourseProviderDetail(int id, int providerId, string location)
+        public async Task<IActionResult> CourseProviderDetail(int id, int providerId, string location, string providerPlacement, string providerTotal)
         {
             try
             {
@@ -180,6 +180,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                 {
                     return RedirectToRoute(RouteNames.Error404);
                 }
+                viewModel.ProviderPlacement = int.Parse(providerPlacement);
+                viewModel.ProviderTotal = int.Parse(providerTotal);
                 
                 return View(viewModel);
             }

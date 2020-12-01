@@ -1,0 +1,14 @@
+﻿@using System.Web
+@using Microsoft.AspNetCore.Http
+@using SFA.DAS.FAT.Web.Models
+
+<script>
+    @if (ViewBag.GaData == null)
+    {
+        ViewBag.GaData = new GaData();
+    }
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({
+        'location' : '@ViewBag.GaData.Location'
+    });
+</script>

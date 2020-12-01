@@ -68,3 +68,8 @@
 .app-view-shortlist-link:focus .app-view-shortlist-link__number {
     background: #0b0c0c;
 }
+
+.das-search-form .autocomplete__input {
+    min-height: 40px;
+    border-right-width: 0;
+}

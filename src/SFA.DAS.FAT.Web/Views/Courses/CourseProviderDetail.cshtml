@@ -148,7 +148,7 @@
 
                     if (Model.Provider.DeliveryModes.FirstOrDefault(c => c.DeliveryModeType == DeliveryModeType.NotFound) != null)
                     {
-                        <p class="govuk-body das-text--error das-text--error-icon">This training provider does not offer this course at the apprenticeship location</p>
+                        <p id="course_provider_not_available" class="govuk-body das-text--error das-text--error-icon">This training provider does not offer this course at the apprenticeship location</p>
 
                         if (Model.TotalProviders == 1)
                         {

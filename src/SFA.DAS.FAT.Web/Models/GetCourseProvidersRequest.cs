@@ -14,7 +14,7 @@ namespace SFA.DAS.FAT.Web.Models
         [FromQuery]
         public IReadOnlyList<ProviderRating> ProviderRatings { get; set; } = new List<ProviderRating>();
 
-        public IEnumerable<Provider> Providers { get; set; } = new List<Provider>();
+        public string Providers { get; set; }
         
 
         public Dictionary<string, string> ToDictionary()

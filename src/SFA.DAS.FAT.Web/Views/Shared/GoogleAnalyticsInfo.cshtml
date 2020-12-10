@@ -10,6 +10,7 @@
     window.dataLayer = window.dataLayer || [];
     dataLayer.push({
         'location': '@ViewBag.GaData.Location',
-        'providerPlacement': '@ViewBag.GaData.ProviderPlacement of @ViewBag.GaData.ProviderTotal'
+        'providerPositionInList': '@ViewBag.GaData.ProviderPlacement',
+        'totalProviders':'@ViewBag.GaData.ProviderTotal'
     });
 </script>

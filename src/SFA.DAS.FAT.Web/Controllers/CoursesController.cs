@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourses;
@@ -115,7 +116,9 @@ namespace SFA.DAS.FAT.Web.Controllers
                 {
                     return RedirectToRoute(RouteNames.Error404);
                 }
-                
+
+                request.Providers = result.Providers;
+
                 _courseProvidersCookieStorageService.Create(request, nameof(GetCourseProvidersRequest));
 
                 var courseProvidersViewModel = new CourseProvidersViewModel(request, result);
@@ -135,7 +138,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         }
 
         [Route("{id}/providers/{providerId}", Name = RouteNames.CourseProviderDetails)]
-        public async Task<IActionResult> CourseProviderDetail(int id, int providerId, string location, string providerPlacement, string providerTotal)
+        public async Task<IActionResult> CourseProviderDetail(int id, int providerId, string location)
         {
             try
             {
@@ -169,6 +172,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                 {
                     providersRequestCookie.Location = result?.Location;
                     viewModel.GetCourseProvidersRequest = providersRequestCookie.ToDictionary();
+                    viewModel.ProviderTotal = providersRequestCookie.Providers.Count();
+                    viewModel.ProviderPlacement = providersRequestCookie.Providers.ToList().FindIndex(x => x.ProviderId == result.Provider.ProviderId) + 1;
                 }
 
                 if (viewModel.Course.AfterLastStartDate)
@@ -180,8 +185,6 @@ namespace SFA.DAS.FAT.Web.Controllers
                 {
                     return RedirectToRoute(RouteNames.Error404);
                 }
-                viewModel.ProviderPlacement = int.Parse(providerPlacement);
-                viewModel.ProviderTotal = int.Parse(providerTotal);
                 
                 return View(viewModel);
             }

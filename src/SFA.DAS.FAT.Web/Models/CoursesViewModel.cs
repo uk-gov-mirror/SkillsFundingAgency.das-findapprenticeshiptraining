@@ -79,7 +79,7 @@ namespace SFA.DAS.FAT.Web.Models
         private Dictionary<string, string> BuildClearSectorFilterLinks ( )
         {
             var clearFilterLinks = new Dictionary<string, string>();
-            if (SelectedSectors == null)
+            if (SelectedSectors?.FirstOrDefault() == null)
             {
                 return clearFilterLinks;
             }

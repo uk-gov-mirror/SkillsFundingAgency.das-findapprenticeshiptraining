@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.FAT.Domain.Courses;
 
 namespace SFA.DAS.FAT.Web.Models
 {
@@ -13,9 +12,6 @@ namespace SFA.DAS.FAT.Web.Models
         public IReadOnlyList<DeliveryModeType> DeliveryModes { get; set; } = new List<DeliveryModeType>();
         [FromQuery]
         public IReadOnlyList<ProviderRating> ProviderRatings { get; set; } = new List<ProviderRating>();
-
-        public string Providers { get; set; }
-        
 
         public Dictionary<string, string> ToDictionary()
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using MediatR;
@@ -8,6 +9,7 @@ using SFA.DAS.FAT.Web.Models;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Web.Infrastructure;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
 using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
@@ -23,17 +25,22 @@ namespace SFA.DAS.FAT.Web.Controllers
         private readonly IMediator _mediator;
         private readonly ICookieStorageService<LocationCookieItem> _locationCookieStorageService;
         private readonly ICookieStorageService<GetCourseProvidersRequest> _courseProvidersCookieStorageService;
+        private readonly IDataProtector _protector;
 
+        private const string ProtectorPurpose = "Analytics";
+        
         public CoursesController (
             ILogger<CoursesController> logger,
             IMediator mediator,
             ICookieStorageService<LocationCookieItem> locationCookieStorageService,
-            ICookieStorageService<GetCourseProvidersRequest> courseProvidersCookieStorageService)
+            ICookieStorageService<GetCourseProvidersRequest> courseProvidersCookieStorageService,
+            IDataProtectionProvider provider)
         {
             _logger = logger;
             _mediator = mediator;
             _locationCookieStorageService = locationCookieStorageService;
             _courseProvidersCookieStorageService = courseProvidersCookieStorageService;
+            _protector = provider.CreateProtector(ProtectorPurpose);
         }
 
         [Route("", Name = RouteNames.Courses)]
@@ -117,11 +124,18 @@ namespace SFA.DAS.FAT.Web.Controllers
                     return RedirectToRoute(RouteNames.Error404);
                 }
 
-                request.Providers = string.Join("|",result.Providers.Select(x=>x.ProviderId).ToArray());
+                var providerList = result.Providers.ToList();
+
+                var providers = result.Providers
+                        .ToDictionary(provider => 
+                                        provider.ProviderId, 
+                                        provider => Convert.ToBase64String(_protector.Protect(
+                                            System.Text.Encoding.UTF8.GetBytes($"{providerList.IndexOf(provider)}|{result.TotalFiltered}"))));
+                
 
                 _courseProvidersCookieStorageService.Update(nameof(GetCourseProvidersRequest), request);
 
-                var courseProvidersViewModel = new CourseProvidersViewModel(request, result);
+                var courseProvidersViewModel = new CourseProvidersViewModel(request, result, providers);
 
                 if (courseProvidersViewModel.Course.AfterLastStartDate)
                 {

@@ -100,7 +100,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Filters
 
             //Assert
             var viewBag = controller.ViewBag.GaData as GaData;
-            Assert.IsNull(viewBag);
+            viewBag.Should().BeEquivalentTo(new GaData());
         }
 
         private ActionExecutingContext SetupContextAndCookieLocations(CoursesController controller, string location,

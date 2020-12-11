@@ -86,7 +86,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             };
 
             //Assert
-            model.ClearSectorLinks.Should().BeEquivalentTo(new Dictionary<string, string>());
+            model.ClearSectorLinks.Should().BeEmpty();
         }
     }
 }

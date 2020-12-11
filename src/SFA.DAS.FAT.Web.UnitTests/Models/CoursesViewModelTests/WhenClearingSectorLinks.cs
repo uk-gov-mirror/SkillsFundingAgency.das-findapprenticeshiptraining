@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using AutoFixture;
 using AutoFixture.NUnit3;
+using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Web.Models;
@@ -59,6 +60,33 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             };
             
             Assert.AreEqual(1, model.ClearSectorLinks.Count);
+        }
+
+        [Test]
+        public void Then_If_A_List_With_Null_Value_Is_Passed_For_Sectors_Then_Nothing_Is_Added()
+        {
+            //Arrange
+            var selectedSectors = new List<string>();
+            selectedSectors.Add(null);
+            var fixture = new Fixture();
+            var sectors = new List<SectorViewModel>
+            {
+                new SectorViewModel(
+                    new Sector {Id = fixture.Create<Guid>(), Route = "Route"}, null)
+            };
+            //Act
+            var model = new CoursesViewModel
+            {
+                Sectors = sectors,
+                Levels = null,
+                Keyword = "",
+                SelectedSectors = selectedSectors,
+                SelectedLevels = null,
+                OrderBy = OrderBy.Name
+            };
+
+            //Assert
+            model.ClearSectorLinks.Should().BeEquivalentTo(new Dictionary<string, string>());
         }
     }
 }

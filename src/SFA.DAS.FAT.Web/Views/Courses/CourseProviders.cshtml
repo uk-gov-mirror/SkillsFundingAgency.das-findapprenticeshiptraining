@@ -183,7 +183,8 @@
                     {
                         {"location",Model.Location},
                         {"id",Model.Course.Id.ToString()},
-                        {"providerId",provider.ProviderId.ToString()}
+                        {"providerId",provider.ProviderId.ToString()},
+                        {"data", Model.ProviderOrder[provider.ProviderId]}
                     };
                     
                     <li class="das-search-results__list-item">

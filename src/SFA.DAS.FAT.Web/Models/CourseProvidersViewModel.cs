@@ -10,8 +10,6 @@ namespace SFA.DAS.FAT.Web.Models
 {
     public class CourseProvidersViewModel
     {
-        private readonly Dictionary<uint, string> _providerOrder;
-
         public CourseProvidersViewModel(GetCourseProvidersRequest request, GetCourseProvidersResult result, Dictionary<uint, string> providerOrder)
         {
             ProviderOrder = providerOrder;

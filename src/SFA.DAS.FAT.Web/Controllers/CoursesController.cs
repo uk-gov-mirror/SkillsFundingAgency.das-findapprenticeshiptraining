@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourses;
@@ -10,6 +8,7 @@ using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Web.Infrastructure;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
 using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
@@ -26,8 +25,6 @@ namespace SFA.DAS.FAT.Web.Controllers
         private readonly ICookieStorageService<LocationCookieItem> _locationCookieStorageService;
         private readonly ICookieStorageService<GetCourseProvidersRequest> _courseProvidersCookieStorageService;
         private readonly IDataProtector _protector;
-
-        private const string ProtectorPurpose = "Analytics";
         
         public CoursesController (
             ILogger<CoursesController> logger,
@@ -40,7 +37,7 @@ namespace SFA.DAS.FAT.Web.Controllers
             _mediator = mediator;
             _locationCookieStorageService = locationCookieStorageService;
             _courseProvidersCookieStorageService = courseProvidersCookieStorageService;
-            _protector = provider.CreateProtector(ProtectorPurpose);
+            _protector = provider.CreateProtector(Constants.GaDataProtectorName);
         }
 
         [Route("", Name = RouteNames.Courses)]
@@ -129,8 +126,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                 var providers = result.Providers
                         .ToDictionary(provider => 
                                         provider.ProviderId, 
-                                        provider => Convert.ToBase64String(_protector.Protect(
-                                            System.Text.Encoding.UTF8.GetBytes($"{providerList.IndexOf(provider)}|{result.TotalFiltered}"))));
+                                        provider => WebEncoders.Base64UrlEncode(_protector.Protect(
+                                            System.Text.Encoding.UTF8.GetBytes($"{providerList.IndexOf(provider) + 1}|{result.TotalFiltered}"))));
                 
 
                 _courseProvidersCookieStorageService.Update(nameof(GetCourseProvidersRequest), request);
@@ -155,7 +152,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         public async Task<IActionResult> CourseProviderDetail(int id, int providerId, string location)
         {
             try
-            {
+            {   
                 var locationItem = CheckLocation(location);
                 var result = await _mediator.Send(new GetCourseProviderQuery
                 {

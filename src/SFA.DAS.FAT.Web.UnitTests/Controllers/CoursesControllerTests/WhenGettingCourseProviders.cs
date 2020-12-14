@@ -272,7 +272,12 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             await controller.CourseProviders(request);
             
             //Assert
-            protector.Verify(c=>c.Protect(It.IsAny<byte[]>()), Times.Exactly(response.Providers.Count()));
+            var expectedProviders = response.Providers.ToList();
+            foreach (var responseProvider in expectedProviders)
+            {
+                protector.Verify(c=>c.Protect(It.Is<byte[]>(
+                    x=>x[0].Equals(Encoding.UTF8.GetBytes($"{expectedProviders.IndexOf(responseProvider) + 1}|{response.TotalFiltered}")[0]))), Times.Once);    
+            }
         }
 
         [Test, MoqAutoData]

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -167,6 +168,13 @@ namespace SFA.DAS.FAT.Web.Controllers
                 var providersRequestCookie = _courseProvidersCookieStorageService.Get(nameof(GetCourseProvidersRequest));
                 if (providersRequestCookie != default)
                 {
+                    if (id != providersRequestCookie.Id)
+                    {
+                        providersRequestCookie.Id = id;
+                        providersRequestCookie.DeliveryModes = new List<DeliveryModeType>();
+                        providersRequestCookie.ProviderRatings = new List<ProviderRating>();
+                    }
+                    
                     providersRequestCookie.Location = result?.Location;
                     viewModel.GetCourseProvidersRequest = providersRequestCookie.ToDictionary();
                 }

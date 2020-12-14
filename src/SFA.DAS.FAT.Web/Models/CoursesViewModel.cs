@@ -107,7 +107,7 @@ namespace SFA.DAS.FAT.Web.Models
         private Dictionary<string, string> BuildClearLevelFilterLinks()
         {
             var clearLevelLink = new Dictionary<string,string>();
-            if (SelectedLevels?.FirstOrDefault() == null)
+            if (SelectedLevels?.FirstOrDefault() == 0)
             {
                 return clearLevelLink;
             }

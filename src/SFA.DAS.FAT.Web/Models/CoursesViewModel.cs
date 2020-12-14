@@ -79,7 +79,7 @@ namespace SFA.DAS.FAT.Web.Models
         private Dictionary<string, string> BuildClearSectorFilterLinks ( )
         {
             var clearFilterLinks = new Dictionary<string, string>();
-            if (SelectedSectors?.FirstOrDefault() == null)
+            if (SelectedSectors?.FirstOrDefault() == null || !SelectedSectors.Any())
             {
                 return clearFilterLinks;
             }
@@ -107,7 +107,7 @@ namespace SFA.DAS.FAT.Web.Models
         private Dictionary<string, string> BuildClearLevelFilterLinks()
         {
             var clearLevelLink = new Dictionary<string,string>();
-            if (SelectedLevels == null)
+            if (SelectedLevels?.FirstOrDefault() == null || !SelectedLevels.Any())
             {
                 return clearLevelLink;
             }
@@ -154,7 +154,7 @@ namespace SFA.DAS.FAT.Web.Models
 
         private string BuildSelectedSectorListLink(string linkToAppendTo)
         {
-            return SelectedSectors != null && SelectedSectors.Any() ? $"{GetSeparator(linkToAppendTo)}sectors=" + string.Join("&sectors=", SelectedSectors.Select(HttpUtility.HtmlEncode)) : "";
+            return SelectedSectors != null && SelectedSectors.Any() && SelectedSectors.FirstOrDefault() != null ? $"{GetSeparator(linkToAppendTo)}sectors=" + string.Join("&sectors=", SelectedSectors.Select(HttpUtility.HtmlEncode)) : "";
         }
 
         private string GetSeparator(string url)

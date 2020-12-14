@@ -63,7 +63,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         }
 
         [Test]
-        public void Then_If_A_List_With_Null_Value_Is_Passed_For_Sectors_Then_Nothing_Is_Added()
+        public void Then_If_An_Empty_List_With_Is_Passed_For_Sectors_Then_Nothing_Is_Added()
         {
             //Arrange
             var selectedSectors = new List<string>();
@@ -81,12 +81,13 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
                 Levels = null,
                 Keyword = "",
                 SelectedSectors = selectedSectors,
-                SelectedLevels = null,
+                SelectedLevels = new List<int>(), //WIP, SelectedLevels should be null, won't be here in final commit
                 OrderBy = OrderBy.Name
             };
 
             //Assert
             model.ClearSectorLinks.Should().BeEmpty();
+            model.ClearKeywordLink.Should().BeEmpty();
         }
     }
 }

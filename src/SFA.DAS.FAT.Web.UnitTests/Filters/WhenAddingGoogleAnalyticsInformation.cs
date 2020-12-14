@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using AutoFixture;
 using AutoFixture.AutoMoq;
 using AutoFixture.NUnit3;
 using FluentAssertions;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
@@ -103,26 +108,136 @@ namespace SFA.DAS.FAT.Web.UnitTests.Filters
             viewBag.Should().BeEquivalentTo(new GaData());
         }
 
+        [Test, MoqAutoData]
+        public async Task Then_If_There_Is_A_ProviderId_Then_The_Data_Query_Param_Is_Checked_And_Decoded(
+            int providerPosition,
+            int providerCount,
+            uint providerId,
+            [Greedy] CoursesController controller,
+            [Frozen] Mock<IDataProtector> protector,
+            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
+            GoogleAnalyticsFilter filter)
+        {
+            // Arrange
+            var encodedData = Encoding.UTF8.GetBytes($"{providerPosition}|{providerCount}");
+            protector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Returns(encodedData);
+            provider.Setup(x => x.CreateProtector(It.IsAny<string>())).Returns(protector.Object);
+            var context = SetupContextAndCookieLocations(controller, null, null, cookieStorageService, providerId.ToString(), Convert.ToBase64String(encodedData));
+            
+            //Act
+            await filter.OnActionExecutionAsync(context, Mock.Of<ActionExecutionDelegate>());
+
+            //Assert
+            var viewBag = controller.ViewBag.GaData as GaData;
+            Assert.IsNotNull(viewBag);
+            viewBag.ProviderTotal.Should().Be(providerCount);
+            viewBag.ProviderPlacement.Should().Be(providerPosition);
+            viewBag.ProviderId.Should().Be(providerId);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_It_Is_Unable_To_Unprotect_The_Value_Then_Nothing_Is_Added(
+            int providerPosition,
+            int providerCount,
+            uint providerId,
+            [Greedy] CoursesController controller,
+            [Frozen] Mock<IDataProtector> protector,
+            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
+            GoogleAnalyticsFilter filter)
+        {
+            // Arrange
+            var encodedData = Encoding.UTF8.GetBytes($"{providerPosition}|{providerCount}");
+            protector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Throws<CryptographicException>();
+            provider.Setup(x => x.CreateProtector(It.IsAny<string>())).Returns(protector.Object);
+            var context = SetupContextAndCookieLocations(controller, null, null, cookieStorageService, providerId.ToString(), Convert.ToBase64String(encodedData));
+            
+            //Act
+            await filter.OnActionExecutionAsync(context, Mock.Of<ActionExecutionDelegate>());
+
+            //Assert
+            var viewBag = controller.ViewBag.GaData as GaData;
+            Assert.IsNotNull(viewBag);
+            viewBag.ProviderTotal.Should().Be(0);
+            viewBag.ProviderPlacement.Should().Be(0);
+            viewBag.ProviderId.Should().Be(0);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_It_Is_An_Invalid_Base64_String_Then_Nothing_Is_Added(
+            int providerPosition,
+            int providerCount,
+            uint providerId,
+            [Greedy] CoursesController controller,
+            [Frozen] Mock<IDataProtector> protector,
+            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
+            GoogleAnalyticsFilter filter)
+        {
+            // Arrange
+            var data = $"{providerPosition}|{providerCount}";
+            var encodedData = Encoding.UTF8.GetBytes(data);
+            protector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Returns(encodedData);
+            provider.Setup(x => x.CreateProtector(It.IsAny<string>())).Returns(protector.Object);
+            var context = SetupContextAndCookieLocations(controller, null, null, cookieStorageService, providerId.ToString(), data);
+            
+            //Act
+            await filter.OnActionExecutionAsync(context, Mock.Of<ActionExecutionDelegate>());
+
+            //Assert
+            var viewBag = controller.ViewBag.GaData as GaData;
+            Assert.IsNotNull(viewBag);
+            viewBag.ProviderTotal.Should().Be(0);
+            viewBag.ProviderPlacement.Should().Be(0);
+            viewBag.ProviderId.Should().Be(0);
+        }
+
         private ActionExecutingContext SetupContextAndCookieLocations(CoursesController controller, string location,
-            LocationCookieItem cookieLocation, Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService)
+            LocationCookieItem cookieLocation, Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService, string providerId = "", string data = "")
         {
             cookieStorageService.Setup(x => x.Get(Constants.LocationCookieName))
                 .Returns(cookieLocation);
 
             var httpContext = new DefaultHttpContext();
+            var routeData = new RouteData();
+            var queryString = "";
             if (!string.IsNullOrEmpty(location))
             {
-                httpContext.Request.QueryString = new QueryString($"?location={location}");
+                queryString += $"?location={location}";
             }
+
+            if (!string.IsNullOrEmpty(providerId))
+            {
+                routeData.Values.Add("providerId",providerId);
+                if (!string.IsNullOrEmpty(data))
+                {
+                    if (string.IsNullOrEmpty(queryString))
+                    {
+                        queryString += $"?data={data}";        
+                    }
+                    else
+                    {
+                        queryString += $"&data={data}";
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(queryString))
+            {
+                httpContext.Request.QueryString = new QueryString(queryString);    
+            }
+            
             
             controller.ControllerContext = new ControllerContext
             {
                 HttpContext = httpContext
             };
 
+            
             var actionContext = new ActionContext(
                 httpContext,
-                Mock.Of<RouteData>(),
+                routeData,
                 Mock.Of<ActionDescriptor>(),
                 new ModelStateDictionary()
             );

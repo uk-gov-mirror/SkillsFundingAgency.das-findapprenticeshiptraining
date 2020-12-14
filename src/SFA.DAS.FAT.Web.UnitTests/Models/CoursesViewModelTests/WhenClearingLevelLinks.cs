@@ -198,10 +198,35 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         }
 
         [Test]
-        public void Then_If_A_List_With_A_Default_Value_Is_Passed_For_Levels_Then_Nothing_Is_Added()
+        public void Then_If_A_Null_List_Is_Passed_For_Levels_Then_Nothing_Is_Added()
         {
             //Arrange
-            var selectedLevels = new List<int>{new int()};
+            var fixture = new Fixture();
+            var sectors = new List<SectorViewModel>
+            {
+                new SectorViewModel(
+                    new Sector {Id = fixture.Create<Guid>(), Route = "Route"}, null)
+            };
+            //Act
+            var model = new CoursesViewModel
+            {
+                Sectors = sectors,
+                Levels = null,
+                Keyword = "",
+                SelectedSectors = null,
+                SelectedLevels = null,
+                OrderBy = OrderBy.Name
+            };
+
+            //Assert
+            model.ClearLevelLinks.Should().BeEmpty();
+        }
+
+        [Test]
+        public void Then_If_An_Empty_List_Is_Passed_For_Levels_Then_Nothing_Is_Added()
+        {
+            //Arrange
+            var selectedLevels = new List<int>();
             var fixture = new Fixture();
             var sectors = new List<SectorViewModel>
             {

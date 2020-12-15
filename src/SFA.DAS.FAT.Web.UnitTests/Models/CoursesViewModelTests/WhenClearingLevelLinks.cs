@@ -201,16 +201,11 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_If_A_Null_List_Is_Passed_For_Levels_Then_Nothing_Is_Added()
         {
             //Arrange
-            var fixture = new Fixture();
-            var sectors = new List<SectorViewModel>
-            {
-                new SectorViewModel(
-                    new Sector {Id = fixture.Create<Guid>(), Route = "Route"}, null)
-            };
+            
             //Act
             var model = new CoursesViewModel
             {
-                Sectors = sectors,
+                Sectors = null,
                 Levels = null,
                 Keyword = "",
                 SelectedSectors = null,
@@ -226,21 +221,15 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_If_An_Empty_List_Is_Passed_For_Levels_Then_Nothing_Is_Added()
         {
             //Arrange
-            var selectedLevels = new List<int>();
-            var fixture = new Fixture();
-            var sectors = new List<SectorViewModel>
-            {
-                new SectorViewModel(
-                    new Sector {Id = fixture.Create<Guid>(), Route = "Route"}, null)
-            };
+            
             //Act
             var model = new CoursesViewModel
             {
-                Sectors = sectors,
+                Sectors = null,
                 Levels = null,
                 Keyword = "",
                 SelectedSectors = null,
-                SelectedLevels = selectedLevels,
+                SelectedLevels = new List<int>(),
                 OrderBy = OrderBy.Name
             };
 

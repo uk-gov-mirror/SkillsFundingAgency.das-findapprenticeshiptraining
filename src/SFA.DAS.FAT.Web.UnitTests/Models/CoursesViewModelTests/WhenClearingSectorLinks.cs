@@ -66,20 +66,14 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_If_A_List_Containing_A_Null_Value_Is_Passed_For_Sectors_Then_Nothing_Is_Added()
         {
             //Arrange
-            var selectedSectors = new List<string>{null};
-            var fixture = new Fixture();
-            var sectors = new List<SectorViewModel>
-            {
-                new SectorViewModel(
-                    new Sector {Id = fixture.Create<Guid>(), Route = "Route"}, null)
-            };
+            
             //Act
             var model = new CoursesViewModel
             {
-                Sectors = sectors,
+                Sectors = null,
                 Levels = null,
                 Keyword = "",
-                SelectedSectors = selectedSectors,
+                SelectedSectors = new List<string> { null },
                 SelectedLevels = null,
                 OrderBy = OrderBy.Name
             };

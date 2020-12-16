@@ -149,7 +149,38 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         }
 
         [Test, MoqAutoData]
-        public async Task Then_ProviderFilters_Populated_From_Cookie(
+        public async Task Then_ProviderFilters_Populated_From_Cookie_And_Id_From_Request_If_Matches_CookieValue(
+            int providerId,
+            int courseId,
+            GetCourseProvidersRequest providersRequest,
+            GetCourseProviderResult response,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<GetCourseProvidersRequest>> cookieStorageService,
+            [Greedy] CoursesController controller)
+        {
+            //Arrange
+            providersRequest.Id = courseId;
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
+            cookieStorageService
+                .Setup(x => x.Get(nameof(GetCourseProvidersRequest)))
+                .Returns(providersRequest);
+            mediator
+                .Setup(x => x.Send(
+                    It.IsAny<GetCourseProviderQuery>(),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+
+            //Act
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "") as ViewResult;
+            
+            //Assert
+            var model = actual!.Model as CourseProviderViewModel;
+            model!.GetCourseProvidersRequest.Where(key=>key.Key!="Id").Should().BeEquivalentTo(providersRequest.ToDictionary().Where(key=>key.Key!="Id"));
+            
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_The_Course_Differs_From_The_Cookie_Request_The_Filter_And_Id_Are_Updated_And_Filters_Cleared(
             int providerId,
             int courseId,
             GetCourseProvidersRequest providersRequest,
@@ -174,7 +205,9 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             
             //Assert
             var model = actual!.Model as CourseProviderViewModel;
-            model!.GetCourseProvidersRequest.Should().BeEquivalentTo(providersRequest.ToDictionary());
+            model!.GetCourseProvidersRequest["Id"].Should().Be(courseId.ToString());
+            model!.GetCourseProvidersRequest.ContainsKey("DeliveryModes[0]").Should().BeFalse();
+            model!.GetCourseProvidersRequest.ContainsKey("ProviderRatings[0]").Should().BeFalse();
         }
 
         [Test, MoqAutoData]

@@ -79,7 +79,7 @@ namespace SFA.DAS.FAT.Web.Models
         private Dictionary<string, string> BuildClearSectorFilterLinks ( )
         {
             var clearFilterLinks = new Dictionary<string, string>();
-            if (SelectedSectors == null)
+            if (SelectedSectors?.FirstOrDefault() == null)
             {
                 return clearFilterLinks;
             }
@@ -107,7 +107,7 @@ namespace SFA.DAS.FAT.Web.Models
         private Dictionary<string, string> BuildClearLevelFilterLinks()
         {
             var clearLevelLink = new Dictionary<string,string>();
-            if (SelectedLevels == null)
+            if (SelectedLevels == null || !SelectedLevels.Any())
             {
                 return clearLevelLink;
             }

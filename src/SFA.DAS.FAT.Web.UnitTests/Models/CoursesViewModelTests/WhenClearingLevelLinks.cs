@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using AutoFixture;
 using AutoFixture.NUnit3;
+using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Web.Models;
@@ -194,6 +195,46 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
             };
             
             Assert.AreEqual(1, model.ClearLevelLinks.Count);
+        }
+
+        [Test]
+        public void Then_If_A_Null_List_Is_Passed_For_Levels_Then_Nothing_Is_Added()
+        {
+            //Arrange
+            
+            //Act
+            var model = new CoursesViewModel
+            {
+                Sectors = null,
+                Levels = null,
+                Keyword = "",
+                SelectedSectors = null,
+                SelectedLevels = null,
+                OrderBy = OrderBy.Name
+            };
+
+            //Assert
+            model.ClearLevelLinks.Should().BeEmpty();
+        }
+
+        [Test]
+        public void Then_If_An_Empty_List_Is_Passed_For_Levels_Then_Nothing_Is_Added()
+        {
+            //Arrange
+            
+            //Act
+            var model = new CoursesViewModel
+            {
+                Sectors = null,
+                Levels = null,
+                Keyword = "",
+                SelectedSectors = null,
+                SelectedLevels = new List<int>(),
+                OrderBy = OrderBy.Name
+            };
+
+            //Assert
+            model.ClearLevelLinks.Should().BeEmpty();
         }
 
         private static void AssertClearLevelLink(CoursesViewModel model, int clearLinkCount)

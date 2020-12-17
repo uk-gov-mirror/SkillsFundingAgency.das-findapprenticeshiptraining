@@ -3,5 +3,6 @@
     public class Constants
     {
         public static string LocationCookieName => "SFA.DAS.FindApprenticeshipTraining.SearchLocation";
+        public static string GaDataProtectorName => "Analytics";
     }
 }

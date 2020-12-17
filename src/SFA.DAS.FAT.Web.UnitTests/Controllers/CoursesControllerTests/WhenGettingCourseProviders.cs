@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Moq.Protected;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
 using SFA.DAS.FAT.Domain.Configuration;
@@ -44,7 +48,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             Assert.IsNotNull(actual);
             var actualModel = actual.Model as CourseProvidersViewModel;
             Assert.IsNotNull(actualModel);
-            actualModel.Should().BeEquivalentTo(new CourseProvidersViewModel(request, response));
+            actualModel.Should().BeEquivalentTo(new CourseProvidersViewModel(request, response, null), options=>options.Excluding(c=>c.ProviderOrder));
         }
 
         [Test, MoqAutoData]
@@ -170,9 +174,9 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             await controller.CourseProviders(request);
             
             //Assert
-            cookieStorageService.Verify(x=>x.Create(
-                It.Is<GetCourseProvidersRequest>(c=>c == request),
+            cookieStorageService.Verify(x=>x.Update(
                 nameof(GetCourseProvidersRequest),
+                It.Is<GetCourseProvidersRequest>(c=>c == request),
                 1));
         }
 
@@ -243,6 +247,72 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             //Assert
             Assert.IsNotNull(actual);
             actual.RouteName.Should().Be(RouteNames.CourseDetails);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_The_Provider_Position_List_Is_Encoded(
+            GetCourseProvidersRequest request,
+            GetCourseProvidersResult response,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<IDataProtector> protector,
+            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Greedy] CoursesController controller
+            )
+        {
+            //Arrange
+            provider.Setup(x => x.CreateProtector(It.IsAny<string>())).Returns(protector.Object);
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
+            mediator.Setup(x => x.Send(
+                    It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id) 
+                                                        && c.Location.Equals(request.Location)),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+            
+            //Act
+            await controller.CourseProviders(request);
+            
+            //Assert
+            var expectedProviders = response.Providers.ToList();
+            foreach (var responseProvider in expectedProviders)
+            {
+                protector.Verify(c=>c.Protect(It.Is<byte[]>(
+                    x=>x[0].Equals(Encoding.UTF8.GetBytes($"{expectedProviders.IndexOf(responseProvider) + 1}|{response.TotalFiltered}")[0]))), Times.Once);    
+            }
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_The_Provider_Position_Is_Added_To_The_ViewModel(
+            string encodedValue,
+            GetCourseProvidersRequest request,
+            GetCourseProvidersResult response,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<GetCourseProvidersRequest>> cookieStorageService,
+            [Frozen] Mock<IDataProtector> protector,
+            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Greedy] CoursesController controller)
+        {
+            //Arrange
+            var encodedData = Encoding.UTF8.GetBytes(encodedValue);
+            protector.Setup(sut => sut.Protect(It.IsAny<byte[]>())).Returns(encodedData);
+            provider.Setup(x => x.CreateProtector(It.IsAny<string>())).Returns(protector.Object);
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
+            mediator.Setup(x => x.Send(
+                    It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id) 
+                                                        && c.Location.Equals(request.Location)),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+            
+            //Act
+            var actual = await controller.CourseProviders(request) as ViewResult;
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            var actualModel = actual.Model as CourseProvidersViewModel;
+            Assert.IsNotNull(actualModel);
+            actualModel.ProviderOrder.Count.Should().Be(response.Providers.Count());
+            actualModel.ProviderOrder.Select(c => c.Value).All(c => c.Equals(Convert.ToBase64String(encodedData))).Should().BeTrue();
+            actualModel.ProviderOrder.Select(c => c.Key).ToList().Should()
+                .BeEquivalentTo(response.Providers.Select(c => c.ProviderId).ToList());
         }
     }
 }

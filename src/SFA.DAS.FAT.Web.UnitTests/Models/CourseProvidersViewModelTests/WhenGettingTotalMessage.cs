@@ -24,6 +24,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
             int filterTotal, 
             bool hasFilter, 
             string expectedMessage,
+            Dictionary<uint, string> providerOrder,
             GetCourseProvidersResult result)
         {
             //arrange
@@ -37,7 +38,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
             result.Total = totalCount;
             
             //act
-            var viewModel = new CourseProvidersViewModel(request, result);
+            var viewModel = new CourseProvidersViewModel(request, result, providerOrder);
 
             //assert
             viewModel.TotalMessage.Should().Be(expectedMessage);
@@ -55,6 +56,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
             int filterTotal, 
             bool hasFilter, 
             string expectedMessage,
+            Dictionary<uint, string> providerOrder,
             GetCourseProvidersResult result)
         {
             //arrange
@@ -68,7 +70,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
             result.Total = totalCount;    
             
             //act
-            var viewModel = new CourseProvidersViewModel(request, result);
+            var viewModel = new CourseProvidersViewModel(request, result, providerOrder);
 
             //assert
             viewModel.TotalMessage.Should().Be(expectedMessage);

@@ -10,8 +10,9 @@ namespace SFA.DAS.FAT.Web.Models
 {
     public class CourseProvidersViewModel
     {
-        public CourseProvidersViewModel(GetCourseProvidersRequest request, GetCourseProvidersResult result)
+        public CourseProvidersViewModel(GetCourseProvidersRequest request, GetCourseProvidersResult result, Dictionary<uint, string> providerOrder)
         {
+            ProviderOrder = providerOrder;
             Course = result.Course;
             Providers = result.Providers.Select(c => (ProviderViewModel)c);
             Total = result.Total;
@@ -38,6 +39,7 @@ namespace SFA.DAS.FAT.Web.Models
 
         public IEnumerable<DeliveryModeOptionViewModel> DeliveryModes { get; set; }
         public IEnumerable<ProviderRatingOptionViewModel> ProviderRatings { get; set; }
+        public Dictionary<uint, string> ProviderOrder { get ;}
 
         private bool ShouldShowFilters()
         {

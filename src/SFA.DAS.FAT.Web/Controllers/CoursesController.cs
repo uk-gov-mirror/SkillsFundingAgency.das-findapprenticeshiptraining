@@ -131,7 +131,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                                             System.Text.Encoding.UTF8.GetBytes($"{providerList.IndexOf(provider) + 1}|{result.TotalFiltered}"))));
                 
 
-                _courseProvidersCookieStorageService.Update(nameof(GetCourseProvidersRequest), request);
+                _courseProvidersCookieStorageService.Update(Constants.ProvidersCookieName, request, 2);
 
                 var courseProvidersViewModel = new CourseProvidersViewModel(request, result, providers);
 
@@ -179,7 +179,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                 
                 var viewModel = (CourseProviderViewModel)result;
                 viewModel.Location = cookieResult.Name;
-                var providersRequestCookie = _courseProvidersCookieStorageService.Get(nameof(GetCourseProvidersRequest));
+                var providersRequestCookie = _courseProvidersCookieStorageService.Get(Constants.ProvidersCookieName);
                 if (providersRequestCookie != default)
                 {
                     if (id != providersRequestCookie.Id)

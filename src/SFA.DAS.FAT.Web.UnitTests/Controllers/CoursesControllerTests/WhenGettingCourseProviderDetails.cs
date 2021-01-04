@@ -162,7 +162,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             providersRequest.Id = courseId;
             response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
             cookieStorageService
-                .Setup(x => x.Get(nameof(GetCourseProvidersRequest)))
+                .Setup(x => x.Get(Constants.ProvidersCookieName))
                 .Returns(providersRequest);
             mediator
                 .Setup(x => x.Send(
@@ -192,7 +192,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             //Arrange
             response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
             cookieStorageService
-                .Setup(x => x.Get(nameof(GetCourseProvidersRequest)))
+                .Setup(x => x.Get(Constants.ProvidersCookieName))
                 .Returns(providersRequest);
             mediator
                 .Setup(x => x.Send(
@@ -246,7 +246,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             //Arrange
             response.Course = null;
             cookieStorageService
-                .Setup(x => x.Get(nameof(GetCourseProvidersRequest)))
+                .Setup(x => x.Get(Constants.ProvidersCookieName))
                 .Returns(providersRequest);
             mediator
                 .Setup(x => x.Send(
@@ -276,7 +276,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(1);
             response.Provider = null;
             cookieStorageService
-                .Setup(x => x.Get(nameof(GetCourseProvidersRequest)))
+                .Setup(x => x.Get(Constants.ProvidersCookieName))
                 .Returns(providersRequest);
             mediator
                 .Setup(x => x.Send(
@@ -305,7 +305,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             //Arrange
             response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(-1);
             cookieStorageService
-                .Setup(x => x.Get(nameof(GetCourseProvidersRequest)))
+                .Setup(x => x.Get(Constants.ProvidersCookieName))
                 .Returns(providersRequest);
             mediator
                 .Setup(x => x.Send(

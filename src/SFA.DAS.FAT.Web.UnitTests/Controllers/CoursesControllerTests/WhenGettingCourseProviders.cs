@@ -9,8 +9,6 @@ using MediatR;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Moq.Protected;
-using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
 using SFA.DAS.FAT.Domain.Configuration;
@@ -175,9 +173,9 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             
             //Assert
             cookieStorageService.Verify(x=>x.Update(
-                nameof(GetCourseProvidersRequest),
+                Constants.ProvidersCookieName,
                 It.Is<GetCourseProvidersRequest>(c=>c == request),
-                1));
+                2));
         }
 
         [Test, MoqAutoData]

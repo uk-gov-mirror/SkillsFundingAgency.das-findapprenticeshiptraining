@@ -17,5 +17,7 @@
         public const string Error500 = "500";
 
         public const string AccessibilityStatement = "accessibility-statement";
+
+        public const string Privacy = "privacy";
     }
 }

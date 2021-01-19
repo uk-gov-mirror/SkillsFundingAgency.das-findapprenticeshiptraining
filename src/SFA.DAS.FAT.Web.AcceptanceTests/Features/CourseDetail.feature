@@ -22,7 +22,7 @@ Scenario: Course with last start date
 Scenario: Expired course
 	Given I navigate to the following url: /courses/101
 	Then an http status code of 200 is returned
-	And the page content includes the following: This apprenticeship training course is no longer available for new starts
+	And the page content includes the following: This apprenticeship training course is no longer available for new apprentices.
 
 @WireMockServer
 Scenario: Regulated course

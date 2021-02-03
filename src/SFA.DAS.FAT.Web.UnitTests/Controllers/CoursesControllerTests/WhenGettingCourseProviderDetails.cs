@@ -292,34 +292,5 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             actual.RouteName.Should().Be(RouteNames.CourseDetails);
         }
 
-        [Test, MoqAutoData]
-        public async Task Then_If_Provider_Unavailable_Then_Redirected_To_Provider_Unavailable_Page(
-            int providerId,
-            int courseId,
-            GetCourseProvidersRequest providersRequest,
-            GetCourseProviderResult response,
-            [Frozen] Mock<IMediator> mediator,
-            [Frozen] Mock<ICookieStorageService<GetCourseProvidersRequest>> cookieStorageService,
-            [Greedy] CoursesController controller)
-        {
-            //Arrange
-            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
-            response.Provider = null;
-            cookieStorageService
-                .Setup(x => x.Get(Constants.ProvidersCookieName))
-                .Returns(providersRequest);
-            mediator
-                .Setup(x => x.Send(
-                    It.IsAny<GetCourseProviderQuery>(),
-                    It.IsAny<CancellationToken>()))
-                .ReturnsAsync(response);
-
-            //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, "") as RedirectToRouteResult;
-
-            //Assert
-            Assert.IsNotNull(actual);
-            actual.RouteName.Should().Be(RouteNames.ProviderUnavailable);
-        }
     }
 }

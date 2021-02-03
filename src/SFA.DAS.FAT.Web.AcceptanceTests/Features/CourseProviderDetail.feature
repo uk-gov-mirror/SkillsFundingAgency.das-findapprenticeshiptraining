@@ -40,6 +40,11 @@ Given I have a provider filters cookie
 And I navigate to the following url: courses/14/providers/1001
 Then an http status code of 200 is returned
 And the page content does not include the following: in the apprenticeship location
- 
 
+@WireMockServer
+Scenario: Provider is no longer available
+Given I have a provider filters cookie
+And I navigate to the following url: courses/14/providers/10000
+Then an http status code of 200 is returned
+And the page content includes the following: This training provider is currently unavailable for apprenticeship training
 

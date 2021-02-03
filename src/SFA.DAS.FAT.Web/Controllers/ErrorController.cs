@@ -18,11 +18,5 @@ namespace SFA.DAS.FAT.Web.Controllers
         {
             return View();
         }
-
-        [Route(template: "provider-unavailable", Name = RouteNames.ProviderUnavailable)]
-        public IActionResult ProviderUnavailable()
-        {
-            return View();
-        }
     }
 }

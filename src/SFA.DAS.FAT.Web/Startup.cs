@@ -71,7 +71,7 @@ namespace SFA.DAS.FAT.Web
             
             services.Configure<RouteOptions>(options =>
             {
-                
+                options.LowercaseUrls = true;
             }).AddMvc(options => options.Filters.Add(typeof(GoogleAnalyticsFilter))).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddServiceRegistration();

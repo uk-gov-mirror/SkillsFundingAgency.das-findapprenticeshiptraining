@@ -9,6 +9,10 @@
     {
         ViewData["Title"] = "This training provider is currently unavailable for apprenticeship training";
         ViewData["Description"] = "This training provider is currently unavailable for apprenticeship training.";
+        ViewData[nameof(BreadCrumbViewModel)] = new BreadCrumbViewModel
+        {
+            Level = BreadCrumbLevel.Error
+        };
     }
     else
     {

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAT.Web.Infrastructure;
 
 namespace SFA.DAS.FAT.Web.Controllers
@@ -15,6 +15,12 @@ namespace SFA.DAS.FAT.Web.Controllers
 
         [Route("500", Name = RouteNames.Error500)]
         public IActionResult ApplicationError()
+        {
+            return View();
+        }
+
+        [Route(template: "provider-unavailable", Name = RouteNames.ProviderUnavailable)]
+        public IActionResult ProviderUnavailable()
         {
             return View();
         }

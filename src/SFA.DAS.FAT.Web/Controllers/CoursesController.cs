@@ -200,7 +200,7 @@ namespace SFA.DAS.FAT.Web.Controllers
 
                 if (viewModel.Provider == null)
                 {
-                    return RedirectToRoute(RouteNames.Error404);
+                    return RedirectToRoute(RouteNames.ProviderUnavailable);
                 }
                 
                 return View(viewModel);

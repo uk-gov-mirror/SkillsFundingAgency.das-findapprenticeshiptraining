@@ -27,7 +27,7 @@ namespace SFA.DAS.FAT.MockServer
             var server = StandAloneApp.Start(settings);
            
             server.Given(Request.Create()
-                .WithPath(s => Regex.IsMatch(s, "/trainingcourses/\\d+/providers/\\d+$"))
+                .WithPath(s => Regex.IsMatch(s, "/trainingcourses/\\d+/providers/(?!(?:10000)$)\\d+$"))
                 .WithParam(MatchLocationParamCoventry)
                 .UsingGet()
             ).RespondWith(
@@ -37,7 +37,16 @@ namespace SFA.DAS.FAT.MockServer
                     .WithBodyFromFile("course-provider-details-notfound.json"));
 
             server.Given(Request.Create()
-                .WithPath(s => Regex.IsMatch(s,"/trainingcourses/\\d+/providers/\\d+$"))
+                .WithPath(s => Regex.IsMatch(s, "/trainingcourses/\\d+/providers/10000$"))
+                .UsingGet()
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("course-provider-unavailable.json"));
+
+            server.Given(Request.Create()
+                .WithPath(s => Regex.IsMatch(s, "/trainingcourses/\\d+/providers/(?!(?:10000)$)\\d+$"))
                 .WithParam(MatchLocationParam)
                 .UsingGet()
             ).RespondWith(
@@ -47,7 +56,7 @@ namespace SFA.DAS.FAT.MockServer
                     .WithBodyFromFile("course-provider.json"));
             
             server.Given(Request.Create()
-                .WithPath(s => Regex.IsMatch(s,"/trainingcourses/\\d+/providers/\\d+$"))
+                .WithPath(s => Regex.IsMatch(s, "/trainingcourses/\\d+/providers/(?!(?:10000)$)\\d+$"))
                 .UsingGet()
             ).RespondWith(
                 Response.Create()

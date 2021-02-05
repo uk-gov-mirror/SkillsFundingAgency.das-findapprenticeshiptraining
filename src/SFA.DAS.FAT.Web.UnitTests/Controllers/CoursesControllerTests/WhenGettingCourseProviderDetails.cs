@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
@@ -263,36 +264,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         }
 
         [Test, MoqAutoData]
-        public async Task Then_If_Course_And_No_Provider_Then_Not_Found_Returned(
-            int providerId,
-            int courseId,
-            GetCourseProvidersRequest providersRequest,
-            GetCourseProviderResult response,
-            [Frozen] Mock<IMediator> mediator,
-            [Frozen] Mock<ICookieStorageService<GetCourseProvidersRequest>> cookieStorageService,
-            [Greedy] CoursesController controller)
-        {
-            //Arrange
-            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(1);
-            response.Provider = null;
-            cookieStorageService
-                .Setup(x => x.Get(Constants.ProvidersCookieName))
-                .Returns(providersRequest);
-            mediator
-                .Setup(x => x.Send(
-                    It.IsAny<GetCourseProviderQuery>(),
-                    It.IsAny<CancellationToken>()))
-                .ReturnsAsync(response);
-
-            //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, "") as RedirectToRouteResult;
-
-            //Assert
-            Assert.IsNotNull(actual);
-            actual.RouteName.Should().Be(RouteNames.Error404);
-        }
-        
-        [Test, MoqAutoData]
         public async Task Then_If_Course_Is_After_Last_Start_Then_Redirected_To_Course_Page(
             int providerId,
             int courseId,
@@ -320,5 +291,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             Assert.IsNotNull(actual);
             actual.RouteName.Should().Be(RouteNames.CourseDetails);
         }
+
     }
 }

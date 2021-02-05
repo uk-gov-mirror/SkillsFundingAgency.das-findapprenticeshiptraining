@@ -198,11 +198,6 @@ namespace SFA.DAS.FAT.Web.Controllers
                     return RedirectToRoute(RouteNames.CourseDetails,new {Id = id});
                 }
 
-                if (viewModel.Provider == null)
-                {
-                    return RedirectToRoute(RouteNames.Error404);
-                }
-                
                 return View(viewModel);
             }
             catch (Exception e)

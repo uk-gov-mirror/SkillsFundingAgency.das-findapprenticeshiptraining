@@ -46,6 +46,15 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             actual.Should().BeNull();
         }
         
+        
+        [Test]
+        public void Then_If_Source_Is_Empty_Then_Null_Returned()
+        {
+            var actual = (ProviderViewModel)new Provider();
+
+            actual.Should().BeNull();
+        }
+        
         [Test, AutoData]
         public void Then_Return_Null_When_Trading_Name_Matches_Name(Provider source)
         {

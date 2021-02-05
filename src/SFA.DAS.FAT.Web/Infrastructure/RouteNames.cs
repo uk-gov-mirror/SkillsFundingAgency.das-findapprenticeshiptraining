@@ -12,6 +12,8 @@
         public const string CourseProviders = "course-providers";
         public const string CourseProviderDetails = "course-provider-details";
 
+        public const string ShortList = "shortlist";
+        
         public const string Error403 = "403";
         public const string Error404 = "404";
         public const string Error500 = "500";

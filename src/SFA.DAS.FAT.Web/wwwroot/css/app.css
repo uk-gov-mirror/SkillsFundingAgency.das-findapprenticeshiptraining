@@ -1,3 +1,15 @@
+.app-breadcrumbs-wrap:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+@media (min-width: 40.0625em) {
+    .app-breadcrumbs {
+        float: left;
+    }
+}
+
 .app-shortlist-banner {
     background: #fff;
     display: none;
@@ -39,7 +51,15 @@
     vertical-align: middle;
 }
 
-.app-view-shortlist-link {
+@media (min-width: 40.0625em) {
+    .app-view-shortlist-link {
+        float: right;
+        margin-top: 15px;
+    }
+}
+
+.app-shortlist-banner .app-view-shortlist-link {
+    margin-top: 0;
     float: right;
 }
 

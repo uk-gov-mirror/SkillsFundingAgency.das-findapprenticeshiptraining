@@ -4,7 +4,8 @@ trigger:
     include:
       - "*"
 
-pr: none
+pr:
+  - master
 
 workspace:
     clean: all
@@ -13,6 +14,9 @@ variables:
   - group: 'Prod Management Resources'
   - name: buildConfiguration
     value: 'release'
+  - group: "ESFA - SonarCloud"
+  - name: sonarCloudProjectKey
+    value: "SkillsFundingAgency_das-findapprenticeshiptraining"
 
 pool:
   name: 'DAS - Continuous Integration'
@@ -32,6 +36,16 @@ steps:
     configFilePath: GitVersion.yml
     updateAssemblyInfo: true
 
+- task: SonarCloudPrepare@1
+  displayName: 'Prepare Sonarcloud analysis configuration'
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'),eq(variables['Build.Reason'], 'PullRequest')))
+  inputs:
+    SonarCloud: "$(SonarCloudConnectionId)"
+    organization: "$(SonarCloudOrganisationKey)"
+    scannerMode: 'MSBuild'
+    projectName: "$(Build.DefinitionName)"
+    projectKey: "$(sonarCloudProjectKey)"
+
 - task: DotNetCoreCLI@2
   displayName: Restore
   inputs:
@@ -44,20 +58,30 @@ steps:
   inputs:
     projects: 'src/**/*.csproj'
     arguments: '--configuration $(buildConfiguration) --no-restore'
-    
+
 - task: DotNetCoreCLI@2
   displayName: Test
   inputs:
     command: test
     projects: '**/*.UnitTests.csproj'
     arguments: '--configuration $(buildConfiguration) --no-build'
-     
+
 - task: DotNetCoreCLI@2
   displayName: 'Acceptance Tests'
   inputs:
     command: test
     projects: '**/*.AcceptanceTests.csproj'
     arguments: '--configuration $(buildConfiguration) --no-build'
+
+- task: SonarCloudAnalyze@1
+  displayName: 'Run SonarCloud analysis'
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'),eq(variables['Build.Reason'], 'PullRequest')))
+
+- task: SonarCloudPublish@1
+  displayName: 'Publish SonarCloud analysis results on build summary'
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'),eq(variables['Build.Reason'], 'PullRequest')))
+  inputs:
+    pollingTimeoutSec: '300'
 
 - template: azure-pipelines-templates/dependency-check.yml@das-platform-building-blocks
 
@@ -68,7 +92,7 @@ steps:
     publishWebProjects: false
     projects: 'src/SFA.DAS.FAT.Web/SFA.DAS.FAT.Web.csproj'
     arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory)/publish --no-restore --no-build'
-    
+
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
   inputs:

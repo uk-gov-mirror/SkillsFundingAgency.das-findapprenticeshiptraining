@@ -8,7 +8,7 @@ using SFA.DAS.FAT.Domain.Shortlist.Api;
 
 namespace SFA.DAS.FAT.Application.Shortlist.Services
 {
-    public class ShortlistService
+    public class ShortlistService : IShortlistService
     {
         private readonly IApiClient _apiClient;
         private readonly FindApprenticeshipTrainingApi _configValue;

@@ -10,8 +10,5 @@
     <ItemGroup>
       <ProjectReference Include="..\SFA.DAS.FAT.Domain\SFA.DAS.FAT.Domain.csproj" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Shortlist\Queries\" />
-    </ItemGroup>
 
 </Project>

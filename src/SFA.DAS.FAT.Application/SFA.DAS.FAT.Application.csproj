@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -9,6 +9,10 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\SFA.DAS.FAT.Domain\SFA.DAS.FAT.Domain.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Shortlist\Services\" />
+      <Folder Include="Shortlist\Queries\" />
     </ItemGroup>
 
 </Project>

@@ -1,7 +1,6 @@
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -44,6 +43,27 @@ namespace SFA.DAS.FAT.Infrastructure.Api
             return default;
         }
 
+        public async Task Post<TPostData>(IPostApiRequest<TPostData> request)
+        {
+            AddHeaders();
+            
+            var stringContent = request.Data != null ? new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json") : null;
+
+            var response = await _httpClient.PostAsync(request.PostUrl, stringContent)
+                .ConfigureAwait(false);
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task Delete(IDeleteApiRequest request)
+        {
+            AddHeaders();
+            var response = await _httpClient.DeleteAsync(request.DeleteUrl)
+                .ConfigureAwait(false);
+
+            response.EnsureSuccessStatusCode();
+        }
+
         public async Task<int> Ping()
         {
             AddHeaders();
@@ -52,6 +72,7 @@ namespace SFA.DAS.FAT.Infrastructure.Api
             
             return (int)result.StatusCode;
         }
+
 
         private void AddHeaders()
         {

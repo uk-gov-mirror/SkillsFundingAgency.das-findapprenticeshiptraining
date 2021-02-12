@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAT.Application.Shortlist.Queries.GetShortlistForUser;
+using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.FAT.Web.Controllers;
 using SFA.DAS.FAT.Web.Models;
@@ -27,7 +28,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
         {
             //Arrange
             mockCookieService
-                .Setup(service => service.Get(nameof(ShortlistCookieItem)))
+                .Setup(service => service.Get(Constants.ShortlistCookieName))
                 .Returns(shortlistCookie);
             mockMediator
                 .Setup(mediator => mediator.Send(

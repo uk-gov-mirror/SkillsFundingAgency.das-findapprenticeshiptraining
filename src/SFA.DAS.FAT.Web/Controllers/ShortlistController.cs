@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAT.Application.Shortlist.Queries.GetShortlistForUser;
+using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.FAT.Web.Infrastructure;
 using SFA.DAS.FAT.Web.Models;
@@ -25,7 +26,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         [Route("", Name = RouteNames.ShortList)]
         public async Task<IActionResult> Index()
         {
-            var cookie = _shortlistCookieService.Get(nameof(ShortlistCookieItem));
+            var cookie = _shortlistCookieService.Get(Constants.ShortlistCookieName);
 
             //todo: what if no cookie yet?
 

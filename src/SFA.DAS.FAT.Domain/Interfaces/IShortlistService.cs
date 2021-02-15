@@ -7,5 +7,6 @@ namespace SFA.DAS.FAT.Domain.Interfaces
     public interface IShortlistService
     {
         Task<ShortlistForUser> GetShortlistForUser(Guid shortlistUserId);
+        Task DeleteShortlistItemForUser(Guid id, Guid shortlistUserId);
     }
 }

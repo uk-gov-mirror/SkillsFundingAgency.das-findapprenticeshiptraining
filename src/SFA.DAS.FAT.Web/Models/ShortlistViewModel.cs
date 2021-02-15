@@ -6,7 +6,7 @@ namespace SFA.DAS.FAT.Web.Models
 {
     public class ShortlistViewModel
     {
-        public IEnumerable<ShortlistItemViewModel> Shortlist { get; set; }
+        public IEnumerable<ShortlistItemViewModel> Shortlist { get; set; } = new List<ShortlistItemViewModel>();
     }
 
     public class ShortlistItemViewModel

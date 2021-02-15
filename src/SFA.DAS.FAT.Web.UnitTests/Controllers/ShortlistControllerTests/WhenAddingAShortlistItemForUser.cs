@@ -21,7 +21,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
     {
         [Test, MoqAutoData]
         public async Task And_Cookie_Exists_Then_Adds_To_Shortlist_For_User(
-            CreateShortListItemRequest request,
+            CreateShortlistItemRequest request,
             ShortlistCookieItem shortlistCookie,
             [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> mockShortlistCookieService,
             [Frozen] Mock<ICookieStorageService<LocationCookieItem>> mockLocationCookieService,
@@ -55,7 +55,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
 
         [Test, MoqAutoData]
         public async Task And_The_Cookie_Does_Not_Exist_Then_A_New_Cookie_Is_Created_And_Used_For_Shortlist(
-            CreateShortListItemRequest request,
+            CreateShortlistItemRequest request,
             [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> mockShortlistCookieService,
             [Frozen] Mock<ICookieStorageService<LocationCookieItem>> mockLocationCookieService,
             [Frozen] Mock<IMediator> mockMediator,
@@ -91,7 +91,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
 
         [Test, MoqAutoData]
         public async Task And_The_Location_Cookie_Exists_Then_Location_Is_Added_To_Shortlist(
-            CreateShortListItemRequest request,
+            CreateShortlistItemRequest request,
             ShortlistCookieItem shortlistCookie,
             LocationCookieItem locationCookieItem,
             [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> mockShortlistCookieService,
@@ -124,7 +124,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
         }
 
         [Test, MoqAutoData]
-        public async Task And_If_There_Is_A_Route_Name_Then_It_Is_Redirected(CreateShortListItemRequest request,
+        public async Task And_If_There_Is_A_Route_Name_Then_It_Is_Redirected(CreateShortlistItemRequest request,
             ShortlistCookieItem shortlistCookie,
             LocationCookieItem locationCookieItem,
             [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> mockShortlistCookieService,

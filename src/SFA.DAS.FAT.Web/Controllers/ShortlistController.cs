@@ -51,7 +51,7 @@ namespace SFA.DAS.FAT.Web.Controllers
 
         [HttpPost]
         [Route("courses/{id}/providers/{providerId}", Name = RouteNames.CreateShortlistItem)]
-        public async Task<IActionResult> CreateShortlistItem(CreateShortListItemRequest request)
+        public async Task<IActionResult> CreateShortlistItem(CreateShortlistItemRequest request)
         {
             var cookie = _shortlistCookieService.Get(Constants.ShortlistCookieName);
 
@@ -92,17 +92,26 @@ namespace SFA.DAS.FAT.Web.Controllers
 
         [HttpDelete]
         [Route("items/{id}", Name = RouteNames.DeleteShortlistItem)]
-        public async Task<IActionResult> DeleteShortlistItemForUser(Guid id)
+        public async Task<IActionResult> DeleteShortlistItemForUser(DeleteShortlistItemRequest request)
         {
             var cookie = _shortlistCookieService.Get(Constants.ShortlistCookieName);
             if (cookie != null)
             {
                 await _mediator.Send(new DeleteShortlistItemForUserCommand
                 {
-                    Id = id,
+                    Id = request.ShortlistId,
                     ShortlistUserId = cookie.ShortlistUserId
                 });
             }
+            if (!string.IsNullOrEmpty(request.RouteName))
+            {
+                return RedirectToRoute(request.RouteName, new
+                {
+                    Id = request.TrainingCode,
+                    ProviderId = request.Ukprn
+                });
+            }
+            
             return Accepted();
         }
         

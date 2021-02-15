@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAT.Application.Shortlist.Commands.CreateShortlistItemForUser;
+using SFA.DAS.FAT.Application.Shortlist.Commands.DeleteShortlistItemForUser;
 using SFA.DAS.FAT.Application.Shortlist.Queries.GetShortlistForUser;
 using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -49,7 +50,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         }
 
         [HttpPost]
-        [Route("courses/{id}/providers/{providerId}")]
+        [Route("courses/{id}/providers/{providerId}", Name = RouteNames.CreateShortlistItem)]
         public async Task<IActionResult> CreateShortlistItem(CreateShortListItemRequest request)
         {
             var cookie = _shortlistCookieService.Get(Constants.ShortlistCookieName);
@@ -76,7 +77,32 @@ namespace SFA.DAS.FAT.Web.Controllers
                 ShortlistUserId = cookie.ShortlistUserId,
                 SectorSubjectArea = request.SectorSubjectArea
             });
+
+            if (!string.IsNullOrEmpty(request.RouteName))
+            {
+                return RedirectToRoute(request.RouteName, new
+                {
+                    Id = request.TrainingCode,
+                    ProviderId = request.Ukprn
+                });
+            }
             
+            return Accepted();
+        }
+
+        [HttpDelete]
+        [Route("items/{id}", Name = RouteNames.DeleteShortlistItem)]
+        public async Task<IActionResult> DeleteShortlistItemForUser(Guid id)
+        {
+            var cookie = _shortlistCookieService.Get(Constants.ShortlistCookieName);
+            if (cookie != null)
+            {
+                await _mediator.Send(new DeleteShortlistItemForUserCommand
+                {
+                    Id = id,
+                    ShortlistUserId = cookie.ShortlistUserId
+                });
+            }
             return Accepted();
         }
         

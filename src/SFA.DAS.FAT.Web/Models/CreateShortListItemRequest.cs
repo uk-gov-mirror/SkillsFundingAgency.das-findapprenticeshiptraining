@@ -10,5 +10,7 @@ namespace SFA.DAS.FAT.Web.Models
         public int TrainingCode { get ; set ; }
         [FromBody]
         public string SectorSubjectArea { get ; set ; }
+        [FromBody]
+        public string RouteName { get; set; }
     }
 }

@@ -11,6 +11,7 @@ using SFA.DAS.FAT.Application.Shortlist.Commands.CreateShortlistItemForUser;
 using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.FAT.Web.Controllers;
+using SFA.DAS.FAT.Web.Infrastructure;
 using SFA.DAS.FAT.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -33,8 +34,8 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
                 .Returns(shortlistCookie);
             mockLocationCookieService.Setup(x => x.Get(Constants.LocationCookieName))
                 .Returns((LocationCookieItem) null);
-            
-            
+            request.RouteName = string.Empty;
+
             //Act
             var actual = await controller.CreateShortlistItem(request) as AcceptedResult;
             
@@ -66,6 +67,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
                 .Returns((ShortlistCookieItem) null);
             mockLocationCookieService.Setup(x => x.Get(Constants.LocationCookieName))
                 .Returns((LocationCookieItem) null);
+            request.RouteName = string.Empty;
             
             //Act
             var actual = await controller.CreateShortlistItem(request) as AcceptedResult;
@@ -103,7 +105,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
                 .Returns(shortlistCookie);
             mockLocationCookieService.Setup(x => x.Get(Constants.LocationCookieName))
                 .Returns(locationCookieItem);
-            
+            request.RouteName = string.Empty;
             
             //Act
             var actual = await controller.CreateShortlistItem(request) as AcceptedResult;
@@ -119,6 +121,35 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
                 && c.TrainingCode.Equals(request.TrainingCode)
                 && c.SectorSubjectArea.Equals(request.SectorSubjectArea)
             ), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Test, MoqAutoData]
+        public async Task And_If_There_Is_A_Route_Name_Then_It_Is_Redirected(CreateShortListItemRequest request,
+            ShortlistCookieItem shortlistCookie,
+            LocationCookieItem locationCookieItem,
+            [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> mockShortlistCookieService,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> mockLocationCookieService,
+            [Frozen] Mock<IMediator> mockMediator,
+            [Greedy] ShortlistController controller)
+        {
+            //Arrange
+            mockShortlistCookieService
+                .Setup(service => service.Get(Constants.ShortlistCookieName))
+                .Returns(shortlistCookie);
+            mockLocationCookieService.Setup(x => x.Get(Constants.LocationCookieName))
+                .Returns(locationCookieItem);
+            request.RouteName = RouteNames.CourseProviders;
+
+            //Act
+            var actual = await controller.CreateShortlistItem(request) as RedirectToRouteResult;
+            
+            //Assert
+            actual.Should().NotBeNull();
+            actual.RouteName.Should().Be(request.RouteName);
+            actual.RouteValues.Should().ContainKey("id");
+            actual.RouteValues["id"].Should().Be(request.TrainingCode);
+            actual.RouteValues.Should().ContainKey("providerId");
+            actual.RouteValues["providerId"].Should().Be(request.Ukprn);
         }
     }
 }

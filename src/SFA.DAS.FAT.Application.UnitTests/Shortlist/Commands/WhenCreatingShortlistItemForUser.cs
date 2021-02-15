@@ -21,7 +21,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Shortlist.Commands
             await handler.Handle(command, CancellationToken.None);
             
             //Assert
-            service.Verify(x=>x.CreateShortlistItemForUser(command.Id, 
+            service.Verify(x=>x.CreateShortlistItemForUser( 
                 command.ShortlistUserId, 
                 command.Ukprn, 
                 command.TrainingCode, 

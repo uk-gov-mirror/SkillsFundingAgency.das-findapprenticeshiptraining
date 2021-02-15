@@ -5,7 +5,6 @@ namespace SFA.DAS.FAT.Application.Shortlist.Commands.CreateShortlistItemForUser
 {
     public class CreateShortlistItemForUserCommand : IRequest<Unit>
     {
-        public Guid Id { get ; set ; }
         public Guid ShortlistUserId { get ; set ; }
         public int Ukprn { get ; set ; }
         public int TrainingCode { get ; set ; }

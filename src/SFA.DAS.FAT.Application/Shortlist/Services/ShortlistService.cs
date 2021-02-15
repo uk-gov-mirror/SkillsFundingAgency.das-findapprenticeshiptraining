@@ -33,7 +33,7 @@ namespace SFA.DAS.FAT.Application.Shortlist.Services
             await _apiClient.Delete(new DeleteShortlistForUserRequest(_configValue.BaseUrl, id, shortlistUserId));
         }
 
-        public async Task CreateShortlistItemForUser(Guid id, Guid shortlistUserId, int ukprn, int trainingCode, string sectorSubjectArea, double? lat, double? lon, string locationDescription)
+        public async Task CreateShortlistItemForUser(Guid shortlistUserId, int ukprn, int trainingCode, string sectorSubjectArea, double? lat, double? lon, string locationDescription)
         {
             var request = new PostShortlistForUserRequest
             {

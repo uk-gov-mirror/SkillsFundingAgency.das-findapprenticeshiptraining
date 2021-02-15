@@ -17,7 +17,6 @@ namespace SFA.DAS.FAT.Application.Shortlist.Commands.CreateShortlistItemForUser
         public async Task<Unit> Handle(CreateShortlistItemForUserCommand request, CancellationToken cancellationToken)
         {
             await _service.CreateShortlistItemForUser(
-                request.Id,
                 request.ShortlistUserId,
                 request.Ukprn,
                 request.TrainingCode,

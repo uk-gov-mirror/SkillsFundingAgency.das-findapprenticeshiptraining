@@ -14,7 +14,6 @@ namespace SFA.DAS.FAT.Application.UnitTests.Shortlist.Services
     {
         [Test, MoqAutoData]
         public async Task Then_The_Request_Is_Sent_To_The_Api(
-            Guid id,
             Guid shortlistUserId,
             int ukprn, 
             int trainingCode,
@@ -27,7 +26,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Shortlist.Services
             ShortlistService service)
         {
             //Act
-            await service.CreateShortlistItemForUser(id, shortlistUserId, ukprn, trainingCode, sectorSubjectArea, lat, lon, locationDescription);
+            await service.CreateShortlistItemForUser(shortlistUserId, ukprn, trainingCode, sectorSubjectArea, lat, lon, locationDescription);
             
             //Assert
             apiClient.Verify(x =>

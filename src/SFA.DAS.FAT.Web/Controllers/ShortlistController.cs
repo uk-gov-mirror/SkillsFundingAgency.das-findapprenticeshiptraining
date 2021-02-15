@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAT.Application.Shortlist.Commands.CreateShortlistItemForUser;
 using SFA.DAS.FAT.Application.Shortlist.Queries.GetShortlistForUser;
 using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -15,11 +17,15 @@ namespace SFA.DAS.FAT.Web.Controllers
     {
         private readonly IMediator _mediator;
         private readonly ICookieStorageService<ShortlistCookieItem> _shortlistCookieService;
+        private readonly ICookieStorageService<LocationCookieItem> _locationCookieService;
 
-        public ShortlistController(IMediator mediator, ICookieStorageService<ShortlistCookieItem> shortlistCookieService)
+        public ShortlistController(IMediator mediator,
+            ICookieStorageService<ShortlistCookieItem> shortlistCookieService,
+            ICookieStorageService<LocationCookieItem> locationCookieService)
         {
             _mediator = mediator;
             _shortlistCookieService = shortlistCookieService;
+            _locationCookieService = locationCookieService;
         }
 
         [HttpGet]
@@ -41,5 +47,38 @@ namespace SFA.DAS.FAT.Web.Controllers
 
             return View(viewModel);
         }
+
+        [HttpPost]
+        [Route("courses/{id}/providers/{providerId}")]
+        public async Task<IActionResult> CreateShortlistItem(CreateShortListItemRequest request)
+        {
+            var cookie = _shortlistCookieService.Get(Constants.ShortlistCookieName);
+
+            if (cookie == null)
+            {
+                cookie = new ShortlistCookieItem
+                {
+                    ShortlistUserId = Guid.NewGuid()
+                };
+                
+                _shortlistCookieService.Create(cookie, Constants.ShortlistCookieName, 30);
+            }
+
+            var location = _locationCookieService.Get(Constants.LocationCookieName);
+
+            await _mediator.Send(new CreateShortlistItemForUserCommand
+            {
+                Lat = location?.Lat,
+                Lon = location?.Lon,
+                Ukprn = request.Ukprn,
+                LocationDescription = string.IsNullOrEmpty(location?.Name) ? null : location.Name,
+                TrainingCode = request.TrainingCode,
+                ShortlistUserId = cookie.ShortlistUserId,
+                SectorSubjectArea = request.SectorSubjectArea
+            });
+            
+            return Accepted();
+        }
+        
     }
 }

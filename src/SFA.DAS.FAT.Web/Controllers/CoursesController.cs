@@ -25,6 +25,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         private readonly IMediator _mediator;
         private readonly ICookieStorageService<LocationCookieItem> _locationCookieStorageService;
         private readonly ICookieStorageService<GetCourseProvidersRequest> _courseProvidersCookieStorageService;
+        private readonly ICookieStorageService<ShortlistCookieItem> _shortlistCookieService;
         private readonly IDataProtector _protector;
         
         public CoursesController (
@@ -32,12 +33,14 @@ namespace SFA.DAS.FAT.Web.Controllers
             IMediator mediator,
             ICookieStorageService<LocationCookieItem> locationCookieStorageService,
             ICookieStorageService<GetCourseProvidersRequest> courseProvidersCookieStorageService,
+            ICookieStorageService<ShortlistCookieItem> shortlistCookieService,
             IDataProtectionProvider provider)
         {
             _logger = logger;
             _mediator = mediator;
             _locationCookieStorageService = locationCookieStorageService;
             _courseProvidersCookieStorageService = courseProvidersCookieStorageService;
+            _shortlistCookieService = shortlistCookieService;
             _protector = provider.CreateProtector(Constants.GaDataProtectorName);
         }
 
@@ -98,6 +101,8 @@ namespace SFA.DAS.FAT.Web.Controllers
             try
             {
                 var location = CheckLocation(request.Location);
+
+                var shortlistItem = _shortlistCookieService.Get(Constants.ShortlistCookieName);
                 
                 var result = await _mediator.Send(new GetCourseProvidersQuery
                 {
@@ -106,7 +111,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                     Lat = location?.Lat ?? 0,
                     Lon = location?.Lon ?? 0,
                     DeliveryModes = request.DeliveryModes.Select(type => (Domain.Courses.DeliveryModeType)type),
-                    ProviderRatings = request.ProviderRatings.Select(rating => (Domain.Courses.ProviderRating)rating)
+                    ProviderRatings = request.ProviderRatings.Select(rating => (Domain.Courses.ProviderRating)rating),
+                    ShortlistUserId = shortlistItem?.ShortlistUserId
                 });
                 
                 var cookieResult =new LocationCookieItem

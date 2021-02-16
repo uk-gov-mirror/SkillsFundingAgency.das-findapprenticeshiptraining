@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
 using FluentAssertions;
@@ -24,13 +25,14 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             List<ProviderRating> providerRatings,
             double lat,
             double lon,
+            Guid? shortlistUserId,
             [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> mockConfig,
             [Frozen] Mock<IApiClient> mockApiClient,
             CourseService service)
         {
-            var expectedUrl = new GetCourseProvidersApiRequest(mockConfig.Object.Value.BaseUrl, courseId, location, deliveryModes, providerRatings, 0, lat, lon).GetUrl;
+            var expectedUrl = new GetCourseProvidersApiRequest(mockConfig.Object.Value.BaseUrl, courseId, location, deliveryModes, providerRatings, 0, lat, lon, shortlistUserId).GetUrl;
 
-            await service.GetCourseProviders(courseId, location, deliveryModes, providerRatings, lat, lon);
+            await service.GetCourseProviders(courseId, location, deliveryModes, providerRatings, lat, lon, shortlistUserId);
 
             mockApiClient.Verify(client => client.Get<TrainingCourseProviders>(
                 It.Is<GetCourseProvidersApiRequest>(request => request.GetUrl == expectedUrl)));
@@ -44,6 +46,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             List<ProviderRating> providerRatings,
             double lat,
             double lon,
+            Guid? shortlistUserId,
             TrainingCourseProviders providersFromApi,
             [Frozen] Mock<IApiClient> mockApiClient,
             CourseService service)
@@ -53,7 +56,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
                     It.IsAny<GetCourseProvidersApiRequest>()))
                 .ReturnsAsync(providersFromApi);
 
-            var response = await service.GetCourseProviders(courseId, location, deliveryModes, providerRatings, lat, lon);
+            var response = await service.GetCourseProviders(courseId, location, deliveryModes, providerRatings, lat, lon, shortlistUserId);
 
             response.Course.Should().Be(providersFromApi.Course);
             response.CourseProviders.Should().BeEquivalentTo(providersFromApi.CourseProviders);

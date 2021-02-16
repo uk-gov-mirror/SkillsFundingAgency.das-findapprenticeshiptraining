@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web;
 using AutoFixture.NUnit3;
 using FluentAssertions;
@@ -11,13 +12,13 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
     public class WhenCreatingAGetCourseProvidersApiRequest
     {
         [Test, AutoData]
-        public void Then_The_Get_Url_Is_Constructed_Correctly(string baseUrl, int id, string location, List<DeliveryModeType> deliveryModeTypes, List<ProviderRating> providerRatingTypes, int sortOrder)
+        public void Then_The_Get_Url_Is_Constructed_Correctly(string baseUrl, int id, string location, List<DeliveryModeType> deliveryModeTypes, List<ProviderRating> providerRatingTypes, int sortOrder, Guid shortlistUserId)
         {
             //Arrange Act
-            var actual = new GetCourseProvidersApiRequest(baseUrl, id, location, deliveryModeTypes, providerRatingTypes, sortOrder);
+            var actual = new GetCourseProvidersApiRequest(baseUrl, id, location, deliveryModeTypes, providerRatingTypes, sortOrder, shortlistUserId: shortlistUserId);
             
             //Assert
-            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{id}/providers?location={location}&sortOrder={sortOrder}&deliveryModes={string.Join("&deliveryModes=", deliveryModeTypes)}&providerRatings={string.Join("&providerRatings=", providerRatingTypes)}");
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses/{id}/providers?location={location}&sortOrder={sortOrder}&deliveryModes={string.Join("&deliveryModes=", deliveryModeTypes)}&providerRatings={string.Join("&providerRatings=", providerRatingTypes)}&shortlistUserId={shortlistUserId}");
         }
 
         [Test, AutoData]

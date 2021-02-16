@@ -162,14 +162,15 @@ shortlistControls.each(function() {
 
     addForm.on('submit', function(e) {
 
-        var formDataObj = {};
-        formDataObj.sectorSubjectArea = this.sectorSubjectArea.value;
-        formDataObj.__RequestVerificationToken = this.__RequestVerificationToken.value;
-
+        const formData = new FormData( this );
+        formData.delete('routeName')
+        
         var response = $.ajax({
             type: "POST",
             url: this.action,
-            data: formDataObj
+            data: formData,
+            processData: false,
+            contentType: false
         }).done(function() {
             wrapper.addClass(addedClassName)
         });

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using SFA.DAS.FAT.Domain.Interfaces;
@@ -14,15 +15,19 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
         private readonly int _sortOrder;
         private readonly double _lat;
         private readonly double _lon;
+        private readonly Guid? _shortlistUserId;
         private readonly int _id;
 
-        public GetCourseProvidersApiRequest(string baseUrl, int id, string location, IEnumerable<DeliveryModeType> deliveryModeTypes, IEnumerable<ProviderRating> providerRatingTypes, int sortOrder = 0, double lat = 0, double lon = 0)
+        public GetCourseProvidersApiRequest(       string baseUrl, int id, string location,
+            IEnumerable<DeliveryModeType> deliveryModeTypes, IEnumerable<ProviderRating> providerRatingTypes,
+            int sortOrder = 0, double lat = 0, double lon = 0, Guid? shortlistUserId = null)
         {
             _location = location;
             _deliveryModeTypes = deliveryModeTypes;
             _sortOrder = sortOrder;
             _lat = lat;
             _lon = lon;
+            _shortlistUserId = shortlistUserId;
             BaseUrl = baseUrl;
             _id = id;
             _providerRatingTypes = providerRatingTypes;
@@ -50,6 +55,11 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
             if (_lon != 0)
             {
                 buildUrl += $"&lon={_lon}";
+            }
+
+            if (_shortlistUserId != null)
+            {
+                buildUrl += $"&shortlistUserId={_shortlistUserId}";
             }
             
             return buildUrl;

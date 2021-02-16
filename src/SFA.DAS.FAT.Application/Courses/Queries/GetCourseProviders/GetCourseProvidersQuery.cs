@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MediatR;
 using SFA.DAS.FAT.Domain.Courses;
 
@@ -12,5 +13,6 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders
         public IEnumerable<ProviderRating> ProviderRatings { get; set; }
         public double Lat { get ; set ; }
         public double Lon { get ; set ; }
+        public Guid? ShortlistUserId { get ; set ; }
     }
 }

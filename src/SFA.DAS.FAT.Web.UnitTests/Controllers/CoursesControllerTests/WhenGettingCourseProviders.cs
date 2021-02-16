@@ -80,6 +80,33 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         }
 
         [Test, MoqAutoData]
+        public async Task Then_The_Shortlist_UserId_Is_Added_To_The_Cookie_If_Set(
+            GetCourseProvidersRequest request,
+            GetCourseProvidersResult response,
+            ShortlistCookieItem shortlistCookieItem,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> shortlistCookieService,
+            [Greedy] CoursesController controller)
+        {
+            //Arrange
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
+            mediator.Setup(x => x.Send(
+                    It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id) 
+                                                        && c.ShortlistUserId.Equals(shortlistCookieItem.ShortlistUserId)),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+            shortlistCookieService.Setup(x => x.Get(Constants.ShortlistCookieName)).Returns(shortlistCookieItem);
+            
+            //Act
+            var actual = await controller.CourseProviders(request) as ViewResult;
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            var actualModel = actual.Model as CourseProvidersViewModel;
+            Assert.IsNotNull(actualModel);
+        }
+        
+        [Test, MoqAutoData]
         public async Task Then_The_Location_Is_Removed_From_The_Cookie_If_Set_To_Minus_One(
             GetCourseProvidersRequest request,
             GetCourseProvidersResult response,

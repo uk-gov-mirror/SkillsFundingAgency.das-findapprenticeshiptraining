@@ -248,22 +248,30 @@
                             <div class="govuk-grid-column-one-third">
 
                                 <div class="app-provider-shortlist-control">
-                                    <div class="app-provider-shortlist-add">
-                                        <form method="post" asp-route="@RouteNames.CreateShortlistItem" asp-all-route-data="@shortlistRouteData">
-                                            <input type="hidden" name="sectorSubjectArea" value="@Model.Course.Sector"/>
-                                            <input type="hidden" name="routeName" value="@RouteNames.CourseProviders"/>
-                                            <button class="das-button--inline-link" type="submit">Add to shortlist</button>
-                                        </form> 
-                                    </div>
-                                    <div class="app-provider-shortlist-remove">
-                                        <strong class="govuk-tag">Shortlisted</strong><br>
-                                        <form method="post" asp-route="@RouteNames.DeleteShortlistItem" asp-route-id="FF8B190F-D3C0-4C4C-B1C1-B406D390C6E0">
-                                            <input type="hidden" name="ukprn" value="@provider.ProviderId"/>
-                                            <input type="hidden" name="trainingCode" value="@Model.Course.Id"/>
-                                            <input type="hidden" name="routeName" value="@RouteNames.CourseProviders"/>
-                                            <button class="das-button--inline-link" type="submit">Remove from shortlist</button>
-                                        </form> 
-                                    </div>
+                                    @if (provider.ShortlistId == null)
+                                    {
+                                        <div class="app-provider-shortlist-add">
+
+                                            <form method="post" asp-route="@RouteNames.CreateShortlistItem" asp-all-route-data="@shortlistRouteData">
+                                                <input type="hidden" name="sectorSubjectArea" value="@Model.Course.Sector"/>
+                                                <input type="hidden" name="routeName" value="@RouteNames.CourseProviders"/>
+                                                <button class="das-button--inline-link" type="submit">Add to shortlist</button>
+                                            </form>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="app-provider-shortlist-remove">
+                                            <strong class="govuk-tag">Shortlisted</strong><br>
+                                            <form method="post" asp-route="@RouteNames.DeleteShortlistItem" asp-route-id="@provider.ShortlistId">
+                                                <input type="hidden" name="ukprn" value="@provider.ProviderId"/>
+                                                <input type="hidden" name="trainingCode" value="@Model.Course.Id"/>
+                                                <input type="hidden" name="routeName" value="@RouteNames.CourseProviders"/>
+                                                <button class="das-button--inline-link" type="submit">Remove from shortlist</button>
+                                            </form> 
+                                        </div>    
+                                    }
+                                    
                                 </div>
 
                             </div>

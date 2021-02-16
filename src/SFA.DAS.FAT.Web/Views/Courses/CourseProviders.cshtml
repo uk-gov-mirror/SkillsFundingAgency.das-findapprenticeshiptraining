@@ -186,6 +186,12 @@
                         {"providerId",provider.ProviderId.ToString()},
                         {"data", Model.ProviderOrder[provider.ProviderId]}
                     };
+
+                    var shortlistRouteData = new Dictionary<string, string>
+                    {
+                        {"id",Model.Course.Id.ToString()},
+                        {"providerId",provider.ProviderId.ToString()}
+                    };
                     
                     <li class="das-search-results__list-item">
                         <h2 class="govuk-heading-m das-search-results__heading">
@@ -193,7 +199,28 @@
                                 @provider.Name
                             </a>
                         </h2>
-                            
+                        <div>
+                            <form method="post" asp-route="@RouteNames.CreateShortlistItem" asp-all-route-data="@shortlistRouteData" id="add-to-shortlist">
+                                <input type="hidden" name="sectorSubjectArea" value="@Model.Course.Sector"/>
+                                <input type="hidden" name="routeName" value="@RouteNames.CourseProviders"/>
+                                <p class="govuk-body shortlist-label shortlist-label-js" style="">
+                                    <button class="govuk-button" type="submit">Add to shortlist</button>
+                                </p>
+                            </form>    
+                        </div>
+                        <div>
+                            <form method="post" asp-route="@RouteNames.DeleteShortlistItem" asp-route-id="FF8B190F-D3C0-4C4C-B1C1-B406D390C6E0" id="delete-shortlist-item">
+                                <input type="hidden" name="ukprn" value="@provider.ProviderId"/>
+                                <input type="hidden" name="trainingCode" value="@Model.Course.Id"/>
+                                <input type="hidden" name="routeName" value="@RouteNames.CourseProviders"/>
+                                <p class="govuk-body shortlist-label shortlist-label-js" style="">
+                                    <button class="govuk-button" type="submit">Remove from shortlist</button>
+                                </p>
+                            </form>    
+                        </div>
+
+
+
                         <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-0">
                              @if(!string.IsNullOrEmpty(provider.TradingName))
                             {

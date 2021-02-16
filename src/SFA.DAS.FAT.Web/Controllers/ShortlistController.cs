@@ -90,7 +90,7 @@ namespace SFA.DAS.FAT.Web.Controllers
             return Accepted();
         }
 
-        [HttpDelete]
+        [HttpPost]
         [Route("items/{id}", Name = RouteNames.DeleteShortlistItem)]
         public async Task<IActionResult> DeleteShortlistItemForUser(DeleteShortlistItemRequest request)
         {

@@ -139,3 +139,27 @@ $("a[data-scroll-to-target]").on('click', function () {
     }, 10)
 
 });
+
+// SHORTLIST
+function sendData(form, method) {
+    const xmlHttpRequest = new XMLHttpRequest();
+    const formData = new FormData( form );
+    formData.delete('routeName')
+    xmlHttpRequest.open( method, form.action );
+    xmlHttpRequest.send( formData );
+}
+
+//CREATE ITEM
+const addToShortlistForm = document.getElementById( "add-to-shortlist" );
+addToShortlistForm.addEventListener( "submit", function ( event ) {
+    event.preventDefault();
+    sendData(addToShortlistForm, "POST");
+} );
+
+// DELETE SHORTLIST ITEM
+
+const deleteShortlistItemForm = document.getElementById( "delete-shortlist-item" );
+deleteShortlistItemForm.addEventListener( "submit", function ( event ) {
+    event.preventDefault();
+    sendData(deleteShortlistItemForm, "POST");
+} );

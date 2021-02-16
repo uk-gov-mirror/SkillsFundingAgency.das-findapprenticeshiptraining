@@ -159,8 +159,21 @@ shortlistControls.each(function() {
     var removeForm = wrapper.find('.app-provider-shortlist-remove form');
     var addedClassName = 'app-provider-shortlist-added'
 
+
     addForm.on('submit', function(e) {
-        wrapper.addClass(addedClassName)
+
+        var formDataObj = {};
+        formDataObj.sectorSubjectArea = this.sectorSubjectArea.value;
+        formDataObj.__RequestVerificationToken = this.__RequestVerificationToken.value;
+
+        var response = $.ajax({
+            type: "POST",
+            url: this.action,
+            data: formDataObj
+        }).done(function() {
+            wrapper.addClass(addedClassName)
+        });
+
         e.preventDefault();
     });
 

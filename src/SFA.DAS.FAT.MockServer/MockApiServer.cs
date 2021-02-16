@@ -149,7 +149,8 @@ namespace SFA.DAS.FAT.MockServer
                 .UsingPost()
                 ).RespondWith(
                 Response.Create()
-                    .WithStatusCode(202));
+                    .WithStatusCode(202)
+                    .WithBody($"'{Guid.NewGuid().ToString()}'"));
 
             server.Given(Request.Create().WithPath(s => Regex.IsMatch(s,"shortlist/users/"))
                 .UsingDelete()

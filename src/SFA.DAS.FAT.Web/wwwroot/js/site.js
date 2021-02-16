@@ -149,17 +149,24 @@ function sendData(form, method) {
     xmlHttpRequest.send( formData );
 }
 
-//CREATE ITEM
-const addToShortlistForm = document.getElementById( "add-to-shortlist" );
-addToShortlistForm.addEventListener( "submit", function ( event ) {
-    event.preventDefault();
-    sendData(addToShortlistForm, "POST");
-} );
 
-// DELETE SHORTLIST ITEM
 
-const deleteShortlistItemForm = document.getElementById( "delete-shortlist-item" );
-deleteShortlistItemForm.addEventListener( "submit", function ( event ) {
-    event.preventDefault();
-    sendData(deleteShortlistItemForm, "POST");
-} );
+var shortlistControls = $('.app-provider-shortlist-control');
+
+shortlistControls.each(function() {
+    var wrapper = $(this);
+    var addForm = wrapper.find('.app-provider-shortlist-add form');
+    var removeForm = wrapper.find('.app-provider-shortlist-remove form');
+    var addedClassName = 'app-provider-shortlist-added'
+
+    addForm.on('submit', function(e) {
+        wrapper.addClass(addedClassName)
+        e.preventDefault();
+    });
+
+    removeForm.on('submit', function(e) {
+        wrapper.removeClass(addedClassName)
+        e.preventDefault();
+    });
+
+});

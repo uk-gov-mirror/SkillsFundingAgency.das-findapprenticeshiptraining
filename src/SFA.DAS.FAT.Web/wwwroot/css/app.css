@@ -93,3 +93,25 @@
     min-height: 40px;
     border-right-width: 0;
 }
+
+
+
+.app-provider-shortlist-control {
+
+}
+
+.app-provider-shortlist-add {
+    display: block;
+}
+
+.app-provider-shortlist-remove {
+    display: none;
+}
+
+.app-provider-shortlist-added .app-provider-shortlist-add {
+    display: none;
+}
+
+.app-provider-shortlist-added .app-provider-shortlist-remove {
+    display: block;
+}

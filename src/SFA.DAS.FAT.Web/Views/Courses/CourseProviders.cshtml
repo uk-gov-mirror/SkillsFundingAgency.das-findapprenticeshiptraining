@@ -247,9 +247,8 @@
                             </div>
                             <div class="govuk-grid-column-one-third">
 
-                                <div class="app-provider-shortlist-control">
-                                    @if (provider.ShortlistId == null)
-                                    {
+                                <div class="app-provider-shortlist-control @(provider.ShortlistId == null ? "" : "app-provider-shortlist-added")">
+                       
                                         <div class="app-provider-shortlist-add">
 
                                             <form method="post" asp-route="@RouteNames.CreateShortlistItem" asp-all-route-data="@shortlistRouteData">
@@ -258,9 +257,7 @@
                                                 <button class="das-button--inline-link" type="submit">Add to shortlist</button>
                                             </form>
                                         </div>
-                                    }
-                                    else
-                                    {
+                              
                                         <div class="app-provider-shortlist-remove">
                                             <strong class="govuk-tag">Shortlisted</strong><br>
                                             <form method="post" asp-route="@RouteNames.DeleteShortlistItem" asp-route-id="@provider.ShortlistId">
@@ -270,7 +267,7 @@
                                                 <button class="das-button--inline-link" type="submit">Remove from shortlist</button>
                                             </form> 
                                         </div>    
-                                    }
+                                    
                                     
                                 </div>
 

@@ -45,6 +45,8 @@ namespace SFA.DAS.FAT.Web.Models
         public string ProviderDistanceText { get; set; }
         public string ProviderAddress { get ; set ; }
 
+        public Guid? ShortlistId { get ; set ; }
+
         public static implicit operator ProviderViewModel(Provider source)
         {
             if (source == null || source.ProviderId == 0)
@@ -57,6 +59,7 @@ namespace SFA.DAS.FAT.Web.Models
                 TradingName = !string.IsNullOrEmpty(source.TradingName) && !source.TradingName.Equals(source.Name, StringComparison.CurrentCultureIgnoreCase) ? source.TradingName : null, 
                 Email = source.Email,
                 Phone = source.Phone,
+                ShortlistId = source.ShortlistId,
                 Website = source.Website,    
                 ProviderId = source.ProviderId,
                 OverallCohort = source.OverallCohort,

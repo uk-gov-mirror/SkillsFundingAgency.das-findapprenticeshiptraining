@@ -150,7 +150,7 @@ function sendData(form, method) {
 }
 
 //CREATE ITEM
-const addToShortlistForm = document.getElementById( "add-to-shortlist" );
+const addToShortlistForm = document.getElementsByClassName( "add-to-shortlist" );
 addToShortlistForm.addEventListener( "submit", function ( event ) {
     event.preventDefault();
     sendData(addToShortlistForm, "POST");
@@ -158,7 +158,7 @@ addToShortlistForm.addEventListener( "submit", function ( event ) {
 
 // DELETE SHORTLIST ITEM
 
-const deleteShortlistItemForm = document.getElementById( "delete-shortlist-item" );
+const deleteShortlistItemForm = document.getElementsByClassName( "delete-shortlist-item" );
 deleteShortlistItemForm.addEventListener( "submit", function ( event ) {
     event.preventDefault();
     sendData(deleteShortlistItemForm, "POST");

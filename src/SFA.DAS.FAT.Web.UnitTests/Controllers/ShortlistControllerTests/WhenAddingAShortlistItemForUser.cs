@@ -21,6 +21,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
     {
         [Test, MoqAutoData]
         public async Task And_Cookie_Exists_Then_Adds_To_Shortlist_For_User(
+            Guid expectedId,
             CreateShortlistItemRequest request,
             ShortlistCookieItem shortlistCookie,
             [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> mockShortlistCookieService,
@@ -29,6 +30,15 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
             [Greedy] ShortlistController controller)
         {
             //Arrange
+            mockMediator.Setup(x=>x.Send(It.Is<CreateShortlistItemForUserCommand>(c=>
+                c.ShortlistUserId.Equals(shortlistCookie.ShortlistUserId)
+                && c.Lat == null
+                && c.Lon == null
+                && c.LocationDescription == null
+                && c.Ukprn.Equals(request.Ukprn)
+                && c.TrainingCode.Equals(request.TrainingCode)
+                && c.SectorSubjectArea.Equals(request.SectorSubjectArea)
+            ), It.IsAny<CancellationToken>())).ReturnsAsync(expectedId);
             mockShortlistCookieService
                 .Setup(service => service.Get(Constants.ShortlistCookieName))
                 .Returns(shortlistCookie);
@@ -41,16 +51,8 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
             
             //Assert
             actual.Should().NotBeNull();
-            mockMediator.Verify(x=>x.Send(It.Is<CreateShortlistItemForUserCommand>(c=>
-                c.ShortlistUserId.Equals(shortlistCookie.ShortlistUserId)
-                && c.Lat == null
-                && c.Lon == null
-                && c.LocationDescription == null
-                && c.Ukprn.Equals(request.Ukprn)
-                && c.TrainingCode.Equals(request.TrainingCode)
-                && c.SectorSubjectArea.Equals(request.SectorSubjectArea)
-                ), It.IsAny<CancellationToken>()), Times.Once);
-            
+            Guid.Parse(actual.Value.ToString()).Should().Be(expectedId);
+
         }
 
         [Test, MoqAutoData]

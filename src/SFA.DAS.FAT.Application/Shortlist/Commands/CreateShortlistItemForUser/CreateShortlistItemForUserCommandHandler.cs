@@ -1,11 +1,12 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using SFA.DAS.FAT.Domain.Interfaces;
 
 namespace SFA.DAS.FAT.Application.Shortlist.Commands.CreateShortlistItemForUser
 {
-    public class CreateShortlistItemForUserCommandHandler : IRequestHandler<CreateShortlistItemForUserCommand, Unit>
+    public class CreateShortlistItemForUserCommandHandler : IRequestHandler<CreateShortlistItemForUserCommand, Guid>
     {
         private readonly IShortlistService _service;
 
@@ -14,9 +15,9 @@ namespace SFA.DAS.FAT.Application.Shortlist.Commands.CreateShortlistItemForUser
             _service = service;
         }
         
-        public async Task<Unit> Handle(CreateShortlistItemForUserCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateShortlistItemForUserCommand request, CancellationToken cancellationToken)
         {
-            await _service.CreateShortlistItemForUser(
+            var itemId = await _service.CreateShortlistItemForUser(
                 request.ShortlistUserId,
                 request.Ukprn,
                 request.TrainingCode,
@@ -25,7 +26,7 @@ namespace SFA.DAS.FAT.Application.Shortlist.Commands.CreateShortlistItemForUser
                 request.Lon,
                 request.LocationDescription);
             
-            return Unit.Value;
+            return itemId;
             
         }
     }

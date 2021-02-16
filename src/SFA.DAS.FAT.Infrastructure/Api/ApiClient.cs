@@ -43,7 +43,7 @@ namespace SFA.DAS.FAT.Infrastructure.Api
             return default;
         }
 
-        public async Task Post<TPostData>(IPostApiRequest<TPostData> request)
+        public async Task<TResponse> Post<TResponse,TPostData>(IPostApiRequest<TPostData> request)
         {
             AddHeaders();
             
@@ -53,6 +53,9 @@ namespace SFA.DAS.FAT.Infrastructure.Api
                 .ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();
+            
+            var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<TResponse>(json);    
         }
 
         public async Task Delete(IDeleteApiRequest request)

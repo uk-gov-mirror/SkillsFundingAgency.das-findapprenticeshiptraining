@@ -67,7 +67,7 @@ namespace SFA.DAS.FAT.Web.Controllers
 
             var location = _locationCookieService.Get(Constants.LocationCookieName);
 
-            await _mediator.Send(new CreateShortlistItemForUserCommand
+            var result = await _mediator.Send(new CreateShortlistItemForUserCommand
             {
                 Lat = location?.Lat,
                 Lon = location?.Lon,
@@ -87,7 +87,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                 });
             }
             
-            return Accepted();
+            return Accepted(result);
         }
 
         [HttpPost]

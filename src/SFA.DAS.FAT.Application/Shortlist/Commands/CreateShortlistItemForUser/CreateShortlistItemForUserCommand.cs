@@ -3,7 +3,7 @@ using MediatR;
 
 namespace SFA.DAS.FAT.Application.Shortlist.Commands.CreateShortlistItemForUser
 {
-    public class CreateShortlistItemForUserCommand : IRequest<Unit>
+    public class CreateShortlistItemForUserCommand : IRequest<Guid>
     {
         public Guid ShortlistUserId { get ; set ; }
         public int Ukprn { get ; set ; }

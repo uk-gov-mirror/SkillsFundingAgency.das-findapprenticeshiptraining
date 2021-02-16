@@ -1,8 +1,10 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
+using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Moq;
 using Moq.Protected;
@@ -18,6 +20,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
     {
         [Test, AutoData]
         public async Task Then_The_Endpoint_Is_Called(
+            Guid responseId,
             PostData postContent,
             int id,
             FindApprenticeshipTrainingApi config)
@@ -27,6 +30,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
             configMock.Setup(x => x.Value).Returns(config);
             var response = new HttpResponseMessage
             {
+                Content = new StringContent($"'{responseId}'"),
                 StatusCode = HttpStatusCode.Accepted
             };
             var postTestRequest = new PostTestRequest(id,"https://test.local") {Data = postContent};
@@ -37,7 +41,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
             
             
             //Act
-            await apiClient.Post(postTestRequest);
+            var actual = await apiClient.Post<string,PostData>(postTestRequest);
 
             //Assert
             httpMessageHandler.Protected()
@@ -48,6 +52,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
                         && c.RequestUri.AbsoluteUri.Equals(expectedUrl)),
                     ItExpr.IsAny<CancellationToken>()
                 );
+            Guid.Parse(actual).Should().Be(responseId);
         }
         
         [Test, AutoData]
@@ -70,7 +75,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
             var apiClient = new ApiClient(client, configMock.Object);
             
             //Act Assert
-            Assert.ThrowsAsync<HttpRequestException>(() => apiClient.Post(postTestRequest));
+            Assert.ThrowsAsync<HttpRequestException>(() => apiClient.Post<Guid, PostData>(postTestRequest));
             
         }
         

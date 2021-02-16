@@ -7,7 +7,7 @@ namespace SFA.DAS.FAT.Domain.Interfaces
     {
         Task<TResponse> Get<TResponse>(IGetApiRequest request);
         Task<int> Ping();
-        Task Post<TPostData>(IPostApiRequest<TPostData> request);
+        Task<TResponse> Post<TResponse, TPostData>(IPostApiRequest<TPostData> request);
         Task Delete(IDeleteApiRequest request);
     }
 }

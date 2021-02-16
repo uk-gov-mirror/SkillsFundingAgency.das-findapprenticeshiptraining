@@ -145,7 +145,18 @@ namespace SFA.DAS.FAT.MockServer
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("shortlist.json"));
 
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s,"shortlist$"))
+                .UsingPost()
+                ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(202));
 
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s,"shortlist/users/"))
+                .UsingDelete()
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(202));
+            
             return server;
         }
 

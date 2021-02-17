@@ -142,49 +142,47 @@ $("a[data-scroll-to-target]").on('click', function () {
 
 // SHORTLIST
 
-var shortlistControls = $('.app-provider-shortlist-control');
+var shortlistAddForms = $('.app-provider-shortlist-add form');
+var shortlistRemoveForms = $('.app-provider-shortlist-remove form');
 
-shortlistControls.each(function() {
-    var wrapper = $(this);
-    var addForm = wrapper.find('.app-provider-shortlist-add form');
-    var removeForm = wrapper.find('.app-provider-shortlist-remove form');
-    var addedClassName = 'app-provider-shortlist-added'
+var providerAddedClassName = 'app-provider-shortlist-added'
 
-    
-    function sendData(formData, action){
-        var response = $.ajax({
-            type: "POST",
-            url: action,
-            data: formData,
-            processData: false,
-            contentType: false
-        }).done(function(data) {
-            //TODO on remove set action to
-            //removeForm.action = shortlist/items/00000000-0000-0000-0000-000000000000
-            //TODO on add set it to returned data
-            //removeForm.action = removeForm.action.replace("00000000-0000-0000-0000-000000000000",data)
-        });
-    }
-    
-
-    addForm.on('submit', function(e) {
-        wrapper.addClass(addedClassName)
-        const formData = new FormData( this );
-        formData.delete('routeName')
-        
-        sendData(formData, this.action);
-
-        e.preventDefault();
-    });
-
-    removeForm.on('submit', function(e) {
-        wrapper.removeClass(addedClassName)
-        
-        const formData = new FormData( this );
-        formData.delete('routeName')
-
-        sendData(formData, this.action);
-        e.preventDefault();
-    });
-
+shortlistAddForms.on('submit', function(e) {
+    var form = $(this);
+    var formData = new FormData(this);
+    formData.delete('routeName');
+    sendData(formData, this.action, addFormDone, form);
+    e.preventDefault();
 });
+
+shortlistRemoveForms.on('submit', function(e) {
+    var form = $(this);
+    var formData = new FormData(this);
+    formData.delete('routeName');
+    sendData(formData, this.action, removeFormDone, form);
+    e.preventDefault();
+});
+
+var addFormDone = function(data, form) {
+    var wrapper = form.closest('.app-provider-shortlist-control');
+    var removeForm = wrapper.find('.app-provider-shortlist-remove form');
+    removeForm.attr("action", "/shortlist/items/" + data);
+    wrapper.addClass(providerAddedClassName)
+}
+
+var removeFormDone = function(data, form) {
+    var wrapper = form.closest('.app-provider-shortlist-control');
+    wrapper.removeClass(providerAddedClassName)
+}
+
+var sendData = function(formData, action, doneCallBack, form){
+    $.ajax({
+        type: "POST",
+        url: action,
+        data: formData,
+        processData: false,
+        contentType: false
+    }).done(function(data) {
+        doneCallBack(data, form)
+    });
+}

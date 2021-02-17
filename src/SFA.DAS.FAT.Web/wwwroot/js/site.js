@@ -172,6 +172,8 @@ var addFormDone = function(data, form) {
 
 var removeFormDone = function(data, form) {
     var wrapper = form.closest('.app-provider-shortlist-control');
+    var removeForm = wrapper.find('.app-provider-shortlist-remove form');
+    removeForm.attr("action", "/shortlist/items/00000000-0000-0000-0000-000000000000");
     wrapper.removeClass(providerAddedClassName)
 }
 

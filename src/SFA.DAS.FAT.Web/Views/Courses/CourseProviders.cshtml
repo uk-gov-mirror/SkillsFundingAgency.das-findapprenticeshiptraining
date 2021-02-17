@@ -260,7 +260,7 @@
                               
                                         <div class="app-provider-shortlist-remove">
                                             <strong class="govuk-tag">Shortlisted</strong><br>
-                                            <form method="post" asp-route="@RouteNames.DeleteShortlistItem" asp-route-id="@provider.ShortlistId">
+                                            <form method="post" asp-route="@RouteNames.DeleteShortlistItem" asp-route-id="@(provider.ShortlistId ?? Guid.Empty)">
                                                 <input type="hidden" name="ukprn" value="@provider.ProviderId"/>
                                                 <input type="hidden" name="trainingCode" value="@Model.Course.Id"/>
                                                 <input type="hidden" name="routeName" value="@RouteNames.CourseProviders"/>

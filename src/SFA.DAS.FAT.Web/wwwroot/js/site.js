@@ -141,15 +141,6 @@ $("a[data-scroll-to-target]").on('click', function () {
 });
 
 // SHORTLIST
-function sendData(form, method) {
-    const xmlHttpRequest = new XMLHttpRequest();
-    const formData = new FormData( form );
-    formData.delete('routeName')
-    xmlHttpRequest.open( method, form.action );
-    xmlHttpRequest.send( formData );
-}
-
-
 
 var shortlistControls = $('.app-provider-shortlist-control');
 
@@ -159,27 +150,40 @@ shortlistControls.each(function() {
     var removeForm = wrapper.find('.app-provider-shortlist-remove form');
     var addedClassName = 'app-provider-shortlist-added'
 
-
-    addForm.on('submit', function(e) {
-
-        const formData = new FormData( this );
-        formData.delete('routeName')
-        
+    
+    function sendData(formData, action){
         var response = $.ajax({
             type: "POST",
-            url: this.action,
+            url: action,
             data: formData,
             processData: false,
             contentType: false
-        }).done(function() {
-            wrapper.addClass(addedClassName)
+        }).done(function(data) {
+            //TODO on remove set action to
+            //removeForm.action = shortlist/items/00000000-0000-0000-0000-000000000000
+            //TODO on add set it to returned data
+            //removeForm.action = removeForm.action.replace("00000000-0000-0000-0000-000000000000",data)
         });
+    }
+    
+
+    addForm.on('submit', function(e) {
+        wrapper.addClass(addedClassName)
+        const formData = new FormData( this );
+        formData.delete('routeName')
+        
+        sendData(formData, this.action);
 
         e.preventDefault();
     });
 
     removeForm.on('submit', function(e) {
         wrapper.removeClass(addedClassName)
+        
+        const formData = new FormData( this );
+        formData.delete('routeName')
+
+        sendData(formData, this.action);
         e.preventDefault();
     });
 

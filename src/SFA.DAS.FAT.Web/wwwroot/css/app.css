@@ -97,7 +97,15 @@
 
 
 .app-provider-shortlist-control {
+    margin-top: 15px;
+    margin-bottom: -10px;
+}
 
+@media (min-width: 40.0625em) {
+    .app-provider-shortlist-control {
+        text-align: right;
+        margin: 0;
+    }
 }
 
 .app-provider-shortlist-add {
@@ -108,10 +116,18 @@
     display: none;
 }
 
+.app-provider-shortlist-tag {
+    margin-bottom: 5px;
+}
+
 .app-provider-shortlist-added .app-provider-shortlist-add {
     display: none;
 }
 
 .app-provider-shortlist-added .app-provider-shortlist-remove {
     display: block;
+}
+
+.das-button--inline-link {
+    text-align: inherit;
 }

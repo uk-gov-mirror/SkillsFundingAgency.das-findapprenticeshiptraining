@@ -25,6 +25,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CourseProvidersViewModelTests
             model.TotalFiltered.Should().Be(result.TotalFiltered);
             model.Location.Should().Be(result.Location);
             model.ProviderOrder.Should().BeEquivalentTo(providerOrder);
+            model.ShortlistItemCount.Should().Be(result.ShortlistItemCount);
         }
 
         [Test, AutoData]

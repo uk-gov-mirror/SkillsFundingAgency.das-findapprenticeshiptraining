@@ -14,6 +14,7 @@
         CourseId = Model.Course.Id.ToString(),
         CourseDescription = Model.Course.TitleAndLevel
     };
+    ViewData["ShortlistItemCount"] = Model.ShortlistItemCount;
 }
 <main class="govuk-main-wrapper" id="main-content">
     <div class="govuk-grid-row">

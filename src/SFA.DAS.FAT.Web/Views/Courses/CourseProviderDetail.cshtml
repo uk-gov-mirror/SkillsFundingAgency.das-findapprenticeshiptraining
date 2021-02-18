@@ -258,37 +258,67 @@
 
 
     </div>
-    <div class="das-highlight govuk-!-margin-bottom-5">
-        <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Contact this provider about this course</h3>
+        <div class="das-highlight govuk-!-margin-bottom-5">
+            <h3 class="govuk-heading-m govuk-!-margin-bottom-2">Contact this provider about this course</h3>
 
-        <dl class="govuk-summary-list govuk-!-margin-bottom-0">
-            @if (!string.IsNullOrEmpty(Model.Provider.Email))
-            {
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Email</dt>
-                    <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="mailto:@Model.Provider.Email">@Model.Provider.Email</a></dd>
+            <dl class="govuk-summary-list govuk-!-margin-bottom-0">
+                @if (!string.IsNullOrEmpty(Model.Provider.Email))
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Email</dt>
+                        <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="mailto:@Model.Provider.Email">@Model.Provider.Email</a></dd>
+                    </div>
+
+                }
+                @if (!string.IsNullOrEmpty(Model.Provider.Phone))
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Telephone</dt>
+                        <dd class="govuk-summary-list__value">@Model.Provider.Phone</dd>
+                    </div>
+
+                }
+                @if (!string.IsNullOrEmpty(Model.Provider.Website))
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Website</dt>
+                        <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" target="_blank" rel="noreferrer noopener" href="@Model.Provider.Website">@Model.Provider.Website</a></dd>
+                    </div>
+
+                }
+
+            </dl>
+        </div>
+
+        var shortlistRouteData = new Dictionary<string, string>
+        {
+            {"id",Model.Course.Id.ToString()},
+            {"providerId",Model.Provider.ProviderId.ToString()}
+        };
+
+        <div class="das-highlight govuk-!-margin-bottom-5">
+            <div class="app-provider-shortlist-control @(Model.Provider.ShortlistId == null ? "" : "app-provider-shortlist-added")">
+
+                <div class="app-provider-shortlist-add">
+
+                    <form method="post" asp-route="@RouteNames.CreateShortlistItem" asp-all-route-data="@shortlistRouteData">
+                        <input type="hidden" name="sectorSubjectArea" value="@Model.Course.Sector"/>
+                        <input type="hidden" name="routeName" value="@RouteNames.CourseProviders"/>
+                        <button class="das-button--inline-link" type="submit">Add to shortlist</button>
+                    </form>
                 </div>
 
-            }
-            @if (!string.IsNullOrEmpty(Model.Provider.Phone))
-            {
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Telephone</dt>
-                    <dd class="govuk-summary-list__value">@Model.Provider.Phone</dd>
-                </div>
+                <div class="app-provider-shortlist-remove">
+                    <strong class="govuk-tag">Shortlisted</strong><br>
+                    <form method="post" asp-route="@RouteNames.DeleteShortlistItem" asp-route-id="@(Model.Provider.ShortlistId ?? Guid.Empty)">
+                        <input type="hidden" name="ukprn" value="@Model.Provider.ProviderId"/>
+                        <input type="hidden" name="trainingCode" value="@Model.Course.Id"/>
+                        <input type="hidden" name="routeName" value="@RouteNames.CourseProviders"/>
+                        <button class="das-button--inline-link" type="submit">Remove from shortlist</button>
+                    </form> 
+                </div> 
 
-            }
-            @if (!string.IsNullOrEmpty(Model.Provider.Website))
-            {
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Website</dt>
-                    <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" target="_blank" rel="noreferrer noopener" href="@Model.Provider.Website">@Model.Provider.Website</a></dd>
-                </div>
-
-            }
-
-        </dl>
-    </div>
+        </div>
 
     @if (Model.TotalProviders > 1 && Model.Provider.DeliveryModes.FirstOrDefault(c => c.DeliveryModeType == DeliveryModeType.NotFound) == null)
     {

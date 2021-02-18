@@ -29,7 +29,7 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetProvider
                 throw new ValidationException(validationResult.DataAnnotationResult, null, null);
             }
 
-            var response = await _courseService.GetCourseProviderDetails(query.ProviderId, query.CourseId, query.Location, query.Lat, query.Lon);
+            var response = await _courseService.GetCourseProviderDetails(query.ProviderId, query.CourseId, query.Location, query.Lat, query.Lon, query.ShortlistUserId ?? Guid.Empty);
 
             return new GetCourseProviderResult
             {
@@ -38,7 +38,8 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetProvider
                 AdditionalCourses = response?.AdditionalCourses,
                 Location = response?.Location?.Name,
                 LocationGeoPoint = response?.Location?.LocationPoint?.GeoPoint,
-                ProvidersAtLocation = response?.ProvidersCount?.ProvidersAtLocation ?? 0
+                ProvidersAtLocation = response?.ProvidersCount?.ProvidersAtLocation ?? 0,
+                ShortlistItemCount = response?.ShortlistItemCount ?? 0
             };
         }
     }

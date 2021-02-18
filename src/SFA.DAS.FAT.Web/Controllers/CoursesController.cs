@@ -47,12 +47,15 @@ namespace SFA.DAS.FAT.Web.Controllers
         [Route("", Name = RouteNames.Courses)]
         public async Task<IActionResult> Courses(GetCoursesRequest request)
         {
+            var shortlistItem = _shortlistCookieService.Get(Constants.ShortlistCookieName);
+            
             var result = await _mediator.Send(new GetCoursesQuery
             {
                 Keyword = request.Keyword,
                 RouteIds = request.Sectors,
                 Levels = request.Levels,
-                OrderBy = request.OrderBy
+                OrderBy = request.OrderBy,
+                ShortlistUserId = shortlistItem?.ShortlistUserId
             });
 
             var viewModel = new CoursesViewModel

@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourses;
+using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Domain.Courses;
+using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.FAT.Web.Controllers;
 using SFA.DAS.FAT.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
@@ -22,13 +24,19 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
         public async Task Then_The_Query_Is_Sent_And_Data_Retrieved_And_View_Shown(
             GetCoursesRequest request,
             GetCoursesResult response,
+            ShortlistCookieItem cookieItem,
             [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> shortlistCookieService,
             [Greedy] CoursesController controller)
         {
             //Arrange
             mediator.Setup(x => 
-                    x.Send(It.Is<GetCoursesQuery>(c => c.Keyword.Equals(request.Keyword)),It.IsAny<CancellationToken>()))
+                    x.Send(It.Is<GetCoursesQuery>(c => 
+                        c.Keyword.Equals(request.Keyword)
+                        && c.ShortlistUserId.Equals(cookieItem.ShortlistUserId)),It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
+            shortlistCookieService.Setup(x => x.Get(Constants.ShortlistCookieName))
+                .Returns(cookieItem);
             
             //Act
             var actual = await controller.Courses(request);
@@ -44,6 +52,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             GetCoursesRequest request,
             GetCoursesResult response,
             [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> shortlistCookieService,
             [Greedy] CoursesController controller)
         {
             //Arrange
@@ -53,6 +62,8 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                         && c.RouteIds.Equals(request.Sectors)
                         && c.Levels.Equals(request.Levels)),It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
+            shortlistCookieService.Setup(x => x.Get(Constants.ShortlistCookieName))
+                .Returns((ShortlistCookieItem)null);
 
             //Act
             var actual = await controller.Courses(request);

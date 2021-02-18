@@ -46,7 +46,7 @@ namespace SFA.DAS.FAT.Web.Controllers
 
             var viewModel = new ShortlistViewModel
             {
-                Shortlist = result.Shortlist.Select(item => (ShortlistItemViewModel)item)
+                Shortlist = result.Shortlist.Select(item => (ShortlistItemViewModel)item).ToList()
             };
 
             return View(viewModel);

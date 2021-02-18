@@ -1,12 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SFA.DAS.FAT.Domain.Shortlist;
 
 namespace SFA.DAS.FAT.Web.Models
 {
     public class ShortlistViewModel
     {
-        public IEnumerable<ShortlistItemViewModel> Shortlist { get; set; }
+        public List<ShortlistItemViewModel> Shortlist { get; set; } = new List<ShortlistItemViewModel>();
+
+        public bool IsOneTable => OneTable();
+
+        private bool OneTable()
+        {
+            var distinctCourseTitles = Shortlist
+                .GroupBy(model => model.Course.Title)
+                .Select(models => models.Key)
+                .ToList();
+
+            if (distinctCourseTitles.Count > 1)
+                return false;
+
+            var distinctCourseLevels = Shortlist
+                .GroupBy(model => model.Course.Level)
+                .Select(models => models.Key)
+                .ToList();
+
+            if (distinctCourseLevels.Count > 1)
+                return false;
+
+            var distinctLocations = Shortlist
+                .GroupBy(model => model.LocationDescription)
+                .Select(models => models.Key)
+                .ToList();
+
+            if (distinctLocations.Count > 1)
+                return false;
+
+            return true;
+        }
     }
 
     public class ShortlistItemViewModel

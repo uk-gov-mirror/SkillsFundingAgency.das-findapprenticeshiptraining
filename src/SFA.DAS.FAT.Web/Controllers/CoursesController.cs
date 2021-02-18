@@ -161,13 +161,16 @@ namespace SFA.DAS.FAT.Web.Controllers
             try
             {   
                 var locationItem = CheckLocation(location);
+                var shortlistItem = _shortlistCookieService.Get(Constants.ShortlistCookieName);
+                
                 var result = await _mediator.Send(new GetCourseProviderQuery
                 {
                     ProviderId = providerId ,
                     CourseId = id, 
                     Location = locationItem?.Name ?? "",
                     Lat = locationItem?.Lat ?? 0,
-                    Lon = locationItem?.Lon ?? 0
+                    Lon = locationItem?.Lon ?? 0,
+                    ShortlistUserId = shortlistItem?.ShortlistUserId
                 });
 
                 var cookieResult =new LocationCookieItem

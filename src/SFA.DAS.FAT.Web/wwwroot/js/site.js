@@ -168,13 +168,15 @@ var addFormDone = function(data, form) {
     var removeForm = wrapper.find('.app-provider-shortlist-remove form');
     removeForm.attr("action", "/shortlist/items/" + data);
     wrapper.addClass(providerAddedClassName)
+    updateShortlistCount();
 }
 
 var removeFormDone = function(data, form) {
     var wrapper = form.closest('.app-provider-shortlist-control');
     var removeForm = wrapper.find('.app-provider-shortlist-remove form');
     removeForm.attr("action", "/shortlist/items/00000000-0000-0000-0000-000000000000");
-    wrapper.removeClass(providerAddedClassName)
+    wrapper.removeClass(providerAddedClassName);
+    updateShortlistCount(true);
 }
 
 var sendData = function(formData, action, doneCallBack, form){
@@ -187,4 +189,23 @@ var sendData = function(formData, action, doneCallBack, form){
     }).done(function(data) {
         doneCallBack(data, form)
     });
+}
+
+var updateShortlistCount = function(remove = false) {
+    var currentCount = $('body').data('shortlistcount');
+    var shortlistCountsUi = $('.app-view-shortlist-link__number');
+    var updateBy = 1;
+
+    if (remove) {
+        updateBy = -1;
+    } 
+
+    currentCount += updateBy;
+
+    $('body').data('shortlistcount', currentCount)
+    shortlistCountsUi.text(currentCount).addClass('app-view-shortlist-link__number-update')
+
+    setTimeout(function() {
+        shortlistCountsUi.removeClass('app-view-shortlist-link__number-update')
+    }, 1000);
 }

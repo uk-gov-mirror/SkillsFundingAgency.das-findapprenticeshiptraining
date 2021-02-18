@@ -75,9 +75,21 @@
     border-radius: 50%;
     line-height: .8;
     height: .8em;
-    width: .8em;
+    min-width: .8em;
     text-align: center;
     vertical-align: middle;
+}
+
+.app-view-shortlist-link__number-update {
+    animation-name: colourchange;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+}
+
+@keyframes colourchange
+{
+  from  {background: #ffdd00}
+  to    {background: #1d70b8}
 }
 
 .app-view-shortlist-link:hover .app-view-shortlist-link__number {

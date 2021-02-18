@@ -12,6 +12,7 @@ namespace SFA.DAS.FAT.Domain.Interfaces
         Task<TrainingCourseProviders> GetCourseProviders(     int courseId, string queryLocation,
             IEnumerable<DeliveryModeType> queryDeliveryModes, IEnumerable<ProviderRating> queryProviderRatings,
             double lat, double lon, Guid? requestShortlistUserId);
-        Task<TrainingCourseProviderDetails> GetCourseProviderDetails(int providerId, int standardId, string location, double lat, double lon);
+        Task<TrainingCourseProviderDetails> GetCourseProviderDetails(    int providerId, int standardId,
+            string location, double lat, double lon, Guid shortlistUserId);
     }
 }

@@ -4,7 +4,7 @@ using NUnit.Framework;
 using SFA.DAS.FAT.Domain.Shortlist;
 using SFA.DAS.FAT.Web.Models;
 
-namespace SFA.DAS.FAT.Web.UnitTests.Models
+namespace SFA.DAS.FAT.Web.UnitTests.Models.ShortlistViewModelTests
 {
     public class WhenCreatingShortlistViewModel
     {
@@ -19,6 +19,14 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
                 .Excluding(item => item.Provider));
             actual.Course.Should().BeEquivalentTo((CourseViewModel)source.Course);
             actual.Provider.Should().BeEquivalentTo((ProviderViewModel)source.Provider);
+        }
+
+        [Test, AutoData]
+        public void Then_Shortlist_Default_Is_Empty_List()
+        {
+            var actual = new ShortlistViewModel();
+
+            actual.Shortlist.Should().BeEmpty();
         }
     }
 }

@@ -45,7 +45,7 @@
 
 </head>
 
-<body class="govuk-template__body ">
+<body class="govuk-template__body " data-shortlistcount="@(ViewData["ShortlistItemCount"] ?? 0)">
 
 <!-- Google Tag Manager (noscript) -->
 <noscript>
@@ -152,7 +152,7 @@
                     }
                 </ol>
             </div>
-            <a asp-route="@RouteNames.ShortList" asp-route-id="@Guid.Empty" class="govuk-body govuk-link govuk-link--no-visited-state app-view-shortlist-link">View shortlist <span class="app-view-shortlist-link__number" aria-hidden="true">0</span></a>
+            <a asp-route="@RouteNames.ShortList" class="govuk-body govuk-link govuk-link--no-visited-state app-view-shortlist-link">View shortlist <span class="app-view-shortlist-link__number" aria-hidden="true">@(ViewData["ShortlistItemCount"] ?? 0)</span></a>
         </div>
     }
     @RenderBody()
@@ -165,7 +165,7 @@
                 </svg>
                 Back to top
             </a>
-            <a asp-route="@RouteNames.ShortList" asp-route-id="@Guid.Empty" class="govuk-link govuk-link--no-visited-state app-view-shortlist-link">View shortlist <span class="app-view-shortlist-link__number" aria-hidden="true">0</span></a>
+            <a asp-route="@RouteNames.ShortList" class="govuk-link govuk-link--no-visited-state app-view-shortlist-link">View shortlist <span class="app-view-shortlist-link__number" aria-hidden="true">@(ViewData["ShortlistItemCount"] ?? 0)</span></a>
         </div>
     }
 

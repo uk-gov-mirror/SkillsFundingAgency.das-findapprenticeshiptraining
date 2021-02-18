@@ -15,5 +15,7 @@ namespace SFA.DAS.FAT.Domain.Courses
         public int TotalFiltered { get; set; }
         [JsonProperty("location")]
         public Locations.Locations.LocationItem Location { get; set; }
+        [JsonProperty("shortlistItemCount")]
+        public int ShortlistItemCount { get; set; }
     }
 }

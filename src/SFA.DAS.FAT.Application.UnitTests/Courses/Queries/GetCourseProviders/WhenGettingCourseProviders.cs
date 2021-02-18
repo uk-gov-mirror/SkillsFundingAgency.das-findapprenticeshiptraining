@@ -32,6 +32,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviders
             result.TotalFiltered.Should().Be(providersFromService.TotalFiltered);
             result.Location.Should().Be(providersFromService.Location.Name);
             result.LocationGeoPoint.Should().BeEquivalentTo(providersFromService.Location.LocationPoint.GeoPoint);
+            result.ShortlistItemCount.Should().Be(providersFromService.ShortlistItemCount);
         }
         [Test, MoqAutoData]
         public async Task Then_Returns_Results_From_Service_With_No_Location(

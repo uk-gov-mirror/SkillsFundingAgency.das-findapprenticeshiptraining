@@ -18,7 +18,7 @@ namespace SFA.DAS.FAT.Web.Models
         public List<string> TypicalJobTitles { get ; private set ; }
         public string ExternalCourseUrl { get ; private set ; }
         public int TypicalDuration { get ; private set ; }
-        public int Level { get ; private set ; }
+        public int Level { get ; set; }
         public string LevelEquivalent { get; set; }
         public string MaximumFunding { get ; set ; }
         public int? TotalProvidersCount { get; set; }

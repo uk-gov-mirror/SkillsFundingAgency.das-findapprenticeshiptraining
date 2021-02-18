@@ -26,7 +26,8 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders
                 Total = courseProviders.Total,
                 TotalFiltered = courseProviders.TotalFiltered,
                 Location = courseProviders.Location?.Name,
-                LocationGeoPoint = courseProviders.Location?.LocationPoint?.GeoPoint
+                LocationGeoPoint = courseProviders.Location?.LocationPoint?.GeoPoint,
+                ShortlistItemCount = courseProviders.ShortlistItemCount
             };
         }
     }

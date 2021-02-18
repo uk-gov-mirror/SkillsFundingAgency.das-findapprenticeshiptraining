@@ -48,6 +48,36 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
                     resultFromMediator.Shortlist.Select(item => (ShortlistItemViewModel)item));
         }
 
-        //todo: and no cookie??
+        [Test, MoqAutoData]
+        public async Task And_Cookie_No_Exists_Then_Returns_Empty_ViewModel(
+            ShortlistCookieItem shortlistCookie,
+            GetShortlistForUserResult resultFromMediator,
+            [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> mockCookieService,
+            [Frozen] Mock<IMediator> mockMediator,
+            [Greedy] ShortlistController controller)
+        {
+            //Arrange
+            mockCookieService
+                .Setup(service => service.Get(Constants.ShortlistCookieName))
+                .Returns(default(ShortlistCookieItem));
+            mockMediator
+                .Setup(mediator => mediator.Send(
+                    It.Is<GetShortlistForUserQuery>(c => c.ShortlistUserId.Equals(shortlistCookie.ShortlistUserId)),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(resultFromMediator);
+            
+            //Act
+            var actual = await controller.Index() as ViewResult;
+            
+            //Assert
+            actual.Should().NotBeNull();
+            var model = actual.Model as ShortlistViewModel;
+            model.Should().NotBeNull();
+            model.Shortlist.Should().BeEmpty();
+            mockMediator.Verify(mediator => mediator.Send(
+                    It.IsAny<GetShortlistForUserQuery>(), 
+                    It.IsAny<CancellationToken>()), 
+                Times.Never);
+        }
     }
 }

@@ -35,7 +35,10 @@ namespace SFA.DAS.FAT.Web.Controllers
         {
             var cookie = _shortlistCookieService.Get(Constants.ShortlistCookieName);
 
-            //todo: what if no cookie yet?
+            if (cookie == default)
+            {
+                return View(new ShortlistViewModel());
+            }
 
             var result =
                 await _mediator.Send(
@@ -43,7 +46,7 @@ namespace SFA.DAS.FAT.Web.Controllers
 
             var viewModel = new ShortlistViewModel
             {
-                Shortlist = result.Shortlist.Select(item => (ShortlistItemViewModel)item)
+                Shortlist = result.Shortlist.Select(item => (ShortlistItemViewModel)item).ToList()
             };
 
             return View(viewModel);

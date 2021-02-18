@@ -191,16 +191,11 @@ var sendData = function(formData, action, doneCallBack, form){
     });
 }
 
-var updateShortlistCount = function(remove = false) {
+var updateShortlistCount = function(remove) {
     var currentCount = $('body').data('shortlistcount');
     var shortlistCountsUi = $('.app-view-shortlist-link__number');
-    var updateBy = 1;
-
-    if (remove) {
-        updateBy = -1;
-    } 
-
-    currentCount += updateBy;
+    
+    currentCount += remove ? -1 : 1;
 
     $('body').data('shortlistcount', currentCount)
     shortlistCountsUi.text(currentCount).addClass('app-view-shortlist-link__number-update')

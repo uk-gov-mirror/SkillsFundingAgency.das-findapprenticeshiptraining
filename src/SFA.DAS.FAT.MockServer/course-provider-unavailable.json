@@ -30,5 +30,6 @@
       ]
     }
   },
-  "trainingCourseProvider": {}
+  "trainingCourseProvider": {},
+  "shortlistItemCount" : 11
 }

@@ -113,12 +113,21 @@
     margin-bottom: -10px;
 }
 
+.app-provider-shortlist-control--inline {
+    margin: 0;
+}
+
 @media (min-width: 40.0625em) {
     .app-provider-shortlist-control {
         text-align: right;
         margin: 0;
     }
+    .app-provider-shortlist-control--inline {
+        text-align: left;
+    }
 }
+
+
 
 .app-provider-shortlist-add {
     display: block;

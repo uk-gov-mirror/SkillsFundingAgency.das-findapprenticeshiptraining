@@ -68,7 +68,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                 SelectedSectors = request.Sectors,
                 SelectedLevels = request.Levels,
                 Levels = result.Levels.Select(level => new LevelViewModel(level, request.Levels)).ToList(),
-                OrderBy = request.OrderBy
+                OrderBy = request.OrderBy,
+                ShortlistItemCount = result.ShortlistItemCount
             };
 
             return View(viewModel);

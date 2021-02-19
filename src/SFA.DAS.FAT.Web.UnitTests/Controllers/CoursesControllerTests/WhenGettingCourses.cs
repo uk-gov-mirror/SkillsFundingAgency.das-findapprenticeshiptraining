@@ -82,6 +82,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             actualModel.SelectedSectors.Should().BeEquivalentTo(request.Sectors);
             actualModel.Total.Should().Be(response.Total);
             actualModel.TotalFiltered.Should().Be(response.TotalFiltered);
+            actualModel.ShortlistItemCount.Should().Be(response.ShortlistItemCount);
         }
 
         [Test, MoqAutoData]

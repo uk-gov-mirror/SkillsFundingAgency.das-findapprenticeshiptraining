@@ -20,7 +20,6 @@ namespace SFA.DAS.FAT.Domain.Shortlist.Api
         public Guid ShortlistUserId { get; set; }
         public int StandardId { get; set; }
         public int Ukprn { get; set; }
-        public string SectorSubjectArea { get; set; }
         public double? Lat { get; set; } = null;
         public double? Lon { get; set; } = null;
         public string LocationDescription { get; set; } = null;

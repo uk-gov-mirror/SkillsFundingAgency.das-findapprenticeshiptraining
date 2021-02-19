@@ -77,8 +77,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                 Ukprn = request.Ukprn,
                 LocationDescription = string.IsNullOrEmpty(location?.Name) ? null : location.Name,
                 TrainingCode = request.TrainingCode,
-                ShortlistUserId = cookie.ShortlistUserId,
-                SectorSubjectArea = request.SectorSubjectArea
+                ShortlistUserId = cookie.ShortlistUserId
             });
 
             if (!string.IsNullOrEmpty(request.RouteName))

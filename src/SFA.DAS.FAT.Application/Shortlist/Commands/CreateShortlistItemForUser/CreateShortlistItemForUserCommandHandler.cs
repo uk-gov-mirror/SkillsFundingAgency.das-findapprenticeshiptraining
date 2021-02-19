@@ -21,7 +21,6 @@ namespace SFA.DAS.FAT.Application.Shortlist.Commands.CreateShortlistItemForUser
                 request.ShortlistUserId,
                 request.Ukprn,
                 request.TrainingCode,
-                request.SectorSubjectArea,
                 request.Lat,
                 request.Lon,
                 request.LocationDescription);

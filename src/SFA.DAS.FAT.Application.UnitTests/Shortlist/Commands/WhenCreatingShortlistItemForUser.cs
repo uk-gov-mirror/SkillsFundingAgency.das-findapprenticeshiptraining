@@ -25,7 +25,6 @@ namespace SFA.DAS.FAT.Application.UnitTests.Shortlist.Commands
                 command.ShortlistUserId, 
                 command.Ukprn, 
                 command.TrainingCode, 
-                command.SectorSubjectArea, 
                 command.Lat, 
                 command.Lon, 
                 command.LocationDescription)).ReturnsAsync(expectedId);

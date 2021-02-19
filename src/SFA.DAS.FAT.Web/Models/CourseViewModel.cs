@@ -28,6 +28,7 @@ namespace SFA.DAS.FAT.Web.Models
         public DateTime? LastDateStarts { get; set; }
         public bool AfterLastStartDate { get; set; }
         public string LocationName { get; set; }
+        public int ShortlistItemCount { get ; set ; }
 
         public static implicit operator CourseViewModel(Course course)
         {

@@ -58,6 +58,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             actualModel.TotalProvidersCount.Should().Be(response.ProvidersCount.TotalProviders);
             actualModel.ProvidersAtLocationCount.Should().Be(response.ProvidersCount.ProvidersAtLocation);
             actualModel.LocationName.Should().Be(locationCookieItem.Name);
+            actualModel.ShortlistItemCount.Should().Be(response.ShortlistItemCount);
         }
 
         [Test, MoqAutoData]

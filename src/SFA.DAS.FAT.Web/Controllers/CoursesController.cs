@@ -98,6 +98,7 @@ namespace SFA.DAS.FAT.Web.Controllers
             viewModel.LocationName = location?.Name;
             viewModel.TotalProvidersCount = result.ProvidersCount?.TotalProviders;
             viewModel.ProvidersAtLocationCount = result.ProvidersCount?.ProvidersAtLocation;
+            viewModel.ShortlistItemCount = result.ShortlistItemCount;
             
             return View(viewModel);
         }

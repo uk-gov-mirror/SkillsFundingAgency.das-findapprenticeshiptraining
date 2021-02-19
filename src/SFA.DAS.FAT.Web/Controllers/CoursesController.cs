@@ -79,11 +79,14 @@ namespace SFA.DAS.FAT.Web.Controllers
         public async Task<IActionResult> CourseDetail(int id, [FromQuery(Name="location")]string locationName)
         {
             var location = CheckLocation(locationName);
+            var shortlistItem = _shortlistCookieService.Get(Constants.ShortlistCookieName);
+            
             var result = await _mediator.Send(new GetCourseQuery
             {
                 CourseId = id,
                 Lat = location?.Lat ?? 0,
-                Lon = location?.Lon ?? 0
+                Lon = location?.Lon ?? 0,
+                ShortlistUserId = shortlistItem?.ShortlistUserId
             });
 
             if (result.Course == null)

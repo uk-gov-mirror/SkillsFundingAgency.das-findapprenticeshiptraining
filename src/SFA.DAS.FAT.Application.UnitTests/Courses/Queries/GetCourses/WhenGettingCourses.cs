@@ -75,13 +75,13 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
         {
             //Arrange
             request.Levels = null;
-            mockService.Setup(x => x.GetCourses(request.Keyword, request.RouteIds, null, OrderBy.None, null)).ReturnsAsync(courseResponse);
+            mockService.Setup(x => x.GetCourses(request.Keyword, request.RouteIds, null, OrderBy.None, request.ShortlistUserId)).ReturnsAsync(courseResponse);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
 
             //Assert
-            mockService.Verify(x => x.GetCourses(request.Keyword, request.RouteIds, null, OrderBy.None, null), Times.Once);
+            mockService.Verify(x => x.GetCourses(request.Keyword, request.RouteIds, null, OrderBy.None, request.ShortlistUserId), Times.Once);
             Assert.IsNotNull(actual);
         }
 

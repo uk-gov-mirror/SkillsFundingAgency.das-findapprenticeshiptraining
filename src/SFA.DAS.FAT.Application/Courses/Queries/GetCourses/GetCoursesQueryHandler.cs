@@ -26,6 +26,7 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourses
                 Total = response.Total,
                 TotalFiltered = response.TotalFiltered,
                 Levels = response.Levels.ToList(),
+                ShortlistItemCount = response.ShortlistItemCount
             };
         }
     }

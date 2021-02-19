@@ -15,7 +15,7 @@
     </tr>
     </thead>
     <tbody class="govuk-table__body">
-    @foreach (var shortlistItem in Model)
+    @foreach (var shortlistItem in Model.OrderByDescending(model => model.CreatedDate))
     {
         var routeData = new Dictionary<string, string>
         {
@@ -26,11 +26,11 @@
 
         <tr class="govuk-table__row">
             <th scope="row" class="govuk-table__header">
-                <div class="govuk-!-margin-bottom-2">
+                <div class="das-highlight govuk-!-margin-top-0 govuk-!-margin-bottom-2 govuk-!-padding-top-3 govuk-!-padding-left-3 govuk-!-padding-right-3 govuk-!-padding-bottom-1">
                     <p class="govuk-body govuk-!-font-size-24 govuk-!-font-weight-bold govuk-!-margin-bottom-2">
                         <a id="@shortlistItem.Id" asp-route="@RouteNames.CourseProviderDetails" asp-all-route-data="@routeData" class="govuk-link govuk-link--no-visited-state">@shortlistItem.Provider.Name</a>
                     </p>
-                    <ul class="govuk-list govuk-!-margin-top-4 govuk-!-font-size-16">
+                    <ul class="govuk-list govuk-!-margin-top-4 govuk-!-margin-bottom-2 govuk-!-font-size-16">
                         <li class="govuk-!-margin-bottom-2"><a class="govuk-link govuk-link--no-visited-state" href="#">@shortlistItem.Provider.Email</a></li>
                         <li >@shortlistItem.Provider.Phone</li>
                         <li><a class="govuk-link govuk-link--no-visited-state" href="#">@shortlistItem.Provider.Website</a></li>
@@ -50,7 +50,7 @@
                             {
                                 <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
                             }
-                            @mode.DeliveryModeType.GetDescription() @(!string.IsNullOrEmpty(shortlistItem.LocationDescription) ? mode.FormattedDistanceInMiles : "")) @mode.NationalText
+                            @mode.DeliveryModeType.GetDescription() @(!string.IsNullOrEmpty(shortlistItem.LocationDescription) ? mode.FormattedDistanceInMiles : "") @mode.NationalText
                         </li>
                     }
                 </ul>

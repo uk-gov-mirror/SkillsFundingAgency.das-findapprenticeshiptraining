@@ -33,7 +33,7 @@
     }
     else
     {
-        foreach (var courseTitleGroup in Model.Shortlist.GroupBy(model => model.Course.Title))
+        foreach (var courseTitleGroup in Model.Shortlist.OrderBy(model => model.Course.TitleAndLevel).GroupBy(model => model.Course.Title))
         {
             foreach (var courseLevelGroup in courseTitleGroup.GroupBy(model => model.Course.Level))
             {
@@ -41,7 +41,7 @@
                     <div class="govuk-grid-column-full">
                         <h2 class="govuk-heading-l govuk-!-margin-bottom-4">@courseTitleGroup.Key <span class="das-no-wrap">(level @courseLevelGroup.Key)</span></h2>
 
-                        @foreach (var locationGroup in courseLevelGroup.GroupBy(model => model.LocationDescription))
+                        @foreach (var locationGroup in courseLevelGroup.OrderBy(model => model.LocationDescription).GroupBy(model => model.LocationDescription))
                         {
                             @if (!string.IsNullOrEmpty(locationGroup.Key))
                             {
@@ -50,6 +50,12 @@
                             @if (Model.IsOneTable)
                             {
                                 <partial name="_ShortlistTable" model="@locationGroup.ToList()"/>
+                                <p class="govuk-body govuk-!-margin-bottom-6">
+                                    <a asp-route="@RouteNames.CourseProviders" 
+                                       asp-route-id="@locationGroup.FirstOrDefault()?.Course?.Id" 
+                                       asp-route-location="@locationGroup.Key" 
+                                       class="govuk-link govuk-link--no-visited-state">Add more training providers</a>
+                                </p>
                             }
                             else
                             {
@@ -61,11 +67,15 @@
                                     </summary>
                                     <div class="govuk-details__text">
                                         <partial name="_ShortlistTable" model="@locationGroup.ToList()"/>
-                                        <p class="govuk-body govuk-!-margin-bottom-6"><a class="govuk-link govuk-link--no-visited-state">Add more training providers</a></p>
+                                        <p class="govuk-body govuk-!-margin-bottom-6">
+                                            <a asp-route="@RouteNames.CourseProviders" 
+                                               asp-route-id="@locationGroup.FirstOrDefault()?.Course?.Id" 
+                                               asp-route-location="@locationGroup.Key" 
+                                               class="govuk-link govuk-link--no-visited-state">Add more training providers</a>
+                                        </p>
                                     </div>
                                 </details>
                             }
-                            
                         }
                     </div>
                 </div>

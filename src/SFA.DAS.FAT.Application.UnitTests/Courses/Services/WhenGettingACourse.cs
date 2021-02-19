@@ -1,5 +1,7 @@
+using System;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
+using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
@@ -20,20 +22,23 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             double lat,
             double lon,
             string baseUrl,
+            Guid shortlistUserId,
+            TrainingCourse response,
             [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
             [Frozen] Mock<IApiClient> apiClient,
             CourseService courseService)
         {
             //Arrange
             
-            var courseApiRequest = new GetCourseApiRequest(config.Object.Value.BaseUrl, courseId, lat, lon);
+            var courseApiRequest = new GetCourseApiRequest(config.Object.Value.BaseUrl, courseId, lat, lon, shortlistUserId);
+            apiClient.Setup(x=>x.Get<TrainingCourse>(
+                It.Is<GetCourseApiRequest>(request => request.GetUrl.Equals(courseApiRequest.GetUrl)))).ReturnsAsync(response);
             
             //Act
-            await courseService.GetCourse(courseId, lat, lon);
+            var actual = await courseService.GetCourse(courseId, lat, lon, shortlistUserId);
             
             //Assert
-            apiClient.Verify(x=>x.Get<TrainingCourse>(
-                It.Is<GetCourseApiRequest>(request => request.GetUrl.Equals(courseApiRequest.GetUrl))));
+            actual.Should().BeEquivalentTo(response);
         }
     }
 }

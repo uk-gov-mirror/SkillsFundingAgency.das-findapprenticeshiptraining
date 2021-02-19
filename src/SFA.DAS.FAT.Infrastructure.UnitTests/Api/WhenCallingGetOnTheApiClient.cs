@@ -34,7 +34,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
                 Content = new StringContent(JsonConvert.SerializeObject(testObject)),
                 StatusCode = HttpStatusCode.Accepted
             };
-            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, getTestRequest.GetUrl, config.Key);
+            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, getTestRequest.GetUrl, config.Key, HttpMethod.Get);
             var client = new HttpClient(httpMessageHandler.Object);
             var apiClient = new ApiClient(client, configMock.Object);
 
@@ -59,7 +59,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
                 StatusCode = HttpStatusCode.BadRequest
             };
             
-            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, getTestRequest.GetUrl, config.Key);
+            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, getTestRequest.GetUrl, config.Key, HttpMethod.Get);
             var client = new HttpClient(httpMessageHandler.Object);
             var apiClient = new ApiClient(client, configMock.Object);
             
@@ -82,7 +82,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
                 StatusCode = HttpStatusCode.NotFound
             };
             
-            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, getTestRequest.GetUrl, config.Key);
+            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, getTestRequest.GetUrl, config.Key, HttpMethod.Get);
             var client = new HttpClient(httpMessageHandler.Object);
             var apiClient = new ApiClient(client, configMock.Object);
             

@@ -10,28 +10,14 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.HttpMessageHandlerMock
 {
     public static class MessageHandler
     {
-        public static Mock<HttpMessageHandler> SetupMessageHandlerMock(HttpResponseMessage response, string url, string key, string httpMethod = "get")
+        public static Mock<HttpMessageHandler> SetupMessageHandlerMock(HttpResponseMessage response, string url, string key, HttpMethod httpMethod)
         {
-            var method = HttpMethod.Get;
-            if (httpMethod.Equals("get", StringComparison.CurrentCultureIgnoreCase))
-            {
-                method = HttpMethod.Get;
-            }
-            else if (httpMethod.Equals("post", StringComparison.CurrentCultureIgnoreCase))
-            {
-                method = HttpMethod.Post;
-            }
-            else if (httpMethod.Equals("delete", StringComparison.CurrentCultureIgnoreCase))
-            {
-                method = HttpMethod.Delete;
-            }
-            
             var httpMessageHandler = new Mock<HttpMessageHandler>();
             httpMessageHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>(
                     "SendAsync",
                     ItExpr.Is<HttpRequestMessage>(c =>
-                         c.Method.Equals(method)
+                         c.Method.Equals(httpMethod)
                         && c.Headers.Contains("Ocp-Apim-Subscription-Key")
                         && c.Headers.GetValues("Ocp-Apim-Subscription-Key").First().Equals(key)
                         && c.Headers.Contains("X-Version")

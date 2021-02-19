@@ -18,6 +18,14 @@
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+            @if (!string.IsNullOrEmpty(Model.Removed))
+            {
+                <div class="govuk-notification-banner govuk-!-margin-bottom-7">
+                    <div class="govuk-notification-banner__content">
+                        <p class="govuk-body">@HttpUtility.HtmlDecode(Model.Removed) removed from shortlist.</p>
+                    </div>
+                </div>
+            }
             <h1 class="govuk-heading-xl">
                 Shortlisted training providers
             </h1>

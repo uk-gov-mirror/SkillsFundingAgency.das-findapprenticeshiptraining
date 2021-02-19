@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
@@ -20,6 +21,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
     {
         [Test, MoqAutoData]
         public async Task And_Cookie_Exists_Then_Reads_Cookie_And_Builds_ViewModel_From_Mediator_Result(
+            string removed,
             ShortlistCookieItem shortlistCookie,
             GetShortlistForUserResult resultFromMediator,
             [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> mockCookieService,
@@ -37,7 +39,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
                 .ReturnsAsync(resultFromMediator);
             
             //Act
-            var actual = await controller.Index() as ViewResult;
+            var actual = await controller.Index(removed) as ViewResult;
             
             //Assert
             actual.Should().NotBeNull();
@@ -46,6 +48,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
             model.Shortlist.Should()
                 .BeEquivalentTo(
                     resultFromMediator.Shortlist.Select(item => (ShortlistItemViewModel)item));
+            model.Removed.Should().Be(HttpUtility.UrlDecode(removed));
         }
 
         [Test, MoqAutoData]
@@ -67,7 +70,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
                 .ReturnsAsync(resultFromMediator);
             
             //Act
-            var actual = await controller.Index() as ViewResult;
+            var actual = await controller.Index(null) as ViewResult;
             
             //Assert
             actual.Should().NotBeNull();

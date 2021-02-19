@@ -44,7 +44,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.HealthCheck
                 Content = new StringContent(""),
                 StatusCode = HttpStatusCode.Accepted
             };
-            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, $"{config.PingUrl}ping", config.Key);
+            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, $"{config.PingUrl}ping", config.Key, HttpMethod.Get);
             var client = new HttpClient(httpMessageHandler.Object);
             var apiClient = new ApiClient(client, configMock.Object);
             //Act

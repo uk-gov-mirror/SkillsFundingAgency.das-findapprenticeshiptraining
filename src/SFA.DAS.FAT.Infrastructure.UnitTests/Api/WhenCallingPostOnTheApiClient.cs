@@ -35,7 +35,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
             };
             var postTestRequest = new PostTestRequest(id,"https://test.local") {Data = postContent};
             var expectedUrl = postTestRequest.PostUrl;
-            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, expectedUrl, config.Key, "post");
+            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, expectedUrl, config.Key, HttpMethod.Post);
             var client = new HttpClient(httpMessageHandler.Object);
             var apiClient = new ApiClient(client, configMock.Object);
             
@@ -70,7 +70,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
             };
             var postTestRequest = new PostTestRequest(id,"https://test.local") {Data = postContent};
             var expectedUrl = postTestRequest.PostUrl;
-            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, expectedUrl, config.Key, "post");
+            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, expectedUrl, config.Key, HttpMethod.Post);
             var client = new HttpClient(httpMessageHandler.Object);
             var apiClient = new ApiClient(client, configMock.Object);
             

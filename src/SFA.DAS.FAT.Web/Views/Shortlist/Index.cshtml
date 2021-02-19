@@ -1,4 +1,5 @@
 @using SFA.DAS.FAT.Web.Infrastructure
+@using System.Web
 @model SFA.DAS.FAT.Web.Models.ShortlistViewModel
 @{
     ViewData["Title"] = "Shortlist";
@@ -53,7 +54,7 @@
                                 <p class="govuk-body govuk-!-margin-bottom-6">
                                     <a asp-route="@RouteNames.CourseProviders" 
                                        asp-route-id="@locationGroup.FirstOrDefault()?.Course?.Id" 
-                                       asp-route-location="@locationGroup.Key" 
+                                       asp-route-location="@HttpUtility.UrlEncode(locationGroup.Key)" 
                                        class="govuk-link govuk-link--no-visited-state">Add more training providers</a>
                                 </p>
                             }
@@ -70,7 +71,7 @@
                                         <p class="govuk-body govuk-!-margin-bottom-6">
                                             <a asp-route="@RouteNames.CourseProviders" 
                                                asp-route-id="@locationGroup.FirstOrDefault()?.Course?.Id" 
-                                               asp-route-location="@locationGroup.Key" 
+                                               asp-route-location="@HttpUtility.UrlEncode(locationGroup.Key)" 
                                                class="govuk-link govuk-link--no-visited-state">Add more training providers</a>
                                         </p>
                                     </div>

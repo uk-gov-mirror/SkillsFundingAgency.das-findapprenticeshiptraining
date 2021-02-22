@@ -319,12 +319,12 @@
         </div>
         @if (Model.TotalProviders > 1 && Model.Provider.DeliveryModes.FirstOrDefault(c => c.DeliveryModeType == DeliveryModeType.NotFound) == null)
         {
-            <p class="govuk-body">@Model.Provider.Name is 1 of @Model.TotalProviders training providers for @Model.Course.TitleAndLevel in the apprenticeship location.</p>
+            <p class="govuk-body govuk-!-margin-top-4">@Model.Provider.Name is 1 of @Model.TotalProviders training providers for @Model.Course.TitleAndLevel in the apprenticeship location.</p>
             <p class="govuk-body govuk-!-margin-bottom-0"><a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.CourseProviders" asp-route-id="@Model.Course.Id">View other training providers</a></p>
         }
         @if (Model.TotalProviders == 1 && Model.Provider.DeliveryModes.FirstOrDefault(c => c.DeliveryModeType == DeliveryModeType.NotFound) == null)
         {
-            <p class="govuk-body">@Model.Provider.Name is the only training provider for @Model.Course.TitleAndLevel in the apprenticeship location.</p>
+            <p class="govuk-body govuk-!-margin-top-4">@Model.Provider.Name is the only training provider for @Model.Course.TitleAndLevel in the apprenticeship location.</p>
         }
      </div>
         

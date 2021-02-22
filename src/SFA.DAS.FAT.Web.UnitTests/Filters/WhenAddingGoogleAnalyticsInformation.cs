@@ -122,7 +122,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Filters
             // Arrange
             var encodedData = Encoding.UTF8.GetBytes($"{providerPosition}|{providerCount}");
             protector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Returns(encodedData);
-            provider.Setup(x => x.CreateProtector(It.IsAny<string>())).Returns(protector.Object);
+            provider.Setup(x => x.CreateProtector(Constants.GaDataProtectorName)).Returns(protector.Object);
             var context = SetupContextAndCookieLocations(controller, null, null, cookieStorageService, providerId.ToString(), Convert.ToBase64String(encodedData));
             
             //Act
@@ -150,7 +150,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Filters
             // Arrange
             var encodedData = Encoding.UTF8.GetBytes($"{providerPosition}|{providerCount}");
             protector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Throws<CryptographicException>();
-            provider.Setup(x => x.CreateProtector(It.IsAny<string>())).Returns(protector.Object);
+            provider.Setup(x => x.CreateProtector(Constants.GaDataProtectorName)).Returns(protector.Object);
             var context = SetupContextAndCookieLocations(controller, null, null, cookieStorageService, providerId.ToString(), Convert.ToBase64String(encodedData));
             
             //Act
@@ -179,7 +179,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Filters
             var data = $"{providerPosition}|{providerCount}";
             var encodedData = Encoding.UTF8.GetBytes(data);
             protector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Returns(encodedData);
-            provider.Setup(x => x.CreateProtector(It.IsAny<string>())).Returns(protector.Object);
+            provider.Setup(x => x.CreateProtector(Constants.GaDataProtectorName)).Returns(protector.Object);
             var context = SetupContextAndCookieLocations(controller, null, null, cookieStorageService, providerId.ToString(), data);
             
             //Act

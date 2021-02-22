@@ -285,7 +285,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             )
         {
             //Arrange
-            provider.Setup(x => x.CreateProtector(It.IsAny<string>())).Returns(protector.Object);
+            provider.Setup(x => x.CreateProtector(Constants.GaDataProtectorName)).Returns(protector.Object);
             response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
             mediator.Setup(x => x.Send(
                     It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id) 

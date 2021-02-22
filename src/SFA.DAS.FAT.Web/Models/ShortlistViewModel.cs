@@ -10,6 +10,7 @@ namespace SFA.DAS.FAT.Web.Models
         public List<ShortlistItemViewModel> Shortlist { get; set; } = new List<ShortlistItemViewModel>();
 
         public bool IsOneTable => OneTable();
+        public string Removed { get; set; }
 
         private bool OneTable()
         {

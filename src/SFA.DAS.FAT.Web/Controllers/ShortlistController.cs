@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAT.Application.Shortlist.Commands.CreateShortlistItemForUser;
@@ -31,7 +32,7 @@ namespace SFA.DAS.FAT.Web.Controllers
 
         [HttpGet]
         [Route("", Name = RouteNames.ShortList)]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery]string removed)
         {
             var cookie = _shortlistCookieService.Get(Constants.ShortlistCookieName);
 
@@ -46,7 +47,8 @@ namespace SFA.DAS.FAT.Web.Controllers
 
             var viewModel = new ShortlistViewModel
             {
-                Shortlist = result.Shortlist.Select(item => (ShortlistItemViewModel)item).ToList()
+                Shortlist = result.Shortlist.Select(item => (ShortlistItemViewModel)item).ToList(),
+                Removed = HttpUtility.UrlDecode(removed)
             };
 
             return View(viewModel);
@@ -77,8 +79,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                 Ukprn = request.Ukprn,
                 LocationDescription = string.IsNullOrEmpty(location?.Name) ? null : location.Name,
                 TrainingCode = request.TrainingCode,
-                ShortlistUserId = cookie.ShortlistUserId,
-                SectorSubjectArea = request.SectorSubjectArea
+                ShortlistUserId = cookie.ShortlistUserId
             });
 
             if (!string.IsNullOrEmpty(request.RouteName))
@@ -111,12 +112,12 @@ namespace SFA.DAS.FAT.Web.Controllers
                 return RedirectToRoute(request.RouteName, new
                 {
                     Id = request.TrainingCode,
-                    ProviderId = request.Ukprn
+                    ProviderId = request.Ukprn,
+                    Removed = HttpUtility.UrlEncode(request.ProviderName)
                 });
             }
             
             return Accepted();
         }
-        
     }
 }

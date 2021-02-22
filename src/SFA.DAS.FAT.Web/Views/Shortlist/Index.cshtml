@@ -1,4 +1,5 @@
 @using SFA.DAS.FAT.Web.Infrastructure
+@using System.Web
 @model SFA.DAS.FAT.Web.Models.ShortlistViewModel
 @{
     ViewData["Title"] = "Shortlist";
@@ -17,6 +18,14 @@
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+            @if (!string.IsNullOrEmpty(Model.Removed))
+            {
+                <div class="govuk-notification-banner govuk-!-margin-bottom-7">
+                    <div class="govuk-notification-banner__content">
+                        <p class="govuk-body">@HttpUtility.HtmlDecode(Model.Removed) removed from shortlist.</p>
+                    </div>
+                </div>
+            }
             <h1 class="govuk-heading-xl">
                 Shortlisted training providers
             </h1>
@@ -53,7 +62,7 @@
                                 <p class="govuk-body govuk-!-margin-bottom-6">
                                     <a asp-route="@RouteNames.CourseProviders" 
                                        asp-route-id="@locationGroup.FirstOrDefault()?.Course?.Id" 
-                                       asp-route-location="@locationGroup.Key" 
+                                       asp-route-location="@HttpUtility.UrlEncode(locationGroup.Key)" 
                                        class="govuk-link govuk-link--no-visited-state">Add more training providers</a>
                                 </p>
                             }
@@ -70,7 +79,7 @@
                                         <p class="govuk-body govuk-!-margin-bottom-6">
                                             <a asp-route="@RouteNames.CourseProviders" 
                                                asp-route-id="@locationGroup.FirstOrDefault()?.Course?.Id" 
-                                               asp-route-location="@locationGroup.Key" 
+                                               asp-route-location="@HttpUtility.UrlEncode(locationGroup.Key)" 
                                                class="govuk-link govuk-link--no-visited-state">Add more training providers</a>
                                         </p>
                                     </div>

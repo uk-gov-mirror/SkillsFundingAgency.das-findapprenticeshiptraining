@@ -37,7 +37,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
                 && c.LocationDescription == null
                 && c.Ukprn.Equals(request.Ukprn)
                 && c.TrainingCode.Equals(request.TrainingCode)
-                && c.SectorSubjectArea.Equals(request.SectorSubjectArea)
             ), It.IsAny<CancellationToken>())).ReturnsAsync(expectedId);
             mockShortlistCookieService
                 .Setup(service => service.Get(Constants.ShortlistCookieName))
@@ -82,7 +81,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
                   && c.LocationDescription == null
                   && c.Ukprn.Equals(request.Ukprn)
                   && c.TrainingCode.Equals(request.TrainingCode)
-                  && c.SectorSubjectArea.Equals(request.SectorSubjectArea)
             ), It.IsAny<CancellationToken>()), Times.Once);
             mockShortlistCookieService.Verify(x=>
                 x.Create(
@@ -121,7 +119,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
                 && c.LocationDescription.Equals(locationCookieItem.Name)
                 && c.Ukprn.Equals(request.Ukprn)
                 && c.TrainingCode.Equals(request.TrainingCode)
-                && c.SectorSubjectArea.Equals(request.SectorSubjectArea)
             ), It.IsAny<CancellationToken>()), Times.Once);
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
@@ -94,6 +95,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
             actual.RouteValues["id"].Should().Be(request.TrainingCode);
             actual.RouteValues.Should().ContainKey("providerId");
             actual.RouteValues["providerId"].Should().Be(request.Ukprn);
+            actual.RouteValues["removed"].Should().Be(HttpUtility.UrlEncode(request.ProviderName));
         }
         
     }

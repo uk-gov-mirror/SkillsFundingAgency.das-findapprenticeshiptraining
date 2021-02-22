@@ -250,7 +250,6 @@
                                 <div class="app-provider-shortlist-control @(provider.ShortlistId == null ? "" : "app-provider-shortlist-added")">
                                     <div class="app-provider-shortlist-add">
                                         <form method="post" asp-route="@RouteNames.CreateShortlistItem" asp-all-route-data="@shortlistRouteData">
-                                            <input type="hidden" name="sectorSubjectArea" value="@Model.Course.Sector"/>
                                             <input type="hidden" name="routeName" value="@RouteNames.CourseProviders"/>
                                             <button class="das-button--inline-link" type="submit">Add to shortlist</button>
                                         </form>

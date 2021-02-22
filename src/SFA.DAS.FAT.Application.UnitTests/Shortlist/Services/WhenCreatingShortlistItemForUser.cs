@@ -37,12 +37,11 @@ namespace SFA.DAS.FAT.Application.UnitTests.Shortlist.Services
                         && c.Data.LocationDescription.Equals(locationDescription)
                         && c.Data.Ukprn.Equals(ukprn)
                         && c.Data.StandardId.Equals(trainingCode)
-                        && c.Data.SectorSubjectArea.Equals(sectorSubjectArea)
                         && c.Data.ShortlistUserId.Equals(shortlistUserId)
                     ))).ReturnsAsync(itemId.ToString);
             
             //Act
-            var actual = await service.CreateShortlistItemForUser(shortlistUserId, ukprn, trainingCode, sectorSubjectArea, lat, lon, locationDescription);
+            var actual = await service.CreateShortlistItemForUser(shortlistUserId, ukprn, trainingCode, lat, lon, locationDescription);
             
             //Assert
             actual.Should().Be(itemId);

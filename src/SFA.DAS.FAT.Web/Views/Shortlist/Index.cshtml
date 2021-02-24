@@ -62,7 +62,7 @@
                                 <p class="govuk-body govuk-!-margin-bottom-6">
                                     <a asp-route="@RouteNames.CourseProviders" 
                                        asp-route-id="@locationGroup.FirstOrDefault()?.Course?.Id" 
-                                       asp-route-location="@HttpUtility.UrlEncode(locationGroup.Key)" 
+                                       asp-route-location="@(locationGroup.Key)" 
                                        class="govuk-link govuk-link--no-visited-state">Add more training providers</a>
                                 </p>
                             }
@@ -79,7 +79,7 @@
                                         <p class="govuk-body govuk-!-margin-bottom-6">
                                             <a asp-route="@RouteNames.CourseProviders" 
                                                asp-route-id="@locationGroup.FirstOrDefault()?.Course?.Id" 
-                                               asp-route-location="@HttpUtility.UrlEncode(locationGroup.Key)" 
+                                               asp-route-location="@(locationGroup.Key)" 
                                                class="govuk-link govuk-link--no-visited-state">Add more training providers</a>
                                         </p>
                                     </div>

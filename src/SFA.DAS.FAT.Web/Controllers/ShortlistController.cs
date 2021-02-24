@@ -116,7 +116,9 @@ namespace SFA.DAS.FAT.Web.Controllers
                 return RedirectToRoute(request.RouteName, new
                 {
                     Id = request.TrainingCode,
-                    ProviderId = request.Ukprn
+                    ProviderId = request.Ukprn,
+                    Added = string.IsNullOrEmpty(request.ProviderName) ? "" : WebEncoders.Base64UrlEncode(_protector.Protect(
+                        System.Text.Encoding.UTF8.GetBytes($"{request.ProviderName}")))
                 });
             }
             

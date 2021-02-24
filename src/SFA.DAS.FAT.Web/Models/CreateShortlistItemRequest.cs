@@ -9,5 +9,6 @@ namespace SFA.DAS.FAT.Web.Models
         [FromRoute(Name="id")]
         public int TrainingCode { get ; set ; }
         public string RouteName { get; set; }
+        public string ProviderName { get ; set ; }
     }
 }

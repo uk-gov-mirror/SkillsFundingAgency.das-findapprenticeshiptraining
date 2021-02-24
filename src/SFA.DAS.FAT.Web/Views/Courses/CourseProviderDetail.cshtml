@@ -42,11 +42,11 @@
     <div class="govuk-grid-column-two-thirds">
     @if (Model.Provider != null)
     {
-        @if (!string.IsNullOrEmpty(Model.RemovedProviderFromShortlist))
+        @if (!string.IsNullOrEmpty(Model.BannerUpdateMessage))
         {
             <div class="govuk-notification-banner govuk-!-margin-bottom-7">
                 <div class="govuk-notification-banner__content">
-                    <p class="govuk-body">@HttpUtility.HtmlDecode(Model.RemovedProviderFromShortlist) removed from shortlist.</p>
+                    <p class="govuk-body">@Model.BannerUpdateMessage</p>
                 </div>
             </div>
         }

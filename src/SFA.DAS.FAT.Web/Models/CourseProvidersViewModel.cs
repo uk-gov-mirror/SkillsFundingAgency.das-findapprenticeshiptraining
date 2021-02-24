@@ -43,7 +43,7 @@ namespace SFA.DAS.FAT.Web.Models
         public IEnumerable<DeliveryModeOptionViewModel> DeliveryModes { get; set; }
         public IEnumerable<ProviderRatingOptionViewModel> ProviderRatings { get; set; }
         public Dictionary<uint, string> ProviderOrder { get ;}
-        public string RemovedProviderFromShortlist { get ; set ; }
+        public string BannerUpdateMessage { get ; set ; }
 
         private bool ShouldShowFilters()
         {

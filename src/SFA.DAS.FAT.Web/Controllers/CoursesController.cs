@@ -9,6 +9,7 @@ using SFA.DAS.FAT.Web.Models;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Web.Infrastructure;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
@@ -158,10 +159,13 @@ namespace SFA.DAS.FAT.Web.Controllers
                 {
                     return RedirectToRoute(RouteNames.CourseDetails,new {request.Id});
                 }
+
+                var removedProviderFromShortlist =
+                    string.IsNullOrEmpty(request.Removed) ? "" : HttpUtility.HtmlDecode(GetEncodedProviderName(request.Removed));
+                var addedProviderToShortlist =
+                    string.IsNullOrEmpty(request.Added) ? "" : HttpUtility.HtmlDecode(GetEncodedProviderName(request.Added));
                 
-                courseProvidersViewModel.RemovedProviderFromShortlist =
-                    string.IsNullOrEmpty(request.Removed) ? "" : GetRemovedProviderName(request.Removed);
-                
+                courseProvidersViewModel.BannerUpdateMessage = GetProvidersBannerUpdateMessage(removedProviderFromShortlist, addedProviderToShortlist);
                 
                 return View(courseProvidersViewModel);
             }
@@ -173,7 +177,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         }
 
         [Route("{id}/providers/{providerId}", Name = RouteNames.CourseProviderDetails)]
-        public async Task<IActionResult> CourseProviderDetail(int id, int providerId, string location, string removed)
+        public async Task<IActionResult> CourseProviderDetail(int id, int providerId, string location, string removed, string added)
         {
             try
             {   
@@ -224,8 +228,13 @@ namespace SFA.DAS.FAT.Web.Controllers
                     return RedirectToRoute(RouteNames.CourseDetails,new {Id = id});
                 }
 
-                viewModel.RemovedProviderFromShortlist =
-                    string.IsNullOrEmpty(removed) ? "" : GetRemovedProviderName(removed); 
+                var removedProviderFromShortlist =
+                    string.IsNullOrEmpty(removed) ? "" : HttpUtility.HtmlDecode(GetEncodedProviderName(removed));
+                var addedProviderToShortlist =
+                    string.IsNullOrEmpty(added) ? "" : HttpUtility.HtmlDecode(GetEncodedProviderName(added));
+                
+                viewModel.BannerUpdateMessage = GetProvidersBannerUpdateMessage(removedProviderFromShortlist, addedProviderToShortlist);
+                
 
                 return View(viewModel);
             }
@@ -262,11 +271,11 @@ namespace SFA.DAS.FAT.Web.Controllers
             }
         }
 
-        private string GetRemovedProviderName(string removed)
+        private string GetEncodedProviderName(string encodedName)
         {
             try
             {
-                var base64EncodedBytes = WebEncoders.Base64UrlDecode(removed);
+                var base64EncodedBytes = WebEncoders.Base64UrlDecode(encodedName);
                 return System.Text.Encoding.UTF8.GetString(_shortlistDataProtector.Unprotect(base64EncodedBytes));
             }
             catch (FormatException e)
@@ -279,6 +288,21 @@ namespace SFA.DAS.FAT.Web.Controllers
             }
 
             return string.Empty;
+        }
+
+        private static string GetProvidersBannerUpdateMessage(string removedProviderFromShortlist, string addedProviderToShortlist)
+        {
+            if (!string.IsNullOrEmpty(removedProviderFromShortlist))
+            {
+                return $"{removedProviderFromShortlist} removed from shortlist.";
+            } 
+            
+            if (!string.IsNullOrEmpty(addedProviderToShortlist))
+            {
+                return $"{addedProviderToShortlist} added to shortlist.";
+            }
+
+            return "";
         }
     }
 }

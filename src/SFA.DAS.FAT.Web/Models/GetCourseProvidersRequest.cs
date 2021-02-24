@@ -15,7 +15,9 @@ namespace SFA.DAS.FAT.Web.Models
 
         [FromQuery]
         public string Removed { get; set; }
-        
+        [FromQuery]
+        public string Added { get ; set ; }
+
         public Dictionary<string, string> ToDictionary()
         {
             var result = new Dictionary<string, string>

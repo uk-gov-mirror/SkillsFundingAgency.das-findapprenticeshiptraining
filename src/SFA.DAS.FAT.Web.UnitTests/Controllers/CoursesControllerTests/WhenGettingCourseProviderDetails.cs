@@ -14,6 +14,10 @@ using SFA.DAS.FAT.Web.Infrastructure;
 using SFA.DAS.Testing.AutoFixture;
 using SFA.DAS.FAT.Web.Models;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.WebUtilities;
 using SFA.DAS.FAT.Domain.Configuration;
 using SFA.DAS.FAT.Domain.Interfaces;
 
@@ -50,7 +54,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .Returns(shortlistCookieItem);
 
             //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, location);
+            var actual = await controller.CourseProviderDetail(courseId, providerId, location, "");
 
             //Assert
             Assert.IsNotNull(actual);
@@ -86,7 +90,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .Returns((ShortlistCookieItem) null);
             
             //Act
-            var result = await controller.CourseProviderDetail(courseId, providerId, location) as ViewResult;
+            var result = await controller.CourseProviderDetail(courseId, providerId, location, "") as ViewResult;
             
             //Assert
             var model = result!.Model as CourseProviderViewModel;
@@ -118,7 +122,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
             
             //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, "-1") as ViewResult;
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "-1", "") as ViewResult;
             
             //Assert
             cookieStorageService.Verify(x=>x.Delete(Constants.LocationCookieName));
@@ -149,7 +153,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
 
             //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, "");
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "", "");
             
             //Assert
             Assert.IsNotNull(actual);
@@ -183,7 +187,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
 
             //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, "") as ViewResult;
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "", "") as ViewResult;
             
             //Assert
             var model = actual!.Model as CourseProviderViewModel;
@@ -213,7 +217,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
 
             //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, "") as ViewResult;
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "", "") as ViewResult;
             
             //Assert
             var model = actual!.Model as CourseProviderViewModel;
@@ -239,7 +243,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ThrowsAsync(exception);
 
             // Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, location) as RedirectToRouteResult;
+            var actual = await controller.CourseProviderDetail(courseId, providerId, location, "") as RedirectToRouteResult;
 
             // Assert
             actual!.RouteName.Should().Be(RouteNames.Error500);
@@ -267,7 +271,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
 
             //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, "") as RedirectToRouteResult;
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "", "") as RedirectToRouteResult;
 
             //Assert
             Assert.IsNotNull(actual);
@@ -296,12 +300,140 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
                 .ReturnsAsync(response);
 
             //Act
-            var actual = await controller.CourseProviderDetail(courseId, providerId, "") as RedirectToRouteResult;
+            var actual = await controller.CourseProviderDetail(courseId, providerId, "", "") as RedirectToRouteResult;
 
             //Assert
             Assert.IsNotNull(actual);
             actual.RouteName.Should().Be(RouteNames.CourseDetails);
         }
+        
+        [Test, MoqAutoData]
+        public async Task Then_If_Removed_Is_In_The_Request_It_Is_Decoded_And_Added_To_ViewModel(
+            int providerId,
+            int courseId,
+            string location,
+            string removed,
+            GetCourseProviderResult response,
+            ShortlistCookieItem shortlistCookieItem,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
+            [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> shortlistCookieService,
+            [Frozen] Mock<IDataProtector> protector,
+            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Greedy] CoursesController controller
+            )
+        {
+            //Arrange
+            var encodedData = Encoding.UTF8.GetBytes($"{removed}");
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
+            response.Location=string.Empty;
+            response.LocationGeoPoint = null;
+            protector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Returns(encodedData);
+            provider.Setup(x => x.CreateProtector(Constants.ShortlistProtectorName)).Returns(protector.Object);
+            mediator.Setup(x => x.Send(It.Is<GetCourseProviderQuery>(c =>
+                c.ProviderId.Equals(providerId) 
+                && c.CourseId.Equals(courseId) 
+                && c.Location.Equals(location)
+                && c.ShortlistUserId.Equals(shortlistCookieItem.ShortlistUserId)
+                ), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+            shortlistCookieService.Setup(x => x.Get(Constants.ShortlistCookieName))
+                .Returns(shortlistCookieItem);
 
+            //Act
+            var actual = await controller.CourseProviderDetail(courseId, providerId, location, WebEncoders.Base64UrlEncode(encodedData)) as ViewResult;
+
+            //Assert
+            Assert.IsNotNull(actual);
+            var actualModel = actual.Model as CourseProviderViewModel;
+            Assert.IsNotNull(actualModel);
+            actualModel.RemovedProviderFromShortlist.Should().Be(removed);
+        }
+        
+        [Test, MoqAutoData]
+        public async Task Then_If_Removed_Is_In_The_RequestAnd_Throws_Cryptographic_Exception_Then_Empty_String_Is_Added_To_ViewModel(
+            int providerId,
+            int courseId,
+            string location,
+            string removed,
+            GetCourseProviderResult response,
+            ShortlistCookieItem shortlistCookieItem,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
+            [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> shortlistCookieService,
+            [Frozen] Mock<IDataProtector> protector,
+            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Greedy] CoursesController controller
+            )
+        {
+            //Arrange
+            var encodedData = Encoding.UTF8.GetBytes($"{removed}");
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
+            response.Location=string.Empty;
+            response.LocationGeoPoint = null;
+            protector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Throws(new CryptographicException());
+            provider.Setup(x => x.CreateProtector(Constants.ShortlistProtectorName)).Returns(protector.Object);
+            mediator.Setup(x => x.Send(It.Is<GetCourseProviderQuery>(c =>
+                c.ProviderId.Equals(providerId) 
+                && c.CourseId.Equals(courseId) 
+                && c.Location.Equals(location)
+                && c.ShortlistUserId.Equals(shortlistCookieItem.ShortlistUserId)
+                ), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+            shortlistCookieService.Setup(x => x.Get(Constants.ShortlistCookieName))
+                .Returns(shortlistCookieItem);
+
+            //Act
+            var actual = await controller.CourseProviderDetail(courseId, providerId, location, WebEncoders.Base64UrlEncode(encodedData)) as ViewResult;
+
+            //Assert
+            Assert.IsNotNull(actual);
+            var actualModel = actual.Model as CourseProviderViewModel;
+            Assert.IsNotNull(actualModel);
+            actualModel.RemovedProviderFromShortlist.Should().BeEmpty();
+        }
+        
+        [Test, MoqAutoData]
+        public async Task Then_If_Removed_Is_In_The_Request_And_Is_Invalid_Then_Empty_String_Is_Added_To_ViewModel(
+            int providerId,
+            int courseId,
+            string location,
+            string removed,
+            GetCourseProviderResult response,
+            ShortlistCookieItem shortlistCookieItem,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService,
+            [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> shortlistCookieService,
+            [Frozen] Mock<IDataProtector> protector,
+            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Greedy] CoursesController controller
+            )
+        {
+            //Arrange
+            var encodedData = Encoding.UTF8.GetBytes($"{removed}");
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
+            response.Location=string.Empty;
+            response.LocationGeoPoint = null;
+            protector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Returns(encodedData);
+            provider.Setup(x => x.CreateProtector(Constants.ShortlistProtectorName)).Returns(protector.Object);
+            mediator.Setup(x => x.Send(It.Is<GetCourseProviderQuery>(c =>
+                c.ProviderId.Equals(providerId) 
+                && c.CourseId.Equals(courseId) 
+                && c.Location.Equals(location)
+                && c.ShortlistUserId.Equals(shortlistCookieItem.ShortlistUserId)
+                ), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+            shortlistCookieService.Setup(x => x.Get(Constants.ShortlistCookieName))
+                .Returns(shortlistCookieItem);
+
+            //Act
+            var actual = await controller.CourseProviderDetail(courseId, providerId, location, encodedData.ToString()) as ViewResult;
+
+            //Assert
+            Assert.IsNotNull(actual);
+            var actualModel = actual.Model as CourseProviderViewModel;
+            Assert.IsNotNull(actualModel);
+            actualModel.RemovedProviderFromShortlist.Should().BeEmpty();
+        }
     }
 }

@@ -2,6 +2,7 @@
 @using SFA.DAS.FAT.Domain.Extensions
 @using SFA.DAS.FAT.Web.Models
 @using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType
+@using System.Web
 
 @model SFA.DAS.FAT.Web.Models.CourseProvidersViewModel
 
@@ -19,6 +20,14 @@
 <main class="govuk-main-wrapper" id="main-content">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+            @if (!string.IsNullOrEmpty(Model.RemovedProviderFromShortlist))
+            {
+                <div class="govuk-notification-banner govuk-!-margin-bottom-7">
+                    <div class="govuk-notification-banner__content">
+                        <p class="govuk-body">@HttpUtility.HtmlDecode(Model.RemovedProviderFromShortlist) removed from shortlist.</p>
+                    </div>
+                </div>
+            }
             <h1 class="govuk-heading-xl">
                 <span class="govuk-caption-xl">Training providers for</span>
                 @Model.Course.Title <span class="das-no-wrap">(level @Model.Course.Level)</span>
@@ -250,6 +259,7 @@
                                 <div class="app-provider-shortlist-control @(provider.ShortlistId == null ? "" : "app-provider-shortlist-added")">
                                     <div class="app-provider-shortlist-add">
                                         <form method="post" asp-route="@RouteNames.CreateShortlistItem" asp-all-route-data="@shortlistRouteData">
+                                            <input type="hidden" name="providerName" value="@provider.Name"/>
                                             <input type="hidden" name="routeName" value="@RouteNames.CourseProviders"/>
                                             <button class="das-button--inline-link" type="submit">Add to shortlist</button>
                                         </form>
@@ -258,6 +268,7 @@
                                         <strong class="govuk-tag app-provider-shortlist-tag">Shortlisted</strong>
                                         <form method="post" asp-route="@RouteNames.DeleteShortlistItem" asp-route-id="@(provider.ShortlistId ?? Guid.Empty)">
                                             <input type="hidden" name="ukprn" value="@provider.ProviderId"/>
+                                            <input type="hidden" name="providerName" value="@provider.Name"/>
                                             <input type="hidden" name="trainingCode" value="@Model.Course.Id"/>
                                             <input type="hidden" name="routeName" value="@RouteNames.CourseProviders"/>
                                             <button class="das-button--inline-link" type="submit">Remove from shortlist</button>

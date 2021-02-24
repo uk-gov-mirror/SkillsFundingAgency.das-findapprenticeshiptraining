@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
@@ -46,7 +48,10 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             Assert.IsNotNull(actual);
             var actualModel = actual.Model as CourseProvidersViewModel;
             Assert.IsNotNull(actualModel);
-            actualModel.Should().BeEquivalentTo(new CourseProvidersViewModel(request, response, null), options=>options.Excluding(c=>c.ProviderOrder));
+            actualModel.Should().BeEquivalentTo(new CourseProvidersViewModel(request, response, null), options=>options
+                .Excluding(c=>c.ProviderOrder)
+                .Excluding(c=>c.RemovedProviderFromShortlist)
+            );
         }
 
         [Test, MoqAutoData]
@@ -338,6 +343,100 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             actualModel.ProviderOrder.Select(c => c.Value).All(c => c.Equals(Convert.ToBase64String(encodedData))).Should().BeTrue();
             actualModel.ProviderOrder.Select(c => c.Key).ToList().Should()
                 .BeEquivalentTo(response.Providers.Select(c => c.ProviderId).ToList());
+        }
+        
+        [Test, MoqAutoData]
+        public async Task Then_If_The_Removed_Parameter_Is_Provided_It_Is_Is_Decoded_And_Added_To_The_Model(
+            string removed,
+            GetCourseProvidersRequest request,
+            GetCourseProvidersResult response,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<IDataProtector> protector,
+            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Greedy] CoursesController controller
+        )
+        {
+            //Arrange
+            var encodedData = Encoding.UTF8.GetBytes($"{removed}");
+            request.Removed = WebEncoders.Base64UrlEncode(encodedData);
+            protector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Returns(encodedData);
+            provider.Setup(x => x.CreateProtector(Constants.ShortlistProtectorName)).Returns(protector.Object);
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
+            mediator.Setup(x => x.Send(
+                    It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id) 
+                                                        && c.Location.Equals(request.Location)),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+            
+            //Act
+            var actual = await controller.CourseProviders(request) as ViewResult;
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            var actualModel = actual.Model as CourseProvidersViewModel;
+            Assert.IsNotNull(actualModel);
+            actualModel.RemovedProviderFromShortlist.Should().Be(removed);
+        }
+        
+        [Test, MoqAutoData]
+        public async Task Then_If_The_Removed_Parameter_Is_Is_Invalid_Empty_String_Is_Added(
+            string removed,
+            GetCourseProvidersRequest request,
+            GetCourseProvidersResult response,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<IDataProtector> protector,
+            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Greedy] CoursesController controller)
+        {
+            //Arrange
+            var encodedData = Encoding.UTF8.GetBytes($"{removed}");
+            request.Removed = encodedData.ToString();
+            protector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Returns(encodedData);
+            provider.Setup(x => x.CreateProtector(Constants.ShortlistProtectorName)).Returns(protector.Object);
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
+            mediator.Setup(x => x.Send(
+                    It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id) 
+                                                        && c.Location.Equals(request.Location)),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+            
+            //Act
+            var actual = await controller.CourseProviders(request) as ViewResult;
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            var actualModel = actual.Model as CourseProvidersViewModel;
+            Assert.IsNotNull(actualModel);
+            actualModel.RemovedProviderFromShortlist.Should().BeEmpty();
+        }
+        
+        [Test, MoqAutoData]
+        public async Task Then_If_The_Removed_Parameter_Is_Is_Unable_To_Be_Decoded_An_Empty_String_Is_Added(
+            GetCourseProvidersRequest request,
+            GetCourseProvidersResult response,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<IDataProtector> protector,
+            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Greedy] CoursesController controller)
+        {
+            //Arrange
+            protector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Throws<CryptographicException>();
+            provider.Setup(x => x.CreateProtector(Constants.ShortlistProtectorName)).Returns(protector.Object);
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
+            mediator.Setup(x => x.Send(
+                    It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id) 
+                                                        && c.Location.Equals(request.Location)),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+            
+            //Act
+            var actual = await controller.CourseProviders(request) as ViewResult;
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            var actualModel = actual.Model as CourseProvidersViewModel;
+            Assert.IsNotNull(actualModel);
+            actualModel.RemovedProviderFromShortlist.Should().BeEmpty();
         }
     }
 }

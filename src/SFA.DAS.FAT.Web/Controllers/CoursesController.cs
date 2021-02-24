@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourses;
@@ -26,8 +27,9 @@ namespace SFA.DAS.FAT.Web.Controllers
         private readonly ICookieStorageService<LocationCookieItem> _locationCookieStorageService;
         private readonly ICookieStorageService<GetCourseProvidersRequest> _courseProvidersCookieStorageService;
         private readonly ICookieStorageService<ShortlistCookieItem> _shortlistCookieService;
-        private readonly IDataProtector _protector;
-        
+        private readonly IDataProtector _providerDataProtector;
+        private readonly IDataProtector _shortlistDataProtector;
+
         public CoursesController (
             ILogger<CoursesController> logger,
             IMediator mediator,
@@ -41,7 +43,8 @@ namespace SFA.DAS.FAT.Web.Controllers
             _locationCookieStorageService = locationCookieStorageService;
             _courseProvidersCookieStorageService = courseProvidersCookieStorageService;
             _shortlistCookieService = shortlistCookieService;
-            _protector = provider.CreateProtector(Constants.GaDataProtectorName);
+            _providerDataProtector = provider.CreateProtector(Constants.GaDataProtectorName);
+            _shortlistDataProtector = provider.CreateProtector(Constants.ShortlistProtectorName);
         }
 
         [Route("", Name = RouteNames.Courses)]
@@ -111,6 +114,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                 var location = CheckLocation(request.Location);
 
                 var shortlistItem = _shortlistCookieService.Get(Constants.ShortlistCookieName);
+
+                
                 
                 var result = await _mediator.Send(new GetCourseProvidersQuery
                 {
@@ -141,7 +146,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                 var providers = result.Providers
                         .ToDictionary(provider => 
                                         provider.ProviderId, 
-                                        provider => WebEncoders.Base64UrlEncode(_protector.Protect(
+                                        provider => WebEncoders.Base64UrlEncode(_providerDataProtector.Protect(
                                             System.Text.Encoding.UTF8.GetBytes($"{providerList.IndexOf(provider) + 1}|{result.TotalFiltered}"))));
                 
 
@@ -154,6 +159,10 @@ namespace SFA.DAS.FAT.Web.Controllers
                     return RedirectToRoute(RouteNames.CourseDetails,new {request.Id});
                 }
                 
+                courseProvidersViewModel.RemovedProviderFromShortlist =
+                    string.IsNullOrEmpty(request.Removed) ? "" : GetRemovedProviderName(request.Removed);
+                
+                
                 return View(courseProvidersViewModel);
             }
             catch (Exception e)
@@ -164,7 +173,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         }
 
         [Route("{id}/providers/{providerId}", Name = RouteNames.CourseProviderDetails)]
-        public async Task<IActionResult> CourseProviderDetail(int id, int providerId, string location)
+        public async Task<IActionResult> CourseProviderDetail(int id, int providerId, string location, string removed)
         {
             try
             {   
@@ -215,6 +224,9 @@ namespace SFA.DAS.FAT.Web.Controllers
                     return RedirectToRoute(RouteNames.CourseDetails,new {Id = id});
                 }
 
+                viewModel.RemovedProviderFromShortlist =
+                    string.IsNullOrEmpty(removed) ? "" : GetRemovedProviderName(removed); 
+
                 return View(viewModel);
             }
             catch (Exception e)
@@ -248,6 +260,25 @@ namespace SFA.DAS.FAT.Web.Controllers
             {
                 _locationCookieStorageService.Update(Constants.LocationCookieName, location, 2);    
             }
+        }
+
+        private string GetRemovedProviderName(string removed)
+        {
+            try
+            {
+                var base64EncodedBytes = WebEncoders.Base64UrlDecode(removed);
+                return System.Text.Encoding.UTF8.GetString(_shortlistDataProtector.Unprotect(base64EncodedBytes));
+            }
+            catch (FormatException e)
+            {
+                _logger.LogInformation(e,"Unable to decode provider name from request");
+            }
+            catch (CryptographicException e)
+            {
+                _logger.LogInformation(e, "Unable to decode provider name from request");
+            }
+
+            return string.Empty;
         }
     }
 }

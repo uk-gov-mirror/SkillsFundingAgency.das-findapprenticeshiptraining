@@ -12,6 +12,7 @@ namespace SFA.DAS.FAT.Web.Models
         public int TotalProviders { get ; set ; }
         public Dictionary<string, string> GetCourseProvidersRequest { get; set; } = new Dictionary<string, string>();
         public int ShortlistItemCount { get ; set ; }
+        public string RemovedProviderFromShortlist { get ; set ; }
 
         public static implicit operator CourseProviderViewModel(GetCourseProviderResult provider)
         {

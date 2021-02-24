@@ -53,6 +53,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
             //Assert
             actual.Should().NotBeNull();
             Guid.Parse(actual.Value.ToString()).Should().Be(expectedId);
+            mockShortlistCookieService.Verify(x=>x.Update(Constants.ShortlistCookieName, shortlistCookie, 30), Times.Once);
 
         }
 
@@ -85,9 +86,9 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
                   && c.TrainingCode.Equals(request.TrainingCode)
             ), It.IsAny<CancellationToken>()), Times.Once);
             mockShortlistCookieService.Verify(x=>
-                x.Create(
-                    It.Is<ShortlistCookieItem>(c=>c.ShortlistUserId!=Guid.Empty),
+                x.Update(
                     Constants.ShortlistCookieName, 
+                    It.Is<ShortlistCookieItem>(c=>c.ShortlistUserId!=Guid.Empty),
                     30), Times.Once);
         }
 

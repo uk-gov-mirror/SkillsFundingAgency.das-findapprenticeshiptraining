@@ -95,9 +95,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                 {
                     ShortlistUserId = Guid.NewGuid()
                 };
-                
-                _shortlistCookieService.Create(cookie, Constants.ShortlistCookieName, 30);
             }
+            _shortlistCookieService.Update(Constants.ShortlistCookieName, cookie, 30);
 
             var location = _locationCookieService.Get(Constants.LocationCookieName);
 

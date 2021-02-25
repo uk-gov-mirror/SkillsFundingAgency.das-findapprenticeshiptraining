@@ -29,6 +29,10 @@
             <h1 class="govuk-heading-xl">
                 Shortlisted training providers
             </h1>
+            @if (!string.IsNullOrEmpty(Model.ExpiryDateText))
+            {
+                <p class="govuk-body govuk-!-margin-bottom-8 govuk-!-width-two-thirds">@Model.ExpiryDateText</p>    
+            }
         </div>
     </div>
     @if (Model.Shortlist.Count == 0)

@@ -1,17 +1,122 @@
 ﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.FAT.Application.Shortlist.Commands.CreateShortlistItemForUser;
+using SFA.DAS.FAT.Application.Shortlist.Commands.DeleteShortlistItemForUser;
+using SFA.DAS.FAT.Application.Shortlist.Queries.GetShortlistForUser;
+using SFA.DAS.FAT.Domain.Configuration;
+using SFA.DAS.FAT.Domain.Interfaces;
 using SFA.DAS.FAT.Web.Infrastructure;
+using SFA.DAS.FAT.Web.Models;
 
 namespace SFA.DAS.FAT.Web.Controllers
 {
     [Route("[controller]")]
     public class ShortlistController : Controller
     {
-        [HttpGet]
-        [Route("{id}", Name = RouteNames.ShortList)]
-        public IActionResult Index(Guid id)
+        private readonly IMediator _mediator;
+        private readonly ICookieStorageService<ShortlistCookieItem> _shortlistCookieService;
+        private readonly ICookieStorageService<LocationCookieItem> _locationCookieService;
+
+        public ShortlistController(IMediator mediator,
+            ICookieStorageService<ShortlistCookieItem> shortlistCookieService,
+            ICookieStorageService<LocationCookieItem> locationCookieService)
         {
-            return View();
+            _mediator = mediator;
+            _shortlistCookieService = shortlistCookieService;
+            _locationCookieService = locationCookieService;
         }
+
+        [HttpGet]
+        [Route("", Name = RouteNames.ShortList)]
+        public async Task<IActionResult> Index()
+        {
+            var cookie = _shortlistCookieService.Get(Constants.ShortlistCookieName);
+
+            if (cookie == default)
+            {
+                return View(new ShortlistViewModel());
+            }
+
+            var result =
+                await _mediator.Send(
+                    new GetShortlistForUserQuery {ShortlistUserId = cookie.ShortlistUserId});
+
+            var viewModel = new ShortlistViewModel
+            {
+                Shortlist = result.Shortlist.Select(item => (ShortlistItemViewModel)item).ToList()
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [Route("courses/{id}/providers/{providerId}", Name = RouteNames.CreateShortlistItem)]
+        public async Task<IActionResult> CreateShortlistItem(CreateShortlistItemRequest request)
+        {
+            var cookie = _shortlistCookieService.Get(Constants.ShortlistCookieName);
+
+            if (cookie == null)
+            {
+                cookie = new ShortlistCookieItem
+                {
+                    ShortlistUserId = Guid.NewGuid()
+                };
+                
+                _shortlistCookieService.Create(cookie, Constants.ShortlistCookieName, 30);
+            }
+
+            var location = _locationCookieService.Get(Constants.LocationCookieName);
+
+            var result = await _mediator.Send(new CreateShortlistItemForUserCommand
+            {
+                Lat = location?.Lat,
+                Lon = location?.Lon,
+                Ukprn = request.Ukprn,
+                LocationDescription = string.IsNullOrEmpty(location?.Name) ? null : location.Name,
+                TrainingCode = request.TrainingCode,
+                ShortlistUserId = cookie.ShortlistUserId,
+                SectorSubjectArea = request.SectorSubjectArea
+            });
+
+            if (!string.IsNullOrEmpty(request.RouteName))
+            {
+                return RedirectToRoute(request.RouteName, new
+                {
+                    Id = request.TrainingCode,
+                    ProviderId = request.Ukprn
+                });
+            }
+            
+            return Accepted(result);
+        }
+
+        [HttpPost]
+        [Route("items/{id}", Name = RouteNames.DeleteShortlistItem)]
+        public async Task<IActionResult> DeleteShortlistItemForUser(DeleteShortlistItemRequest request)
+        {
+            var cookie = _shortlistCookieService.Get(Constants.ShortlistCookieName);
+            if (cookie != null)
+            {
+                await _mediator.Send(new DeleteShortlistItemForUserCommand
+                {
+                    Id = request.ShortlistId,
+                    ShortlistUserId = cookie.ShortlistUserId
+                });
+            }
+            if (!string.IsNullOrEmpty(request.RouteName))
+            {
+                return RedirectToRoute(request.RouteName, new
+                {
+                    Id = request.TrainingCode,
+                    ProviderId = request.Ukprn
+                });
+            }
+            
+            return Accepted();
+        }
+        
     }
 }

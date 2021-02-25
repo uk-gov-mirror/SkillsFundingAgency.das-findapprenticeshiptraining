@@ -14,6 +14,7 @@
         CourseId = Model.Course.Id.ToString(),
         CourseDescription = Model.Course.TitleAndLevel
     };
+    ViewData["ShortlistItemCount"] = Model.ShortlistItemCount;
 }
 <main class="govuk-main-wrapper" id="main-content">
     <div class="govuk-grid-row">
@@ -186,57 +187,86 @@
                         {"providerId",provider.ProviderId.ToString()},
                         {"data", Model.ProviderOrder[provider.ProviderId]}
                     };
+
+                    var shortlistRouteData = new Dictionary<string, string>
+                    {
+                        {"id",Model.Course.Id.ToString()},
+                        {"providerId",provider.ProviderId.ToString()}
+                    };
                     
                     <li class="das-search-results__list-item">
-                        <h2 class="govuk-heading-m das-search-results__heading">
-                            <a class="das-search-results__link" id="provider-@provider.ProviderId" asp-all-route-data="@routeData"  asp-route="@RouteNames.CourseProviderDetails">
-                                @provider.Name
-                            </a>
-                        </h2>
-                            
-                        <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-0">
-                             @if(!string.IsNullOrEmpty(provider.TradingName))
-                            {
-                                <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
-                                    <span class="das-text--muted">Other names:</span> @provider.TradingName
-                                </li>
-                            }
-                            @foreach (var mode in provider.DeliveryModes)
-                            {
-                                <li class="das-icon-list__list-item" id="@provider.ProviderId-@mode.DeliveryModeType">
-                                    @if (mode.IsAvailable)
+                        <div class="govuk-grid-row">
+                            <div class="govuk-grid-column-two-thirds">
+                                <h2 class="govuk-heading-m das-search-results__heading">
+                                    <a class="das-search-results__link" id="provider-@provider.ProviderId" asp-all-route-data="@routeData"  asp-route="@RouteNames.CourseProviderDetails">
+                                        @provider.Name
+                                    </a>
+                                </h2>
+                                <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-0">
+                                    @if(!string.IsNullOrEmpty(provider.TradingName))
                                     {
-                                        <span class="das-icon-list__icon das-icon-list__icon--tick">available</span>
+                                        <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
+                                            <span class="das-text--muted">Other names:</span> @provider.TradingName
+                                        </li>
                                     }
-                                    else
+                                    @foreach (var mode in provider.DeliveryModes)
                                     {
-                                        <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
+                                        <li class="das-icon-list__list-item" id="@provider.ProviderId-@mode.DeliveryModeType">
+                                            @if (mode.IsAvailable)
+                                            {
+                                                <span class="das-icon-list__icon das-icon-list__icon--tick">available</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
+                                            }
+                                            @mode.DeliveryModeType.GetDescription() @(Model.HasLocation ? mode.FormattedDistanceInMiles : "") @mode.NationalText
+                                        </li>
                                     }
-                                    @mode.DeliveryModeType.GetDescription() @(Model.HasLocation ? mode.FormattedDistanceInMiles : "") @mode.NationalText
-                                </li>
-                            }
-                        </ul>
-                        
-                        <p class="govuk-!-margin-0 govuk-!-margin-top-2 govuk-!-font-size-16">
-                            @if (provider.TotalFeedbackRating != 0)
-                            {
-                                <span class="das-rating das-rating--@(provider.TotalFeedbackRating > 2 ? "good" : "poor")" role="img" aria-label="Rating: @provider.TotalFeedbackRating out of 4 stars">
-                                    <span aria-hidden="true" class="das-rating__icon-star"></span>
-                                    <span aria-hidden="true" class="das-rating__icon-star@(provider.TotalFeedbackRating < 2 ? "--empty" : "")"></span>
-                                    <span aria-hidden="true" class="das-rating__icon-star@(provider.TotalFeedbackRating < 3 ? "--empty" : "")"></span>
-                                    <span aria-hidden="true" class="das-rating__icon-star@(provider.TotalFeedbackRating < 4 ? "--empty" : "")"></span>
-                                </span>    
-                                <span class="das-rating__label--@(provider.TotalFeedbackRating > 2 ? "good" : "poor")">@provider.TotalFeedbackText.GetDescription()</span>
-                            }
-                            <span class="das-text--muted">@provider.TotalFeedbackRatingText</span>         
-                        </p>
-                        @if (provider.OverallCohort != null)
-                        {
-                            <p class="govuk-!-margin-0 govuk-!-margin-top-2 govuk-!-font-size-16">
-                                @provider.OverallAchievementRatePercentage pass rate
-                                <span class="das-text--muted">(out of @provider.OverallCohort apprentices)</span>
-                            </p>
-                        }
+                                </ul>
+                                
+                                <p class="govuk-!-margin-0 govuk-!-margin-top-2 govuk-!-font-size-16">
+                                    @if (provider.TotalFeedbackRating != 0)
+                                    {
+                                        <span class="das-rating das-rating--@(provider.TotalFeedbackRating > 2 ? "good" : "poor")" role="img" aria-label="Rating: @provider.TotalFeedbackRating out of 4 stars">
+                                            <span aria-hidden="true" class="das-rating__icon-star"></span>
+                                            <span aria-hidden="true" class="das-rating__icon-star@(provider.TotalFeedbackRating < 2 ? "--empty" : "")"></span>
+                                            <span aria-hidden="true" class="das-rating__icon-star@(provider.TotalFeedbackRating < 3 ? "--empty" : "")"></span>
+                                            <span aria-hidden="true" class="das-rating__icon-star@(provider.TotalFeedbackRating < 4 ? "--empty" : "")"></span>
+                                        </span>    
+                                        <span class="das-rating__label--@(provider.TotalFeedbackRating > 2 ? "good" : "poor")">@provider.TotalFeedbackText.GetDescription()</span>
+                                    }
+                                    <span class="das-text--muted">@provider.TotalFeedbackRatingText</span>         
+                                </p>
+                                @if (provider.OverallCohort != null)
+                                {
+                                    <p class="govuk-!-margin-0 govuk-!-margin-top-2 govuk-!-font-size-16">
+                                        @provider.OverallAchievementRatePercentage pass rate
+                                        <span class="das-text--muted">(out of @provider.OverallCohort apprentices)</span>
+                                    </p>
+                                }
+                            </div>
+                            <div class="govuk-grid-column-one-third govuk-body">
+                                <div class="app-provider-shortlist-control @(provider.ShortlistId == null ? "" : "app-provider-shortlist-added")">
+                                    <div class="app-provider-shortlist-add">
+                                        <form method="post" asp-route="@RouteNames.CreateShortlistItem" asp-all-route-data="@shortlistRouteData">
+                                            <input type="hidden" name="sectorSubjectArea" value="@Model.Course.Sector"/>
+                                            <input type="hidden" name="routeName" value="@RouteNames.CourseProviders"/>
+                                            <button class="das-button--inline-link" type="submit">Add to shortlist</button>
+                                        </form>
+                                    </div>
+                                    <div class="app-provider-shortlist-remove">
+                                        <strong class="govuk-tag app-provider-shortlist-tag">Shortlisted</strong>
+                                        <form method="post" asp-route="@RouteNames.DeleteShortlistItem" asp-route-id="@(provider.ShortlistId ?? Guid.Empty)">
+                                            <input type="hidden" name="ukprn" value="@provider.ProviderId"/>
+                                            <input type="hidden" name="trainingCode" value="@Model.Course.Id"/>
+                                            <input type="hidden" name="routeName" value="@RouteNames.CourseProviders"/>
+                                            <button class="das-button--inline-link" type="submit">Remove from shortlist</button>
+                                        </form> 
+                                    </div>    
+                                </div>
+                            </div>
+                        </div>
                     </li>
                 }
                 </ol>

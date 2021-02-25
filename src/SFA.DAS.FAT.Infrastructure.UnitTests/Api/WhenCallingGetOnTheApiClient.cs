@@ -8,7 +8,6 @@ using AutoFixture.NUnit3;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Moq;
-using Moq.Protected;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.FAT.Domain.Configuration;

@@ -21,7 +21,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviders
             GetCourseProvidersQueryHandler handler)
         {
             mockService
-                .Setup(service => service.GetCourseProviders(query.CourseId, query.Location, query.DeliveryModes, query.ProviderRatings, query.Lat, query.Lon))
+                .Setup(service => service.GetCourseProviders(query.CourseId, query.Location, query.DeliveryModes, query.ProviderRatings, query.Lat, query.Lon, query.ShortlistUserId))
                 .ReturnsAsync(providersFromService);
 
             var result = await handler.Handle(query, CancellationToken.None);
@@ -32,6 +32,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviders
             result.TotalFiltered.Should().Be(providersFromService.TotalFiltered);
             result.Location.Should().Be(providersFromService.Location.Name);
             result.LocationGeoPoint.Should().BeEquivalentTo(providersFromService.Location.LocationPoint.GeoPoint);
+            result.ShortlistItemCount.Should().Be(providersFromService.ShortlistItemCount);
         }
         [Test, MoqAutoData]
         public async Task Then_Returns_Results_From_Service_With_No_Location(
@@ -42,7 +43,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourseProviders
         {
             providersFromService.Location = null;
             mockService
-                .Setup(service => service.GetCourseProviders(query.CourseId, query.Location,query.DeliveryModes, query.ProviderRatings, query.Lat, query.Lon))
+                .Setup(service => service.GetCourseProviders(query.CourseId, query.Location,query.DeliveryModes, query.ProviderRatings, query.Lat, query.Lon, query.ShortlistUserId))
                 .ReturnsAsync(providersFromService);
 
             var result = await handler.Handle(query, CancellationToken.None);

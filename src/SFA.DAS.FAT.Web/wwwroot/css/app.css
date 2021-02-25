@@ -75,9 +75,21 @@
     border-radius: 50%;
     line-height: .8;
     height: .8em;
-    width: .8em;
+    min-width: .8em;
     text-align: center;
     vertical-align: middle;
+}
+
+.app-view-shortlist-link__number-update {
+    animation-name: colourchange;
+    animation-duration: 1s;
+    animation-timing-function: ease;
+}
+
+@keyframes colourchange
+{
+  from  {background: #ffdd00}
+  to    {background: #1d70b8}
 }
 
 .app-view-shortlist-link:hover .app-view-shortlist-link__number {
@@ -92,4 +104,42 @@
 .das-search-form .autocomplete__input {
     min-height: 40px;
     border-right-width: 0;
+}
+
+
+
+.app-provider-shortlist-control {
+    margin-top: 15px;
+    margin-bottom: -10px;
+}
+
+@media (min-width: 40.0625em) {
+    .app-provider-shortlist-control {
+        text-align: right;
+        margin: 0;
+    }
+}
+
+.app-provider-shortlist-add {
+    display: block;
+}
+
+.app-provider-shortlist-remove {
+    display: none;
+}
+
+.app-provider-shortlist-tag {
+    margin-bottom: 5px;
+}
+
+.app-provider-shortlist-added .app-provider-shortlist-add {
+    display: none;
+}
+
+.app-provider-shortlist-added .app-provider-shortlist-remove {
+    display: block;
+}
+
+.das-button--inline-link {
+    text-align: inherit;
 }

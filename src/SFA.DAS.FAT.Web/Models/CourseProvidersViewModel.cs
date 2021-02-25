@@ -20,7 +20,10 @@ namespace SFA.DAS.FAT.Web.Models
             Location = result.Location;
             DeliveryModes = BuildDeliveryModeOptionViewModel(request.DeliveryModes);
             ProviderRatings = BuildProviderRatingOptionViewModel(request.ProviderRatings);
+            ShortlistItemCount = result.ShortlistItemCount;
         }
+
+        public int ShortlistItemCount { get ; set ; }    
 
         public IEnumerable<ProviderViewModel> Providers { get; set; }
         public CourseViewModel Course { get; set; }

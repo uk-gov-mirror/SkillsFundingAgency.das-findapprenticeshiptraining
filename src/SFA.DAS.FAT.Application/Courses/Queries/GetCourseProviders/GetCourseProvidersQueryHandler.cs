@@ -17,7 +17,7 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders
 
         public async Task<GetCourseProvidersResult> Handle(GetCourseProvidersQuery request, CancellationToken cancellationToken)
         {
-            var courseProviders = await _courseService.GetCourseProviders(request.CourseId, request.Location, request.DeliveryModes, request.ProviderRatings, request.Lat, request.Lon);
+            var courseProviders = await _courseService.GetCourseProviders(request.CourseId, request.Location, request.DeliveryModes, request.ProviderRatings, request.Lat, request.Lon, request.ShortlistUserId);
 
             return new GetCourseProvidersResult
             {
@@ -26,7 +26,8 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders
                 Total = courseProviders.Total,
                 TotalFiltered = courseProviders.TotalFiltered,
                 Location = courseProviders.Location?.Name,
-                LocationGeoPoint = courseProviders.Location?.LocationPoint?.GeoPoint
+                LocationGeoPoint = courseProviders.Location?.LocationPoint?.GeoPoint,
+                ShortlistItemCount = courseProviders.ShortlistItemCount
             };
         }
     }

@@ -9,6 +9,7 @@
       <None Remove="course-lastdatestarts.json" />
       <None Remove="course-no-providers-at-location.json" />
       <None Remove="course-providers.json" />
+      <None Remove="shortlist.json" />
     </ItemGroup>
 
     <ItemGroup>
@@ -16,6 +17,9 @@
         <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.4.0" />
     </ItemGroup>
     <ItemGroup>
+        <Content Include="shortlist.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="course-no-providers-at-location.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>

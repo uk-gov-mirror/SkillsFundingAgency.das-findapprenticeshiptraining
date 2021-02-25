@@ -7,8 +7,9 @@ namespace SFA.DAS.FAT.Web.Models
     {
         [FromRoute(Name="id")]
         public Guid ShortlistId { get; set; }
-        public int Ukprn { get ; set ; }
-        public int TrainingCode { get ; set ; }
+        public int? Ukprn { get ; set ; }
+        public string ProviderName { get ; set ; }
+        public int? TrainingCode { get ; set ; }
         public string RouteName { get; set; }
     }
 }

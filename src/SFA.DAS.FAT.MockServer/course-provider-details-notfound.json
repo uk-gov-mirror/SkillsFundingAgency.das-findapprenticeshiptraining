@@ -18,6 +18,7 @@
         "providersAtLocation": 4,
         "totalProviders": 3
     },
+    "shortlistItemCount" : 11,
     "trainingCourseProvider": {
         "providerId": 1001,
         "name": "Lab trainings r us",

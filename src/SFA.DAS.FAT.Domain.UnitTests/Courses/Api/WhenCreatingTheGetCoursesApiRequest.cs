@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -85,15 +86,29 @@ namespace SFA.DAS.FAT.Domain.UnitTests.Courses.Api
             
         }
         
+        
         [Test, AutoData]
-        public void Then_The_Get_Url_Is_Constructed_Correctly_With_Levels_And_Routes_And_OrderBy(string baseUrl, string keyword, List<string> sectors, List<int> levels)
+        public void Then_ShortlistId_Is_Not_Added_If_None(string baseUrl, string keyword)
+        {
+            //Arrange Act
+            var orderBy = OrderBy.None;
+            var actual = new GetCoursesApiRequest(baseUrl, keyword, null, null, orderBy, null);
+
+            //Assert
+            actual.GetUrl.Should().NotContain("shortlistUserId");
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}");
+            
+        }
+        
+        [Test, AutoData]
+        public void Then_The_Get_Url_Is_Constructed_Correctly_With_Levels_And_Routes_And_OrderBy_And_ShortlistUserId(string baseUrl, string keyword, List<string> sectors, List<int> levels, Guid shortlistUserId)
         {
             //Arrange Act
             var orderBy = OrderBy.Relevance;
-            var actual = new GetCoursesApiRequest(baseUrl, keyword, sectors, levels,orderBy);
+            var actual = new GetCoursesApiRequest(baseUrl, keyword, sectors, levels,orderBy,shortlistUserId);
             
             //Assert
-            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}&orderby={orderBy}&routeIds={string.Join("&routeIds=", sectors.Select(HttpUtility.HtmlEncode))}&levels={string.Join("&levels=", levels)}");
+            actual.GetUrl.Should().Be($"{baseUrl}trainingcourses?keyword={keyword}&orderby={orderBy}&routeIds={string.Join("&routeIds=", sectors.Select(HttpUtility.HtmlEncode))}&levels={string.Join("&levels=", levels)}&shortlistUserId={shortlistUserId}");
         }
         
     }

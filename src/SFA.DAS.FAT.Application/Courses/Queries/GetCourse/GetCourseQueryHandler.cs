@@ -26,9 +26,9 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourse
                 throw new ValidationException(validationResult.DataAnnotationResult,null, null);
             }
 
-            var response = await _courseService.GetCourse(query.CourseId, query.Lat, query.Lon);
+            var response = await _courseService.GetCourse(query.CourseId, query.Lat, query.Lon, query.ShortlistUserId);
             
-            return new GetCourseResult{Course = response?.Course, ProvidersCount = response?.ProvidersCount};
+            return new GetCourseResult{Course = response?.Course, ProvidersCount = response?.ProvidersCount, ShortlistItemCount = response?.ShortlistItemCount ?? 0};
         }
     }
 }

@@ -31,7 +31,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
             };
             var deleteTestRequest = new DeleteTestRequest(id,"https://test.local");
             var expectedUrl = deleteTestRequest.DeleteUrl;
-            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, expectedUrl, config.Key, "delete");
+            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, expectedUrl, config.Key, HttpMethod.Delete);
             var client = new HttpClient(httpMessageHandler.Object);
             var apiClient = new ApiClient(client, configMock.Object);
             
@@ -65,7 +65,7 @@ namespace SFA.DAS.FAT.Infrastructure.UnitTests.Api
             };
             var deleteTestRequest = new DeleteTestRequest(id,"https://test.local");
             var expectedUrl = deleteTestRequest.DeleteUrl;
-            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, expectedUrl, config.Key, "delete");
+            var httpMessageHandler = MessageHandler.SetupMessageHandlerMock(response, expectedUrl, config.Key, HttpMethod.Delete);
             var client = new HttpClient(httpMessageHandler.Object);
             var apiClient = new ApiClient(client, configMock.Object);
             

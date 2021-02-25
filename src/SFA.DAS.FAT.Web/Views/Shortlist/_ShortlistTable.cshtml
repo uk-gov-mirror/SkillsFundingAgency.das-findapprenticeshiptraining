@@ -4,18 +4,18 @@
 
 
 
-<table class="govuk-table">
-    <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-        <th scope="col" class="govuk-table__header">Training provider</th>
-        <th scope="col" class="govuk-table__header">Training options</th>
-        <th scope="col" class="govuk-table__header">Employer reviews</th>
-        <th scope="col" class="govuk-table__header">Pass rate</th>
-        <th scope="col" class="govuk-table__header"></th>
-    </tr>
+<table class="govuk-table app-shortlist-table">
+    <thead class="govuk-table__head app-shortlist-table__head">
+        <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header">Training provider</th>
+            <th scope="col" class="govuk-table__header">Training options</th>
+            <th scope="col" class="govuk-table__header">Employer reviews</th>
+            <th scope="col" class="govuk-table__header"><span class="das-no-wrap">Pass rate</span></th>
+            <th scope="col" class="govuk-table__header"><span class="das-visually-hidden">Action</span></th>
+        </tr>
     </thead>
     <tbody class="govuk-table__body">
-    @foreach (var shortlistItem in Model)
+    @foreach (var shortlistItem in Model.OrderByDescending(model => model.CreatedDate))
     {
         var routeData = new Dictionary<string, string>
         {
@@ -24,21 +24,21 @@
             {"providerId",shortlistItem.Provider.ProviderId.ToString()}
         };
 
-        <tr class="govuk-table__row">
-            <th scope="row" class="govuk-table__header">
-                <div class="govuk-!-margin-bottom-2">
+        <tr class="govuk-table__row app-shortlist-table__row">
+            <th scope="row" class="govuk-table__header app-shortlist-table__header-cell">
+                <div class="das-highlight app-shortlist-table__highlight">
                     <p class="govuk-body govuk-!-font-size-24 govuk-!-font-weight-bold govuk-!-margin-bottom-2">
                         <a id="@shortlistItem.Id" asp-route="@RouteNames.CourseProviderDetails" asp-all-route-data="@routeData" class="govuk-link govuk-link--no-visited-state">@shortlistItem.Provider.Name</a>
                     </p>
-                    <ul class="govuk-list govuk-!-margin-top-4 govuk-!-font-size-16">
-                        <li class="govuk-!-margin-bottom-2"><a class="govuk-link govuk-link--no-visited-state" href="#">@shortlistItem.Provider.Email</a></li>
-                        <li >@shortlistItem.Provider.Phone</li>
-                        <li><a class="govuk-link govuk-link--no-visited-state" href="#">@shortlistItem.Provider.Website</a></li>
+                    <ul class="govuk-list govuk-!-margin-top-4 govuk-!-margin-bottom-0 govuk-!-font-size-16">
+                        <li class="govuk-!-margin-bottom-2"><a class="govuk-link govuk-link--no-visited-state das-breakable" href="#">@shortlistItem.Provider.Email</a></li>
+                        <li>@shortlistItem.Provider.Phone</li>
+                        <li class="govuk-!-margin-bottom-0"><a class="govuk-link govuk-link--no-visited-state das-breakable" href="#">@shortlistItem.Provider.Website</a></li>
                     </ul>
                 </div>
             </th>
-            <td class="govuk-table__cell">
-                <ul class="govuk-list das-icon-list govuk-!-font-size-16 govuk-!-margin-bottom-2">
+            <td class="govuk-table__cell app-shortlist-table__cell">
+                <ul class="govuk-list das-icon-list das-icon-list--large govuk-!-font-size-16 govuk-!-margin-bottom-2">
                     @foreach (var mode in shortlistItem.Provider.DeliveryModes)
                     {
                         <li class="das-icon-list__list-item" id="@shortlistItem.Provider.ProviderId-@mode.DeliveryModeType">
@@ -50,12 +50,12 @@
                             {
                                 <span class="das-icon-list__icon das-icon-list__icon--cross">not available</span>
                             }
-                            @mode.DeliveryModeType.GetDescription() @(!string.IsNullOrEmpty(shortlistItem.LocationDescription) ? mode.FormattedDistanceInMiles : "")) @mode.NationalText
+                            @mode.DeliveryModeType.GetDescription() @(!string.IsNullOrEmpty(shortlistItem.LocationDescription) ? mode.FormattedDistanceInMiles : "") @mode.NationalText
                         </li>
                     }
                 </ul>
             </td>
-            <td class="govuk-table__cell">
+            <td class="govuk-table__cell app-shortlist-table__cell">
                 <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-2">
                     @if (shortlistItem.Provider.TotalFeedbackRating != 0)
                     {
@@ -70,25 +70,23 @@
                     <span class="das-text--muted">@shortlistItem.Provider.TotalFeedbackRatingText</span>         
                 </p>
             </td>
-            <td class="govuk-table__cell">
+            <td class="govuk-table__cell app-shortlist-table__cell">
                 @if (shortlistItem.Provider.OverallCohort != null)
                 {
                     <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-2">
-                        @shortlistItem.Provider.OverallAchievementRatePercentage pass rate
+                        @shortlistItem.Provider.OverallAchievementRatePercentage <span class="app-!-hide--tablet">pass rate</span>
                         <span class="das-text--muted">(out of @shortlistItem.Provider.OverallCohort apprentices)</span>
                     </p>
                 }
             </td>
-            <td class="govuk-table__cell">
-                <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-4">
-                    <a asp-route="@RouteNames.ShortList" asp-route-id="@shortlistItem.Id" asp class="govuk-link govuk-link--no-visited-state">Remove<span class="visually-hidden-desktop"> from shortlist</span></a>
-                </p>
+            <td class="govuk-table__cell app-shortlist-table__cell app-shortlist-table__cell">
+                <form method="post" asp-route="@RouteNames.DeleteShortlistItem" asp-route-id="@shortlistItem.Id">
+                    <input type="hidden" name="routeName" value="@RouteNames.ShortList"/>
+                    <input type="hidden" name="providerName" value="@shortlistItem.Provider.Name"/>
+                    <button class="das-button--inline-link govuk-link govuk-link--no-visited-state govuk-!-font-size-16" type="submit">Remove <span class="das-visually-hidden">@shortlistItem.Provider.Name</span> <span class="app-!-hide--tablet"> from shortlist</span></button>
+                </form>
             </td>
         </tr>
     }
     </tbody>
 </table>
-
-
-
-

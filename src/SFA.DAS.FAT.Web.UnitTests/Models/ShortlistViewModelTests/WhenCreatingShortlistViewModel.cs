@@ -1,4 +1,6 @@
-﻿using AutoFixture.NUnit3;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.FAT.Domain.Shortlist;
@@ -27,6 +29,20 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.ShortlistViewModelTests
             var actual = new ShortlistViewModel();
 
             actual.Shortlist.Should().BeEmpty();
+        }
+
+        [Test, AutoData]
+        public void Then_The_Expiry_Text_Is_Correctly_Set(ShortlistViewModel model)
+        {
+            var maxDate = model.Shortlist.Select(c => c.CreatedDate).Max();
+            model.ExpiryDateText.Should().Be($"We will save your shortlist until {maxDate.AddDays(30):dd MMMM yyyy}.");
+        }
+
+        [Test, AutoData]
+        public void Then_The_Expiry_Text_Is_Correctly_Set_When_No_Items(ShortlistViewModel model)
+        {
+            model.Shortlist = new List<ShortlistItemViewModel>();
+            model.ExpiryDateText.Should().BeEmpty();
         }
     }
 }

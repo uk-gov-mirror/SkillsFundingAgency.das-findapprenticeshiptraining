@@ -45,6 +45,7 @@ namespace SFA.DAS.FAT.Web.Models
         public Dictionary<string, string> ClearLevelLinks => BuildClearLevelFilterLinks();
         public string OrderByName => BuildOrderByLink(OrderBy.Name);
         public string OrderByRelevance => BuildOrderByLink(OrderBy.Relevance);
+        public int ShortlistItemCount { get ; set ; }
 
         private string GetTotalMessage()
         {

@@ -12,5 +12,6 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourses
         public List<int> Levels { get; set; }
 
         public OrderBy OrderBy { get; set; }
+        public Guid? ShortlistUserId { get ; set ; }
     }
 }

@@ -23,18 +23,27 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             int standardCode,
             GetCourseResult response,
             LocationCookieItem locationCookieItem,
+            ShortlistCookieItem shortlistCookieItem,
             [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService, 
+            [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> shortlistStorageService, 
             [Greedy]CoursesController controller)
         {
             //Arrange
             cookieStorageService
                 .Setup(x => x.Get(Constants.LocationCookieName))
                 .Returns(locationCookieItem);
+            shortlistStorageService
+                .Setup(x => x.Get(Constants.ShortlistCookieName))
+                .Returns(shortlistCookieItem);
             mediator
                 .Setup(x => 
                     x.Send(It.Is<GetCourseQuery>(c => 
-                        c.CourseId.Equals(standardCode)),It.IsAny<CancellationToken>()))
+                        c.CourseId.Equals(standardCode) 
+                        && c.ShortlistUserId.Equals(shortlistCookieItem.ShortlistUserId)
+                        && c.Lat.Equals(locationCookieItem.Lat)
+                        && c.Lon.Equals(locationCookieItem.Lon)
+                        ),It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
             
             //Act
@@ -49,6 +58,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             actualModel.TotalProvidersCount.Should().Be(response.ProvidersCount.TotalProviders);
             actualModel.ProvidersAtLocationCount.Should().Be(response.ProvidersCount.ProvidersAtLocation);
             actualModel.LocationName.Should().Be(locationCookieItem.Name);
+            actualModel.ShortlistItemCount.Should().Be(response.ShortlistItemCount);
         }
 
         [Test, MoqAutoData]
@@ -58,16 +68,21 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             LocationCookieItem locationCookieItem,
             [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService, 
+            [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> shortlistStorageService, 
             [Greedy]CoursesController controller)
         {
             //Arrange
             cookieStorageService.Setup(x => x.Get(Constants.LocationCookieName))
                 .Returns(locationCookieItem);
+            shortlistStorageService
+                .Setup(x => x.Get(Constants.ShortlistCookieName))
+                .Returns((ShortlistCookieItem)null);
             mediator.Setup(x => 
                     x.Send(It.Is<GetCourseQuery>(c => 
                         c.CourseId.Equals(standardCode)
                         && c.Lat.Equals(locationCookieItem.Lat)
                         && c.Lon.Equals(locationCookieItem.Lon)
+                        && c.ShortlistUserId == null
                         ),It.IsAny<CancellationToken>()))
                 .ReturnsAsync(response);
             

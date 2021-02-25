@@ -8,6 +8,6 @@ namespace SFA.DAS.FAT.Domain.Interfaces
     {
         Task<ShortlistForUser> GetShortlistForUser(Guid shortlistUserId);
         Task DeleteShortlistItemForUser(Guid id, Guid shortlistUserId);
-        Task<Guid> CreateShortlistItemForUser(Guid shortlistUserId, int ukprn, int trainingCode, string sectorSubjectArea, double? lat, double? lon, string locationDescription);
+        Task<Guid> CreateShortlistItemForUser(Guid shortlistUserId, int ukprn, int trainingCode, double? lat, double? lon, string locationDescription);
     }
 }

@@ -15,5 +15,7 @@ namespace SFA.DAS.FAT.Domain.Courses
         public List<Sector> Sectors { get; set; }
         [JsonProperty("levels")]
         public List<Level> Levels { get; set; }
+        [JsonProperty("shortlistItemCount")]
+        public int ShortlistItemCount { get; set; }
     }
 }

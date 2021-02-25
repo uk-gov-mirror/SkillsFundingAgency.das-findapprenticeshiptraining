@@ -7,9 +7,25 @@ namespace SFA.DAS.FAT.Web.Models
 {
     public class ShortlistViewModel
     {
+        private const int ShortlistExpiryInDays = 30;
         public List<ShortlistItemViewModel> Shortlist { get; set; } = new List<ShortlistItemViewModel>();
 
         public bool IsOneTable => OneTable();
+        public string Removed { get; set; }
+
+        public string ExpiryDateText => GetExpiryDateText();
+
+        private string GetExpiryDateText()
+        {
+            if (!Shortlist.Any())
+            {
+                return "";
+            }
+
+            var dateToUse = Shortlist.Select(c => c.CreatedDate).Max();
+
+            return $"We will save your shortlist until {dateToUse.AddDays(ShortlistExpiryInDays):dd MMMM yyyy}.";
+        }
 
         private bool OneTable()
         {

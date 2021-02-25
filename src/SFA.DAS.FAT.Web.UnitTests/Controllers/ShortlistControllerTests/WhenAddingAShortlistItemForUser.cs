@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -37,7 +39,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
                 && c.LocationDescription == null
                 && c.Ukprn.Equals(request.Ukprn)
                 && c.TrainingCode.Equals(request.TrainingCode)
-                && c.SectorSubjectArea.Equals(request.SectorSubjectArea)
             ), It.IsAny<CancellationToken>())).ReturnsAsync(expectedId);
             mockShortlistCookieService
                 .Setup(service => service.Get(Constants.ShortlistCookieName))
@@ -52,6 +53,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
             //Assert
             actual.Should().NotBeNull();
             Guid.Parse(actual.Value.ToString()).Should().Be(expectedId);
+            mockShortlistCookieService.Verify(x=>x.Update(Constants.ShortlistCookieName, shortlistCookie, 30), Times.Once);
 
         }
 
@@ -82,12 +84,11 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
                   && c.LocationDescription == null
                   && c.Ukprn.Equals(request.Ukprn)
                   && c.TrainingCode.Equals(request.TrainingCode)
-                  && c.SectorSubjectArea.Equals(request.SectorSubjectArea)
             ), It.IsAny<CancellationToken>()), Times.Once);
             mockShortlistCookieService.Verify(x=>
-                x.Create(
-                    It.Is<ShortlistCookieItem>(c=>c.ShortlistUserId!=Guid.Empty),
+                x.Update(
                     Constants.ShortlistCookieName, 
+                    It.Is<ShortlistCookieItem>(c=>c.ShortlistUserId!=Guid.Empty),
                     30), Times.Once);
         }
 
@@ -121,7 +122,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
                 && c.LocationDescription.Equals(locationCookieItem.Name)
                 && c.Ukprn.Equals(request.Ukprn)
                 && c.TrainingCode.Equals(request.TrainingCode)
-                && c.SectorSubjectArea.Equals(request.SectorSubjectArea)
             ), It.IsAny<CancellationToken>()), Times.Once);
         }
 
@@ -152,6 +152,33 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
             actual.RouteValues["id"].Should().Be(request.TrainingCode);
             actual.RouteValues.Should().ContainKey("providerId");
             actual.RouteValues["providerId"].Should().Be(request.Ukprn);
+        }
+        
+        [Test, MoqAutoData]
+        public async Task And_If_ProviderName_Is_In_The_Request_Is_Encoded_Using_The_Protector(
+            CreateShortlistItemRequest request,
+            ShortlistCookieItem shortlistCookie,
+            LocationCookieItem locationCookieItem,
+            [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> mockShortlistCookieService,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> mockLocationCookieService,
+            [Frozen] Mock<IDataProtector> protector,
+            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Greedy] ShortlistController controller)
+        {
+            //Arrange
+            mockShortlistCookieService
+                .Setup(service => service.Get(Constants.ShortlistCookieName))
+                .Returns(shortlistCookie);
+            mockLocationCookieService.Setup(x => x.Get(Constants.LocationCookieName))
+                .Returns(locationCookieItem);
+            request.RouteName = RouteNames.CourseProviders;
+
+            //Act
+            await controller.CreateShortlistItem(request);
+            
+            //Assert
+            protector.Verify(c=>c.Protect(It.Is<byte[]>(
+                x=>x[0].Equals(Encoding.UTF8.GetBytes($"{request.ProviderName}")[0]))), Times.Once);  
         }
     }
 }

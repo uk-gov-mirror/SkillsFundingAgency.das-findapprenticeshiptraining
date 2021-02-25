@@ -8,8 +8,11 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
 {
     public class GetCoursesApiRequest : IGetApiRequest
     {
-        public GetCoursesApiRequest( string baseUrl, string keyword, List<string> sectors = null, List<int> levels = null, OrderBy orderBy = OrderBy.None)
+        private readonly Guid? _shortlistUserId;
+
+        public GetCoursesApiRequest( string baseUrl, string keyword, List<string> sectors = null, List<int> levels = null, OrderBy orderBy = OrderBy.None, Guid? shortlistUserId = null)
         {
+            _shortlistUserId = shortlistUserId;
             BaseUrl = baseUrl;
             Keyword = keyword;
             Sectors = sectors;
@@ -37,6 +40,11 @@ namespace SFA.DAS.FAT.Domain.Courses.Api
             if (Levels != null && Levels.Any())
             {
                 url += "&levels=" + string.Join("&levels=", Levels);
+            }
+
+            if (_shortlistUserId.HasValue)
+            {
+                url += $"&shortlistUserId={_shortlistUserId}";
             }
             return url;
         }

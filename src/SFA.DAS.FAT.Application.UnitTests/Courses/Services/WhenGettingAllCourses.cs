@@ -27,7 +27,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             var courseApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, null);
             
             //Act
-            await courseService.GetCourses(null, null, null, OrderBy.None);
+            await courseService.GetCourses(null, null, null, OrderBy.None, null);
             
             //Assert
             apiClient.Verify(x=>x.Get<TrainingCourses>(
@@ -46,7 +46,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             var coursesApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, keyword, routeIds);
 
             //Act
-            await courseService.GetCourses(keyword, routeIds, null, OrderBy.None);
+            await courseService.GetCourses(keyword, routeIds, null, OrderBy.None, null);
 
             //Assert
             apiClient.Verify(x =>
@@ -67,7 +67,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             var coursesApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, keyword, null, levels);
 
             //Act
-            await courseService.GetCourses(keyword, null, levels, OrderBy.None);
+            await courseService.GetCourses(keyword, null, levels, OrderBy.None, null);
 
             //Assert
             apiClient.Verify(x =>
@@ -89,7 +89,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             var coursesApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, keyword, routeIds, levels);
 
             //Act
-            await courseService.GetCourses(keyword, routeIds, levels, OrderBy.None);
+            await courseService.GetCourses(keyword, routeIds, levels, OrderBy.None, null);
 
             //Assert
             apiClient.Verify(x =>
@@ -110,7 +110,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             var coursesApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, keyword, null, null, OrderBy.None);
 
             //Act
-            await courseService.GetCourses(keyword, null, null, OrderBy.None);
+            await courseService.GetCourses(keyword, null, null, OrderBy.None, null);
 
             //Assert
             apiClient.Verify(x =>
@@ -131,7 +131,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             var coursesApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, keyword, null, null, OrderBy.Name);
 
             //Act
-            await courseService.GetCourses(keyword, null, null, OrderBy.Name);
+            await courseService.GetCourses(keyword, null, null, OrderBy.Name, null);
 
             //Assert
             apiClient.Verify(x =>
@@ -152,7 +152,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             var coursesApiRequest = new GetCoursesApiRequest(config.Object.Value.BaseUrl, keyword, null, null, OrderBy.Relevance);
 
             //Act
-            await courseService.GetCourses(keyword, null, null, OrderBy.Relevance);
+            await courseService.GetCourses(keyword, null, null, OrderBy.Relevance, null);
 
             //Assert
             apiClient.Verify(x =>
@@ -160,6 +160,23 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
                     request.Keyword.Equals(coursesApiRequest.Keyword)
                     && request.OrderBy.Equals(coursesApiRequest.OrderBy)
                     )));
+        }
+        
+        [Test, MoqAutoData]
+        public async Task Then_The_ShortlistUserId_Is_Added_To_The_Request(
+            Guid shortlistUserId,
+            [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
+            [Frozen] Mock<IApiClient> apiClient,
+            CourseService courseService)
+        {
+            //Act
+            await courseService.GetCourses(null, null, null, OrderBy.Relevance, shortlistUserId);
+
+            //Assert
+            apiClient.Verify(x =>
+                x.Get<TrainingCourses>(It.Is<GetCoursesApiRequest>(request =>
+                    request.GetUrl.Contains($"&shortlistUserId={shortlistUserId}")
+                )));
         }
     }
 }

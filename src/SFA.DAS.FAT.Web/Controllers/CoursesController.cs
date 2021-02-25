@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourses;
@@ -8,6 +9,7 @@ using SFA.DAS.FAT.Web.Models;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
 using SFA.DAS.FAT.Web.Infrastructure;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
@@ -26,8 +28,9 @@ namespace SFA.DAS.FAT.Web.Controllers
         private readonly ICookieStorageService<LocationCookieItem> _locationCookieStorageService;
         private readonly ICookieStorageService<GetCourseProvidersRequest> _courseProvidersCookieStorageService;
         private readonly ICookieStorageService<ShortlistCookieItem> _shortlistCookieService;
-        private readonly IDataProtector _protector;
-        
+        private readonly IDataProtector _providerDataProtector;
+        private readonly IDataProtector _shortlistDataProtector;
+
         public CoursesController (
             ILogger<CoursesController> logger,
             IMediator mediator,
@@ -41,18 +44,22 @@ namespace SFA.DAS.FAT.Web.Controllers
             _locationCookieStorageService = locationCookieStorageService;
             _courseProvidersCookieStorageService = courseProvidersCookieStorageService;
             _shortlistCookieService = shortlistCookieService;
-            _protector = provider.CreateProtector(Constants.GaDataProtectorName);
+            _providerDataProtector = provider.CreateProtector(Constants.GaDataProtectorName);
+            _shortlistDataProtector = provider.CreateProtector(Constants.ShortlistProtectorName);
         }
 
         [Route("", Name = RouteNames.Courses)]
         public async Task<IActionResult> Courses(GetCoursesRequest request)
         {
+            var shortlistItem = _shortlistCookieService.Get(Constants.ShortlistCookieName);
+            
             var result = await _mediator.Send(new GetCoursesQuery
             {
                 Keyword = request.Keyword,
                 RouteIds = request.Sectors,
                 Levels = request.Levels,
-                OrderBy = request.OrderBy
+                OrderBy = request.OrderBy,
+                ShortlistUserId = shortlistItem?.ShortlistUserId
             });
 
             var viewModel = new CoursesViewModel
@@ -65,7 +72,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                 SelectedSectors = request.Sectors,
                 SelectedLevels = request.Levels,
                 Levels = result.Levels.Select(level => new LevelViewModel(level, request.Levels)).ToList(),
-                OrderBy = request.OrderBy
+                OrderBy = request.OrderBy,
+                ShortlistItemCount = result.ShortlistItemCount
             };
 
             return View(viewModel);
@@ -75,11 +83,14 @@ namespace SFA.DAS.FAT.Web.Controllers
         public async Task<IActionResult> CourseDetail(int id, [FromQuery(Name="location")]string locationName)
         {
             var location = CheckLocation(locationName);
+            var shortlistItem = _shortlistCookieService.Get(Constants.ShortlistCookieName);
+            
             var result = await _mediator.Send(new GetCourseQuery
             {
                 CourseId = id,
                 Lat = location?.Lat ?? 0,
-                Lon = location?.Lon ?? 0
+                Lon = location?.Lon ?? 0,
+                ShortlistUserId = shortlistItem?.ShortlistUserId
             });
 
             if (result.Course == null)
@@ -91,6 +102,7 @@ namespace SFA.DAS.FAT.Web.Controllers
             viewModel.LocationName = location?.Name;
             viewModel.TotalProvidersCount = result.ProvidersCount?.TotalProviders;
             viewModel.ProvidersAtLocationCount = result.ProvidersCount?.ProvidersAtLocation;
+            viewModel.ShortlistItemCount = result.ShortlistItemCount;
             
             return View(viewModel);
         }
@@ -103,6 +115,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                 var location = CheckLocation(request.Location);
 
                 var shortlistItem = _shortlistCookieService.Get(Constants.ShortlistCookieName);
+
+                
                 
                 var result = await _mediator.Send(new GetCourseProvidersQuery
                 {
@@ -133,7 +147,7 @@ namespace SFA.DAS.FAT.Web.Controllers
                 var providers = result.Providers
                         .ToDictionary(provider => 
                                         provider.ProviderId, 
-                                        provider => WebEncoders.Base64UrlEncode(_protector.Protect(
+                                        provider => WebEncoders.Base64UrlEncode(_providerDataProtector.Protect(
                                             System.Text.Encoding.UTF8.GetBytes($"{providerList.IndexOf(provider) + 1}|{result.TotalFiltered}"))));
                 
 
@@ -145,6 +159,13 @@ namespace SFA.DAS.FAT.Web.Controllers
                 {
                     return RedirectToRoute(RouteNames.CourseDetails,new {request.Id});
                 }
+
+                var removedProviderFromShortlist =
+                    string.IsNullOrEmpty(request.Removed) ? "" : HttpUtility.HtmlDecode(GetEncodedProviderName(request.Removed));
+                var addedProviderToShortlist =
+                    string.IsNullOrEmpty(request.Added) ? "" : HttpUtility.HtmlDecode(GetEncodedProviderName(request.Added));
+                
+                courseProvidersViewModel.BannerUpdateMessage = GetProvidersBannerUpdateMessage(removedProviderFromShortlist, addedProviderToShortlist);
                 
                 return View(courseProvidersViewModel);
             }
@@ -156,18 +177,21 @@ namespace SFA.DAS.FAT.Web.Controllers
         }
 
         [Route("{id}/providers/{providerId}", Name = RouteNames.CourseProviderDetails)]
-        public async Task<IActionResult> CourseProviderDetail(int id, int providerId, string location)
+        public async Task<IActionResult> CourseProviderDetail(int id, int providerId, string location, string removed, string added)
         {
             try
             {   
                 var locationItem = CheckLocation(location);
+                var shortlistItem = _shortlistCookieService.Get(Constants.ShortlistCookieName);
+                
                 var result = await _mediator.Send(new GetCourseProviderQuery
                 {
                     ProviderId = providerId ,
                     CourseId = id, 
                     Location = locationItem?.Name ?? "",
                     Lat = locationItem?.Lat ?? 0,
-                    Lon = locationItem?.Lon ?? 0
+                    Lon = locationItem?.Lon ?? 0,
+                    ShortlistUserId = shortlistItem?.ShortlistUserId
                 });
 
                 var cookieResult =new LocationCookieItem
@@ -204,6 +228,14 @@ namespace SFA.DAS.FAT.Web.Controllers
                     return RedirectToRoute(RouteNames.CourseDetails,new {Id = id});
                 }
 
+                var removedProviderFromShortlist =
+                    string.IsNullOrEmpty(removed) ? "" : HttpUtility.HtmlDecode(GetEncodedProviderName(removed));
+                var addedProviderToShortlist =
+                    string.IsNullOrEmpty(added) ? "" : HttpUtility.HtmlDecode(GetEncodedProviderName(added));
+                
+                viewModel.BannerUpdateMessage = GetProvidersBannerUpdateMessage(removedProviderFromShortlist, addedProviderToShortlist);
+                
+
                 return View(viewModel);
             }
             catch (Exception e)
@@ -237,6 +269,40 @@ namespace SFA.DAS.FAT.Web.Controllers
             {
                 _locationCookieStorageService.Update(Constants.LocationCookieName, location, 2);    
             }
+        }
+
+        private string GetEncodedProviderName(string encodedName)
+        {
+            try
+            {
+                var base64EncodedBytes = WebEncoders.Base64UrlDecode(encodedName);
+                return System.Text.Encoding.UTF8.GetString(_shortlistDataProtector.Unprotect(base64EncodedBytes));
+            }
+            catch (FormatException e)
+            {
+                _logger.LogInformation(e,"Unable to decode provider name from request");
+            }
+            catch (CryptographicException e)
+            {
+                _logger.LogInformation(e, "Unable to decode provider name from request");
+            }
+
+            return string.Empty;
+        }
+
+        private static string GetProvidersBannerUpdateMessage(string removedProviderFromShortlist, string addedProviderToShortlist)
+        {
+            if (!string.IsNullOrEmpty(removedProviderFromShortlist))
+            {
+                return $"{removedProviderFromShortlist} removed from shortlist.";
+            } 
+            
+            if (!string.IsNullOrEmpty(addedProviderToShortlist))
+            {
+                return $"{addedProviderToShortlist} added to shortlist.";
+            }
+
+            return "";
         }
     }
 }

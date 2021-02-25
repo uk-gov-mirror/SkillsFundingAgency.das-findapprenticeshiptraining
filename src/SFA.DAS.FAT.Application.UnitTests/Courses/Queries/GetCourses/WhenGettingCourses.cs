@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using AutoFixture.DataAnnotations;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using Moq;
@@ -25,18 +26,20 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
             request.Keyword = null;
             request.RouteIds = null;
             request.Levels = null;
-            mockService.Setup(x => x.GetCourses(null, null, null, OrderBy.None)).ReturnsAsync(courseResponse);
+            request.ShortlistUserId = null;
+            mockService.Setup(x => x.GetCourses(null, null, null, OrderBy.None, null)).ReturnsAsync(courseResponse);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
             
             //Assert
-            mockService.Verify(x=>x.GetCourses(null, null, null, OrderBy.None), Times.Once);
+            mockService.Verify(x=>x.GetCourses(null, null, null, OrderBy.None, null), Times.Once);
             Assert.IsNotNull(actual);
             actual.Courses.Should().BeEquivalentTo(courseResponse.Courses);
             actual.Sectors.Should().BeEquivalentTo(courseResponse.Sectors);
             actual.TotalFiltered.Should().Be(courseResponse.TotalFiltered);
             actual.Total.Should().Be(courseResponse.Total);
+            actual.ShortlistItemCount.Should().Be(courseResponse.ShortlistItemCount);
         }
 
         [Test, MoqAutoData]
@@ -49,13 +52,13 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
             //Arrange
             request.RouteIds = null;
             request.Levels = null;
-            mockService.Setup(x => x.GetCourses(request.Keyword, null, null, OrderBy.None)).ReturnsAsync(courseResponse);
+            mockService.Setup(x => x.GetCourses(request.Keyword, null, null, OrderBy.None, request.ShortlistUserId)).ReturnsAsync(courseResponse);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
 
             //Assert
-            mockService.Verify(x => x.GetCourses(request.Keyword, null, null, OrderBy.None), Times.Once);
+            mockService.Verify(x => x.GetCourses(request.Keyword, null, null, OrderBy.None, request.ShortlistUserId), Times.Once);
             Assert.IsNotNull(actual);
             actual.Courses.Should().BeEquivalentTo(courseResponse.Courses);
             actual.Sectors.Should().BeEquivalentTo(courseResponse.Sectors);
@@ -72,13 +75,13 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
         {
             //Arrange
             request.Levels = null;
-            mockService.Setup(x => x.GetCourses(request.Keyword, request.RouteIds, null, OrderBy.None)).ReturnsAsync(courseResponse);
+            mockService.Setup(x => x.GetCourses(request.Keyword, request.RouteIds, null, OrderBy.None, request.ShortlistUserId)).ReturnsAsync(courseResponse);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
 
             //Assert
-            mockService.Verify(x => x.GetCourses(request.Keyword, request.RouteIds, null, OrderBy.None), Times.Once);
+            mockService.Verify(x => x.GetCourses(request.Keyword, request.RouteIds, null, OrderBy.None, request.ShortlistUserId), Times.Once);
             Assert.IsNotNull(actual);
         }
 
@@ -91,16 +94,35 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
         {
             //Arrange
             request.RouteIds = null;
-            mockService.Setup(x => x.GetCourses(request.Keyword, null, request.Levels, OrderBy.None)).ReturnsAsync(courseResponse);
+            mockService.Setup(x => x.GetCourses(request.Keyword, null, request.Levels, OrderBy.None, request.ShortlistUserId)).ReturnsAsync(courseResponse);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
 
             //Assert
-            mockService.Verify(x => x.GetCourses(request.Keyword, null, request.Levels, OrderBy.None), Times.Once);
+            mockService.Verify(x => x.GetCourses(request.Keyword, null, request.Levels, OrderBy.None, request.ShortlistUserId), Times.Once);
             Assert.IsNotNull(actual);
         }
 
+        [Test, MoqAutoData]
+        public async Task Then_Keywords_And_Levels_And_Sectors_Are_Passed_To_The_Service_And_ShortlistId_Null(
+            GetCoursesQuery request,
+            TrainingCourses courseResponse,
+            [Frozen] Mock<ICourseService> mockService,
+            GetCoursesQueryHandler handler)
+        {
+            //Arrange
+            request.ShortlistUserId = null;
+            mockService.Setup(x => x.GetCourses(request.Keyword, request.RouteIds, request.Levels, OrderBy.None, null)).ReturnsAsync(courseResponse);
+
+            //Act
+            var actual = await handler.Handle(request, CancellationToken.None);
+
+            //Assert
+            mockService.Verify(x => x.GetCourses(request.Keyword, request.RouteIds, request.Levels, OrderBy.None, null), Times.Once);
+            Assert.IsNotNull(actual);
+        }
+        
         [Test, MoqAutoData]
         public async Task Then_Keywords_And_Levels_And_Sectors_Are_Passed_To_The_Service(
             GetCoursesQuery request,
@@ -109,13 +131,13 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourses
             GetCoursesQueryHandler handler)
         {
             //Arrange
-            mockService.Setup(x => x.GetCourses(request.Keyword, request.RouteIds, request.Levels, OrderBy.None)).ReturnsAsync(courseResponse);
+            mockService.Setup(x => x.GetCourses(request.Keyword, request.RouteIds, request.Levels, OrderBy.None, request.ShortlistUserId)).ReturnsAsync(courseResponse);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
 
             //Assert
-            mockService.Verify(x => x.GetCourses(request.Keyword, request.RouteIds, request.Levels, OrderBy.None), Times.Once);
+            mockService.Verify(x => x.GetCourses(request.Keyword, request.RouteIds, request.Levels, OrderBy.None, request.ShortlistUserId), Times.Once);
             Assert.IsNotNull(actual);
         }
     }

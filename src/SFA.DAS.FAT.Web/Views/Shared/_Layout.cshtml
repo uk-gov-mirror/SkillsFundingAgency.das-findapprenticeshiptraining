@@ -152,12 +152,16 @@
                     }
                 </ol>
             </div>
-            <a asp-route="@RouteNames.ShortList" class="govuk-body govuk-link govuk-link--no-visited-state app-view-shortlist-link">View shortlist <span class="app-view-shortlist-link__number" aria-hidden="true">@(ViewData["ShortlistItemCount"] ?? 0)</span></a>
+            @if (breadCrumbViewModel.Level > BreadCrumbLevel.Accessibility)
+            {
+                <a asp-route="@RouteNames.ShortList" class="govuk-body govuk-link govuk-link--no-visited-state app-view-shortlist-link">View shortlist <span class="app-view-shortlist-link__number" aria-hidden="true">@(ViewData["ShortlistItemCount"] ?? 0)</span></a>    
+            }
+            
         </div>
     }
     @RenderBody()
 
-    @if (breadCrumbViewModel != null && breadCrumbViewModel.Level > BreadCrumbLevel.Home) {
+    @if (breadCrumbViewModel != null && breadCrumbViewModel.Level > BreadCrumbLevel.Accessibility) {
         <div class="govuk-body app-shortlist-banner">
             <a class="govuk-link govuk-link--no-visited-state app-back-to-top-link" href="#top">
                 <svg class="app-back-to-top-link__icon" xmlns="http://www.w3.org/2000/svg" width="13" height="17" viewBox="0 0 13 17">

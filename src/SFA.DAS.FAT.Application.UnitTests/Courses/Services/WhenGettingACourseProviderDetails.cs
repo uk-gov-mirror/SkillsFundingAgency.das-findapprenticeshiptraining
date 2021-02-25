@@ -19,29 +19,6 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
     public class WhenGettingACourseProviderDetails
     {
         [Test, MoqAutoData]
-        public async Task Then_The_Api_Client_Is_Called_With_The_Request(
-            int providerId,
-            int courseId,
-            string location,
-            string baseUrl,
-            double lat,
-            double lon,
-            [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
-            [Frozen] Mock<IApiClient> apiClient,
-            CourseService courseService)
-        {
-            //Arrange
-            var courseApiRequest = new GetCourseProviderDetailsApiRequest(config.Object.Value.BaseUrl, courseId, providerId, location, lat, lon);
-
-            //Act
-            await courseService.GetCourseProviderDetails(providerId, courseId, location, lat, lon);
-
-            //Assert
-            apiClient.Verify(x => x.Get<TrainingCourseProviderDetails>(
-                It.Is<GetCourseProviderDetailsApiRequest>(request => request.GetUrl.Equals(courseApiRequest.GetUrl))));
-        }
-
-        [Test, MoqAutoData]
         public async Task Then_The_Response_Is_Returned_From_The_Api(
             int providerId,
             int courseId,
@@ -49,6 +26,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
             string baseUrl,
             double lat,
             double lon,
+            Guid shortlistUserId,
             TrainingCourseProviderDetails apiResponse,
             [Frozen] Mock<IOptions<FindApprenticeshipTrainingApi>> config,
             [Frozen] Mock<IApiClient> apiClient,
@@ -60,9 +38,10 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Services
                     request.GetUrl.Contains(courseId.ToString())
                     && request.GetUrl.Contains(providerId.ToString())
                     && request.GetUrl.Contains(location)
+                    && request.GetUrl.Contains(shortlistUserId.ToString())
                     ))).ReturnsAsync(apiResponse);
             //Act
-            var actual = await courseService.GetCourseProviderDetails(providerId, courseId, location, lat, lon);
+            var actual = await courseService.GetCourseProviderDetails(providerId, courseId, location, lat, lon, shortlistUserId);
             //Assert
             actual.Should().BeEquivalentTo(apiResponse);
         }

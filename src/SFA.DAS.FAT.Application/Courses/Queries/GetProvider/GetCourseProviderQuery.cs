@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System;
+using MediatR;
 
 namespace SFA.DAS.FAT.Application.Courses.Queries.GetProvider
 {
@@ -9,5 +10,6 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetProvider
         public string Location { get ; set ; }
         public double Lon { get ; set ; }
         public double Lat { get ; set ; }
+        public Guid? ShortlistUserId { get ; set ; }
     }
 }

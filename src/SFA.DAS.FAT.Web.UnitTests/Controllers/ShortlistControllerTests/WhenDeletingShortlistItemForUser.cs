@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -70,15 +73,17 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
         }
 
         [Test, MoqAutoData]
-        public async Task And_If_There_Is_A_RouteName_Then_It_Is_Redirected(
+        public async Task And_If_There_Is_A_RouteName_Then_It_Is_Redirected_And_ProviderName_Not_Encoded_If_Empty(
             Guid id,
             DeleteShortlistItemRequest request,
             ShortlistCookieItem shortlistCookie,
             [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> mockShortlistCookieService,
             [Frozen] Mock<IMediator> mockMediator,
+            [Frozen] Mock<IDataProtector> protector,
             [Greedy] ShortlistController controller)
         {
             //Arrange
+            request.ProviderName = string.Empty;
             mockShortlistCookieService
                 .Setup(service => service.Get(Constants.ShortlistCookieName))
                 .Returns(shortlistCookie);
@@ -94,6 +99,34 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
             actual.RouteValues["id"].Should().Be(request.TrainingCode);
             actual.RouteValues.Should().ContainKey("providerId");
             actual.RouteValues["providerId"].Should().Be(request.Ukprn);
+            actual.RouteValues["removed"].Should().Be(string.Empty);
+            protector.Verify(c=>c.Protect(It.IsAny<byte[]>()), Times.Never);
+        }
+
+        [Test, MoqAutoData]
+        public async Task And_If_ProviderName_Is_In_The_Request_Is_Encoded_Using_The_Protector(
+            Guid id,
+            DeleteShortlistItemRequest request,
+            ShortlistCookieItem shortlistCookie,
+            [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> mockShortlistCookieService,
+            [Frozen] Mock<IMediator> mockMediator,
+            [Frozen] Mock<IDataProtector> protector,
+            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Greedy] ShortlistController controller)
+        {
+            //Arrange
+            provider.Setup(x => x.CreateProtector(Constants.ShortlistProtectorName)).Returns(protector.Object);
+            mockShortlistCookieService
+                .Setup(service => service.Get(Constants.ShortlistCookieName))
+                .Returns(shortlistCookie);
+            request.RouteName = RouteNames.CourseProviders;
+            
+            //Act
+            await controller.DeleteShortlistItemForUser(request);
+            
+            //Assert
+            protector.Verify(c=>c.Protect(It.Is<byte[]>(
+                x=>x[0].Equals(Encoding.UTF8.GetBytes($"{request.ProviderName}")[0]))), Times.Once);  
         }
         
     }

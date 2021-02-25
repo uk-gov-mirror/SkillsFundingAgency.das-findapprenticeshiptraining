@@ -137,7 +137,7 @@ namespace SFA.DAS.FAT.MockServer
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("courses.json"));
 
-            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s,"/shortlist/users/8a9640d2-cc53-463d-9a26-391ca734c0fa$"))
+            server.Given(Request.Create().WithPath(s => Regex.IsMatch(s,"/shortlist/users/\\S+$"))
                 .UsingGet()
             ).RespondWith(
                 Response.Create()

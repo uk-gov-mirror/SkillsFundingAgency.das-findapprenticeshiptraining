@@ -6,5 +6,6 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourse
     {
         public Course Course { get ; set ; }
         public ProvidersCount ProvidersCount { get; set; }
+        public int ShortlistItemCount { get ; set ; }
     }
 }

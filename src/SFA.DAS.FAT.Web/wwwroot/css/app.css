@@ -1,15 +1,3 @@
-.app-breadcrumbs-wrap:after {
-    content: "";
-    display: block;
-    clear: both;
-}
-
-@media (min-width: 40.0625em) {
-    .app-breadcrumbs {
-        float: left;
-    }
-}
-
 .app-shortlist-banner {
     background: #fff;
     display: none;

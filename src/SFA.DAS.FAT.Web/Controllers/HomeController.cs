@@ -1,11 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.Unicode;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourses;
 using SFA.DAS.FAT.Domain.Courses;
 using SFA.DAS.FAT.Web.Infrastructure;
@@ -15,10 +19,12 @@ namespace SFA.DAS.FAT.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IMediator _mediator;
+        private IDistributedCache _cache;
 
-        public HomeController (IMediator mediator)
+        public HomeController (IMediator mediator, IDistributedCache cache)
         {
             _mediator = mediator;
+            _cache = cache;
         }
         
         [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
@@ -43,6 +49,18 @@ namespace SFA.DAS.FAT.Web.Controllers
         [Route("sitemap.xml")]
         public async Task<IActionResult> SitemapXml()
         {
+
+            var cacheContent = await _cache.GetAsync("Sitemap");
+            if (cacheContent != null)
+            {
+                return new ContentResult
+                {
+                    Content = Encoding.UTF8.GetString(cacheContent),
+                    ContentType = "application/xml",
+                    StatusCode = (int)HttpStatusCode.OK
+                };
+            }
+            
             var result = await _mediator.Send(new GetCoursesQuery
             {
                 Keyword = "",
@@ -85,7 +103,9 @@ namespace SFA.DAS.FAT.Web.Controllers
             xml.Dispose();
 
             var content = output.ToString();
-
+            
+            await _cache.SetAsync("Sitemap",Encoding.UTF8.GetBytes(content),new DistributedCacheEntryOptions{AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(20)}, CancellationToken.None);
+            
             return new ContentResult
             {
                 Content = content,

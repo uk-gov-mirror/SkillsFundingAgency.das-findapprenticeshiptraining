@@ -12,6 +12,7 @@ namespace SFA.DAS.FAT.Web.AppStart
     {
         public static void AddServiceRegistration(this IServiceCollection services)
         {
+            services.AddDistributedMemoryCache();
             services.AddHttpClient<IApiClient, ApiClient>();
             services.AddTransient<ICourseService, CourseService>();
             services.AddTransient<ILocationService, LocationService>();

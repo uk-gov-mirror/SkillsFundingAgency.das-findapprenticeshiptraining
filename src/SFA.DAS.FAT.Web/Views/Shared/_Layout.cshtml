@@ -123,40 +123,43 @@
 <div class="govuk-width-container">
     @if (breadCrumbViewModel != null && breadCrumbViewModel.Level > BreadCrumbLevel.Home)
     {
-        <div class="app-breadcrumbs-wrap">
-            <div class="govuk-breadcrumbs app-breadcrumbs">
-                <ol class="govuk-breadcrumbs__list">
-                    @if (breadCrumbViewModel.Level > BreadCrumbLevel.Home)
-                    {
-                        <li class="govuk-breadcrumbs__list-item">
-                            <a id="home-breadcrumb" class="govuk-breadcrumbs__link" asp-route="@RouteNames.ServiceStart">Home</a>
-                        </li>
-                    }
-                    @if (breadCrumbViewModel.Level > BreadCrumbLevel.CourseList)
-                    {
-                        <li class="govuk-breadcrumbs__list-item">
-                            <a id="courses-breadcrumb" class="govuk-breadcrumbs__link" asp-route="@RouteNames.Courses">Apprenticeship training courses</a>
-                        </li>
-                    }
-                    @if (breadCrumbViewModel.Level > BreadCrumbLevel.CourseDetails)
-                    {
-                        <li class="govuk-breadcrumbs__list-item">
-                            <a id="course-detail-breadcrumb" class="govuk-breadcrumbs__link" asp-route="@RouteNames.CourseDetails" asp-route-id="@breadCrumbViewModel.CourseId">@breadCrumbViewModel.CourseDescription</a>
-                        </li>
-                    }
-                    @if (breadCrumbViewModel.Level > BreadCrumbLevel.CourseProvidersList)
-                    {
-                        <li class="govuk-breadcrumbs__list-item">
-                            <a id="providers-breadcrumb" class="govuk-breadcrumbs__link" asp-route="@RouteNames.CourseProviders" asp-all-route-data="@breadCrumbViewModel.ProvidersFilters">Training providers</a>
-                        </li>
-                    }
-                </ol>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-three-quarters">
+                <div class="govuk-breadcrumbs">
+                    <ol class="govuk-breadcrumbs__list">
+                        @if (breadCrumbViewModel.Level > BreadCrumbLevel.Home)
+                        {
+                            <li class="govuk-breadcrumbs__list-item">
+                                <a id="home-breadcrumb" class="govuk-breadcrumbs__link" asp-route="@RouteNames.ServiceStart">Home</a>
+                            </li>
+                        }
+                        @if (breadCrumbViewModel.Level > BreadCrumbLevel.CourseList)
+                        {
+                            <li class="govuk-breadcrumbs__list-item">
+                                <a id="courses-breadcrumb" class="govuk-breadcrumbs__link" asp-route="@RouteNames.Courses">Apprenticeship training courses</a>
+                            </li>
+                        }
+                        @if (breadCrumbViewModel.Level > BreadCrumbLevel.CourseDetails)
+                        {
+                            <li class="govuk-breadcrumbs__list-item">
+                                <a id="course-detail-breadcrumb" class="govuk-breadcrumbs__link" asp-route="@RouteNames.CourseDetails" asp-route-id="@breadCrumbViewModel.CourseId">@breadCrumbViewModel.CourseDescription</a>
+                            </li>
+                        }
+                        @if (breadCrumbViewModel.Level > BreadCrumbLevel.CourseProvidersList)
+                        {
+                            <li class="govuk-breadcrumbs__list-item">
+                                <a id="providers-breadcrumb" class="govuk-breadcrumbs__link" asp-route="@RouteNames.CourseProviders" asp-all-route-data="@breadCrumbViewModel.ProvidersFilters">Training providers</a>
+                            </li>
+                        }
+                    </ol>
+                </div>
             </div>
             @if (breadCrumbViewModel.Level > BreadCrumbLevel.Accessibility)
             {
-                <a asp-route="@RouteNames.ShortList" class="govuk-body govuk-link govuk-link--no-visited-state app-view-shortlist-link">View shortlist <span class="app-view-shortlist-link__number" aria-hidden="true">@(ViewData["ShortlistItemCount"] ?? 0)</span></a>    
-            }
-            
+                <div class="govuk-grid-column-one-quarter">
+                    <a asp-route="@RouteNames.ShortList" class="govuk-body govuk-link govuk-link--no-visited-state app-view-shortlist-link">View shortlist <span class="app-view-shortlist-link__number" aria-hidden="true">@(ViewData["ShortlistItemCount"] ?? 0)</span></a>    
+                </div>
+            }            
         </div>
     }
     @RenderBody()

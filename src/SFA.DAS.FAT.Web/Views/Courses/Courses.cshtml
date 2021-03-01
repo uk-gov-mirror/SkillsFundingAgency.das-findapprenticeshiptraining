@@ -32,7 +32,7 @@
                     @if (!string.IsNullOrEmpty(Model.Keyword))
                     {
                         <h4 class="das-filter__selected-sub-heading">Keywords</h4>
-                        <a asp-querystring="@Model.ClearKeywordLink" title="Clear this filter '@Model.Keyword'" class="das-filter__tag">&lsquo;@Model.Keyword&rsquo;</a>
+                        <a asp-querystring="@Model.ClearKeywordLink" title="Clear this filter '@Model.Keyword'" class="das-filter__tag das-breakable">&lsquo;@Model.Keyword&rsquo;</a>
                     }
                     @if (Model.ClearLevelLinks.Any())
                     {

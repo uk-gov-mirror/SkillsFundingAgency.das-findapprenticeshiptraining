@@ -31,5 +31,6 @@
     }
   },
   "trainingCourseProvider": {},
-  "shortlistItemCount" : 11
+  "shortlistItemCount": 11,
+  "showEmployerDemand": true
 }

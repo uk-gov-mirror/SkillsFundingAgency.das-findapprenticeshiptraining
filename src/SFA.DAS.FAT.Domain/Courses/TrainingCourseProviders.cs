@@ -17,5 +17,7 @@ namespace SFA.DAS.FAT.Domain.Courses
         public Locations.Locations.LocationItem Location { get; set; }
         [JsonProperty("shortlistItemCount")]
         public int ShortlistItemCount { get; set; }
+
+        public bool ShowEmployerDemand { get; set; }
     }
 }

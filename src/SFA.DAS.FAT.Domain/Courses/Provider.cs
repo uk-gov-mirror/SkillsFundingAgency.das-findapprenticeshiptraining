@@ -8,6 +8,7 @@ namespace SFA.DAS.FAT.Domain.Courses
         public uint ProviderId { get; set; }
         public string Name { get; set; }
         public string TradingName { get; set; }
+        public string MarketingInfo { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Website { get; set; }

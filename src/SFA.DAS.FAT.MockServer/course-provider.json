@@ -2,6 +2,7 @@
   "trainingCourse": {
     "id": 14,
     "title": "Laboratory technician hello",
+    "marketingInfo": "<p>some info for <b>marketing</b></p>",
     "level": 3,
     "version": 1,
     "maxFunding": 21000,

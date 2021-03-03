@@ -2,7 +2,6 @@
   "trainingCourse": {
     "id": 14,
     "title": "Laboratory technician hello",
-    "marketingInfo": "<p>some info for <b>marketing</b></p>",
     "level": 3,
     "version": 1,
     "maxFunding": 21000,
@@ -34,7 +33,8 @@
   "trainingCourseProvider": 
       {
         "providerId": 1001, 
-        "name": "Lab trainings r us", 
+        "name": "Lab trainings r us",
+        "marketingInfo": "<p>some info for <b>marketing</b></p>",
         "email": "test@test.com", 
         "phone": "555 555 555", 
         "website": "test@test.com",

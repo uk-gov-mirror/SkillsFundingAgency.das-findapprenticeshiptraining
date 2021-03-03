@@ -135,6 +135,15 @@
                 </div>
             </details>
         }
+        if (!string.IsNullOrEmpty(Model.Provider.MarketingInfo))
+        {
+            <div class="govuk-!-margin-bottom-8">
+                <h2 class="govuk-heading-m">Provider overview</h2>
+                <p class="govuk-body">
+                    @Html.Raw(Model.Provider.MarketingInfo)
+                </p>    
+            </div>
+        }
         <div class="das-highlight govuk-!-margin-bottom-5">
         <span class="govuk-caption-l">Apprenticeship training course</span>
         <h2 class="govuk-heading-l govuk-!-margin-bottom-3">@Model.Course.Title <span class="das-no-wrap">(level @Model.Course.Level)</span></h2>

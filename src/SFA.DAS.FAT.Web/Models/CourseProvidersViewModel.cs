@@ -149,14 +149,20 @@ namespace SFA.DAS.FAT.Web.Models
             return null;
         }
 
-
         private string GetTotalMessage()
         {
             var totalToUse = !HasDeliveryModes && !HasProviderRatings
                 ? Total 
                 : TotalFiltered;
 
-            return $"{totalToUse} result{(totalToUse!=1 ? "s": "")}";
+            var totalMessage = $"{totalToUse} result{(totalToUse!=1 ? "s": "")}";
+
+            if (HasLocation && totalToUse == 0)
+            {
+                totalMessage += $" at {Location}";
+            }
+
+            return totalMessage;
         }
 
         private static IEnumerable<DeliveryModeOptionViewModel> BuildDeliveryModeOptionViewModel(IReadOnlyList<DeliveryModeType> selectedDeliveryModeTypes)

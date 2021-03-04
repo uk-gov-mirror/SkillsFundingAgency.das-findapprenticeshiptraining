@@ -2,7 +2,10 @@
 @using SFA.DAS.FAT.Domain.Extensions
 @using SFA.DAS.FAT.Web.Models
 @using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType
-@using System.Web
+@using Microsoft.Extensions.Options
+@using SFA.DAS.FAT.Domain.Configuration
+@inject IOptions<FindApprenticeshipTrainingWeb> configOptions
+
 
 @model SFA.DAS.FAT.Web.Models.CourseProvidersViewModel
 
@@ -16,6 +19,12 @@
         CourseDescription = Model.Course.TitleAndLevel
     };
     ViewData["ShortlistItemCount"] = Model.ShortlistItemCount;
+
+    var clearFiltersRouteData = new Dictionary<string, string>
+    {
+        {"location","-1"},
+        {"id",Model.Course.Id.ToString()},
+    };
 }
 <main class="govuk-main-wrapper" id="main-content">
     <div class="govuk-grid-row">
@@ -43,16 +52,10 @@
                     </div>
                     @if (Model.ShowSelectedFilters)
                     {
-                        var routeData = new Dictionary<string, string>
-                        {
-                            {"location","-1"},
-                            {"id",Model.Course.Id.ToString()},
-                        };
-
                         <div class="das-filter__selected-filters">
                             <div class="das-filter__selected-header">
                                 <h3 class="das-filter__selected-heading">Selected filters</h3>
-                                <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-all-route-data="routeData" asp-route="@RouteNames.CourseProviders">Clear</a>
+                                <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-all-route-data="clearFiltersRouteData" asp-route="@RouteNames.CourseProviders">Clear</a>
                             </div>
                             @if (Model.HasLocation)
                             {
@@ -152,36 +155,53 @@
             
             <h2 class="govuk-heading-m">@Model.TotalMessage</h2>
             
-            @if (Model.Total == 0)
+            @if (Model.TotalFiltered == 0)
             {
-                <p class="govuk-body govuk-!-margin-bottom-6">No training providers for the selected filters.</p>
-            }
-
-            <div class="das-highlight govuk-!-margin-top-0 govuk-!-margin-bottom-5">
-                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
-                @if (Model.HasLocation)
+                if (Model.HasLocation)
                 {
-                    <p class="govuk-body govuk-!-margin-bottom-0">
-                        <span class="govuk-!-margin-right-2">@Model.Location</span>
-                        <a asp-querystring="@Model.ClearLocationLink" class="govuk-link govuk-link--no-visited-state" id="lnk-remove-location">Remove&nbsp;location</a>
-                    </p>    
+                    <p class="govuk-body">You can either:</p>
+                    <p class="govuk-body"><ul>
+                        <li><a asp-querystring="@Model.ClearLocationLink" class="govuk-link govuk-link--no-visited-state" id="lnk-remove-location-0-results">remove the location</a></li>
+                        <li><a asp-route="@RouteNames.Courses" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
+                        @if (Model.ShowEmployerDemand && configOptions.Value.EmployerDemandFeatureToggle)
+                        {
+                            <li><a href="@configOptions.Value.EmployerDemandUrl" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
+                        }
+                    </ul></p>
                 }
                 else
                 {
-                    <p class="govuk-body govuk-!-margin-bottom-2">Only show providers who offer this training for the apprenticeship location.</p>
-                    <p class="govuk-body govuk-!-margin-bottom-0" data-module="das-show-hide">
-                        <a href="#search-location" 
-                            class="govuk-link govuk-link--no-visited-state das-show-hide__show-link" 
-                            data-aria-controls="fat-filter@(Model.ShowSelectedFilters ? "-options" : "")" 
-                            id="lnk-enter-location" 
-                            data-focus-id="search-location"
-                            data-scroll-to-target="#fat-filter"
-                            >Enter&nbsp;location</a>
-                    </p>
+                    <p class="govuk-body">No training providers for the selected filters.</p>
+                    <p class="govuk-body govuk-!-margin-bottom-6"><a class="govuk-link govuk-link--no-visited-state" asp-all-route-data="@clearFiltersRouteData" asp-route="@RouteNames.CourseProviders">Clear filters</a></p>
                 }
-                
-            </div>
-            
+            }
+            else
+            {
+                <div class="das-highlight govuk-!-margin-top-0 govuk-!-margin-bottom-5">
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
+                    @if (Model.HasLocation)
+                    {
+                        <p class="govuk-body govuk-!-margin-bottom-0">
+                            <span class="govuk-!-margin-right-2">@Model.Location</span>
+                            <a asp-querystring="@Model.ClearLocationLink" class="govuk-link govuk-link--no-visited-state" id="lnk-remove-location">Remove&nbsp;location</a>
+                        </p>    
+                    }
+                    else
+                    {
+                        <p class="govuk-body govuk-!-margin-bottom-2">Only show providers who offer this training for the apprenticeship location.</p>
+                        <p class="govuk-body govuk-!-margin-bottom-0" data-module="das-show-hide">
+                            <a href="#search-location" 
+                               class="govuk-link govuk-link--no-visited-state das-show-hide__show-link" 
+                               data-aria-controls="fat-filter@(Model.ShowSelectedFilters ? "-options" : "")" 
+                               id="lnk-enter-location" 
+                               data-focus-id="search-location"
+                               data-scroll-to-target="#fat-filter"
+                            >Enter&nbsp;location</a>
+                        </p>
+                    }
+                </div>
+            }
+
             <hr class="govuk-section-break govuk-section-break--visible">
 
             <div class="das-search-results">
@@ -189,7 +209,7 @@
 
                 @foreach (var provider in Model.Providers)
                 {
-                    var routeData = new Dictionary<string, string>
+                    var providerRouteData = new Dictionary<string, string>
                     {
                         {"location",Model.Location},
                         {"id",Model.Course.Id.ToString()},
@@ -207,7 +227,7 @@
                         <div class="govuk-grid-row">
                             <div class="govuk-grid-column-two-thirds">
                                 <h2 class="govuk-heading-m das-search-results__heading">
-                                    <a class="das-search-results__link" id="provider-@provider.ProviderId" asp-all-route-data="@routeData"  asp-route="@RouteNames.CourseProviderDetails">
+                                    <a class="das-search-results__link" id="provider-@provider.ProviderId" asp-all-route-data="@providerRouteData"  asp-route="@RouteNames.CourseProviderDetails">
                                         @provider.Name
                                     </a>
                                 </h2>

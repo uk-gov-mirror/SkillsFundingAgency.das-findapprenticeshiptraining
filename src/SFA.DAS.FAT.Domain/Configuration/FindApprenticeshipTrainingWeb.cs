@@ -7,5 +7,7 @@
         public string ZendeskSectionId { get; set; }
         public string ZendeskSnippetKey { get; set; }
         public string ZendeskCoBrowsingSnippetKey { get; set; }
+        public bool EmployerDemandFeatureToggle { get; set; }
+        public string EmployerDemandUrl { get; set; }
     }
 }

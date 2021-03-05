@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -24,6 +24,7 @@ namespace SFA.DAS.FAT.Web.Models
 
         public string Name { get ; set ; }
         public string TradingName { get; set; }
+        public string MarketingInfo { get ; set ; }
         public string OverallAchievementRatePercentage { get ; set ; }
         public string NationalOverallAchievementRatePercentage { get ; set ; }
         public IEnumerable<DeliveryModeViewModel> DeliveryModes { get; set; }
@@ -57,6 +58,7 @@ namespace SFA.DAS.FAT.Web.Models
             {
                 Name = source.Name,
                 TradingName = !string.IsNullOrEmpty(source.TradingName) && !source.TradingName.Equals(source.Name, StringComparison.CurrentCultureIgnoreCase) ? source.TradingName : null, 
+                MarketingInfo = source.MarketingInfo,
                 Email = source.Email,
                 Phone = source.Phone,
                 ShortlistId = source.ShortlistId,

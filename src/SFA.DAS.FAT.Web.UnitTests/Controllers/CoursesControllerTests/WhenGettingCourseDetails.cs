@@ -30,6 +30,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             [Greedy]CoursesController controller)
         {
             //Arrange
+            response.ShowEmployerDemand = true;
             cookieStorageService
                 .Setup(x => x.Get(Constants.LocationCookieName))
                 .Returns(locationCookieItem);
@@ -59,6 +60,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             actualModel.ProvidersAtLocationCount.Should().Be(response.ProvidersCount.ProvidersAtLocation);
             actualModel.LocationName.Should().Be(locationCookieItem.Name);
             actualModel.ShortlistItemCount.Should().Be(response.ShortlistItemCount);
+            actualModel.ShowEmployerDemand.Should().Be(response.ShowEmployerDemand);
         }
 
         [Test, MoqAutoData]

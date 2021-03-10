@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoFixture.DataAnnotations;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using Moq;
@@ -64,6 +63,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourse
             actual.Course.Should().BeEquivalentTo(courseResponse.Course);
             actual.ProvidersCount.Should().BeEquivalentTo(courseResponse.ProvidersCount);
             actual.ShortlistItemCount.Should().Be(courseResponse.ShortlistItemCount);
+            actual.ShowEmployerDemand.Should().Be(courseResponse.ShowEmployerDemand);
         }
         
         [Test, MoqAutoData]
@@ -77,7 +77,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourse
             //Arrange
             validationResult.ValidationDictionary.Clear();
             mockValidator.Setup(x => x.ValidateAsync(request)).ReturnsAsync(validationResult);
-            mockService.Setup(x => x.GetCourse(request.CourseId, request.Lat, request.Lon, request.ShortlistUserId)).ReturnsAsync(new TrainingCourse());
+            mockService.Setup(x => x.GetCourse(request.CourseId, request.Lat, request.Lon, request.ShortlistUserId)).ReturnsAsync((TrainingCourse)null);
 
             //Act
             var actual = await handler.Handle(request, CancellationToken.None);
@@ -87,6 +87,7 @@ namespace SFA.DAS.FAT.Application.UnitTests.Courses.Queries.GetCourse
             Assert.IsNull(actual.Course);
             Assert.IsNull(actual.ProvidersCount);
             Assert.AreEqual(0, actual.ShortlistItemCount);
+            Assert.AreEqual(false, actual.ShowEmployerDemand);
         }
     }
 }

@@ -157,10 +157,22 @@
                         
                             if (Model.ProvidersAtLocationCount == 0)
                             {
-                                <p class="govuk-body das-text--error das-text--error-icon">@Model.ProvidersAtLocationCount providers available for this apprenticeship location</p>
+                                <p class="govuk-body das-text--error das-text--error-icon">There are no training providers available for this course at the apprenticeship location.</p>
+                                <p class="govuk-body">You can either:</p>
+                                <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0">
+                                    <li><a asp-route="@RouteNames.Courses" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
+                                    @if (configOptions.Value.EmployerDemandFeatureToggle && Model.ShowEmployerDemand)
+                                    {
+                                        <li><a href="@configOptions.Value.EmployerDemandUrl" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
+                                    }
+                                </ul>
                                 if (Model.TotalProvidersCount == 1)
                                 {
-                                    <p class="govuk-body">One provider available for this apprenticeship location</p>
+                                    <p class="govuk-body">One provider available at other locations.</p>
                                 }
                                 else
                                 {

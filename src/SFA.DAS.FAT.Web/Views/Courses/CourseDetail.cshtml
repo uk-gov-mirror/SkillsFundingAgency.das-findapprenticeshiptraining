@@ -124,7 +124,7 @@
                             <li><a asp-route="@RouteNames.Courses" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
                             @if (configOptions.Value.EmployerDemandFeatureToggle && Model.ShowEmployerDemand)
                             {
-                                <li><a href="@(configOptions.Value.EmployerDemandUrl)/@Model.Id" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
+                                <li><a href="@(configOptions.Value.EmployerDemandUrl)/registerdemand/enter-apprenticeship-details/@Model.Id" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
                             }
                             else
                             {
@@ -166,7 +166,7 @@
                                         <li><a asp-route="@RouteNames.Courses" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
                                         @if (configOptions.Value.EmployerDemandFeatureToggle && Model.ShowEmployerDemand)
                                         {
-                                            <li><a href="@(configOptions.Value.EmployerDemandUrl)/@Model.Id" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
+                                            <li><a href="@(configOptions.Value.EmployerDemandUrl)/registerdemand/enter-apprenticeship-details/@Model.Id" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
                                         }
                                         else
                                         {

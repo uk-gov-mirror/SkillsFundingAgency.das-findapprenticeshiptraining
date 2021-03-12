@@ -165,7 +165,7 @@
                         <li><a asp-route="@RouteNames.Courses" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
                         @if (Model.ShowEmployerDemand && configOptions.Value.EmployerDemandFeatureToggle)
                         {
-                            <li><a href="@configOptions.Value.EmployerDemandUrl" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
+                            <li><a href="@(configOptions.Value.EmployerDemandUrl)/@Model.Course.Id" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
                         }
                         else
                         {

@@ -160,7 +160,8 @@
                 if (Model.HasLocation)
                 {
                     <p class="govuk-body">You can either:</p>
-                    <p class="govuk-body"><ul>
+                    
+                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
                         <li><a asp-querystring="@Model.ClearLocationLink" class="govuk-link govuk-link--no-visited-state" id="lnk-remove-location-0-results">remove the location</a></li>
                         <li><a asp-route="@RouteNames.Courses" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
                         @if (Model.ShowEmployerDemand && configOptions.Value.EmployerDemandFeatureToggle)
@@ -171,7 +172,8 @@
                         {
                             <li><a href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
                         }
-                    </ul></p>
+                    </ul>
+                    
                 }
                 else
                 {

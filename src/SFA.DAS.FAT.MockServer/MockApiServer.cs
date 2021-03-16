@@ -66,16 +66,25 @@ namespace SFA.DAS.FAT.MockServer
 
 
             server.Given(Request.Create()
-                .WithPath(s => Regex.IsMatch(s,"/trainingcourses/\\d+/providers$"))
+                .WithPath(s => Regex.IsMatch(s,"/trainingcourses/(?!(?:102))\\d+/providers$"))
                 .UsingGet()
             ).RespondWith(
                 Response.Create()
                     .WithStatusCode(200)
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("course-providers-nolocation.json"));
+
+            server.Given(Request.Create()
+                .WithPath(s => Regex.IsMatch(s,"/trainingcourses/102/providers$"))
+                .UsingGet()
+            ).RespondWith(
+                Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("course-providers-0-results.json"));
             
             server.Given(Request.Create()
-                .WithPath(s => Regex.IsMatch(s,"/trainingcourses/\\d+/providers$"))
+                .WithPath(s => Regex.IsMatch(s,"/trainingcourses/(?!(?:102))\\d+/providers$"))
                 .WithParam(MatchLocationParam)
                 .UsingGet()
             ).RespondWith(

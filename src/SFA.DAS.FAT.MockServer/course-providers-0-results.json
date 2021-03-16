@@ -1,7 +1,7 @@
 {
   "trainingCourse": {
     "id": 14,
-    "title": "Laboratory technician unavailable",
+    "title": "Laboratory technician",
     "level": 3,
     "version": 1,
     "maxFunding": 21000,
@@ -15,21 +15,18 @@
     "integratedDegree": "",
     "sectorSubjectAreaTier2Description": "Engineering",
     "sectorSubjectAreaTier2": 4.1
-
   },
-  "providersCount": {
-    "providersAtLocation": 3,
-    "totalProviders": 3
-  },
+  "trainingCourseProviders": [],
+  "total": 0,
+  "totalFiltered": 0,
   "location": {
-    "name": "Camden, Camden",
+    "name":"Camden, Camden",
     "location": {
       "geoPoint": [
         51.289916,
         -0.773876
-      ]
-    }
+      ]}
   },
-  "trainingCourseProvider": {},
-  "shortlistItemCount": 11
+  "shortlistItemCount" : 11,
+  "showEmployerDemand" : true
 }

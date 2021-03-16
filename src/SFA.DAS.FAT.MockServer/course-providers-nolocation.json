@@ -17,9 +17,10 @@
     "sectorSubjectAreaTier2": 4.1
   },
   "location": {
-    "name":null,
+    "name": null,
     "location": {
-      "geoPoint": null}
+      "geoPoint": null
+    }
   },
   "trainingCourseProviders": [
     {
@@ -349,5 +350,6 @@
     }
   ],
   "total": 12,
-  "shortlistItemCount" : 11
+  "shortlistItemCount": 11,
+  "showEmployerDemand": true
 }

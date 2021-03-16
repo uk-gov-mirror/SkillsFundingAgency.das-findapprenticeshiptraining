@@ -28,7 +28,13 @@ namespace SFA.DAS.FAT.Application.Courses.Queries.GetCourse
 
             var response = await _courseService.GetCourse(query.CourseId, query.Lat, query.Lon, query.ShortlistUserId);
             
-            return new GetCourseResult{Course = response?.Course, ProvidersCount = response?.ProvidersCount, ShortlistItemCount = response?.ShortlistItemCount ?? 0};
+            return new GetCourseResult
+            {
+                Course = response?.Course, 
+                ProvidersCount = response?.ProvidersCount, 
+                ShortlistItemCount = response?.ShortlistItemCount ?? 0,
+                ShowEmployerDemand = response?.ShowEmployerDemand ?? false
+            };
         }
     }
 }

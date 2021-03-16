@@ -17,8 +17,9 @@
     "approvalBody": "test"
   },
   "providersCount": {
-      "providersAtLocation": 1,
-      "totalProviders": 3
+    "providersAtLocation": 1,
+    "totalProviders": 3
   },
-  "shortlistItemCount" : 11
+  "shortlistItemCount": 11,
+  "showEmployerDemand": true
 }

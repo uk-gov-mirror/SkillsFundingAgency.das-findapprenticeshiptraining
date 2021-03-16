@@ -17,11 +17,12 @@
       "lastDateStarts": null,
       "effectiveTo": "2022-01-01",
       "effectiveFrom": "2020-01-01"
-    }    
+    }
   },
   "providersCount": {
     "providersAtLocation": 1,
-    "totalProviders": 3 
+    "totalProviders": 3
   },
-  "shortlistItemCount" : 11
+  "shortlistItemCount": 11,
+  "showEmployerDemand": true
 }

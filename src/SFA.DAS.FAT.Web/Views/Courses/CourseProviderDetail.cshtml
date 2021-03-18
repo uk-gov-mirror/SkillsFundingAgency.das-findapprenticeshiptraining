@@ -1,6 +1,7 @@
 @using SFA.DAS.FAT.Web.Infrastructure
 @using SFA.DAS.FAT.Domain.Extensions
 @using SFA.DAS.FAT.Web.Models
+@using SFA.DAS.FAT.Web.Extensions
 @using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType
 @using System.Web
 
@@ -140,10 +141,11 @@
             <div class="govuk-!-margin-bottom-8">
                 <h2 class="govuk-heading-m">Provider overview</h2>
                 <div class="app-user-content">
-                    @Html.Raw(Model.Provider.MarketingInfo)
+                    @Html.MarkdownToHtml(Model.Provider.MarketingInfo)
                 </div>    
             </div>
         }
+
         <div class="das-highlight govuk-!-margin-bottom-5">
         <span class="govuk-caption-l">Apprenticeship training course</span>
         <h2 class="govuk-heading-l govuk-!-margin-bottom-3">@Model.Course.Title <span class="das-no-wrap">(level @Model.Course.Level)</span></h2>

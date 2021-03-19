@@ -13,6 +13,7 @@ using System.Web;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
 using SFA.DAS.FAT.Application.Courses.Queries.GetProvider;
 using SFA.DAS.FAT.Domain.Configuration;
@@ -28,6 +29,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         private readonly ICookieStorageService<LocationCookieItem> _locationCookieStorageService;
         private readonly ICookieStorageService<GetCourseProvidersRequest> _courseProvidersCookieStorageService;
         private readonly ICookieStorageService<ShortlistCookieItem> _shortlistCookieService;
+        private readonly FindApprenticeshipTrainingWeb _config;
         private readonly IDataProtector _providerDataProtector;
         private readonly IDataProtector _shortlistDataProtector;
 
@@ -37,13 +39,15 @@ namespace SFA.DAS.FAT.Web.Controllers
             ICookieStorageService<LocationCookieItem> locationCookieStorageService,
             ICookieStorageService<GetCourseProvidersRequest> courseProvidersCookieStorageService,
             ICookieStorageService<ShortlistCookieItem> shortlistCookieService,
-            IDataProtectionProvider provider)
+            IDataProtectionProvider provider,
+            IOptions<FindApprenticeshipTrainingWeb> config)
         {
             _logger = logger;
             _mediator = mediator;
             _locationCookieStorageService = locationCookieStorageService;
             _courseProvidersCookieStorageService = courseProvidersCookieStorageService;
             _shortlistCookieService = shortlistCookieService;
+            _config = config.Value;
             _providerDataProtector = provider.CreateProtector(Constants.GaDataProtectorName);
             _shortlistDataProtector = provider.CreateProtector(Constants.ShortlistProtectorName);
         }
@@ -103,10 +107,12 @@ namespace SFA.DAS.FAT.Web.Controllers
             viewModel.TotalProvidersCount = result.ProvidersCount?.TotalProviders;
             viewModel.ProvidersAtLocationCount = result.ProvidersCount?.ProvidersAtLocation;
             viewModel.ShortlistItemCount = result.ShortlistItemCount;
-            viewModel.ShowEmployerDemand = result.ShowEmployerDemand;
+            viewModel.HelpFindingCourseUrl = BuildHelpFindingCourseUrl(viewModel.Id, result.ShowEmployerDemand);
             
             return View(viewModel);
         }
+
+        
 
         [Route("{id}/providers", Name = RouteNames.CourseProviders)]
         public async Task<IActionResult> CourseProviders(GetCourseProvidersRequest request)
@@ -167,6 +173,8 @@ namespace SFA.DAS.FAT.Web.Controllers
                     string.IsNullOrEmpty(request.Added) ? "" : HttpUtility.HtmlDecode(GetEncodedProviderName(request.Added));
                 
                 courseProvidersViewModel.BannerUpdateMessage = GetProvidersBannerUpdateMessage(removedProviderFromShortlist, addedProviderToShortlist);
+                
+                courseProvidersViewModel.HelpFindingCourseUrl = BuildHelpFindingCourseUrl(courseProvidersViewModel.Course.Id, result.ShowEmployerDemand);
                 
                 return View(courseProvidersViewModel);
             }
@@ -304,6 +312,13 @@ namespace SFA.DAS.FAT.Web.Controllers
             }
 
             return "";
+        }
+        
+        private string BuildHelpFindingCourseUrl(int courseId, bool showDemand)
+        {
+            return _config.EmployerDemandFeatureToggle && showDemand? 
+                $"{_config.EmployerDemandUrl}/registerdemand/course/{courseId}/enter-apprenticeship-details" 
+                : "https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us";
         }
     }
 }

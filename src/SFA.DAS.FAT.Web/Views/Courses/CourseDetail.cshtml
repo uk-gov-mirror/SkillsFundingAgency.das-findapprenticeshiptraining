@@ -1,9 +1,5 @@
 @using SFA.DAS.FAT.Web.Infrastructure
 @using SFA.DAS.FAT.Web.Models
-@using Microsoft.Extensions.Options
-@using SFA.DAS.FAT.Domain.Configuration
-@inject IOptions<FindApprenticeshipTrainingWeb> configOptions
-
 @model SFA.DAS.FAT.Web.Models.CourseViewModel
 
 @{
@@ -121,14 +117,7 @@
                     <p class="govuk-body">
                         <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0">
                             <li><a asp-route="@RouteNames.Courses" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
-                            @if (configOptions.Value.EmployerDemandFeatureToggle && Model.ShowEmployerDemand)
-                            {
-                                <li><a href="@(configOptions.Value.EmployerDemandUrl)/registerdemand/enter-apprenticeship-details/@Model.Id" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
-                            }
-                            else
-                            {
-                                <li><a href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
-                            }
+                            <li><a href="@Model.HelpFindingCourseUrl" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
                         </ul>
                     </p>
                 }
@@ -163,14 +152,7 @@
                                 <p class="govuk-body">
                                     <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0">
                                         <li><a asp-route="@RouteNames.Courses" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
-                                        @if (configOptions.Value.EmployerDemandFeatureToggle && Model.ShowEmployerDemand)
-                                        {
-                                            <li><a href="@(configOptions.Value.EmployerDemandUrl)/registerdemand/enter-apprenticeship-details/@Model.Id" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
-                                        }
-                                        else
-                                        {
-                                            <li><a href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
-                                        }
+                                        <li><a href="@Model.HelpFindingCourseUrl" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
                                     </ul>
                                 </p>
                                 if (Model.TotalProvidersCount == 1)

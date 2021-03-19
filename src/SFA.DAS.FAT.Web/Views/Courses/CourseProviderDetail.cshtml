@@ -323,7 +323,7 @@
                 <form method="post" asp-route="@RouteNames.CreateShortlistItem" asp-all-route-data="@shortlistRouteData" class="das-ajax-form">
                     <input type="hidden" name="routeName" value="@RouteNames.CourseProviderDetails"/>
                     <input type="hidden" name="providerName" value="@Model.Provider.Name"/>
-                    <button class="govuk-button govuk-!-margin-bottom-0" type="submit">Add to shortlist</button>
+                    <button id="add-to-shortlist-@(Model.Provider.ProviderId)" class="govuk-button govuk-!-margin-bottom-0" type="submit">Add to shortlist</button>
                 </form>
             </div>
             <div class="app-provider-shortlist-remove govuk-body govuk-!-margin-bottom-0">
@@ -333,7 +333,7 @@
                     <input type="hidden" name="providerName" value="@Model.Provider.Name"/>
                     <input type="hidden" name="trainingCode" value="@Model.Course.Id"/>
                     <input type="hidden" name="routeName" value="@RouteNames.CourseProviderDetails"/>
-                    <button class="das-button--inline-link" type="submit">Remove from shortlist</button>
+                    <button id="remove-from-shortlist-@(Model.Provider.ProviderId)" class="das-button--inline-link" type="submit">Remove from shortlist</button>
                 </form> 
             </div>    
         </div>

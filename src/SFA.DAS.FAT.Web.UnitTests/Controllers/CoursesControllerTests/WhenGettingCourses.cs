@@ -95,12 +95,10 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             //Arrange
             response.Sectors.Add(new Sector
             {
-                Id= Guid.NewGuid(), 
                 Route = request.Sectors.First()
             });
             response.Sectors.Add(new Sector
             {
-                Id= Guid.NewGuid(), 
                 Route = request.Sectors.Skip(1).First()
             });
             mediator.Setup(x => 

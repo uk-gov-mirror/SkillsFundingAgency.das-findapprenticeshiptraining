@@ -277,7 +277,7 @@
                                         <form method="post" asp-route="@RouteNames.CreateShortlistItem" asp-all-route-data="@shortlistRouteData">
                                             <input type="hidden" name="providerName" value="@provider.Name"/>
                                             <input type="hidden" name="routeName" value="@RouteNames.CourseProviders"/>
-                                            <button class="das-button--inline-link" type="submit">Add to shortlist</button>
+                                            <button id="add-to-shortlist-@(provider.ProviderId)" class="das-button--inline-link" type="submit">Add to shortlist</button>
                                         </form>
                                     </div>
                                     <div class="app-provider-shortlist-remove">
@@ -287,7 +287,7 @@
                                             <input type="hidden" name="providerName" value="@provider.Name"/>
                                             <input type="hidden" name="trainingCode" value="@Model.Course.Id"/>
                                             <input type="hidden" name="routeName" value="@RouteNames.CourseProviders"/>
-                                            <button class="das-button--inline-link" type="submit">Remove from shortlist</button>
+                                            <button id="remove-from-shortlist-@(provider.ProviderId)" class="das-button--inline-link" type="submit">Remove from shortlist</button>
                                         </form> 
                                     </div>    
                                 </div>

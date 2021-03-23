@@ -157,7 +157,7 @@
             @if (breadCrumbViewModel.Level > BreadCrumbLevel.Accessibility)
             {
                 <div class="govuk-grid-column-one-quarter">
-                    <a asp-route="@RouteNames.ShortList" class="govuk-body govuk-link govuk-link--no-visited-state app-view-shortlist-link">View shortlist <span class="app-view-shortlist-link__number" aria-hidden="true">@(ViewData["ShortlistItemCount"] ?? 0)</span></a>    
+                    <a id="header-view-shortlist" asp-route="@RouteNames.ShortList" class="govuk-body govuk-link govuk-link--no-visited-state app-view-shortlist-link">View shortlist <span class="app-view-shortlist-link__number" aria-hidden="true">@(ViewData["ShortlistItemCount"] ?? 0)</span></a>    
                 </div>
             }            
         </div>

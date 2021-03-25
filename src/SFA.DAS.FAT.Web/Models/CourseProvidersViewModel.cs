@@ -21,12 +21,10 @@ namespace SFA.DAS.FAT.Web.Models
             DeliveryModes = BuildDeliveryModeOptionViewModel(request.DeliveryModes);
             ProviderRatings = BuildProviderRatingOptionViewModel(request.ProviderRatings);
             ShortlistItemCount = result.ShortlistItemCount;
-            ShowEmployerDemand = result.ShowEmployerDemand;
         }
 
         public int ShortlistItemCount { get ; set ; }
-        public bool ShowEmployerDemand { get; set; }
-
+        
         public IEnumerable<ProviderViewModel> Providers { get; set; }
         public CourseViewModel Course { get; set; }
         public int Total { get; set; }
@@ -46,6 +44,7 @@ namespace SFA.DAS.FAT.Web.Models
         public IEnumerable<ProviderRatingOptionViewModel> ProviderRatings { get; set; }
         public Dictionary<uint, string> ProviderOrder { get ;}
         public string BannerUpdateMessage { get ; set ; }
+        public string HelpFindingCourseUrl { get ; set ; }
 
         private bool ShouldShowFilters()
         {

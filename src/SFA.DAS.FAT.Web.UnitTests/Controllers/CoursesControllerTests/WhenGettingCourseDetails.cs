@@ -4,6 +4,7 @@ using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourse;
@@ -60,7 +61,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             actualModel.ProvidersAtLocationCount.Should().Be(response.ProvidersCount.ProvidersAtLocation);
             actualModel.LocationName.Should().Be(locationCookieItem.Name);
             actualModel.ShortlistItemCount.Should().Be(response.ShortlistItemCount);
-            actualModel.ShowEmployerDemand.Should().Be(response.ShowEmployerDemand);
         }
 
         [Test, MoqAutoData]
@@ -150,6 +150,63 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             var actualResult = actual as RedirectToRouteResult;
             Assert.IsNotNull(actualResult);
             actualResult.RouteName.Should().Be(RouteNames.Error404);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_The_Help_Url_Is_Built_From_Config_If_Feature_Enabled_And_Show_Demand_Is_Returned(
+            int standardCode,
+            GetCourseResult response,
+            LocationCookieItem locationCookieItem,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService, 
+            [Frozen] Mock<IOptions<FindApprenticeshipTrainingWeb>> config,
+            [Greedy]CoursesController controller)
+        {
+            //Arrange
+            config.Object.Value.EmployerDemandFeatureToggle = true;
+            response.ShowEmployerDemand = true;
+            mediator
+                .Setup(x => x.Send(
+                    It.Is<GetCourseQuery>(c => c.CourseId.Equals(standardCode)),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+            
+            //Act
+            var actual = await controller.CourseDetail(standardCode, "") as ViewResult;
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            var actualModel = actual.Model as CourseViewModel;
+            Assert.IsNotNull(actualModel);
+            actualModel.HelpFindingCourseUrl.Should().Be($"{config.Object.Value.EmployerDemandUrl}/registerdemand/course/{actualModel.Id}/enter-apprenticeship-details");
+        }
+        
+        [Test, MoqAutoData]
+        public async Task Then_The_Help_Url_Set_If_Feature_Disabled(
+            int standardCode,
+            GetCourseResult response,
+            LocationCookieItem locationCookieItem,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<ICookieStorageService<LocationCookieItem>> cookieStorageService, 
+            [Frozen] Mock<IOptions<FindApprenticeshipTrainingWeb>> config,
+            [Greedy]CoursesController controller)
+        {
+            //Arrange
+            config.Object.Value.EmployerDemandFeatureToggle = false;
+            mediator
+                .Setup(x => x.Send(
+                    It.Is<GetCourseQuery>(c => c.CourseId.Equals(standardCode)),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+            
+            //Act
+            var actual = await controller.CourseDetail(standardCode, "") as ViewResult;
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            var actualModel = actual.Model as CourseViewModel;
+            Assert.IsNotNull(actualModel);
+            actualModel.HelpFindingCourseUrl.Should().Be("https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us");
         }
     }
 }

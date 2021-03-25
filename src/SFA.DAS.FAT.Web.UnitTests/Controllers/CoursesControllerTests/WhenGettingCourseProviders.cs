@@ -11,6 +11,7 @@ using MediatR;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAT.Application.Courses.Queries.GetCourseProviders;
@@ -53,6 +54,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             actualModel.Should().BeEquivalentTo(new CourseProvidersViewModel(request, response, null), options=>options
                 .Excluding(c=>c.ProviderOrder)
                 .Excluding(c=>c.BannerUpdateMessage)
+                .Excluding(c=>c.HelpFindingCourseUrl)
             );
         }
 
@@ -475,6 +477,68 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.CoursesControllerTests
             var actualModel = actual.Model as CourseProvidersViewModel;
             Assert.IsNotNull(actualModel);
             actualModel.BannerUpdateMessage.Should().BeEmpty();
+        }
+        
+        [Test, MoqAutoData]
+        public async Task Then_The_Help_Url_Is_Built_From_Config_If_Feature_Enabled_And_Show_Demand_Is_Returned(
+            GetCourseProvidersRequest request,
+            GetCourseProvidersResult response,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<IDataProtector> protector,
+            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Frozen] Mock<IOptions<FindApprenticeshipTrainingWeb>> config,
+            [Greedy] CoursesController controller)
+        {
+            //Arrange
+            config.Object.Value.EmployerDemandFeatureToggle = true;
+            response.ShowEmployerDemand = true;
+            provider.Setup(x => x.CreateProtector(Constants.GaDataProtectorName)).Returns(protector.Object);
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
+            mediator.Setup(x => x.Send(
+                    It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id) 
+                                                        && c.Location.Equals(request.Location)),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+            
+            //Act
+            var actual = await controller.CourseProviders(request) as ViewResult;
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            var actualModel = actual.Model as CourseProvidersViewModel;
+            Assert.IsNotNull(actualModel);
+            actualModel.HelpFindingCourseUrl.Should().Be($"{config.Object.Value.EmployerDemandUrl}/registerdemand/course/{actualModel.Course.Id}/enter-apprenticeship-details");
+        }
+        
+        [Test, MoqAutoData]
+        public async Task Then_The_Help_Url_Set_If_Feature_Disabled(
+            GetCourseProvidersRequest request,
+            GetCourseProvidersResult response,
+            [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<IDataProtector> protector,
+            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Frozen] Mock<IOptions<FindApprenticeshipTrainingWeb>> config,
+            [Greedy] CoursesController controller)
+        {
+            //Arrange
+            config.Object.Value.EmployerDemandFeatureToggle = false;
+            response.ShowEmployerDemand = true;
+            provider.Setup(x => x.CreateProtector(Constants.GaDataProtectorName)).Returns(protector.Object);
+            response.Course.StandardDates.LastDateStarts = DateTime.UtcNow.AddDays(5);
+            mediator.Setup(x => x.Send(
+                    It.Is<GetCourseProvidersQuery>(c => c.CourseId.Equals(request.Id) 
+                                                        && c.Location.Equals(request.Location)),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(response);
+            
+            //Act
+            var actual = await controller.CourseProviders(request) as ViewResult;
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            var actualModel = actual.Model as CourseProvidersViewModel;
+            Assert.IsNotNull(actualModel);
+            actualModel.HelpFindingCourseUrl.Should().Be("https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us");
         }
     }
 }

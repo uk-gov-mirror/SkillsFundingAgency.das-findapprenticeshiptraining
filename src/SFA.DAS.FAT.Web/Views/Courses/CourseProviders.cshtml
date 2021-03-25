@@ -2,9 +2,6 @@
 @using SFA.DAS.FAT.Domain.Extensions
 @using SFA.DAS.FAT.Web.Models
 @using DeliveryModeType = SFA.DAS.FAT.Web.Models.DeliveryModeType
-@using Microsoft.Extensions.Options
-@using SFA.DAS.FAT.Domain.Configuration
-@inject IOptions<FindApprenticeshipTrainingWeb> configOptions
 
 
 @model SFA.DAS.FAT.Web.Models.CourseProvidersViewModel
@@ -164,14 +161,7 @@
                     <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
                         <li><a asp-querystring="@Model.ClearLocationLink" class="govuk-link govuk-link--no-visited-state" id="lnk-remove-location-0-results">remove the location</a></li>
                         <li><a asp-route="@RouteNames.Courses" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
-                        @if (Model.ShowEmployerDemand && configOptions.Value.EmployerDemandFeatureToggle)
-                        {
-                            <li><a href="@(configOptions.Value.EmployerDemandUrl)/registerdemand/enter-apprenticeship-details/@Model.Course.Id" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
-                        }
-                        else
-                        {
-                            <li><a href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
-                        }
+                        <li><a href="@Model.HelpFindingCourseUrl" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
                     </ul>
                     
                 }

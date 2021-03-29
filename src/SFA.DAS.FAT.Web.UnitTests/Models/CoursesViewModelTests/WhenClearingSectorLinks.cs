@@ -38,12 +38,10 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         public void Then_If_The_Sector_Does_Not_Exist_It_Is_Not_Added(List<string> selectedRoutes )
         {
             //Arrange
-            var fixture = new Fixture();
             var sectors = selectedRoutes.Take(1)
                 .Select(selectedRoute => new SectorViewModel(
                     new Sector
                     {
-                        Id = fixture.Create<Guid>(),
                         Route = selectedRoute
                     }, null))
                 .ToList();
@@ -65,8 +63,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
         [Test]
         public void Then_If_A_List_Containing_A_Null_Value_Is_Passed_For_Sectors_Then_Nothing_Is_Added()
         {
-            //Arrange
-            
             //Act
             var model = new CoursesViewModel
             {

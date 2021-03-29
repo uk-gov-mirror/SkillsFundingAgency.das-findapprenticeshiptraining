@@ -16,7 +16,6 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models.CoursesViewModelTests
                 .Select(selectedRoute => new SectorViewModel(
                     new Sector
                     {
-                        Id = fixture.Create<Guid>(),
                         Route = selectedRoute
                     }, null))
                 .ToList();

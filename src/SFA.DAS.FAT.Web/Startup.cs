@@ -96,7 +96,9 @@ namespace SFA.DAS.FAT.Web
                 
                 services.AddDataProtection(_configuration);
             }
-            
+#if DEBUG
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+#endif
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

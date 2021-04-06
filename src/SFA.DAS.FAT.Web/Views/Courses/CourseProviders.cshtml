@@ -297,13 +297,16 @@
                 }
                 </ol>
             </div>
-            <hr class="govuk-section-break govuk-section-break--visible">
-            <hr class="govuk-section-break govuk-section-break--m">
-            <div class="das-highlight ">
-            	<p class="govuk-body govuk-!-margin-0">
-            		<a href="@Model.HelpFindingCourseUrl" class="govuk-link govuk-link--no-visited-state">Get help with finding a training provider</a>
-            	</p>
-            </div>
+            @if (Model.TotalFiltered != 0)
+            {
+                <hr class="govuk-section-break govuk-section-break--visible">
+                <hr class="govuk-section-break govuk-section-break--m">
+                <div class="das-highlight ">
+                    <p class="govuk-body govuk-!-margin-0">
+                        <a href="@Model.HelpFindingCourseUrl" class="govuk-link govuk-link--no-visited-state">Get help with finding a training provider</a>
+                    </p>
+                </div>    
+            }
         </div>
     </div>
 </main>

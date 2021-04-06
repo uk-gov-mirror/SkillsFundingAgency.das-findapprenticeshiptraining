@@ -37,7 +37,7 @@ namespace SFA.DAS.FAT.Web.Models
             {
                 Id = course.Id,
                 Sector = course.Route,
-                CoreSkills = course.CoreSkills,
+                CoreSkills = course.CoreSkills ?? new List<string>(),
                 Title = course.Title,
                 TitleAndLevel = $"{course.Title} (level {course.Level})",
                 Level = course.Level,

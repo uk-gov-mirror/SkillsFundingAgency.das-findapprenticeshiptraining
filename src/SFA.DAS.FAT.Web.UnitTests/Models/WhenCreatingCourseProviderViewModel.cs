@@ -19,5 +19,16 @@ namespace SFA.DAS.FAT.Web.UnitTests.Models
             actual.TotalProviders.Should().Be(source.ProvidersAtLocation);
             actual.ShortlistItemCount.Should().Be(source.ShortlistItemCount);
         }
+
+        [Test, AutoData]
+        public void Then_If_The_CoreSkills_are_Null_Then_Empty_List_Returned(GetCourseProviderResult source)
+        {
+            source.Course.CoreSkills = null;
+            
+            var actual = (CourseProviderViewModel) source;
+
+            actual.Course.CoreSkills.Should().NotBeNull();
+            actual.Course.CoreSkills.Should().BeEmpty();
+        }
     }
 }

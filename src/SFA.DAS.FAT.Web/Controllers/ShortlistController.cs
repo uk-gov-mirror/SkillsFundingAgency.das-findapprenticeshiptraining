@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SFA.DAS.FAT.Application.Shortlist.Commands.CreateShortlistItemForUser;
 using SFA.DAS.FAT.Application.Shortlist.Commands.DeleteShortlistItemForUser;
 using SFA.DAS.FAT.Application.Shortlist.Queries.GetShortlistForUser;
@@ -24,6 +25,7 @@ namespace SFA.DAS.FAT.Web.Controllers
         private readonly IMediator _mediator;
         private readonly ICookieStorageService<ShortlistCookieItem> _shortlistCookieService;
         private readonly ICookieStorageService<LocationCookieItem> _locationCookieService;
+        private readonly FindApprenticeshipTrainingWeb _config;
         private readonly ILogger<ShortlistController> _logger;
         private readonly IDataProtector _protector;
 
@@ -31,11 +33,13 @@ namespace SFA.DAS.FAT.Web.Controllers
             ICookieStorageService<ShortlistCookieItem> shortlistCookieService,
             ICookieStorageService<LocationCookieItem> locationCookieService,
             IDataProtectionProvider provider,
+            IOptions<FindApprenticeshipTrainingWeb> config,
             ILogger<ShortlistController> logger)
         {
             _mediator = mediator;
             _shortlistCookieService = shortlistCookieService;
             _locationCookieService = locationCookieService;
+            _config = config.Value;
             _logger = logger;
             _protector = provider.CreateProtector(Constants.ShortlistProtectorName);
         }
@@ -77,7 +81,8 @@ namespace SFA.DAS.FAT.Web.Controllers
             var viewModel = new ShortlistViewModel
             {
                 Shortlist = result.Shortlist.Select(item => (ShortlistItemViewModel)item).ToList(),
-                Removed = removedProviderName
+                Removed = removedProviderName,
+                HelpBaseUrl = _config.EmployerDemandFeatureToggle ? _config.EmployerDemandUrl : ""
             };
 
             return View(viewModel);

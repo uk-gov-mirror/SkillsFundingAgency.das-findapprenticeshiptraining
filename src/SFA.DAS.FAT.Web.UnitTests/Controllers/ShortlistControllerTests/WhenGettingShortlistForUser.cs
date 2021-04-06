@@ -10,6 +10,7 @@ using MediatR;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.FAT.Application.Shortlist.Queries.GetShortlistForUser;
@@ -31,10 +32,11 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
             [Frozen] Mock<IMediator> mockMediator,
             [Frozen] Mock<IDataProtector> protector,
             [Frozen] Mock<IDataProtectionProvider> provider,
+            [Frozen] Mock<IOptions<FindApprenticeshipTrainingWeb>> config,
             [Greedy] ShortlistController controller)
         {
             //Arrange
-            
+            config.Object.Value.EmployerDemandFeatureToggle = false;
             mockCookieService
                 .Setup(service => service.Get(Constants.ShortlistCookieName))
                 .Returns(shortlistCookie);
@@ -55,6 +57,7 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
                 .BeEquivalentTo(
                     resultFromMediator.Shortlist.Select(item => (ShortlistItemViewModel)item));
             model.Removed.Should().BeEmpty();
+            model.HelpBaseUrl.Should().BeEmpty();
         }
 
         [Test, MoqAutoData]
@@ -194,6 +197,46 @@ namespace SFA.DAS.FAT.Web.UnitTests.Controllers.ShortlistControllerTests
                     It.IsAny<GetShortlistForUserQuery>(), 
                     It.IsAny<CancellationToken>()), 
                 Times.Never);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_The_Help_Link_Is_Shown_If_The_Feature_Is_Toggled_On(ShortlistCookieItem shortlistCookie,
+            GetShortlistForUserResult resultFromMediator,
+            [Frozen] Mock<ICookieStorageService<ShortlistCookieItem>> mockCookieService,
+            [Frozen] Mock<IMediator> mockMediator,
+            [Frozen] Mock<IDataProtector> protector,
+            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Frozen] Mock<IOptions<FindApprenticeshipTrainingWeb>> config,
+            [Greedy] ShortlistController controller)
+        {
+            //Arrange
+            config.Object.Value.EmployerDemandFeatureToggle = true;
+            mockCookieService
+                .Setup(service => service.Get(Constants.ShortlistCookieName))
+                .Returns(shortlistCookie);
+            mockMediator
+                .Setup(mediator => mediator.Send(
+                    It.Is<GetShortlistForUserQuery>(c => c.ShortlistUserId.Equals(shortlistCookie.ShortlistUserId)),
+                    It.IsAny<CancellationToken>()))
+                .ReturnsAsync(resultFromMediator);
+            
+            //Act
+            var actual = await controller.Index("") as ViewResult;
+            
+            //Assert
+            actual.Should().NotBeNull();
+            var model = actual.Model as ShortlistViewModel;
+            model.Should().NotBeNull();
+            model.Shortlist.Should()
+                .BeEquivalentTo(
+                    resultFromMediator.Shortlist.Select(item => (ShortlistItemViewModel)item));
+            model.Removed.Should().BeEmpty();
+            model.HelpBaseUrl.Should().Be(config.Object.Value.EmployerDemandUrl);
+            foreach (var itemViewModel in model.Shortlist)
+            {
+                itemViewModel.HelpFindingCourseUrl.Should().Be($"/registerdemand/course/{itemViewModel.Course.Id}/enter-apprenticeship-details");    
+            }
+            
         }
     }
 }

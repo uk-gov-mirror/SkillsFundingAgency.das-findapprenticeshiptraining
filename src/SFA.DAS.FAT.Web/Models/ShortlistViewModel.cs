@@ -14,6 +14,7 @@ namespace SFA.DAS.FAT.Web.Models
         public string Removed { get; set; }
 
         public string ExpiryDateText => GetExpiryDateText();
+        public string HelpBaseUrl { get ; set ; }
 
         private string GetExpiryDateText()
         {
@@ -64,7 +65,7 @@ namespace SFA.DAS.FAT.Web.Models
         public CourseViewModel Course { get; set; }
         public string LocationDescription { get; set; }
         public DateTime CreatedDate { get; set; }
-
+        public string HelpFindingCourseUrl { get ; set ; }
         public static implicit operator ShortlistItemViewModel(ShortlistItem source)
         {
             return new ShortlistItemViewModel
@@ -73,7 +74,8 @@ namespace SFA.DAS.FAT.Web.Models
                 LocationDescription = source.LocationDescription,
                 CreatedDate = source.CreatedDate,
                 Course = source.Course,
-                Provider = source.Provider
+                Provider = source.Provider,
+                HelpFindingCourseUrl = $"/registerdemand/course/{source.Course.Id}/enter-apprenticeship-details"
             };
         }
     }
